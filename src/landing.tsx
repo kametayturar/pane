@@ -32,7 +32,7 @@ type LandingProps = {
   styles: readonly StyleOption[]
 }
 
-const SITE = "https://pane.vercel.app"
+const SITE = "https://paneui.vercel.app"
 const GITHUB = "https://github.com/kametayturar/pane"
 const EASE = "cubic-bezier(.22,1,.36,1)"
 

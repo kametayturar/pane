@@ -434,7 +434,7 @@ const GROUPS = RAW_GROUPS.map((g) => ({
 const ALL = GROUPS.flatMap((g) => g.entries)
 const PAGES = ALL.filter((e) => e.kind !== "screen")
 const COUNT = (k: Kind) => ALL.filter((e) => e.kind === k).length
-const SITE = "https://pane.vercel.app"
+const SITE = "https://paneui.vercel.app"
 
 // Search documents for every piece and skill (tags from src/data/tags.json).
 const KIND_GROUP: Record<string, string> = {}

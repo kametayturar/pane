@@ -12,6 +12,6 @@ issue. You'll get an answer within a few days.
 
 ## What the installer does
 
-`add.mjs` downloads `https://pane.vercel.app/r/<name>.json`, writes the listed files into your project's `src/`
+`add.mjs` downloads `https://paneui.vercel.app/r/<name>.json`, writes the listed files into your project's `src/`
 (skipping existing files unless you pass `--force`), creates `lib/utils.ts` if a piece needs it, and prints any npm
 packages to install. It never runs the code it downloads and never installs packages itself. Read it first – it is short.

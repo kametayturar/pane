@@ -8,7 +8,7 @@ import re
 import shutil
 from pathlib import Path
 
-SITE = "https://pane.vercel.app"
+SITE = "https://paneui.vercel.app"
 app = Path("src/App.tsx").read_text()
 block = app[app.index("const RAW_GROUPS") : app.index("const GROUPS =")]
 FOLDER = {"ui": "components/ui", "ill": "components/illustrations", "mo": "components/motion", "bl": "components/blocks"}

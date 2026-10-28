@@ -3,7 +3,7 @@ import { ArrowUpRight, Check, Copy, Sparkles } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const SITE = "https://pane.vercel.app"
+const SITE = "https://paneui.vercel.app"
 
 const GOALS = [
   { id: "app", label: "Build a whole app", text: "Build the app's main screens fast from Pane's Meridian screens (dashboard, tasks, accounting, finance, ops, research, evals): pick the closest ones, keep their rail and top bar, and fill them with this project's real data, routes and actions." },

@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "pane",
-  "homepage": "https://pane.vercel.app",
+  "homepage": "https://paneui.vercel.app",
   "items": [
     {
       "name": "ai-answer",

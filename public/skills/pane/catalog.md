@@ -8,12 +8,12 @@
 
 ### Install
 
-- Easiest, works in any React project (no shadcn needed): `curl -sO https://pane.vercel.app/add.mjs && node add.mjs <slug> [<slug>…]`.
+- Easiest, works in any React project (no shadcn needed): `curl -sO https://paneui.vercel.app/add.mjs && node add.mjs <slug> [<slug>…]`.
   It writes each piece to `src/components/...` (or `components/...`), creates `lib/utils.ts` if a piece needs it,
   checks the `@/` alias and prints the npm packages to install (usually `lucide-react`).
-- In a project that already has shadcn set up (a `components.json`): `npx shadcn@latest add https://pane.vercel.app/r/<slug>.json`.
+- In a project that already has shadcn set up (a `components.json`): `npx shadcn@latest add https://paneui.vercel.app/r/<slug>.json`.
   Without `components.json` the shadcn CLI stops at an interactive prompt – use add.mjs instead.
-- By hand: fetch `https://pane.vercel.app/r/<slug>.json` and write `files[0].content` to `<src>/` + `files[0].target`.
+- By hand: fetch `https://paneui.vercel.app/r/<slug>.json` and write `files[0].content` to `<src>/` + `files[0].target`.
 
 ### Project prerequisites
 
@@ -38,8 +38,8 @@
 - Every piece works with no props (built-in demo content/simulation). Pass your real content through props – read the file's exported types.
 - Some pieces start their animation when they mount (e.g. `ai-answer`, `thinking-state`). Below the fold, mount them when they scroll
   into view (an IntersectionObserver gate) so people see the motion. Illustrations and motion pieces already wait until visible.
-- Live preview of every piece: https://pane.vercel.app/#/<slug>
-- Skill (house style, build method, glass recipe – follow it when you compose pages): https://pane.vercel.app/skills/pane.md
+- Live preview of every piece: https://paneui.vercel.app/#/<slug>
+- Skill (house style, build method, glass recipe – follow it when you compose pages): https://paneui.vercel.app/skills/pane.md
 
 ## Recipes (which pieces fit which page)
 
@@ -241,8 +241,8 @@
 
 ## Screens
 
-- **Agent Run** (`agent-run`) and **Agent Chat** (`agent-chat`) – full app screens built from the pieces above; see https://pane.vercel.app/#/agent-run and https://pane.vercel.app/#/agent-chat.
+- **Agent Run** (`agent-run`) and **Agent Chat** (`agent-chat`) – full app screens built from the pieces above; see https://paneui.vercel.app/#/agent-run and https://paneui.vercel.app/#/agent-chat.
 
 ## Backdrop
 
-- **Backdrop** (`backdrop`) – the stage illustrations sit on: plain, dots, halftone, grid, drift, floor, aurora, dither. File: `components/motion/backdrop.tsx`. Install: `npx shadcn@latest add https://pane.vercel.app/r/backdrop.json`
+- **Backdrop** (`backdrop`) – the stage illustrations sit on: plain, dots, halftone, grid, drift, floor, aurora, dither. File: `components/motion/backdrop.tsx`. Install: `npx shadcn@latest add https://paneui.vercel.app/r/backdrop.json`

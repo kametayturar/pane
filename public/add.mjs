@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 // Pane installer – adds pieces to any React project, no shadcn setup needed.
 //
-//   curl -sO https://pane.vercel.app/add.mjs && node add.mjs dither-field text-reveal ai-answer
+//   curl -sO https://paneui.vercel.app/add.mjs && node add.mjs dither-field text-reveal ai-answer
 //
-// For each piece it downloads https://pane.vercel.app/r/<slug>.json and writes the file to
+// For each piece it downloads https://paneui.vercel.app/r/<slug>.json and writes the file to
 // <src>/components/... (src/ if the project has one). It also creates lib/utils.ts (the `cn` helper) when a piece
 // needs it, checks that the "@/" import alias is set up, and prints the npm packages to install.
 // Flags: --force (overwrite existing files), --dir <path> (project root, default: current folder).
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import path from "node:path"
 
-const SITE = "https://pane.vercel.app"
+const SITE = "https://paneui.vercel.app"
 const args = process.argv.slice(2)
 const force = args.includes("--force")
 const dirIdx = args.indexOf("--dir")

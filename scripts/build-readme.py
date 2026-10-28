@@ -7,7 +7,7 @@ import json
 import re
 from pathlib import Path
 
-SITE = "https://pane.vercel.app"
+SITE = "https://paneui.vercel.app"
 GITHUB = "https://github.com/kametayturar/pane"
 
 app = Path("src/App.tsx").read_text()
