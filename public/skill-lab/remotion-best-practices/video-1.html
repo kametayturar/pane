@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><video src="video-1-teaser.mp4" autoplay muted loop playsinline controls></video><figcaption>video-1: Tidewater 6 s teaser (Remotion render)</figcaption></figure><figure><img src="video-1-frames.png" alt="Stills rendered with remotion render --frames (30, 60, 100, 140): title, beat 1, beat 2, beat 3 mid-transition"><figcaption>Stills rendered with remotion render --frames (30, 60, 100, 140): title, beat 1, beat 2, beat 3 mid-transition</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered a real 6.0 s, 1280x720, 30 fps H.264 MP4 (464 kB) rendered with 'npx remotion render' from a Remotion 4.0.537 project scaffolded with create-video. Structure: title (Tidewater logo, wordmark, tagline), three feature beats (Book in seconds / No-shows, gone / The whole clinic, each with a small animated UI card), and an end card ('Try Tidewater free'). Scenes are separate components joined by one TransitionSeries (fade, slide, slide, fade; 5 scenes totalling 204 frames minus 4 x 6 transition frames = 180). All motion is interpolate() + Easing.bezier on the frame (no CSS transitions), written inline on Interactive.Div nodes with scale/translate shorthands. Text sizes follow the skill's video-layout rule scaled to 1280 px wide (headline 100 px, supporting 52 px, 96 px side safe area). Verified by rendering stills with 'render --frames' (contact sheet attached), then the full video, then ffprobe. Studio was started with --no-open on port 7151 per the skill and served HTTP 200; the in-app browser was not opened. Note: the CLI render server defaults to port 3000, which was occupied by an unrelated app here, so renders needed --port=7152. Remotion's own Chrome download worked; no --browser-executable was needed.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Skill: scaffold into a new subfolder (folder non-empty rules)</div><div class="cmd">npx create-video@latest --yes --blank --no-tailwind tidewater</div><div class="out">Copied to tidewater.
+
+Get started by running:
+ cd tidewater
+ npm run dev
+
+To render a video, run:
+ npx remotion render</div></div><div class="step"><div class="note"># Skill: install @remotion/* with the matching version</div><div class="cmd">npx remotion add @remotion/transitions @remotion/google-fonts</div><div class="out">Installing 2 packages (@remotion/transitions, @remotion/google-fonts)
+$ npm i --save-exact ... @remotion/transitions@4.0.537 @remotion/google-fonts@4.0.537
+
+added 3 packages in 25s
++ @remotion/transitions@4.0.537
++ @remotion/google-fonts@4.0.537</div></div><div class="step"><div class="note"># Skill: open the preview before building the composition</div><div class="cmd">npx remotion studio --no-open --port=7151  &amp;&amp;  curl -s -o /dev/null -w '%{http_code}' localhost:7151</div><div class="out">Server ready - Local: http://localhost:7151, Network: http://172.20.10.2:7151
+Building...
+Built in 545ms
+200</div></div><div class="step"><div class="note"># Typecheck after writing src/Scenes.tsx, src/Tidewater.tsx, src/Root.tsx</div><div class="cmd">npx tsc --noEmit</div><div class="out">(no output, 0 errors)</div></div><div class="step"><div class="note"># First attempt (skill: inspect frames with render --frames)</div><div class="cmd">npx remotion render Tidewater out/frames --frames=30,60,100,140,175 --image-format=png</div><div class="out">Error: Error while getting compositions: Tried to go to http://localhost:3000/index.html and verify that it is a Remotion project ... However, the function was undefined, which indicates that this is not a valid Remotion project.
+Does this look like a foreign page? If so, try to stop this server.</div></div><div class="step"><div class="note"># Port 3000 is taken by another app on this machine; use a free port from the assigned range</div><div class="cmd">npx remotion render Tidewater out/frames --frames=30,60,100,140,175 --image-format=png --port=7152</div><div class="out">Composition          Tidewater
+Codec                h264
+Output               out/frames
+Concurrency          5x
+Rendered 1/5 ... Rendered 5/5
++                    out/frames</div></div><div class="step"><div class="note"># Contact sheet to check layout, sizes and safe area; looked correct, no changes needed</div><div class="cmd">ffmpeg -i element-030.png -i element-060.png -i element-100.png -i element-140.png -filter_complex '[0][1]hstack[a];[2][3]hstack[b];[a][b]vstack' sheet.png</div><div class="out">ok</div></div><div class="step"><div class="note"># Final render</div><div class="cmd">npx remotion render Tidewater out/video-1.mp4 --port=7152</div><div class="out">Rendered 179/180, time remaining: 0s
+Encoded 83/180
+Encoded 144/180
+Encoded 180/180
++                    out/video-1.mp4 464.3 kB</div></div><div class="step"><div class="note"># Verify spec</div><div class="cmd">ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate,duration -of default=nw=1 out/video-1.mp4</div><div class="out">codec_name=h264
+width=1280
+height=720
+r_frame_rate=30/1
+duration=6.000000</div></div></div>
+<h2>Files</h2><details open><summary>src/Root.tsx</summary><pre><span class="k">import</span> { Composition } <span class="k">from</span> <span <span class="k">class</span>="s">"remotion"</span>;
+<span class="k">import</span> { Tidewater } <span class="k">from</span> <span <span class="k">class</span>="s">"./Tidewater"</span>;
+
+<span class="k">export</span> <span class="k">const</span> RemotionRoot: React.FC = () =&gt; {
+  <span class="k">return</span> (
+    &lt;Composition
+      id=<span <span class="k">class</span>="s">"Tidewater"</span>
+      component={Tidewater}
+      durationInFrames={<span class="n">180</span>}
+      fps={<span class="n">30</span>}
+      width={<span class="n">1280</span>}
+      height={<span class="n">720</span>}
+    /&gt;
+  );
+};
+</pre></details><details><summary>src/Tidewater.tsx</summary><pre><span class="k">import</span> { linearTiming, TransitionSeries } <span class="k">from</span> <span <span class="k">class</span>="s">"@remotion/transitions"</span>;
+<span class="k">import</span> { fade } <span class="k">from</span> <span <span class="k">class</span>="s">"@remotion/transitions/fade"</span>;
+<span class="k">import</span> { slide } <span class="k">from</span> <span <span class="k">class</span>="s">"@remotion/transitions/slide"</span>;
+<span class="k">import</span> {
+  BookingBeat,
+  ClinicBeat,
+  EndCard,
+  RemindersBeat,
+  TitleScene,
+} <span class="k">from</span> <span <span class="k">class</span>="s">"./Scenes"</span>;
+
+<span class="c">// 5 scenes (42+40+40+40+42 = 204 frames) minus 4 transitions of 6 frames = 180 frames = 6s @ 30fps.</span>
+<span class="k">export</span> <span class="k">const</span> Tidewater: React.FC = () =&gt; (
+  &lt;TransitionSeries&gt;
+    &lt;TransitionSeries.Sequence name=<span <span class="k">class</span>="s">"Title"</span> durationInFrames={<span class="n">42</span>}&gt;
+      &lt;TitleScene /&gt;
+    &lt;/TransitionSeries.Sequence&gt;
+    &lt;TransitionSeries.Transition
+      presentation={fade()}
+      timing={linearTiming({ durationInFrames: <span class="n">6</span> })}
+    /&gt;
+    &lt;TransitionSeries.Sequence name=<span <span class="k">class</span>="s">"Beat <span class="n">1</span> - Booking"</span> durationInFrames={<span class="n">40</span>}&gt;
+      &lt;BookingBeat /&gt;
+    &lt;/TransitionSeries.Sequence&gt;
+    &lt;TransitionSeries.Transition
+      presentation={slide({ direction: <span <span class="k">class</span>="s">"<span class="k">from</span>-right"</span> })}
+      timing={linearTiming({ durationInFrames: <span class="n">6</span> })}
+    /&gt;
+    &lt;TransitionSeries.Sequence name=<span <span class="k">class</span>="s">"Beat <span class="n">2</span> - Reminders"</span> durationInFrames={<span class="n">40</span>}&gt;
+      &lt;RemindersBeat /&gt;
+    &lt;/TransitionSeries.Sequence&gt;
+    &lt;TransitionSeries.Transition
+      presentation={slide({ direction: <span <span class="k">class</span>="s">"<span class="k">from</span>-right"</span> })}
+      timing={linearTiming({ durationInFrames: <span class="n">6</span> })}
+    /&gt;
+    &lt;TransitionSeries.Sequence name=<span <span class="k">class</span>="s">"Beat <span class="n">3</span> - Clinic"</span> durationInFrames={<span class="n">40</span>}&gt;
+      &lt;ClinicBeat /&gt;
+    &lt;/TransitionSeries.Sequence&gt;
+    &lt;TransitionSeries.Transition
+      presentation={fade()}
+      timing={linearTiming({ durationInFrames: <span class="n">6</span> })}
+    /&gt;
+    &lt;TransitionSeries.Sequence name=<span <span class="k">class</span>="s">"End card"</span> durationInFrames={<span class="n">42</span>}&gt;
+      &lt;EndCard /&gt;
+    &lt;/TransitionSeries.Sequence&gt;
+  &lt;/TransitionSeries&gt;
+);
+</pre></details><details><summary>src/Scenes.tsx</summary><pre><span class="k">import</span> { loadFont } <span class="k">from</span> <span <span class="k">class</span>="s">"@remotion/google-fonts/Inter"</span>;
+<span class="k">import</span> <span class="k">type</span> React <span class="k">from</span> <span <span class="k">class</span>="s">"react"</span>;
+<span class="k">import</span> {
+  AbsoluteFill,
+  Easing,
+  Interactive,
+  interpolate,
+  useCurrentFrame,
+  useVideoConfig,
+} <span class="k">from</span> <span <span class="k">class</span>="s">"remotion"</span>;
+
+<span class="k">const</span> { fontFamily } = loadFont(<span <span class="k">class</span>="s">"normal"</span>, {
+  weights: [<span <span class="k">class</span>="s">"<span class="n">500</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">600</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">800</span>"</span>],
+  subsets: [<span <span class="k">class</span>="s">"latin"</span>],
+});
+
+<span class="k">export</span> <span class="k">const</span> COLORS = {
+  navy: <span <span class="k">class</span>="s">"#0B2A3C"</span>,
+  teal: <span <span class="k">class</span>="s">"#12A3A3"</span>,
+  tealDark: <span <span class="k">class</span>="s">"#0E7C86"</span>,
+  mist: <span <span class="k">class</span>="s">"#F2F8F8"</span>,
+  ink: <span <span class="k">class</span>="s">"#0B2A3C"</span>,
+  muted: <span <span class="k">class</span>="s">"#52707E"</span>,
+  coral: <span <span class="k">class</span>="s">"#FF7A59"</span>,
+};
+
+<span class="c">// Safe area, scaled from the 1080px-wide guidance (80px sides) to 1280px wide.</span>
+<span class="k">const</span> SIDE = <span class="n">96</span>;
+<span class="c">// Headline/supporting minimums scaled from 84px/44px at 1080 wide.</span>
+<span class="k">const</span> HEADLINE = <span class="n">100</span>;
+<span class="k">const</span> SUPPORT = <span class="n">52</span>;
+
+<span class="k">const</span> ease = Easing.bezier(<span class="n">0.16</span>, <span class="n">1</span>, <span class="n">0.3</span>, <span class="n">1</span>);
+<span class="k">const</span> clamp = { extrapolateLeft: <span <span class="k">class</span>="s">"clamp"</span>, extrapolateRight: <span <span class="k">class</span>="s">"clamp"</span> } <span class="k">as</span> <span class="k">const</span>;
+
+<span class="k">const</span> Logo: React.FC&lt;{ size: number; color: string }&gt; = ({ size, color }) =&gt; (
+  &lt;svg width={size} height={size} viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">48</span> <span class="n">48</span>"</span> fill=<span <span class="k">class</span>="s">"none"</span>&gt;
+    &lt;path
+      d=<span <span class="k">class</span>="s">"M4 20c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-3M4 32c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-<span class="n">3</span>"</span>
+      stroke={color}
+      strokeWidth=<span <span class="k">class</span>="s">"<span class="n">5</span>"</span>
+      strokeLinecap=<span <span class="k">class</span>="s">"round"</span>
+    /&gt;
+  &lt;/svg&gt;
+);
+
+<span class="k">export</span> <span class="k">const</span> TitleScene: React.FC = () =&gt; {
+  <span class="k">const</span> frame = useCurrentFrame();
+  <span class="k">const</span> { fps } = useVideoConfig();
+  <span class="k">return</span> (
+    &lt;AbsoluteFill
+      style={{
+        background: <span <span class="k">class</span>="s">`radial-gradient(900px 600px at <span class="n">80</span>% <span class="n">110</span>%, ${COLORS.tealDark} <span class="n">0</span>%, ${COLORS.navy} <span class="n">70</span>%)`</span>,
+        fontFamily,
+        color: <span <span class="k">class</span>="s">"white"</span>,
+        justifyContent: <span <span class="k">class</span>="s">"center"</span>,
+        padding: <span <span class="k">class</span>="s">`<span class="n">0</span> ${SIDE}px`</span>,
+      }}
+    &gt;
+      &lt;Interactive.Div
+        name=<span <span class="k">class</span>="s">"Logo"</span>
+        style={{
+          opacity: interpolate(frame, [<span class="n">0</span>, <span class="n">0.5</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+          scale: interpolate(frame, [<span class="n">0</span>, <span class="n">0.7</span> * fps], [<span class="n">0.6</span>, <span class="n">1</span>], {
+            ...clamp,
+            easing: ease,
+            output: <span <span class="k">class</span>="s">"perceptual-scale"</span>,
+          }),
+          transformOrigin: <span <span class="k">class</span>="s">"left center"</span>,
+        }}
+      &gt;
+        &lt;Logo size={<span class="n">96</span>} color={COLORS.teal} /&gt;
+      &lt;/Interactive.Div&gt;
+      &lt;Interactive.Div
+        name=<span <span class="k">class</span>="s">"Title"</span>
+        style={{
+          fontSize: <span class="n">150</span>,
+          fontWeight: <span class="n">800</span>,
+          letterSpacing: -<span class="n">5</span>,
+          lineHeight: <span class="n">1.05</span>,
+          marginTop: <span class="n">12</span>,
+          opacity: interpolate(frame, [<span class="n">4</span>, <span class="n">0.6</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+          translate: interpolate(frame, [<span class="n">4</span>, <span class="n">0.9</span> * fps], [<span <span class="k">class</span>="s">"0px 40px"</span>, <span <span class="k">class</span>="s">"0px 0px"</span>], {
+            ...clamp,
+            easing: ease,
+          }),
+        }}
+      &gt;
+        Tidewater
+      &lt;/Interactive.Div&gt;
+      &lt;Interactive.Div
+        name=<span <span class="k">class</span>="s">"Tagline"</span>
+        style={{
+          fontSize: SUPPORT,
+          fontWeight: <span class="n">500</span>,
+          color: <span <span class="k">class</span>="s">"#BFE4E4"</span>,
+          marginTop: <span class="n">8</span>,
+          opacity: interpolate(frame, [<span class="n">14</span>, <span class="n">0.9</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+          translate: interpolate(frame, [<span class="n">14</span>, <span class="n">1.1</span> * fps], [<span <span class="k">class</span>="s">"0px 30px"</span>, <span <span class="k">class</span>="s">"0px 0px"</span>], {
+            ...clamp,
+            easing: ease,
+          }),
+        }}
+      &gt;
+        Scheduling that fits a physio clinic.
+      &lt;/Interactive.Div&gt;
+    &lt;/AbsoluteFill&gt;
+  );
+};
+
+<span class="k">type</span> BeatProps = {
+  readonly index: string;
+  readonly headline: string;
+  readonly support: string;
+  readonly children: (p: { frame: number; fps: number }) =&gt; React.ReactNode;
+};
+
+<span class="k">const</span> Beat: React.FC&lt;BeatProps&gt; = ({ index, headline, support, children }) =&gt; {
+  <span class="k">const</span> frame = useCurrentFrame();
+  <span class="k">const</span> { fps } = useVideoConfig();
+  <span class="k">return</span> (
+    &lt;AbsoluteFill
+      style={{
+        background: COLORS.mist,
+        fontFamily,
+        color: COLORS.ink,
+        flexDirection: <span <span class="k">class</span>="s">"row"</span>,
+        alignItems: <span <span class="k">class</span>="s">"center"</span>,
+        padding: <span <span class="k">class</span>="s">`<span class="n">0</span> ${SIDE}px`</span>,
+      }}
+    &gt;
+      &lt;div style={{ width: <span class="n">600</span>, display: <span <span class="k">class</span>="s">"flex"</span>, flexDirection: <span <span class="k">class</span>="s">"column"</span> }}&gt;
+        &lt;Interactive.Div
+          name=<span <span class="k">class</span>="s">"Index"</span>
+          style={{
+            fontSize: <span class="n">30</span>,
+            fontWeight: <span class="n">600</span>,
+            color: COLORS.tealDark,
+            letterSpacing: <span class="n">4</span>,
+            opacity: interpolate(frame, [<span class="n">0</span>, <span class="n">10</span>], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+          }}
+        &gt;
+          {index}
+        &lt;/Interactive.Div&gt;
+        &lt;Interactive.Div
+          name=<span <span class="k">class</span>="s">"Headline"</span>
+          style={{
+            fontSize: HEADLINE,
+            fontWeight: <span class="n">800</span>,
+            letterSpacing: -<span class="n">3.5</span>,
+            lineHeight: <span class="n">1.0</span>,
+            marginTop: <span class="n">10</span>,
+            whiteSpace: <span <span class="k">class</span>="s">"pre-line"</span>,
+            opacity: interpolate(frame, [<span class="n">2</span>, <span class="n">0.5</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+            translate: interpolate(frame, [<span class="n">2</span>, <span class="n">0.8</span> * fps], [<span <span class="k">class</span>="s">"0px 36px"</span>, <span <span class="k">class</span>="s">"0px 0px"</span>], {
+              ...clamp,
+              easing: ease,
+            }),
+          }}
+        &gt;
+          {headline}
+        &lt;/Interactive.Div&gt;
+        &lt;Interactive.Div
+          name=<span <span class="k">class</span>="s">"Supporting text"</span>
+          style={{
+            fontSize: SUPPORT,
+            fontWeight: <span class="n">500</span>,
+            color: COLORS.muted,
+            lineHeight: <span class="n">1.15</span>,
+            marginTop: <span class="n">22</span>,
+            opacity: interpolate(frame, [<span class="n">8</span>, <span class="n">0.7</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+            translate: interpolate(frame, [<span class="n">8</span>, <span class="n">1</span> * fps], [<span <span class="k">class</span>="s">"0px 28px"</span>, <span <span class="k">class</span>="s">"0px 0px"</span>], {
+              ...clamp,
+              easing: ease,
+            }),
+          }}
+        &gt;
+          {support}
+        &lt;/Interactive.Div&gt;
+      &lt;/div&gt;
+      &lt;div style={{ flex: <span class="n">1</span>, display: <span <span class="k">class</span>="s">"flex"</span>, justifyContent: <span <span class="k">class</span>="s">"flex-end"</span> }}&gt;
+        {children({ frame, fps })}
+      &lt;/div&gt;
+    &lt;/AbsoluteFill&gt;
+  );
+};
+
+<span class="k">const</span> card: React.CSSProperties = {
+  background: <span <span class="k">class</span>="s">"white"</span>,
+  borderRadius: <span class="n">28</span>,
+  boxShadow: <span <span class="k">class</span>="s">"<span class="n">0</span> 24px 60px rgba(<span class="n">11</span>,<span class="n">42</span>,<span class="n">60</span>,<span class="n">0.16</span>), <span class="n">0</span> 2px 6px rgba(<span class="n">11</span>,<span class="n">42</span>,<span class="n">60</span>,<span class="n">0.08</span>)"</span>,
+};
+
+<span class="k">export</span> <span class="k">const</span> BookingBeat: React.FC = () =&gt; {
+  <span class="k">const</span> slots = [<span <span class="k">class</span>="s">"<span class="n">09</span>:<span class="n">30</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">10</span>:<span class="n">00</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">10</span>:<span class="n">30</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">11</span>:<span class="n">00</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">11</span>:<span class="n">30</span>"</span>];
+  <span class="k">return</span> (
+    &lt;Beat
+      index=<span <span class="k">class</span>="s">"<span class="n">01</span>"</span>
+      headline={<span <span class="k">class</span>="s">"Book <span class="k">in</span>\nseconds"</span>}
+      support=<span <span class="k">class</span>="s">"One tap, no phone tag."</span>
+    &gt;
+      {({ frame, fps }) =&gt; (
+        &lt;Interactive.Div
+          name=<span <span class="k">class</span>="s">"Booking card"</span>
+          style={{
+            ...card,
+            width: <span class="n">400</span>,
+            padding: <span class="n">28</span>,
+            opacity: interpolate(frame, [<span class="n">4</span>, <span class="n">0.6</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+            translate: interpolate(frame, [<span class="n">4</span>, <span class="n">1</span> * fps], [<span <span class="k">class</span>="s">"60px 0px"</span>, <span <span class="k">class</span>="s">"0px 0px"</span>], {
+              ...clamp,
+              easing: ease,
+            }),
+          }}
+        &gt;
+          &lt;div style={{ fontSize: <span class="n">24</span>, fontWeight: <span class="n">600</span>, color: COLORS.muted, marginBottom: <span class="n">14</span> }}&gt;
+            Tuesday
+          &lt;/div&gt;
+          {slots.map((t, i) =&gt; {
+            <span class="k">const</span> picked = i === <span class="n">2</span>;
+            <span class="k">const</span> fill = interpolate(frame, [<span class="n">20</span>, <span class="n">28</span>], [<span class="n">0</span>, <span class="n">1</span>], clamp);
+            <span class="k">return</span> (
+              &lt;div
+                key={t}
+                style={{
+                  display: <span <span class="k">class</span>="s">"flex"</span>,
+                  alignItems: <span <span class="k">class</span>="s">"center"</span>,
+                  height: <span class="n">66</span>,
+                  borderRadius: <span class="n">16</span>,
+                  marginBottom: <span class="n">10</span>,
+                  padding: <span <span class="k">class</span>="s">"<span class="n">0</span> 20px"</span>,
+                  fontSize: <span class="n">28</span>,
+                  fontWeight: <span class="n">600</span>,
+                  background: picked
+                    ? <span <span class="k">class</span>="s">`rgba(<span class="n">18</span>,<span class="n">163</span>,<span class="n">163</span>,${<span class="n">0.08</span> + <span class="n">0.92</span> * fill})`</span>
+                    : <span <span class="k">class</span>="s">"#EEF4F5"</span>,
+                  color: picked &amp;&amp; fill &gt; <span class="n">0.5</span> ? <span <span class="k">class</span>="s">"white"</span> : COLORS.ink,
+                }}
+              &gt;
+                &lt;span style={{ width: <span class="n">100</span> }}&gt;{t}&lt;/span&gt;
+                {picked &amp;&amp; (
+                  &lt;span style={{ opacity: fill, fontWeight: <span class="n">500</span> }}&gt;Maya R.&lt;/span&gt;
+                )}
+              &lt;/div&gt;
+            );
+          })}
+        &lt;/Interactive.Div&gt;
+      )}
+    &lt;/Beat&gt;
+  );
+};
+
+<span class="k">export</span> <span class="k">const</span> RemindersBeat: React.FC = () =&gt; (
+  &lt;Beat index=<span <span class="k">class</span>="s">"<span class="n">02</span>"</span> headline={<span <span class="k">class</span>="s">"No-shows,\ngone"</span>} support=<span <span class="k">class</span>="s">"Reminders send themselves."</span>&gt;
+    {({ frame, fps }) =&gt; (
+      &lt;div style={{ width: <span class="n">400</span>, position: <span <span class="k">class</span>="s">"relative"</span>, height: <span class="n">330</span> }}&gt;
+        {[<span class="n">0</span>, <span class="n">1</span>].map((i) =&gt; (
+          &lt;Interactive.Div
+            key={i}
+            name={i === <span class="n">0</span> ? <span <span class="k">class</span>="s">"SMS card"</span> : <span <span class="k">class</span>="s">"Confirmed card"</span>}
+            style={{
+              ...card,
+              position: <span <span class="k">class</span>="s">"absolute"</span>,
+              left: <span class="n">0</span>,
+              right: <span class="n">0</span>,
+              top: i * <span class="n">170</span>,
+              padding: <span class="n">26</span>,
+              opacity: interpolate(frame, [<span class="n">6</span> + i * <span class="n">12</span>, <span class="n">20</span> + i * <span class="n">12</span>], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+              translate: interpolate(
+                frame,
+                [<span class="n">6</span> + i * <span class="n">12</span>, <span class="n">0.9</span> * fps + i * <span class="n">12</span>],
+                [<span <span class="k">class</span>="s">"0px 50px"</span>, <span <span class="k">class</span>="s">"0px 0px"</span>],
+                { ...clamp, easing: ease },
+              ),
+            }}
+          &gt;
+            &lt;div style={{ fontSize: <span class="n">22</span>, fontWeight: <span class="n">600</span>, color: COLORS.muted }}&gt;
+              {i === <span class="n">0</span> ? <span <span class="k">class</span>="s">"SMS reminder"</span> : <span <span class="k">class</span>="s">"Reply"</span>}
+            &lt;/div&gt;
+            &lt;div style={{ fontSize: <span class="n">32</span>, fontWeight: <span class="n">600</span>, marginTop: <span class="n">8</span>, lineHeight: <span class="n">1.2</span> }}&gt;
+              {i === <span class="n">0</span> ? <span <span class="k">class</span>="s">"Tue <span class="n">10</span>:<span class="n">30</span> <span class="k">with</span> Dr. Okafor"</span> : <span <span class="k">class</span>="s">"Confirmed"</span>}
+            &lt;/div&gt;
+            {i === <span class="n">1</span> &amp;&amp; (
+              &lt;div
+                style={{
+                  position: <span <span class="k">class</span>="s">"absolute"</span>,
+                  right: <span class="n">26</span>,
+                  top: <span class="n">26</span>,
+                  width: <span class="n">52</span>,
+                  height: <span class="n">52</span>,
+                  borderRadius: <span class="n">26</span>,
+                  background: COLORS.teal,
+                  scale: interpolate(frame, [<span class="n">26</span>, <span class="n">34</span>], [<span class="n">0</span>, <span class="n">1</span>], {
+                    ...clamp,
+                    easing: Easing.bezier(<span class="n">0.34</span>, <span class="n">1.56</span>, <span class="n">0.64</span>, <span class="n">1</span>),
+                    output: <span <span class="k">class</span>="s">"perceptual-scale"</span>,
+                  }),
+                }}
+              &gt;
+                &lt;svg width=<span <span class="k">class</span>="s">"<span class="n">52</span>"</span> height=<span <span class="k">class</span>="s">"<span class="n">52</span>"</span> viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">52</span> <span class="n">52</span>"</span> fill=<span <span class="k">class</span>="s">"none"</span>&gt;
+                  &lt;path
+                    d=<span <span class="k">class</span>="s">"M15 27l8 <span class="n">8</span> <span class="n">15</span>-<span class="n">17</span>"</span>
+                    stroke=<span <span class="k">class</span>="s">"white"</span>
+                    strokeWidth=<span <span class="k">class</span>="s">"<span class="n">5</span>"</span>
+                    strokeLinecap=<span <span class="k">class</span>="s">"round"</span>
+                    strokeLinejoin=<span <span class="k">class</span>="s">"round"</span>
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/div&gt;
+            )}
+          &lt;/Interactive.Div&gt;
+        ))}
+      &lt;/div&gt;
+    )}
+  &lt;/Beat&gt;
+);
+
+<span class="k">export</span> <span class="k">const</span> ClinicBeat: React.FC = () =&gt; {
+  <span class="k">const</span> lanes = [
+    { n: <span <span class="k">class</span>="s">"Okafor"</span>, bars: [[<span class="n">0</span>, <span class="n">0.35</span>], [<span class="n">0.45</span>, <span class="n">0.8</span>]] },
+    { n: <span <span class="k">class</span>="s">"Lindqvist"</span>, bars: [[<span class="n">0.1</span>, <span class="n">0.5</span>], [<span class="n">0.6</span>, <span class="n">0.9</span>]] },
+    { n: <span <span class="k">class</span>="s">"Reyes"</span>, bars: [[<span class="n">0</span>, <span class="n">0.25</span>], [<span class="n">0.3</span>, <span class="n">0.7</span>]] },
+  ];
+  <span class="k">return</span> (
+    &lt;Beat index=<span <span class="k">class</span>="s">"<span class="n">03</span>"</span> headline={<span <span class="k">class</span>="s">"The whole\nclinic"</span>} support=<span <span class="k">class</span>="s">"Every therapist, one view."</span>&gt;
+      {({ frame, fps }) =&gt; (
+        &lt;Interactive.Div
+          name=<span <span class="k">class</span>="s">"Schedule card"</span>
+          style={{
+            ...card,
+            width: <span class="n">400</span>,
+            padding: <span class="n">28</span>,
+            opacity: interpolate(frame, [<span class="n">4</span>, <span class="n">0.6</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+            translate: interpolate(frame, [<span class="n">4</span>, <span class="n">1</span> * fps], [<span <span class="k">class</span>="s">"60px 0px"</span>, <span <span class="k">class</span>="s">"0px 0px"</span>], {
+              ...clamp,
+              easing: ease,
+            }),
+          }}
+        &gt;
+          {lanes.map((l, li) =&gt; (
+            &lt;div key={l.n} style={{ marginBottom: li &lt; <span class="n">2</span> ? <span class="n">26</span> : <span class="n">0</span> }}&gt;
+              &lt;div style={{ fontSize: <span class="n">24</span>, fontWeight: <span class="n">600</span>, color: COLORS.muted, marginBottom: <span class="n">10</span> }}&gt;
+                {l.n}
+              &lt;/div&gt;
+              &lt;div style={{ position: <span <span class="k">class</span>="s">"relative"</span>, height: <span class="n">48</span>, background: <span <span class="k">class</span>="s">"#EEF4F5"</span>, borderRadius: <span class="n">14</span> }}&gt;
+                {l.bars.map(([a, b], bi) =&gt; {
+                  <span class="k">const</span> start = <span class="n">10</span> + li * <span class="n">4</span> + bi * <span class="n">5</span>;
+                  <span class="k">const</span> grow = interpolate(frame, [start, start + <span class="n">14</span>], [<span class="n">0</span>, <span class="n">1</span>], {
+                    ...clamp,
+                    easing: ease,
+                  });
+                  <span class="k">return</span> (
+                    &lt;div
+                      key={bi}
+                      style={{
+                        position: <span <span class="k">class</span>="s">"absolute"</span>,
+                        top: <span class="n">6</span>,
+                        bottom: <span class="n">6</span>,
+                        left: <span <span class="k">class</span>="s">`${a * <span class="n">100</span>}%`</span>,
+                        width: <span <span class="k">class</span>="s">`${(b - a) * <span class="n">100</span> * grow}%`</span>,
+                        borderRadius: <span class="n">9</span>,
+                        background: bi === <span class="n">0</span> ? COLORS.teal : COLORS.coral,
+                      }}
+                    /&gt;
+                  );
+                })}
+              &lt;/div&gt;
+            &lt;/div&gt;
+          ))}
+        &lt;/Interactive.Div&gt;
+      )}
+    &lt;/Beat&gt;
+  );
+};
+
+<span class="k">export</span> <span class="k">const</span> EndCard: React.FC = () =&gt; {
+  <span class="k">const</span> frame = useCurrentFrame();
+  <span class="k">const</span> { fps } = useVideoConfig();
+  <span class="k">return</span> (
+    &lt;AbsoluteFill
+      style={{
+        background: <span <span class="k">class</span>="s">`linear-gradient(135deg, ${COLORS.tealDark}, ${COLORS.navy})`</span>,
+        fontFamily,
+        color: <span <span class="k">class</span>="s">"white"</span>,
+        alignItems: <span <span class="k">class</span>="s">"center"</span>,
+        justifyContent: <span <span class="k">class</span>="s">"center"</span>,
+      }}
+    &gt;
+      &lt;Interactive.Div
+        name=<span <span class="k">class</span>="s">"End logo"</span>
+        style={{
+          opacity: interpolate(frame, [<span class="n">0</span>, <span class="n">12</span>], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+          scale: interpolate(frame, [<span class="n">0</span>, <span class="n">0.8</span> * fps], [<span class="n">0.7</span>, <span class="n">1</span>], {
+            ...clamp,
+            easing: ease,
+            output: <span <span class="k">class</span>="s">"perceptual-scale"</span>,
+          }),
+        }}
+      &gt;
+        &lt;Logo size={<span class="n">88</span>} color=<span <span class="k">class</span>="s">"#7FE0E0"</span> /&gt;
+      &lt;/Interactive.Div&gt;
+      &lt;Interactive.Div
+        name=<span <span class="k">class</span>="s">"End title"</span>
+        style={{
+          fontSize: HEADLINE,
+          fontWeight: <span class="n">800</span>,
+          letterSpacing: -<span class="n">3.5</span>,
+          marginTop: <span class="n">6</span>,
+          opacity: interpolate(frame, [<span class="n">4</span>, <span class="n">0.6</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+          translate: interpolate(frame, [<span class="n">4</span>, <span class="n">0.9</span> * fps], [<span <span class="k">class</span>="s">"0px 30px"</span>, <span <span class="k">class</span>="s">"0px 0px"</span>], {
+            ...clamp,
+            easing: ease,
+          }),
+        }}
+      &gt;
+        Try Tidewater free
+      &lt;/Interactive.Div&gt;
+      &lt;Interactive.Div
+        name=<span <span class="k">class</span>="s">"End URL"</span>
+        style={{
+          fontSize: SUPPORT,
+          fontWeight: <span class="n">500</span>,
+          color: <span <span class="k">class</span>="s">"#BFE4E4"</span>,
+          marginTop: <span class="n">10</span>,
+          opacity: interpolate(frame, [<span class="n">14</span>, <span class="n">0.9</span> * fps], [<span class="n">0</span>, <span class="n">1</span>], clamp),
+        }}
+      &gt;
+        tidewater.app
+      &lt;/Interactive.Div&gt;
+    &lt;/AbsoluteFill&gt;
+  );
+};
+</pre></details>
+</main>
+
+</body></html>

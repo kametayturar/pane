@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-1-invalid.png" alt="Invalid email: inline error only on the email field (DPR 2 capture)"><figcaption>Invalid email: inline error only on the email field (DPR 2 capture)</figcaption></figure><figure><img src="browser-1-valid.png" alt="Valid data: status banner"><figcaption>Valid data: status banner</figcaption></figure></div>
+<h2>Result</h2><div class="result">Signup flow tested by driving a real Google Chrome (dedicated --user-data-dir in the scratch folder, not the user's profile) through the chrome-cdp skill's CLI, against the fixture on http://127.0.0.1:7131/#signup.
+
+Invalid email (dana@clinic, valid name and password): submit is rejected, "Enter a valid work email" shows under the email field, name and password errors stay empty, the result area stays empty. Valid data (dana@clinic.example, 4–10 therapists): the error clears and a role=status banner reads "Account created for dana@clinic.example. Check your inbox." The resource-timing list (cdp net) is empty after the submit, i.e. the "success" never touches a server – it is purely client-side.
+
+What the skill's tooling taught me: cdp click runs element.click() through eval, which does NOT focus inputs, so my first attempt (click + type) typed into nothing and all three validation errors appeared (step 3 shows it). Real focus needed clickxy at element-centre coordinates (from getBoundingClientRect) and then type, which is the flow the skill's Coordinates section describes.
+
+Environment swap: the skill expects Chrome's DevToolsActivePort file, which Chrome only writes when remote debugging is enabled from chrome://inspect (or port 0). I launched Chrome with --remote-debugging-port=7132 (my assigned range) and wrote the two-line DevToolsActivePort file in the dedicated profile myself from /json/version, then pointed CDP_PORT_FILE at it. No "Allow debugging" modal appeared. Chrome ran headed but off-screen (window position 2000,0).</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Dedicated profile, never the user's Chrome. With a fixed port Chrome does not write DevToolsActivePort.</div><div class="cmd">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --user-data-dir=/tmp/claude-501/lab2/chrome-cdp/profile --remote-debugging-port=7132 --no-first-run --window-position=2000,0 about:blank</div><div class="out">DevTools listening on ws://127.0.0.1:7132/devtools/browser/…</div></div><div class="step"><div class="note"># Hand-written port file (the swap described above); the skill's CLI then finds the browser.</div><div class="cmd">printf '7132\n/devtools/browser/&lt;id from /json/version&gt;\n' &gt; profile/DevToolsActivePort; export CDP_PORT_FILE=…/profile/DevToolsActivePort; scripts/cdp.mjs list</div><div class="out">8ABD7225  about:blank                                             about:blank</div></div><div class="step"><div class="note"># click does el.click() (no focus), so type inserted into nothing: all three errors fired.</div><div class="cmd">nav, click + type (first attempt)</div><div class="out">$ cdp nav 8ABD7225 http://127.0.0.1:7131/#signup
+$ cdp click 8ABD7225 #name
+Clicked &lt;INPUT&gt; ""
+$ cdp type 8ABD7225 Dana Okafor
+Typed 11 characters
+$ cdp click 8ABD7225 #email
+Clicked &lt;INPUT&gt; ""
+$ cdp type 8ABD7225 dana@clinic
+Typed 11 characters
+$ cdp click 8ABD7225 #pw
+Clicked &lt;INPUT&gt; ""
+$ cdp type 8ABD7225 hunter2hunter2
+Typed 14 characters
+$ cdp click 8ABD7225 button[type=submit]
+Clicked &lt;BUTTON&gt; "Create account"
+$ cdp eval 8ABD7225 JSON.stringify({emailErr:document.getElementById("e-email").textContent, nameErr:document.getElementById("e-name").textContent, pwErr:document.getElementById("e-pw").textContent, banner:document.getElementById("result").innerHTML})
+{"emailErr":"Enter a valid work email","nameErr":"Enter your name","pwErr":"Use at least 8 characters","banner":""}</div></div><div class="step"><div class="note"># Real mouse click at CSS coordinates focuses the field; values landed, only the email error remains.</div><div class="cmd">fillxy: eval centre of field -&gt; clickxy -&gt; type (for #name, #email, #pw), then click submit, eval, shot</div><div class="out">$ cdp nav 8ABD7225 http://127.0.0.1:7131/#book
+Navigated to http://127.0.0.1:7131/#book
+
+$ cdp nav 8ABD7225 http://127.0.0.1:7131/#signup
+Navigated to http://127.0.0.1:7131/#signup
+
+$ cdp eval 8ABD7225 location.reload()
+
+$ cdp eval (centre of #name) -&gt; 640 253
+$ cdp clickxy 8ABD7225 640 253
+Clicked at CSS (640, 253)
+
+$ cdp type 8ABD7225 Dana Okafor
+Typed 11 characters
+
+$ cdp eval (centre of #email) -&gt; 640 356
+$ cdp clickxy 8ABD7225 640 356
+Clicked at CSS (640, 356)
+
+$ cdp type 8ABD7225 dana@clinic
+Typed 11 characters
+
+$ cdp eval (centre of #pw) -&gt; 640 459
+$ cdp clickxy 8ABD7225 640 459
+Clicked at CSS (640, 459)
+
+$ cdp type 8ABD7225 hunter2hunter2
+Typed 14 characters
+
+$ cdp click 8ABD7225 button[type=submit]
+Clicked &lt;BUTTON&gt; "Create account"
+
+$ cdp eval 8ABD7225 JSON.stringify({name:document.getElementById("name").value,email:document.getElementById("email").value,emailErr:document.getElementById("e-email").textContent, nameErr:document.getElementById("e-name").textContent, pwErr:document.getElementById("e-pw").textContent, banner:document.getElementById("result").innerHTML})
+{"name":"Dana Okafor","email":"dana@clinic","emailErr":"Enter a valid work email","nameErr":"","pwErr":"","banner":""}
+
+$ cdp shot 8ABD7225 /Users/kametayturar/agentic-ui/ai-answer/public/skill-lab/chrome-cdp/browser-1-invalid.png
+/Users/kametayturar/agentic-ui/ai-answer/public/skill-lab/chrome-cdp/browser-1-invalid.png
+Screenshot saved (DPR 2).</div></div><div class="step"><div class="note"># cdp net prints nothing: no network request was made for the signup.</div><div class="cmd">select email, type valid address, set size, submit, eval, net, shot</div><div class="out">head: illegal line count -- 0
+$ cdp eval 8ABD7225 document.getElementById("email").select()
+
+$ cdp type 8ABD7225 dana@clinic.example
+Typed 19 characters
+
+$ cdp eval 8ABD7225 document.getElementById("size").value="4–10 therapists"
+4–10 therapists
+
+$ cdp click 8ABD7225 button[type=submit]
+Clicked &lt;BUTTON&gt; "Create account"
+
+$ cdp eval 8ABD7225 JSON.stringify({email:document.getElementById("email").value,emailErr:document.getElementById("e-email").textContent,banner:document.getElementById("result").textContent,role:document.querySelector("#result .ok").getAttribute("role")})
+{"email":"dana@clinic.example","emailErr":"","banner":"Account created for dana@clinic.example. Check your inbox.","role":"status"}
+
+$ cdp net 8ABD7225
+
+$ cdp shot 8ABD7225 /Users/kametayturar/agentic-ui/ai-answer/public/skill-lab/chrome-cdp/browser-1-valid.png
+/Users/kametayturar/agentic-ui/ai-answer/public/skill-lab/chrome-cdp/browser-1-valid.png
+Screenshot saved (DPR 2).</div></div></div>
+<h2>Files</h2><details open><summary>fillxy.sh (helper around the skill's eval/clickxy/type)</summary><pre><span class="c">#!/bin/bash</span>
+<span class="c"># fillxy.sh &lt;target&gt; &lt;selector&gt; &lt;text&gt;: real mouse click at element centre (clickxy), then type</span>
+T=$<span class="n">1</span>; SEL=$<span class="n">2</span>; TXT=$<span class="n">3</span>
+XY=$(/tmp/claude-<span class="n">501</span>/lab2/chrome-cdp/cdp.sh eval $T <span <span class="k">class</span>="s">"(()=&gt;{<span class="k">const</span> r=document.querySelector('$SEL').getBoundingClientRect();<span class="k">return</span> Math.round(r.x+r.width/<span class="n">2</span>)+' '+Math.round(r.y+r.height/<span class="n">2</span>)})()"</span>)
+echo <span <span class="k">class</span>="s">"\$ cdp eval (centre <span class="k">of</span> $SEL) -&gt; $XY"</span>
+/tmp/claude-<span class="n">501</span>/lab2/chrome-cdp/runlog.sh clickxy $T $XY
+/tmp/claude-<span class="n">501</span>/lab2/chrome-cdp/runlog.sh <span class="k">type</span> $T <span <span class="k">class</span>="s">"$TXT"</span>
+</pre></details>
+</main>
+
+</body></html>

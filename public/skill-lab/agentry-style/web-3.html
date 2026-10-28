@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+
+.tw{
+  --tw-ink:#000; --tw-surface:#fff; --tw-bg:#fafaf9; --tw-accent:#0060e2;
+  --tw-t1:color-mix(in oklab,var(--tw-ink) 88%,transparent);
+  --tw-t2:color-mix(in oklab,var(--tw-ink) 61%,transparent);
+  --tw-t3:color-mix(in oklab,var(--tw-ink) 45%,transparent);
+  --tw-t4:color-mix(in oklab,var(--tw-ink) 27%,transparent);
+  --tw-fill:color-mix(in oklab,var(--tw-ink) 6%,transparent);
+  --tw-line:color-mix(in oklab,var(--tw-ink) 6%,transparent);
+  --tw-green:#1a8f4c; --tw-amber:#b7791f;
+  --tw-shadow:0 0 0 .5px rgb(0 0 0/.06),0 1px 1px -1px rgb(0 0 0/.1),0 1px 2px 0 rgb(0 0 0/.05);
+  --tw-shadow-lg:0 0 0 .5px rgb(0 0 0/.06),0 2px 4px -2px rgb(0 0 0/.08),0 12px 32px -8px rgb(0 0 0/.1);
+  --tw-ease:cubic-bezier(.22,1,.36,1);
+  font:13px/20px Inter,ui-sans-serif,system-ui,sans-serif; color:var(--tw-t1);
+  background:var(--tw-bg); min-height:100vh; -webkit-font-smoothing:antialiased;
+}
+@media (prefers-color-scheme:dark){
+  .tw:not([data-theme="light"]){--tw-ink:#fff;--tw-surface:#1c1c1e;--tw-bg:#111112;--tw-accent:#4d8dff;--tw-green:#4cc47f;--tw-amber:#e0a84a;
+    --tw-shadow:0 0 0 .5px rgb(255 255 255/.1),0 1px 2px 0 rgb(0 0 0/.4);--tw-shadow-lg:0 0 0 .5px rgb(255 255 255/.1),0 12px 32px -8px rgb(0 0 0/.6);}
+}
+.tw[data-theme="dark"]{--tw-ink:#fff;--tw-surface:#1c1c1e;--tw-bg:#111112;--tw-accent:#4d8dff;--tw-green:#4cc47f;--tw-amber:#e0a84a;
+  --tw-shadow:0 0 0 .5px rgb(255 255 255/.1),0 1px 2px 0 rgb(0 0 0/.4);--tw-shadow-lg:0 0 0 .5px rgb(255 255 255/.1),0 12px 32px -8px rgb(0 0 0/.6);}
+.tw *{box-sizing:border-box;margin:0}
+.tw a{text-decoration:none}
+.tw a:not(.tw-btn){color:inherit}
+.tw :focus-visible{outline:2px solid var(--tw-accent);outline-offset:2px;border-radius:6px}
+
+/* motion */
+@keyframes tw-in{from{opacity:0;transform:translateY(4px);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+.tw .in{animation:tw-in .56s var(--tw-ease) backwards;animation-delay:calc(var(--i,0)*70ms)}
+
+.tw-wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.tw-nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.tw-logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:var(--tw-t1)}
+.tw-logo i{width:18px;height:18px;border-radius:6px;background:var(--tw-ink);position:relative;overflow:hidden;display:block}
+.tw-logo i::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:var(--tw-bg);opacity:.9;border-radius:50% 50% 0 0/100% 100% 0 0}
+.tw-links{display:flex;gap:24px;color:var(--tw-t2)}
+.tw-links a{transition:color .2s var(--tw-ease)}.tw-links a:hover{color:var(--tw-t1)}
+.tw .tw-btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:8px;font-weight:500;font-size:13px;background:var(--tw-ink);color:var(--tw-surface);box-shadow:var(--tw-shadow);transition:transform .16s var(--tw-ease),opacity .2s;cursor:pointer;border:0}
+.tw-btn:hover{opacity:.88}.tw-btn:active{transform:scale(.97)}
+.tw-btn.lg{height:40px;padding:0 16px;font-size:14px;border-radius:10px}
+.tw .tw-btn.ghost{background:var(--tw-surface);color:var(--tw-t1)}
+
+
+.tw-page{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.tw-side{position:relative;overflow:hidden;padding:48px;display:flex;flex-direction:column;justify-content:space-between;background:var(--tw-surface);box-shadow:inset -.5px 0 0 var(--tw-line)}
+.tw-side canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;-webkit-mask-image:radial-gradient(110% 90% at 15% 100%,#000 15%,transparent 75%);mask-image:radial-gradient(110% 90% at 15% 100%,#000 15%,transparent 75%)}
+.tw-side>*{position:relative}
+.tw-quote{max-width:380px}
+.tw-quote h2{font:400 clamp(30px,3vw,40px)/1.08 "Instrument Serif",Georgia,serif;letter-spacing:-.015em;color:var(--tw-t1);text-wrap:balance}
+.tw-quote p{margin-top:12px;color:var(--tw-t2);font-size:14px;line-height:22px}
+.tw-main{display:grid;place-items:center;padding:48px 24px}
+.tw-form{width:100%;max-width:380px}
+.tw-form h1{font-size:20px;line-height:28px;font-weight:500;color:var(--tw-t1);letter-spacing:-.01em}
+.tw-sub{color:var(--tw-t2);margin:4px 0 28px;font-size:13.5px}
+.tw-field{margin-bottom:16px}
+.tw-field label{display:block;font-weight:500;font-size:12.5px;color:var(--tw-t1);margin-bottom:6px}
+.tw-in{position:relative}
+.tw-in input,.tw-in select{width:100%;height:38px;padding:0 12px;border-radius:10px;border:0;background:var(--tw-surface);color:var(--tw-t1);font:13.5px Inter,sans-serif;box-shadow:var(--tw-shadow),inset 0 0 0 .5px color-mix(in oklab,var(--tw-ink) 14%,transparent);outline:none;transition:box-shadow .25s var(--tw-ease);appearance:none;-webkit-appearance:none}
+.tw-in input::placeholder{color:var(--tw-t4)}
+.tw-in input:focus,.tw-in select:focus{box-shadow:0 0 0 3px color-mix(in oklab,var(--tw-accent) 22%,transparent),inset 0 0 0 1px var(--tw-accent)}
+.tw-field.err .tw-in input{box-shadow:0 0 0 3px color-mix(in oklab,#d92d20 14%,transparent),inset 0 0 0 1px #d92d20}
+.tw-field.ok .tw-in input{box-shadow:var(--tw-shadow),inset 0 0 0 .5px color-mix(in oklab,var(--tw-ink) 14%,transparent)}
+.tw-in.sel::after{content:"";position:absolute;right:14px;top:15px;width:6px;height:6px;border-right:1.5px solid var(--tw-t3);border-bottom:1.5px solid var(--tw-t3);transform:rotate(45deg);pointer-events:none}
+.tw-in .eye{position:absolute;right:4px;top:4px;height:30px;padding:0 8px;border:0;background:none;color:var(--tw-t3);font:500 12px Inter,sans-serif;border-radius:6px;cursor:pointer}
+.tw-in .eye:hover{color:var(--tw-t1);background:var(--tw-fill)}
+.tw-msg{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--tw-ease)}
+.tw-msg>div{overflow:hidden}
+.tw-msg p{padding-top:6px;font-size:12.5px;line-height:18px;color:var(--tw-t3);opacity:1}
+.tw-field.err .tw-msg{grid-template-rows:1fr}
+.tw-field.err .tw-msg p{color:#d92d20;animation:tw-in .4s var(--tw-ease) backwards}
+.tw-help{font-size:12.5px;color:var(--tw-t3);padding-top:6px}
+.tw-field.err .tw-help{display:none}
+.tw-meter{display:flex;gap:4px;margin-top:8px}
+.tw-meter i{flex:1;height:3px;border-radius:2px;background:var(--tw-fill);transition:background .3s var(--tw-ease)}
+.tw-meter i.on{background:var(--tw-accent)}
+.tw-check{display:flex;gap:10px;align-items:flex-start;margin:4px 0 20px;color:var(--tw-t2);font-size:13px;line-height:20px}
+.tw-check input{appearance:none;-webkit-appearance:none;flex:none;width:16px;height:16px;margin-top:2px;border-radius:5px;background:var(--tw-surface);box-shadow:var(--tw-shadow),inset 0 0 0 .5px color-mix(in oklab,var(--tw-ink) 20%,transparent);cursor:pointer;display:grid;place-items:center;transition:background .2s var(--tw-ease)}
+.tw-check input:checked{background:var(--tw-accent);box-shadow:none}
+.tw-check input:checked::after{content:"";width:8px;height:4px;border-left:1.6px solid #fff;border-bottom:1.6px solid #fff;transform:rotate(-45deg) translate(0,-1px)}
+.tw-check a{color:var(--tw-t1);text-decoration:underline;text-decoration-color:var(--tw-t4);text-underline-offset:2px}
+.tw-check.err{color:#d92d20}
+.tw .tw-submit{width:100%;justify-content:center;height:40px;border-radius:10px;font-size:14px;position:relative}
+.tw .tw-submit.busy{opacity:.7;pointer-events:none}
+.tw-done{display:none;text-align:center}
+.tw-done.show{display:block;animation:tw-in .56s var(--tw-ease)}
+.tw-done i{width:36px;height:36px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;background:color-mix(in oklab,var(--tw-green) 12%,transparent);color:var(--tw-green);font-style:normal;font-size:16px}
+.tw-foot2{margin-top:20px;text-align:center;color:var(--tw-t3);font-size:13px}
+.tw-foot2 a{color:var(--tw-t1);font-weight:500}
+@media (max-width:860px){.tw-page{grid-template-columns:1fr}.tw-side{display:none}.tw-main{padding:32px 16px;place-items:start center}}
+</style>
+</head>
+<body style="margin:0">
+<div class="tw"><div class="tw-page">
+ <aside class="tw-side" aria-hidden="true">
+  <canvas id="dots"></canvas>
+  <a class="tw-logo" href="#"><i></i>Tidewater</a>
+  <div class="tw-quote"><h2>Fewer gaps in the day. Fewer calls at the desk.</h2><p>Set up your clinic in about ten minutes. Import patients from a CSV and Tidewater starts reminding them tonight.</p></div>
+ </aside>
+ <main class="tw-main"><div class="tw-form in">
+  <form id="f" novalidate>
+   <h1>Create your account</h1>
+   <p class="tw-sub">Free for 30 days. No card needed.</p>
+   <div class="tw-field" data-f="name"><label for="name">Full name</label><div class="tw-in"><input id="name" name="name" autocomplete="name" placeholder="Jordan Ellis" aria-describedby="name-m"></div><div class="tw-msg" id="name-m"><div><p></p></div></div></div>
+   <div class="tw-field" data-f="email"><label for="email">Work email</label><div class="tw-in"><input id="email" name="email" type="email" autocomplete="email" placeholder="jordan@northside-physio.com" aria-describedby="email-m" value="jordan@northside"></div><div class="tw-msg" id="email-m"><div><p></p></div></div></div>
+   <div class="tw-field" data-f="pw"><label for="pw">Password</label><div class="tw-in"><input id="pw" name="pw" type="password" autocomplete="new-password" placeholder="At least 10 characters" aria-describedby="pw-m pw-h" value="tide2"><button class="eye" type="button" aria-label="Show password" aria-pressed="false">Show</button></div>
+    <div class="tw-meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="tw-msg" id="pw-m"><div><p></p></div></div></div>
+   <div class="tw-field" data-f="size"><label for="size">Clinic size</label><div class="tw-in sel"><select id="size" name="size"><option value="">Select your team size</option><option>Just me</option><option>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 or more therapists</option></select></div><div class="tw-msg"><div><p></p></div></div></div>
+   <label class="tw-check" id="terms-w"><input type="checkbox" id="terms"><span>I accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label>
+   <button class="tw-btn tw-submit" type="submit">Create account</button>
+   <p class="tw-foot2">Already have an account? <a href="#">Sign in</a></p>
+  </form>
+  <div class="tw-done" id="done" role="status"><i>✓</i><h1>Check your inbox</h1><p class="tw-sub" style="margin-bottom:0">We sent a confirmation link to <b id="sent" style="color:var(--tw-t1);font-weight:500"></b>.</p></div>
+ </div></main>
+</div></div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),f=$('#f');
+const rules={
+ name:v=>v.trim().length<2?'Enter your full name.':'',
+ email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?'':'Enter a valid work email, like name@clinic.com.',
+ pw:v=>v.length<10?`Use at least 10 characters. You have ${v.length}.`:'',
+ size:v=>v?'':'Choose your clinic size.'
+};
+const inputs={name:$('#name'),email:$('#email'),pw:$('#pw'),size:$('#size')};
+function show(k,validate=true){
+  const w=document.querySelector(`[data-f=${k}]`),m=rules[k](inputs[k].value);
+  w.classList.toggle('err',!!m);w.querySelector('.tw-msg p').textContent=m;
+  inputs[k].setAttribute('aria-invalid',m?'true':'false');return !m;
+}
+function meter(){const v=inputs.pw.value;let s=0;if(v.length>=10)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/\d/.test(v))s++;if(/[^A-Za-z0-9]/.test(v)||v.length>=14)s++;
+ document.querySelectorAll('.tw-meter i').forEach((i,n)=>i.classList.toggle('on',n<s&&v.length>0))}
+for(const k in inputs){inputs[k].addEventListener('blur',()=>show(k));inputs[k].addEventListener('input',()=>{if(document.querySelector(`[data-f=${k}]`).classList.contains('err'))show(k);if(k==='pw')meter()})}
+$('.eye').addEventListener('click',e=>{const b=e.currentTarget,on=inputs.pw.type==='password';inputs.pw.type=on?'text':'password';b.textContent=on?'Hide':'Show';b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Hide password':'Show password')});
+$('#terms').addEventListener('change',()=>$('#terms-w').classList.remove('err'));
+f.addEventListener('submit',e=>{e.preventDefault();let ok=true,first=null;
+ for(const k in inputs){const r=show(k);if(!r&&!first)first=inputs[k];ok=ok&&r}
+ if(!$('#terms').checked){$('#terms-w').classList.add('err');ok=false;first=first||$('#terms')}
+ if(!ok){first.focus();return}
+ f.style.display='none';$('#sent').textContent=inputs.email.value;$('#done').classList.add('show');
+});
+meter();
+// pre-filled invalid values so the validation states are visible on load
+show('email');show('pw');
+
+/* dither */
+const cv=$('#dots'),cx=cv.getContext('2d'),reduce=matchMedia('(prefers-reduced-motion: reduce)');
+const bay=(x,y)=>{let d=0;for(let k=0;k<3;k++){const bx=(x>>k)&1,by=(y>>k)&1;d=d*4+((bx^by)+by*2)}return d/64};
+const hash=(x,y)=>{const h=Math.sin(x*127.1+y*311.7)*43758.5453;return h-Math.floor(h)};
+const sm=t=>t*t*(3-2*t),vn=(x,y)=>{const xi=Math.floor(x),yi=Math.floor(y),xf=sm(x-xi),yf=sm(y-yi),a=hash(xi,yi),b=hash(xi+1,yi),c=hash(xi,yi+1),d=hash(xi+1,yi+1);return a+(b-a)*xf+(c-a)*yf+(a-b-c+d)*xf*yf};
+let W,H,dpr,vis=true;const CELL=7;
+function draw(t){const acc=getComputedStyle(document.querySelector('.tw')).getPropertyValue('--tw-accent').trim();cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);cx.fillStyle=acc;
+ for(let j=0;j<H/CELL;j++)for(let i=0;i<W/CELL;i++){let v=vn(i*.05+t*.00004,j*.06-t*.00003)*.7+vn(i*.11+9,j*.12)*.3;v*=.6+.6*(j/(H/CELL));
+  if(v>bay(i,j)*.9+.12){const s=(v-.42)*1.6;cx.globalAlpha=Math.min(.7,.18+s*.5);const r=Math.max(.7,Math.min(2.2,s*3));cx.fillRect(i*CELL,j*CELL,r,r)}}}
+function size(){const r=cv.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;draw(0)}
+new ResizeObserver(size).observe(cv);new IntersectionObserver(e=>vis=e[0].isIntersecting).observe(cv);
+if(!reduce.matches)(function l(n){if(vis&&!document.hidden)draw(n);requestAnimationFrame(l)})(0);
+})();
+</script></body></html>

@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Tidewater – scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ---------- shadcn/ui tokens (OKLCH, neutral base; --primary mapped to Tidewater teal) ---------- */
+:root {
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.437 0.078 188.216);
+  --primary-foreground: oklch(0.984 0.014 180.72);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.704 0.14 182.503);
+  --chart-1: oklch(0.777 0.152 181.912);
+  --chart-2: oklch(0.704 0.14 182.503);
+  --chart-3: oklch(0.6 0.118 184.704);
+  --chart-4: oklch(0.511 0.096 186.391);
+  --chart-5: oklch(0.437 0.078 188.216);
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  color-scheme: light;
+}
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.704 0.14 182.503);
+  --primary-foreground: oklch(0.277 0.046 192.524);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  color-scheme: dark;
+}
+* { border-color: var(--border); box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,p { margin: 0; }
+a { color: inherit; }
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0 }
+
+/* ---------- Button ---------- */
+[data-slot="button"] { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; white-space:nowrap; border-radius:var(--radius-md); font:inherit; font-size:.875rem; font-weight:500; line-height:1.43; height:2.25rem; padding:.5rem 1rem; border:1px solid transparent; background:transparent; color:inherit; cursor:pointer; text-decoration:none; outline:none; transition:all .15s; flex-shrink:0; }
+[data-slot="button"] svg { width:1rem; height:1rem; flex-shrink:0; pointer-events:none; }
+[data-slot="button"]:focus-visible { border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklab,var(--ring) 50%,transparent); }
+[data-slot="button"][disabled] { pointer-events:none; opacity:.5; }
+[data-slot="button"][data-variant="default"] { background:var(--primary); color:var(--primary-foreground); box-shadow:0 1px 2px 0 rgb(0 0 0/.05); }
+[data-slot="button"][data-variant="default"]:hover { background:color-mix(in oklab,var(--primary) 90%,transparent); }
+[data-slot="button"][data-variant="outline"] { background:var(--background); border-color:var(--border); box-shadow:0 1px 2px 0 rgb(0 0 0/.05); }
+[data-slot="button"][data-variant="outline"]:hover { background:var(--accent); color:var(--accent-foreground); }
+.dark [data-slot="button"][data-variant="outline"] { background:color-mix(in oklab,var(--input) 30%,transparent); border-color:var(--input); }
+.dark [data-slot="button"][data-variant="outline"]:hover { background:color-mix(in oklab,var(--input) 50%,transparent); }
+[data-slot="button"][data-variant="secondary"] { background:var(--secondary); color:var(--secondary-foreground); }
+[data-slot="button"][data-variant="secondary"]:hover { background:color-mix(in oklab,var(--secondary) 80%,transparent); }
+[data-slot="button"][data-variant="ghost"] { color:var(--foreground); }
+[data-slot="button"][data-variant="ghost"]:hover { background:var(--accent); color:var(--accent-foreground); }
+[data-slot="button"][data-variant="link"] { color:var(--primary); height:auto; padding:0; text-underline-offset:4px; }
+[data-slot="button"][data-variant="link"]:hover { text-decoration:underline; }
+[data-slot="button"][data-size="sm"] { height:2rem; gap:.375rem; padding:.5rem .75rem; }
+[data-slot="button"][data-size="lg"] { height:2.5rem; padding:.5rem 1.5rem; }
+[data-slot="button"][data-size="icon"] { width:2.25rem; padding:0; }
+[data-slot="button"] [data-icon="inline-start"] { margin-left:-.125rem; }
+[data-slot="button"] [data-icon="inline-end"] { margin-right:-.125rem; }
+
+/* ---------- Card ---------- */
+[data-slot="card"] { display:flex; flex-direction:column; gap:1.5rem; border-radius:var(--radius-xl); border:1px solid var(--border); background:var(--card); color:var(--card-foreground); padding-block:1.5rem; box-shadow:0 1px 3px 0 rgb(0 0 0/.1),0 1px 2px -1px rgb(0 0 0/.1); }
+[data-slot="card-header"] { display:grid; grid-auto-rows:min-content; grid-template-rows:auto auto; align-items:start; gap:.5rem; padding-inline:1.5rem; }
+[data-slot="card-header"]:has([data-slot="card-action"]) { grid-template-columns:1fr auto; }
+[data-slot="card-title"] { font-weight:600; line-height:1; }
+[data-slot="card-description"] { color:var(--muted-foreground); font-size:.875rem; }
+[data-slot="card-action"] { grid-column-start:2; grid-row:span 2 / span 2; grid-row-start:1; align-self:start; justify-self:end; }
+[data-slot="card-content"] { padding-inline:1.5rem; }
+[data-slot="card-footer"] { display:flex; align-items:center; padding-inline:1.5rem; }
+
+/* ---------- Badge ---------- */
+[data-slot="badge"] { display:inline-flex; align-items:center; justify-content:center; gap:.25rem; width:fit-content; white-space:nowrap; flex-shrink:0; overflow:hidden; border-radius:var(--radius-md); border:1px solid transparent; padding:.125rem .5rem; font-size:.75rem; font-weight:500; line-height:1.33; }
+[data-slot="badge"] svg { width:.75rem; height:.75rem; pointer-events:none; }
+[data-slot="badge"][data-variant="default"] { background:var(--primary); color:var(--primary-foreground); }
+[data-slot="badge"][data-variant="secondary"] { background:var(--secondary); color:var(--secondary-foreground); }
+[data-slot="badge"][data-variant="outline"] { border-color:var(--border); color:var(--foreground); }
+
+/* ---------- Input / Select / Checkbox ---------- */
+[data-slot="input"], [data-slot="native-select"] { display:block; width:100%; min-width:0; height:2.25rem; border-radius:var(--radius-md); border:1px solid var(--input); background:transparent; padding:.25rem .75rem; font:inherit; font-size:.875rem; color:var(--foreground); box-shadow:0 1px 2px 0 rgb(0 0 0/.05); outline:none; transition:color .15s,box-shadow .15s; }
+.dark [data-slot="input"], .dark [data-slot="native-select"] { background:color-mix(in oklab,var(--input) 30%,transparent); }
+[data-slot="input"]::placeholder { color:var(--muted-foreground); }
+[data-slot="input"]:focus-visible, [data-slot="native-select"]:focus-visible { border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklab,var(--ring) 50%,transparent); }
+[data-slot="input"][aria-invalid="true"], [data-slot="native-select"][aria-invalid="true"] { border-color:var(--destructive); box-shadow:0 0 0 3px color-mix(in oklab,var(--destructive) 20%,transparent); }
+.dark [data-slot="input"][aria-invalid="true"] { box-shadow:0 0 0 3px color-mix(in oklab,var(--destructive) 40%,transparent); }
+[data-slot="native-select"] { appearance:none; padding-right:2.25rem; }
+[data-slot="native-select"]:invalid, [data-slot="native-select"][data-empty] { color:var(--muted-foreground); }
+[data-slot="native-select-wrapper"] { position:relative; width:100%; }
+[data-slot="native-select-wrapper"] svg { position:absolute; right:.625rem; top:50%; width:1rem; height:1rem; margin-top:-.5rem; color:var(--muted-foreground); pointer-events:none; opacity:.7; }
+[data-slot="checkbox"] { appearance:none; position:relative; width:1rem; height:1rem; margin:0; flex-shrink:0; border-radius:4px; border:1px solid var(--input); background:transparent; box-shadow:0 1px 2px 0 rgb(0 0 0/.05); outline:none; cursor:pointer; transition:box-shadow .15s; }
+.dark [data-slot="checkbox"] { background:color-mix(in oklab,var(--input) 30%,transparent); }
+[data-slot="checkbox"]::after { content:""; position:absolute; inset:0; background:var(--primary-foreground); opacity:0; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/.85rem no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/.85rem no-repeat; }
+[data-slot="checkbox"]:checked { background:var(--primary); border-color:var(--primary); }
+[data-slot="checkbox"]:checked::after { opacity:1; }
+[data-slot="checkbox"]:focus-visible { border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklab,var(--ring) 50%,transparent); }
+[data-slot="checkbox"][aria-invalid="true"] { border-color:var(--destructive); box-shadow:0 0 0 3px color-mix(in oklab,var(--destructive) 20%,transparent); }
+
+/* ---------- Field ---------- */
+[data-slot="field-group"] { display:flex; flex-direction:column; width:100%; gap:1.75rem; }
+[data-slot="field"] { display:flex; flex-direction:column; width:100%; gap:.75rem; }
+[data-slot="field"][data-orientation="horizontal"] { flex-direction:row; align-items:flex-start; gap:.75rem; }
+[data-slot="field"][data-invalid="true"] { color:var(--destructive); }
+[data-slot="field-content"] { display:flex; flex:1; flex-direction:column; gap:.375rem; line-height:1.375; }
+[data-slot="field-label"] { display:flex; width:fit-content; gap:.5rem; font-size:.875rem; font-weight:500; line-height:1.375; user-select:none; }
+[data-slot="field-description"] { color:var(--muted-foreground); font-size:.875rem; line-height:1.5; font-weight:400; }
+[data-slot="field-description"] a { text-underline-offset:4px; text-decoration:underline; color:inherit; }
+[data-slot="field-description"] a:hover { color:var(--primary); }
+[data-slot="field-error"] { color:var(--destructive); font-size:.875rem; font-weight:400; display:flex; align-items:center; gap:.375rem; }
+[data-slot="field-error"][hidden] { display:none; }
+[data-slot="field-error"] svg { width:1rem; height:1rem; flex-shrink:0; }
+[data-slot="field-description"][hidden] { display:none; }
+
+/* ---------- ToggleGroup (single, outline) ---------- */
+[data-slot="toggle-group"] { display:inline-flex; width:fit-content; align-items:center; border-radius:var(--radius-md); box-shadow:0 1px 2px 0 rgb(0 0 0/.05); }
+[data-slot="toggle-group-item"] { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; height:2.25rem; min-width:2.25rem; padding:0 1rem; font:inherit; font-size:.875rem; font-weight:500; border:1px solid var(--input); background:transparent; color:var(--foreground); cursor:pointer; outline:none; transition:all .15s; }
+[data-slot="toggle-group-item"]:first-child { border-radius:var(--radius-md) 0 0 var(--radius-md); }
+[data-slot="toggle-group-item"]:last-child { border-radius:0 var(--radius-md) var(--radius-md) 0; }
+[data-slot="toggle-group-item"]:not(:first-child) { border-left-width:0; }
+[data-slot="toggle-group-item"]:hover { background:var(--muted); color:var(--muted-foreground); }
+[data-slot="toggle-group-item"][data-state="on"] { background:var(--accent); color:var(--accent-foreground); }
+[data-slot="toggle-group-item"]:focus-visible { position:relative; border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklab,var(--ring) 50%,transparent); }
+
+/* ---------- Separator / Avatar / Alert / Table ---------- */
+[data-slot="separator"] { flex-shrink:0; background:var(--border); height:1px; width:100%; border:0; }
+[data-slot="avatar"] { position:relative; display:flex; width:2rem; height:2rem; flex-shrink:0; overflow:hidden; border-radius:9999px; }
+[data-slot="avatar-fallback"] { display:flex; width:100%; height:100%; align-items:center; justify-content:center; border-radius:9999px; background:var(--muted); font-size:.75rem; font-weight:500; }
+[data-slot="alert"] { position:relative; display:grid; width:100%; grid-template-columns:1rem 1fr; column-gap:.75rem; row-gap:.125rem; align-items:start; border-radius:var(--radius-lg); border:1px solid var(--border); background:var(--card); color:var(--card-foreground); padding:.75rem 1rem; font-size:.875rem; }
+[data-slot="alert"] > svg { width:1rem; height:1rem; margin-top:.125rem; color:var(--primary); }
+[data-slot="alert-title"] { grid-column-start:2; min-height:1rem; font-weight:500; letter-spacing:-.01em; }
+[data-slot="alert-description"] { grid-column-start:2; color:var(--muted-foreground); font-size:.875rem; }
+[data-slot="table"] { width:100%; border-collapse:collapse; font-size:.875rem; caption-side:bottom; }
+[data-slot="table-head"] { height:2.5rem; padding:0 .5rem; text-align:left; font-weight:500; color:var(--foreground); white-space:nowrap; }
+[data-slot="table-cell"] { padding:.5rem; vertical-align:middle; white-space:nowrap; }
+[data-slot="table-row"] { border-bottom:1px solid var(--border); transition:background .15s; }
+[data-slot="table-row"]:hover { background:color-mix(in oklab,var(--muted) 50%,transparent); }
+[data-slot="table-row"]:last-child { border-bottom:0; }
+[data-slot="table-header"] [data-slot="table-row"] { border-bottom:1px solid var(--border); }
+
+/* ---------- layout helpers (className for layout only) ---------- */
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.wrap{flex-wrap:wrap}
+.mx-auto{margin-inline:auto}.w-full{width:100%}.text-center{text-align:center}.muted{color:var(--muted-foreground)}
+.container{width:100%;max-width:72rem;margin-inline:auto;padding-inline:1.5rem}
+.tabular{font-variant-numeric:tabular-nums}
+
+.site-header{border-bottom:1px solid var(--border);background:color-mix(in oklab,var(--background) 95%,transparent)}
+.brand{font-weight:600;letter-spacing:-.01em;text-decoration:none}
+.brand svg{width:1.5rem;height:1.5rem;color:var(--primary)}
+#theme .moon{display:none}.dark #theme .sun{display:none}.dark #theme .moon{display:block}
+@media(max-width:640px){.nav-link{display:none}.container{padding-inline:1rem}}
+
+.hero{display:flex;flex-direction:column;align-items:center;gap:1.5rem;text-align:center;padding-block:5rem 3rem}
+.hero h1{font-size:clamp(2.25rem,6vw,3.75rem);font-weight:700;letter-spacing:-.035em;line-height:1.05;text-wrap:balance;max-width:16ch}
+.hero p.lede{max-width:40rem;font-size:1.125rem;line-height:1.6;color:var(--muted-foreground);text-wrap:balance}
+.preview{max-width:56rem;margin-inline:auto;padding-bottom:5rem}
+.who{display:flex;align-items:center;gap:.75rem}
+.who b{font-weight:500;display:block;line-height:1.2}.who small{font-size:.75rem;color:var(--muted-foreground)}
+.mono{font-family:var(--font-mono);font-size:.8125rem;color:var(--muted-foreground)}
+.scroll-x{overflow-x:auto}
+.section{border-top:1px solid var(--border);padding-block:4rem 5rem}
+.section h2{font-size:1.875rem;font-weight:600;letter-spacing:-.025em;line-height:1.15}
+.section .intro{margin-top:.75rem;color:var(--muted-foreground);max-width:36rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.fi{display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:var(--radius-md);background:var(--secondary);color:var(--primary)}
+.fi svg{width:1.25rem;height:1.25rem}
+.cd-title{font-size:1.125rem}
+@media(max-width:860px){.grid3{grid-template-columns:1fr}.hero{padding-block:3rem 2rem}.col-room{display:none}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container flex items-center justify-between gap-4" style="height:3.5rem">
+    <a href="#" class="brand flex items-center gap-2"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="5" width="26" height="24" rx="6" stroke="currentColor" stroke-width="2.4"/><path d="M3 12h26" stroke="currentColor" stroke-width="2.4"/><path d="M8 21c2.5-3 4.5-3 7 0s4.5 3 9 0" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Tidewater</a>
+    <nav class="flex items-center gap-2" aria-label="Primary">
+      <a data-slot="button" data-variant="ghost" data-size="sm" class="nav-link" href="#">Features</a>
+      <a data-slot="button" data-variant="ghost" data-size="sm" class="nav-link" href="#">Pricing</a>
+      <a data-slot="button" data-variant="ghost" data-size="sm" class="nav-link" href="#">Sign in</a>
+      <button data-slot="button" data-variant="outline" data-size="icon" id="theme" type="button" aria-label="Toggle theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="container hero">
+    <a data-slot="badge" data-variant="outline" href="#" style="text-decoration:none">New <span style="color:var(--muted-foreground)">Waiting-list auto-fill is live</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    <h1>The diary your clinic runs on.</h1>
+    <p class="lede">Tidewater schedules therapists, rooms and treatments for small physiotherapy clinics. Patients book themselves in, reminders go out on time, and cancelled slots fill from your waiting list.</p>
+    <div class="flex gap-3 wrap justify-center">
+      <a data-slot="button" data-variant="default" data-size="lg" href="#">Start free for 14 days</a>
+      <a data-slot="button" data-variant="outline" data-size="lg" href="#features">See how it works</a>
+    </div>
+    <p class="muted" style="font-size:.875rem">No card needed. Import your diary from CSV in minutes.</p>
+  </section>
+
+  <section class="container preview" aria-label="Product preview">
+    <div data-slot="card">
+      <div data-slot="card-header">
+        <div data-slot="card-title">Tuesday, 14 May</div>
+        <div data-slot="card-description">3 therapists, 2 rooms. 4 appointments today.</div>
+        <div data-slot="card-action"><a data-slot="button" data-variant="outline" data-size="sm" href="#">
+          <svg data-icon="inline-start" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>New appointment</a></div>
+      </div>
+      <div data-slot="card-content" class="scroll-x">
+        <table data-slot="table">
+          <thead data-slot="table-header"><tr data-slot="table-row"><th data-slot="table-head">Time</th><th data-slot="table-head">Patient</th><th data-slot="table-head" class="col-room">Treatment</th><th data-slot="table-head">Status</th></tr></thead>
+          <tbody>
+            <tr data-slot="table-row"><td data-slot="table-cell" class="mono">09:00</td><td data-slot="table-cell"><div class="who"><span data-slot="avatar"><span data-slot="avatar-fallback">MO</span></span><span><b>Maya Okafor</b><small>Room 1</small></span></div></td><td data-slot="table-cell" class="col-room">Lower back · 45 min</td><td data-slot="table-cell"><span data-slot="badge" data-variant="default">Confirmed</span></td></tr>
+            <tr data-slot="table-row"><td data-slot="table-cell" class="mono">10:00</td><td data-slot="table-cell"><div class="who"><span data-slot="avatar"><span data-slot="avatar-fallback">TB</span></span><span><b>Tom Brandt</b><small>Room 2</small></span></div></td><td data-slot="table-cell" class="col-room">Knee rehab · 30 min</td><td data-slot="table-cell"><span data-slot="badge" data-variant="secondary">Reminder sent</span></td></tr>
+            <tr data-slot="table-row"><td data-slot="table-cell" class="mono">10:30</td><td data-slot="table-cell"><div class="who"><span data-slot="avatar"><span data-slot="avatar-fallback">–</span></span><span><b>Open slot</b><small>Room 1</small></span></div></td><td data-slot="table-cell" class="col-room">Fills from waiting list</td><td data-slot="table-cell"><span data-slot="badge" data-variant="outline">Auto-fill</span></td></tr>
+            <tr data-slot="table-row"><td data-slot="table-cell" class="mono">11:15</td><td data-slot="table-cell"><div class="who"><span data-slot="avatar"><span data-slot="avatar-fallback">PR</span></span><span><b>Priya Raman</b><small>Room 2</small></span></div></td><td data-slot="table-cell" class="col-room">Shoulder assessment · 60 min</td><td data-slot="table-cell"><span data-slot="badge" data-variant="default">Confirmed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features"><div class="container">
+    <h2>Everything the front desk keeps in their head</h2>
+    <p class="intro">Three things Tidewater takes off your plate from day one.</p>
+    <div class="grid3">
+      <div data-slot="card"><div data-slot="card-header"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 10h18M8 2v4M16 2v4M8 15l2.5 2.5L16 13"/></svg></span><div data-slot="card-title" class="cd-title" style="margin-top:.5rem">Self-serve booking</div><div data-slot="card-description">Patients pick a therapist and a time that fits the treatment length.</div></div><div data-slot="card-content"><p class="muted" style="font-size:.875rem;line-height:1.6">Double-bookings and room clashes are blocked before they happen, so the diary you open in the morning is already correct.</p></div></div>
+      <div data-slot="card"><div data-slot="card-header"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 0 0 4 0"/></svg></span><div data-slot="card-title" class="cd-title" style="margin-top:.5rem">Reminders that cut no-shows</div><div data-slot="card-description">SMS and email nudges, 48 and 4 hours before a visit.</div></div><div data-slot="card-content"><p class="muted" style="font-size:.875rem;line-height:1.6">Patients confirm or reschedule with one tap, and your team sees the answer on the appointment.</p></div></div>
+      <div data-slot="card"><div data-slot="card-header"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg></span><div data-slot="card-title" class="cd-title" style="margin-top:.5rem">Gaps fill themselves</div><div data-slot="card-description">Cancellations are offered to your waiting list in order.</div></div><div data-slot="card-content"><p class="muted" style="font-size:.875rem;line-height:1.6">A cancelled 10:30 becomes a booked 10:30, without anyone picking up the phone.</p></div></div>
+    </div>
+  </div></section>
+</main>
+<script>
+(function(){var r=document.documentElement,mq=matchMedia('(prefers-color-scheme: dark)');
+function get(){try{return localStorage.getItem('theme')}catch(e){return null}}
+function apply(){var t=get();r.classList.toggle('dark',t?t==='dark':mq.matches)}
+apply();mq.addEventListener('change',apply);
+document.addEventListener('click',function(e){if(!e.target.closest('#theme'))return;var d=!r.classList.contains('dark');try{localStorage.setItem('theme',d?'dark':'light')}catch(x){}apply()});})();
+
+</script>
+</body>
+</html>

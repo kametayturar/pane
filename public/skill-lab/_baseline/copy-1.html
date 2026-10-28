@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Import patients from CSV – copy</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; max-width: 720px; margin: 0 auto; padding: 48px 24px; color: #222; line-height: 1.6; background: #fff; }
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  h2 { font-size: 20px; margin-top: 40px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+  .label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #777; margin-top: 18px; }
+  .headline { font-size: 20px; font-weight: 700; margin: 4px 0; }
+  p { margin: 6px 0; }
+  ul { margin: 6px 0 6px 20px; padding: 0; }
+  .btn { display: inline-block; background: #e8e8e8; padding: 4px 10px; border-radius: 4px; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>Import patients from CSV</h1>
+<p>Product copy for Tidewater</p>
+
+<h2>1. Empty state</h2>
+<div class="label">Headline</div>
+<p class="headline">No patients imported yet</p>
+<div class="label">Body</div>
+<p>Moving from another system? Upload a CSV file and we'll add your patients to Tidewater in a few minutes. You'll be able to review everything before it's saved.</p>
+<div class="label">Buttons</div>
+<p><span class="btn">Upload CSV file</span> &nbsp; <span class="btn">Download sample file</span></p>
+<div class="label">Helper text</div>
+<p>Accepted format: .csv, up to 10 MB. Required columns: first name, last name, and either phone or email.</p>
+
+<h2>2. Upload error</h2>
+<div class="label">Headline</div>
+<p class="headline">We couldn't import your file</p>
+<div class="label">Body</div>
+<p>We found 3 problems in <strong>patients-2026.csv</strong>. No patients were imported, so nothing has changed in your account. Please fix the issues below and upload the file again:</p>
+<ul>
+  <li>Row 14: the email address "jsmith@clinic" isn't valid.</li>
+  <li>Row 27: the "last name" field is empty.</li>
+  <li>Row 52: the phone number has too many digits.</li>
+</ul>
+<div class="label">Buttons</div>
+<p><span class="btn">Try again</span> &nbsp; <span class="btn">Download error report</span></p>
+<div class="label">Helper text</div>
+<p>Need a hand? Contact support at help@tidewater.example and we'll check the file for you.</p>
+
+<h2>3. Success message</h2>
+<div class="label">Headline</div>
+<p class="headline">Import complete</p>
+<div class="label">Body</div>
+<p>We added <strong>248 patients</strong> to your clinic. 6 rows were skipped because the patient already exists in Tidewater.</p>
+<div class="label">Buttons</div>
+<p><span class="btn">View patients</span> &nbsp; <span class="btn">Book an appointment</span></p>
+<div class="label">Helper text</div>
+<p>Made a mistake? You can undo this import within 24 hours from the Import history page.</p>
+</body>
+</html>

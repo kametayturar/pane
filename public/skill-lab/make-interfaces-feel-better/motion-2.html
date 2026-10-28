@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater appointments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f2a30;--ink-2:#4a6168;--mute:#8aa0a6;--teal:#0e7c86;--teal-d:#0a5f67;--teal-soft:#e2f1f2;--bg:#eef4f4;--card:#fff;--danger:#b4380c;--line:rgba(15,42,48,.08)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{min-height:100vh;background:var(--bg);font-family:"Figtree",system-ui,-apple-system,sans-serif;color:var(--ink);display:grid;place-items:center;padding:24px 16px 72px;line-height:1.4}
+button{font:inherit;color:inherit;cursor:pointer}
+.frame{position:relative;width:min(980px,100%);min-height:560px;background:#f9fbfb;border-radius:20px;box-shadow:0 0 0 1px var(--line),0 24px 60px -24px rgba(15,42,48,.28);overflow:hidden}
+.bar{display:flex;align-items:center;gap:28px;padding:14px 22px;background:#fff;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.logo svg{width:24px;height:24px}
+.bar nav{display:flex;gap:20px;color:var(--ink-2);font-size:14px;font-weight:500;flex:1}
+.bar nav .on{color:var(--ink);font-weight:600}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--teal-soft);color:var(--teal-d);display:grid;place-items:center;font-size:12px;font-weight:700}
+.body{padding:26px 28px 32px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;gap:12px}
+.head h1{margin:0;font-size:26px;letter-spacing:-.02em}
+.head p{margin:2px 0 0;color:var(--ink-2);font-size:14px}
+.replay{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);padding:8px 16px;border-radius:999px;border:0;background:#fff;box-shadow:0 0 0 1px var(--line),0 2px 6px rgba(15,42,48,.08);font-size:13px;font-weight:600;color:var(--ink-2);display:inline-flex;align-items:center;gap:7px}
+.replay svg{width:14px;height:14px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:520px){.bar nav{display:none}.bar{justify-content:space-between}.body{padding:18px 14px 24px}.head h1{font-size:21px}.frame{min-height:0}}
+
+.cards{display:grid;gap:12px}
+.appt{position:relative;display:grid;grid-template-columns:62px 1fr auto auto;align-items:center;gap:14px;padding:14px 16px;min-height:72px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px var(--line)}
+.appt time{font-variant-numeric:tabular-nums;color:var(--ink-2);font-weight:600;font-size:14px}
+.appt .who{font-size:15.5px;font-weight:600}.appt .who small{display:block;color:var(--mute);font-size:12.5px;font-weight:500}
+.chip{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--teal-soft);color:var(--teal-d)}
+.chip.amber{background:#fdf0dc;color:#8a5a0a}
+.kebab{width:38px;height:38px;border-radius:10px;border:0;background:transparent;display:grid;place-items:center;color:var(--ink-2)}
+.kebab svg{width:20px;height:20px}
+.menu-wrap{position:relative}
+.menu{position:absolute;top:calc(100% + 6px);right:0;z-index:5;min-width:220px;padding:6px;border-radius:14px;background:#fff;list-style:none;margin:0;box-shadow:0 0 0 1px rgba(15,42,48,.07),0 8px 16px -4px rgba(15,42,48,.12),0 20px 40px -12px rgba(15,42,48,.22)}
+.mi{display:flex;align-items:center;gap:10px;width:100%;padding:0 10px;min-height:38px;border:0;background:transparent;border-radius:8px;font-size:14.5px;text-align:left;font-weight:500}
+.mi svg{width:17px;height:17px;flex:none;color:var(--ink-2)}
+.mi.danger{color:var(--danger)}.mi.danger svg{color:var(--danger)}
+.sep{height:1px;background:var(--line);margin:5px 4px}
+@media(max-width:520px){.appt{grid-template-columns:50px 1fr auto}.appt .chip{display:none}.menu{min-width:200px}}
+
+/* ---- motion ---- */
+:root{--ease-swap:cubic-bezier(0.2,0,0,1)}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+.head h1{text-wrap:balance}.head p,.tmsg small,.count{text-wrap:pretty}
+/* split + stagger the page header once on first load (~100ms between chunks) */
+.head h1,.head p{animation:fadeInUp 400ms ease-out both}.head p{animation-delay:100ms}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px);filter:blur(4px)}}
+/* one SVG per state, cross-faded: scale .25 -> 1, blur 4px -> 0, opacity 0 -> 1 */
+.swap{position:relative;display:grid;place-items:center}
+.swap>svg{grid-area:1/1;transition-property:opacity,filter,scale;transition-duration:300ms;transition-timing-function:var(--ease-swap)}
+.swap>svg:nth-child(2){opacity:0;scale:.25;filter:blur(4px)}
+.swap[data-on=true]>svg:nth-child(1){opacity:0;scale:.25;filter:blur(4px)}
+.swap[data-on=true]>svg:nth-child(2){opacity:1;scale:1;filter:blur(0)}
+@media(prefers-reduced-motion:reduce){.head h1,.head p{animation:none}.swap>svg{transition-duration:1ms}}
+.appt{box-shadow:0 0 0 1px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04)}
+.kebab{position:relative;width:40px;height:40px;transition-property:scale,background-color;transition-duration:150ms;transition-timing-function:ease-out}
+.kebab>svg{width:20px;height:20px}
+.kebab:active,.kebab.pressed{scale:.96}
+.kebab[aria-expanded=true]{background:rgba(15,42,48,.07)}
+/* outer 16 = inner 10 + padding 6 */
+.menu{padding:6px;border-radius:16px;box-shadow:0 0 0 1px rgba(0,0,0,.06),0 1px 1px rgba(0,0,0,.04),0 4px 8px -2px rgba(0,0,0,.06),0 16px 32px -8px rgba(0,0,0,.16);
+  opacity:0;transform:translateY(-8px);filter:blur(4px);visibility:hidden;pointer-events:none;
+  transition-property:opacity,transform,filter,visibility;transition-duration:150ms,150ms,150ms,0s;transition-delay:0s,0s,0s,150ms;transition-timing-function:ease-out}
+.menu[data-open=true]{opacity:1;transform:none;filter:none;visibility:visible;pointer-events:auto;transition-duration:220ms,220ms,220ms,0s;transition-delay:0s}
+.mi{min-height:40px;border-radius:10px;font-weight:400;font-size:14.5px;transition-property:background-color;transition-duration:100ms;transition-timing-function:ease-out}
+.mi svg{stroke-width:1.5}
+.mi.is-hover{background:rgba(15,42,48,.06)}.mi.danger.is-hover{background:#fbeae3}
+@media(hover:hover) and (pointer:fine){.mi:hover{background:rgba(15,42,48,.06)}.mi.danger:hover{background:#fbeae3}}
+.mi:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+@media(prefers-reduced-motion:reduce){.menu,.menu[data-open=true]{transform:none;filter:none}.kebab:active,.kebab.pressed{scale:1}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h16M7.5 3.5v3M16.5 3.5v3M5.5 5.5h13A1.5 1.5 0 0 1 20 7v11.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5V7a1.5 1.5 0 0 1 1.5-1.5Z"/></symbol><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol><symbol id="i-dup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6A1.5 1.5 0 0 0 14 4.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></symbol><symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15L6 16.5ZM10 20.5h4"/></symbol><symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="m9 9 6 6m0-6-6 6"/></symbol><symbol id="i-dots" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="12" r=".6"/><circle cx="12" cy="12" r=".6"/><circle cx="18.5" cy="12" r=".6"/></symbol><symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11m0-11-11 11"/></symbol><symbol id="i-replay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5M4.5 4.5v4h4"/></symbol></svg>
+<main class="frame">
+<header class="bar"><span class="logo"><svg viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="7" fill="#0e7c86"/><path d="M4.5 13.5c2-3 3.7-3 5.5 0s3.5 3 5.5 0 3-2.5 4-1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>Tidewater</span><nav><span class="on">Schedule</span><span>Patients</span><span>Reports</span></nav><span class="avatar">DO</span></header>
+<div class="body">
+<div class="head"><div><h1>Upcoming appointments</h1><p>Tuesday, 14 Oct</p></div></div>
+<div class="cards">
+<div class="appt" id="card"><time>10:30</time><div class="who">Maya Chen<small>Lower back follow-up</small></div><span class="chip">Confirmed</span>
+<div class="menu-wrap" id="wrap"><button class="kebab swap" id="trigger" data-on="false" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu"><svg><use href="#i-dots"/></svg><svg><use href="#i-close"/></svg><span class="sr">Appointment actions</span></button><ul class="menu" id="menu" role="menu"><li role="none"><button class="mi" role="menuitem"><svg><use href="#i-cal"/></svg>Reschedule</button></li><li role="none"><button class="mi" role="menuitem"><svg><use href="#i-dup"/></svg>Duplicate</button></li><li role="none"><button class="mi" role="menuitem"><svg><use href="#i-bell"/></svg>Send reminder</button></li><li role="none" class="sep"></li><li role="none"><button class="mi danger" role="menuitem"><svg><use href="#i-x"/></svg>Cancel appointment</button></li></ul></div></div>
+<div class="appt"><time>11:30</time><div class="who">Tom Reyes<small>Knee rehab, week 3</small></div><span class="chip">Confirmed</span><div class="kebab" aria-hidden="true"><svg><use href="#i-dots"/></svg></div></div>
+<div class="appt"><time>13:00</time><div class="who">Ines Duarte<small>Initial assessment</small></div><span class="chip amber">Awaiting forms</span><div class="kebab" aria-hidden="true"><svg><use href="#i-dots"/></svg></div></div>
+<div class="appt"><time>14:15</time><div class="who">Samuel Ito<small>Posture review</small></div><span class="chip">Confirmed</span><div class="kebab" aria-hidden="true"><svg><use href="#i-dots"/></svg></div></div>
+</div></div>
+
+
+</main>
+<button class="replay" id="replay" type="button"><svg><use href="#i-replay"/></svg>Replay</button>
+<script>
+
+const $=s=>document.querySelector(s);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let run=0;
+
+const trigger=$('#trigger'),menu=$('#menu'),wrap=$('#wrap');
+const mis=[...menu.querySelectorAll('.mi')];
+const isOpen=()=>menu.dataset.open==='true';
+function setOpen(v){menu.dataset.open=String(v);trigger.setAttribute('aria-expanded',v);trigger.dataset.on=String(v);if(!v)mis.forEach(m=>m.classList.remove('is-hover'));}
+trigger.addEventListener('click',()=>setOpen(!isOpen()));
+menu.addEventListener('keydown',e=>{if(e.key==='Escape'){setOpen(false);trigger.focus();}});
+document.addEventListener('pointerdown',e=>{if(isOpen()&&!wrap.contains(e.target))setOpen(false)});
+async function play(){
+  const my=++run, ok=async ms=>{await sleep(ms);return my===run};
+  setOpen(false);
+  while(my===run){
+    if(!await ok(1000))return;
+    trigger.classList.add('pressed');if(!await ok(150))return;trigger.classList.remove('pressed');
+    setOpen(true);if(!await ok(700))return;
+    for(const m of mis){mis.forEach(x=>x.classList.remove('is-hover'));m.classList.add('is-hover');if(!await ok(700))return;}
+    mis.forEach(x=>x.classList.remove('is-hover'));if(!await ok(250))return;
+    setOpen(false);if(!await ok(1600))return;
+  }
+}
+$('#replay').onclick=play;play();
+</script>
+</body></html>

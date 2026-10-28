@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10302e;--ink2:#58716e;--paper:#eef4f2;--card:#fff;--line:rgba(16,48,46,.09);--teal:#0f766e;--teal2:#14b8a6;--tint:#e0f1ed;--danger:#b4361f;
+--shadow:0 1px 2px rgba(16,48,46,.06),0 10px 28px -10px rgba(16,48,46,.16)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:20px 32px}
+.brand{display:flex;gap:10px;align-items:center;font-weight:650;font-size:17px;letter-spacing:-.01em}
+.brand svg{width:26px;height:26px}
+.replay{font:inherit;font-size:13.5px;font-weight:550;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 14px 7px 11px;cursor:pointer;display:inline-flex;gap:7px;align-items:center;box-shadow:0 1px 2px rgba(16,48,46,.05)}
+.replay svg{width:14px;height:14px}
+main{flex:1;display:grid;place-items:center;padding:8px 16px 64px}
+.app{width:min(720px,100%);background:var(--card);border-radius:20px;box-shadow:var(--shadow);position:relative}
+.app-h{display:flex;justify-content:space-between;align-items:center;padding:22px 26px 12px;gap:12px}
+.app-h h1{font-size:19px;letter-spacing:-.015em;font-weight:620}
+.pill{font-size:12.5px;font-weight:550;color:var(--teal);background:var(--tint);padding:5px 11px;border-radius:99px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.slots{list-style:none;padding:4px 14px 18px}
+.slots li{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:12px;padding:15px 12px;border-radius:12px;min-height:68px}
+.slots li+li{border-top:1px solid var(--line)}
+time{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:14px}
+.who b{display:block;font-weight:600;font-size:15px}
+.who span{font-size:13px;color:var(--ink2)}
+.who.open b{color:var(--ink2);font-weight:550}
+.btn{font:inherit;font-weight:600;font-size:14px;background:var(--teal);color:#fff;border:0;border-radius:10px;padding:9px 18px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);padding:8px;border-radius:10px;display:grid;place-items:center}
+.btn.ghost svg{width:20px;height:20px}
+/* toast */
+.toast{position:fixed;right:28px;bottom:28px;z-index:20;display:flex;align-items:center;gap:12px;background:#10302e;color:#fff;padding:14px 12px 14px 14px;border-radius:14px;font-size:14.5px;font-weight:500;max-width:calc(100vw - 32px)}
+.toast .ico{width:24px;height:24px;flex:none}
+.toast .ico svg{width:24px;height:24px;display:block;overflow:visible}
+.ring{fill:#14b8a6}.tick{fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.toast .txt{display:block}
+.toast .x{font:inherit;background:transparent;border:0;color:rgba(255,255,255,.55);width:26px;height:26px;border-radius:8px;font-size:18px;line-height:1;cursor:pointer;flex:none}
+@media (max-width:480px){.toast{left:16px;right:16px;bottom:16px}header.top{padding:16px}}
+/* dropdown */
+.appts{list-style:none;padding:4px 14px 18px}
+.appts>li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:16px 12px;position:relative;border-radius:12px}
+.appts>li+li{border-top:1px solid var(--line)}
+.av{width:44px;height:44px;border-radius:50%;background:var(--tint);color:var(--teal);display:grid;place-items:center;font-weight:650;font-size:14px}
+.menu-wrap{position:relative}
+.menu{position:absolute;right:0;top:calc(100% + 6px);width:224px;background:#fff;border-radius:14px;padding:6px;z-index:10}
+.menu button{display:block;width:100%;text-align:left;font:inherit;font-size:14.5px;padding:10px 12px;border:0;background:transparent;border-radius:9px;color:var(--ink);cursor:pointer;position:relative}
+.menu hr{border:0;height:1px;background:var(--line);margin:5px 4px}
+.menu .danger{color:var(--danger)}
+/* tasks */
+.add{display:flex;gap:10px;margin:0 26px 8px}
+.inp{flex:1;border:1px solid var(--line);border-radius:10px;padding:0 14px;min-height:40px;display:flex;align-items:center;font-size:14.5px;min-width:0;white-space:nowrap;overflow:hidden}
+.inp:empty::before{content:attr(data-ph);color:#8aa09d}
+.tasks{list-style:none;padding:6px 14px 8px;position:relative}
+.task{display:flex;align-items:center;gap:12px;padding:0 12px;min-height:54px;border-radius:12px;font-size:15px;background:#fff}
+.chk{width:22px;height:22px;border-radius:7px;border:1.6px solid #b3c5c2;background:#fff;display:grid;place-items:center;flex:none;cursor:pointer;padding:0}
+.chk svg{width:14px;height:14px;overflow:visible}
+.chk path{fill:none;stroke:#fff;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.lbl{position:relative;min-width:0}
+.del{margin-left:auto;font:inherit;background:transparent;border:0;color:var(--ink2);font-size:20px;line-height:1;width:28px;height:28px;border-radius:8px;cursor:pointer;flex:none}
+.tasks{min-height:190px}
+.empty{margin-top:-190px;height:190px;display:grid;place-items:center;text-align:center;color:var(--ink2);font-size:14px;pointer-events:none;position:relative}
+.empty[hidden]{display:none}
+.foot{display:flex;justify-content:space-between;padding:10px 26px 22px;font-size:13px;color:var(--ink2)}
+.toast{transform-origin:100% 50%;will-change:transform;box-shadow:0 14px 30px -8px rgba(16,48,46,.45);opacity:0}
+.toast .ico svg{transform-origin:50% 50%}.tick{stroke-dasharray:1;stroke-dashoffset:1}
+#book{will-change:transform}</style></head><body>
+<header class="top"><div class="brand"><svg viewBox="0 0 26 26"><rect width="26" height="26" rx="8" fill="#0f766e"/><path d="M4.5 15c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3 2.2 3 4.3 3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M4.5 19.5c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3 2.2 3 4.3 3" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/></svg>Tidewater</div><button class="replay" id="replay" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1"/><path d="M2.3 2.2v3h3"/></svg>Replay</button></header>
+<main><div class="app" id="app"><div class="app-h"><h1>Tuesday schedule</h1><span class="pill">Harbour Physio</span></div>
+<ul class="slots" id="slots">
+<li class="row"><time>09:00</time><div class="who"><b>Marta Ilves</b><span>Knee rehab · 45 min</span></div><span class="pill">Confirmed</span></li>
+<li class="row" id="slot"><time>10:30</time><div class="who open" id="slotWho"><b id="slotName">Open slot</b><span id="slotSub">Dr. Okafor · 45 min</span></div><button class="btn" id="book" type="button">Book</button></li>
+<li class="row"><time>11:15</time><div class="who"><b>Jonas Pärn</b><span>Lower back · 30 min</span></div><span class="pill">Confirmed</span></li>
+<li class="row"><time>13:00</time><div class="who"><b>Priya Nair</b><span>Post-op ankle · 45 min</span></div><span class="pill">Confirmed</span></li>
+</ul></div>
+<div class="toast" id="toast" role="status"><span class="ico"><svg viewBox="0 0 24 24"><circle class="ring" cx="12" cy="12" r="11"/><path class="tick" pathLength="1" d="M7 12.4l3.3 3.3 6.7-7.4"/></svg></span><span class="txt">Appointment booked for Tue 10:30</span><button class="x" type="button" aria-label="Dismiss">×</button></div></main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const raf=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let RUN=0;class Cancel extends Error{}
+function guard(id){return async ms=>{await wait(ms);if(id!==RUN)throw new Cancel()}}
+async function typeInto(el,text,w,per=26){for(let i=1;i<=text.length;i++){el.textContent=text.slice(0,i);await w(per)}}
+function start(setup,seq){const go=async()=>{const id=++RUN;const w=guard(id);try{while(id===RUN){await setup();await seq(w,id)}}catch(e){if(!(e instanceof Cancel))throw e}};$('#replay').onclick=go;go()}
+
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,t0,d)=>clamp((t-t0)/d);
+const eOut3=t=>1-Math.pow(1-t,3), eOut4=t=>1-Math.pow(1-t,4), eIn3=t=>t*t*t, eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const AMP=REDUCED?0:1;
+// closed-form damped spring step response 0->1 (overshoots when z<1): follow-through without stateful simulation
+function spring(t,w=30,z=.6){if(t<=0)return 0;z=Math.min(z,.999);const wd=w*Math.sqrt(1-z*z);return 1-Math.exp(-z*w*t)*(Math.cos(wd*t)+(z*w/wd)*Math.sin(wd*t))}
+function btnScale(t,t0,depth=.06){if(t<t0)return 1;if(t<t0+.08)return 1-depth*eOut3(prog(t,t0,.08));return 1-depth*(1-spring(t-t0-.08,34,.45))}
+let T0=performance.now();
+function loop(LOOP,render){const m=location.hash.match(/t=([0-9.]+)/);if(m){render(+m[1]);return}$('#replay').onclick=()=>{T0=performance.now()};const f=now=>{render(((now-T0)/1000)%LOOP);requestAnimationFrame(f)};requestAnimationFrame(f)}
+function fillSlot(on){$('#slotName').textContent=on?'Anna Kask':'Open slot';$('#slotSub').textContent=on?'Shoulder mobility · Dr. Okafor':'Dr. Okafor · 45 min';$('#slotWho').classList.toggle('open',!on);const b=$('#book');b.textContent=on?'Booked':'Book';b.style.opacity=on?.5:1}
+// phase table (seconds): action = "booking lands as a toast, hangs, then leaves"
+const P={press:.42,arrive:.62,travel:.30,hold:4.4,antic:.18,launch:.34,loop:6.4};
+P.impact=P.arrive+P.travel;P.go=P.hold+P.antic;P.gone=P.go+P.launch;
+const toast=$('#toast'),ico=toast.querySelector('.ico svg'),tick=toast.querySelector('.tick'),txt=toast.querySelector('.txt'),book=$('#book');
+const OV=8*AMP,PULL=10*AMP;
+function X0(){return REDUCED?10:toast.offsetWidth+80}
+function toastX(t){const x0=X0();
+ if(t<P.arrive)return x0;
+ if(t<P.impact)return lerp(x0,-OV,eOut4(prog(t,P.arrive,P.travel)));
+ if(t<P.hold)return -OV*(1-spring(t-P.impact,26,.5));
+ if(t<P.go)return lerp(0,-PULL,eIO(prog(t,P.hold,P.antic)));          // anticipation: pull back, opposite the exit
+ if(t<P.gone)return lerp(-PULL,x0,eIn3(prog(t,P.go,P.launch)));       // commit: accelerate away
+ return x0}
+function toastY(t){return t<P.impact?18*AMP*(1-eOut3(prog(t,P.arrive,P.travel))):0}   // gentle arc into place
+let filled=null;
+function render(t){
+ const x=toastX(t),dt=.012,v=(toastX(t+dt)-toastX(t-dt))/(2*dt);
+ const speed=clamp(Math.abs(v)/2400);
+ const bump=t>P.impact&&t<P.impact+.12?Math.sin(prog(t,P.impact,.12)*Math.PI):0;   // squash only at contact
+ const sx=1+.1*AMP*speed-.03*AMP*bump, sy=1-.05*AMP*speed+.025*AMP*bump;
+ toast.style.transform='translate('+x.toFixed(2)+'px,'+toastY(t).toFixed(2)+'px) scale('+sx.toFixed(4)+','+sy.toFixed(4)+')';
+ toast.style.opacity=t<P.arrive?0:t<P.go+P.launch*.7?prog(t,P.arrive,.12):1-prog(t,P.go+P.launch*.7,P.launch*.3);
+ if(REDUCED){toast.style.opacity=t<P.arrive?0:t<P.go?prog(t,P.arrive,.25):1-prog(t,P.go,.25)}
+ // secondary action, derived from the primary: text trails the card, icon pops after contact
+ const lag=(toastX(t-.055)-x)*.6;txt.style.transform='translateX('+lag.toFixed(2)+'px)';
+ const pop=t<P.impact+.05?0:spring(t-P.impact-.05,30,.4);ico.style.transform='scale('+(REDUCED?(t>P.impact?1:0):pop).toFixed(3)+')';
+ tick.style.strokeDashoffset=1-eOut3(prog(t,P.impact+.09,.2));
+ // the Book button: press -> contact -> settle, then the slot fills at the moment of release
+ book.style.transform='scale('+btnScale(t,P.press).toFixed(4)+')';
+ const on=t>=P.arrive&&t<P.gone+.2;if(on!==filled){filled=on;fillSlot(on)}
+}
+loop(P.loop,render);</script>
+</body></html>

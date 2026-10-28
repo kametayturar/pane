@@ -1,0 +1,38 @@
+{
+  "id": "responsive-design",
+  "sets": ["web"],
+  "skillSays": [
+    "Go mobile-first: base styles are the phone layout, min-width media queries enhance upward.",
+    "Use container queries (container-type: inline-size) so components respond to their own width, not the viewport.",
+    "Make type and spacing fluid with clamp() scales instead of fixed px at each breakpoint.",
+    "Reach for intrinsic CSS Grid (repeat(auto-fit, minmax(min(X,100%),1fr))) before adding breakpoints.",
+    "Use dvh/svh instead of 100vh, logical properties (inline/block), and 44px minimum touch targets.",
+    "Check for the usual failures: horizontal overflow, fixed px widths, tiny text, squished aspect ratios."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Defined a clamp() type and space scale as CSS variables, so the headline and gutters scale smoothly with no per-breakpoint font sizes",
+        "The schedule card is a size container: slots gain a 'Room 1' chip only when the card itself is wide enough, and feature cards switch from stacked to icon-left when their own column allows",
+        "Mobile-first nav collapses behind a 44px hamburger with aria-expanded and expands inline at 64em; hero height uses dvh and logical properties (inline-size, padding-block) throughout"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Plan cards use an auto-fit minmax grid that wraps from one to three columns on its own, with no media query for the grid itself",
+        "Each plan is a container: when it is wide (single column on a tablet) the feature list goes two-column and the price sits beside the title; price size scales with cqi units",
+        "Monthly/yearly toggle buttons are 44px tall and get a mobile-safe layout; prices use nowrap so $103.20 never breaks"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Form card is a container, so Full name and Clinic size sit side by side only when the card is 32rem+ wide, whatever the viewport is doing",
+        "Inputs are 48px tall at 16px so iOS does not zoom on focus; checkbox row and Show/Hide button meet the 44px touch-target rule",
+        "Layout is single-column first, two columns from 64em, with min-block-size in dvh rather than 100vh"
+      ]
+    }
+  ]
+}

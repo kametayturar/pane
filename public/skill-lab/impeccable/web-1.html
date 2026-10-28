@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – the day sheet for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper: oklch(96.5% 0.016 188);
+  --paper-2: oklch(92.4% 0.026 192);
+  --sheet: oklch(98.6% 0.008 188);
+  --rule: oklch(81% 0.032 195);
+  --ink: oklch(24% 0.055 238);
+  --ink-2: oklch(40% 0.05 232);
+  --tide: oklch(45% 0.095 218);
+  --tide-wash: oklch(88% 0.05 208);
+  --buoy: oklch(69% 0.185 48);
+  --buoy-deep: oklch(56% 0.17 44);
+  --deep: oklch(25% 0.06 238);
+  --ease: cubic-bezier(.16,1,.3,1);
+  --serif: "Young Serif", Georgia, serif;
+  --sans: "Hanken Grotesk", system-ui, sans-serif;
+  --mono: "Martian Mono", ui-monospace, monospace;
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 var(--sans);caret-color:var(--buoy);overflow-x:hidden}
+::selection{background:var(--buoy);color:var(--deep)}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
+:focus-visible{outline:3px solid var(--buoy);outline-offset:3px;border-radius:2px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.wrap{max-width:80rem;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem)}
+
+/* header */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1.5rem}
+.mark{font:400 1.5rem/1 var(--serif);text-decoration:none;display:flex;align-items:center;gap:.6rem}
+.mark i{display:block;width:1.6rem;height:1.1rem;background:
+  linear-gradient(var(--ink),var(--ink)) 0 100%/100% 2px no-repeat,
+  repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px) 0 0/100% 70% no-repeat}
+nav.top{display:flex;align-items:center;gap:clamp(1rem,3vw,2.25rem);font-weight:500;font-size:.98rem}
+nav.top a{text-decoration:none;padding-block:.4rem}
+nav.top a:hover{text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;font:600 1rem/1 var(--sans);padding:.95rem 1.4rem;border-radius:3px;border:1.5px solid var(--ink);text-decoration:none;cursor:pointer;white-space:nowrap;transition:background-color .2s var(--ease),color .2s var(--ease),transform .2s var(--ease)}
+.btn-primary{background:var(--buoy);color:var(--deep);border-color:var(--buoy)}
+.btn-primary:hover{background:oklch(73% 0.18 52);transform:translateY(-1px)}
+.btn-primary:active{transform:none;background:var(--buoy-deep);color:#fff}
+.btn-quiet{background:transparent;color:var(--ink)}
+.btn-quiet:hover{background:var(--ink);color:var(--paper)}
+nav.top .btn{padding:.7rem 1.1rem;font-size:.95rem}
+
+/* hero */
+.hero{padding-block:clamp(2rem,6vw,4.5rem) 0}
+h1{font:400 clamp(2.7rem,6.6vw,5.6rem)/.98 var(--serif);letter-spacing:-.02em;max-width:13ch;text-wrap:balance}
+.hero-lede{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem 3rem;align-items:end;margin-top:2rem}
+.hero-lede p{font-size:clamp(1.1rem,1.5vw,1.3rem);max-width:44ch;color:var(--ink-2);line-height:1.5}
+.actions{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+.actions .link{font-weight:600;padding:.6rem .2rem}
+
+/* day sheet */
+.sheet-wrap{margin-top:clamp(2.5rem,5vw,4rem);margin-right:calc(-1 * clamp(1.25rem,4vw,3rem))}
+.sheet-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding-bottom:.8rem;font-size:.9rem;color:var(--ink-2)}
+.sheet-head b{font-weight:600;color:var(--ink)}
+.sheet{overflow-x:auto;scrollbar-color:var(--tide) var(--paper-2);scrollbar-width:thin;background:var(--sheet);border:1px solid var(--rule);border-right:0;border-radius:6px 0 0 6px}
+.grid{--cols:18;display:grid;grid-template-columns:9.5rem repeat(var(--cols),minmax(0,1fr));min-width:calc(9.5rem + 18 * 3.3rem);width:100%;position:relative}
+.hours{display:contents}
+.hours span{font-size:.72rem;color:var(--ink-2);padding:.7rem 0 .55rem .45rem;border-bottom:1px solid var(--rule);border-left:1px solid var(--rule);grid-column:span 2}
+.hours .corner{grid-column:1;border-left:0;padding-left:1rem;font-family:var(--sans);font-size:.78rem}
+.row{display:contents}
+.who{padding:1rem 1rem;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;justify-content:center;line-height:1.25;position:sticky;left:0;background:var(--sheet);z-index:2}
+.who b{font-weight:600;font-size:.95rem}
+.who small{font-size:.8rem;color:var(--ink-2)}
+.track{grid-column:2 / -1;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));min-width:0;border-bottom:1px solid var(--rule);padding:.5rem 0;background:
+  repeating-linear-gradient(90deg,transparent 0 calc(100%/9 - 1px),var(--rule) calc(100%/9 - 1px) calc(100%/9)) }
+.appt,.open{min-width:0;margin-inline:2px;padding:.55rem .7rem;border-radius:3px;font-size:.82rem;line-height:1.25;min-height:3.4rem;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.appt{background:var(--tide);color:#fff;grid-row:1}
+.appt small{opacity:1;font-size:.75rem;color:oklch(90% 0.04 205)}
+.open{border:1.5px dashed var(--buoy-deep);background:oklch(96% 0.04 70);color:var(--deep);cursor:pointer;font:600 .82rem/1.25 var(--sans);text-align:left;grid-row:1;transition:background-color .2s var(--ease)}
+.open small{font-weight:500;font-size:.75rem;color:var(--ink-2)}
+.open:hover{background:oklch(92% 0.08 65)}
+.open.taken{border:0;background:var(--buoy);color:var(--deep);cursor:default}
+.open.taken small{color:var(--deep)}
+.tide{grid-column:2 / -1;height:76px;position:relative;border-bottom:0}
+.tide svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tide .cap{position:absolute;bottom:.55rem;font-size:.72rem;color:var(--ink-2);white-space:nowrap}
+.tide-label{grid-column:1;padding:1rem;font-size:.8rem;color:var(--ink-2);display:flex;align-items:flex-end}
+
+/* features as a tide-table */
+.features{padding-block:clamp(4rem,9vw,7.5rem) 0}
+.features h2,.close h2{font:400 clamp(1.9rem,3.6vw,3rem)/1.08 var(--serif);letter-spacing:-.015em;max-width:20ch;text-wrap:balance}
+.rows{margin-top:clamp(2rem,4vw,3.25rem);border-top:2px solid var(--ink)}
+.frow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,5fr) minmax(0,4.2fr);gap:1.5rem clamp(1.5rem,4vw,3.5rem);padding-block:clamp(1.75rem,3.5vw,2.75rem);border-bottom:1px solid var(--rule);align-items:start}
+.frow h3{font:400 clamp(1.5rem,2.4vw,2rem)/1.12 var(--serif)}
+.frow p{color:var(--ink-2);max-width:42ch}
+.frow p b{color:var(--ink);font-weight:600}
+.fig{font-size:.8rem;display:grid;gap:.4rem}
+.fig .bar{height:1.9rem;border-radius:3px;background:var(--tide);display:flex;align-items:center;padding-inline:.6rem;color:#fff;font-size:.74rem}
+.fig .bar.dash{background:oklch(96% 0.04 70);border:1.5px dashed var(--buoy-deep);color:var(--deep)}
+.fig .bar.fill{background:var(--buoy);color:var(--deep);font-weight:600}
+.track-s{display:flex;align-items:center;gap:0}
+.track-s div{flex:1;border-top:2px solid var(--tide);padding-top:.5rem;position:relative}
+.track-s div::before{content:"";position:absolute;top:-6px;left:0;width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--tide)}
+.track-s div:last-child{border-top-color:var(--rule)}
+.track-s div:last-child::before{border-color:var(--rule)}
+.track-s b{display:block;font-weight:600;font-size:.82rem;color:var(--ink)}
+.track-s span{color:var(--ink-2);font-size:.72rem}
+.matrix{display:grid;grid-template-columns:5.5rem repeat(4,1fr);gap:3px;font-size:.74rem}
+.matrix i{font-style:normal;color:var(--ink-2);display:flex;align-items:center}
+.matrix s{display:block;height:1.6rem;border-radius:2px;background:var(--paper-2);text-decoration:none}
+.matrix s.on{background:var(--tide)}
+.matrix s.x{background:var(--buoy)}
+
+/* close */
+.close{margin-top:clamp(4rem,9vw,7.5rem);background:var(--deep);color:var(--paper)}
+.close .wrap{padding-block:clamp(3rem,7vw,5.5rem);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem 3rem;align-items:end}
+.close p{color:oklch(86% 0.03 205);max-width:40ch;margin-top:1.1rem}
+.close :focus-visible{outline-color:var(--buoy)}
+footer{padding-block:2rem;font-size:.9rem;color:var(--ink-2)}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+/* the one authored moment: the sheet draws in once */
+@media (prefers-reduced-motion:no-preference){
+  .appt,.open{animation:draw .9s var(--ease) both;animation-delay:calc(var(--i,0)*90ms + 150ms)}
+  @keyframes draw{from{clip-path:inset(0 100% 0 0);opacity:.2;filter:blur(3px)}to{clip-path:inset(0);opacity:1;filter:blur(0)}}
+  .tide path.line{stroke-dasharray:1;stroke-dashoffset:1;animation:trace 1.6s var(--ease) 1s forwards}
+  @keyframes trace{to{stroke-dashoffset:0}}
+}
+@media (max-width:900px){
+  .hero-lede{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .close .wrap{grid-template-columns:1fr}
+  .sheet-wrap{margin-right:calc(-1 * clamp(1.25rem,4vw,3rem))}
+}
+@media (max-width:560px){
+  nav.top a:not(.btn){display:none}
+  .btn{padding:.9rem 1.1rem}
+  .sheet-head span:last-child{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#"><i aria-hidden="true"></i>Tidewater</a>
+    <nav class="top" aria-label="Primary">
+      <a href="#day-sheet">Day sheet</a>
+      <a href="#features">Features</a>
+      <a href="#">Pricing</a>
+      <a class="btn btn-quiet" href="#">Sign in</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Your clinic day, charted to the minute.</h1>
+      <div class="hero-lede">
+        <p>Tidewater is the scheduling app for small physiotherapy clinics. One sheet for every therapist, room and treatment, with cancellations handed to your waiting list before the slot goes cold.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#">Start 30-day trial</a>
+          <a class="link" href="#features">See what it handles</a>
+        </div>
+      </div>
+
+      <div class="sheet-wrap" id="day-sheet">
+        <div class="sheet-head wrap" style="padding-inline:0;padding-right:clamp(1.25rem,4vw,3rem)">
+          <span><b>Thursday 14 May</b> · Harbour Road Physio, 3 therapists</span>
+          <span>Select a dashed slot to offer it to the waiting list</span>
+        </div>
+        <div class="sheet" tabindex="0" role="region" aria-label="Sample day sheet, scrolls sideways on small screens">
+          <div class="grid">
+            <div class="hours">
+              <span class="corner">Therapist</span>
+              <span class="num">08:00</span><span class="num">09:00</span><span class="num">10:00</span><span class="num">11:00</span><span class="num">12:00</span><span class="num">13:00</span><span class="num">14:00</span><span class="num">15:00</span><span class="num">16:00</span>
+            </div>
+
+            <div class="row">
+              <div class="who"><b>Ana Reyes</b><small>Room 1 · Knee, shoulder</small></div>
+              <div class="track">
+                <div class="appt" style="grid-column:1/span 2;--i:0">M. Fiala<small>Knee review</small></div>
+                <div class="appt" style="grid-column:3/span 2;--i:1">T. Brandt<small>Shoulder</small></div>
+                <div class="appt" style="grid-column:5/span 3;--i:2">R. Singh<small>Post-op ACL, 90 min</small></div>
+                <div class="appt" style="grid-column:8/span 2;--i:3">L. Ortiz<small>Lower back</small></div>
+                <button class="open" style="grid-column:10/span 2;--i:4" type="button" data-who="Priya T."><span>Open · 60 min</span><small>Priya T. is next on the list</small></button>
+                <div class="appt" style="grid-column:12/span 2;--i:5">K. Mensah<small>Hip mobility</small></div>
+                <div class="appt" style="grid-column:14/span 2;--i:6">D. Halloran<small>Neck</small></div>
+                <div class="appt" style="grid-column:16/span 3;--i:7">S. Weiss<small>Ankle</small></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="who"><b>Dev Malik</b><small>Room 2 · Sports injury</small></div>
+              <div class="track">
+                <div class="appt" style="grid-column:1/span 3;--i:1">J. Nowak<small>Hamstring, 90 min</small></div>
+                <div class="appt" style="grid-column:4/span 2;--i:2">E. Park<small>Calf strain</small></div>
+                <div class="appt" style="grid-column:6/span 2;--i:3">A. Costa<small>Shoulder</small></div>
+                <div class="appt" style="grid-column:8/span 2;--i:4">B. Lindqvist<small>Knee taping</small></div>
+                <div class="appt" style="grid-column:10/span 2;--i:5">H. Aziz<small>Groin</small></div>
+                <div class="appt" style="grid-column:12/span 3;--i:6">C. Dubois<small>Return to run, 90 min</small></div>
+                <button class="open" style="grid-column:15/span 2;--i:7" type="button" data-who="Omar S."><span>Open · 60 min</span><small>Omar S. is next on the list</small></button>
+                <div class="appt" style="grid-column:17/span 2;--i:8">F. Ramos<small>Wrist</small></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="who"><b>Mira Okafor</b><small>Hydro pool · Rehab</small></div>
+              <div class="track">
+                <button class="open" style="grid-column:1/span 2;--i:2" type="button" data-who="Ines V."><span>Open · 60 min</span><small>Ines V. is next on the list</small></button>
+                <div class="appt" style="grid-column:3/span 3;--i:3">G. Petrov<small>Hip replacement, 90 min</small></div>
+                <div class="appt" style="grid-column:6/span 2;--i:4">N. Abara<small>Pool session</small></div>
+                <div class="appt" style="grid-column:8/span 2;--i:5">W. Chen<small>Pool session</small></div>
+                <div class="appt" style="grid-column:10/span 3;--i:6">I. Larsen<small>Stroke rehab, 90 min</small></div>
+                <div class="appt" style="grid-column:13/span 2;--i:7">V. Moreau<small>Pool session</small></div>
+                <div class="appt" style="grid-column:15/span 4;--i:8">Group class<small>Back care, 8 booked</small></div>
+              </div>
+            </div>
+
+            <div class="tide-label">Chair time in use</div>
+            <div class="tide" aria-hidden="true">
+              <svg viewBox="0 0 900 76" preserveAspectRatio="none">
+                <path d="M0 60 C 90 20, 150 10, 250 12 S 400 20, 470 40 S 560 66, 640 58 S 780 18, 900 24 L900 76 L0 76Z" fill="var(--tide-wash)" opacity=".55"/>
+                <path class="line" pathLength="1" d="M0 60 C 90 20, 150 10, 250 12 S 400 20, 470 40 S 560 66, 640 58 S 780 18, 900 24" fill="none" stroke="var(--tide)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              </svg>
+              <span class="cap num" style="left:56%;bottom:auto;top:.5rem">low water 12:30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <h2>What the day sheet takes off the front desk.</h2>
+      <div class="rows">
+        <article class="frow">
+          <h3>Cancellations are filled while you work.</h3>
+          <p>When a patient cancels, Tidewater texts the waiting list in order of how long they have waited and how well the slot matches their <b>treatment length</b>. The first yes takes it. You see a booked slot, not a phone call.</p>
+          <div class="fig" aria-hidden="true">
+            <div class="bar">L. Ortiz · cancelled 08:42</div>
+            <div class="bar dash">Open · offered to 3 patients</div>
+            <div class="bar fill">Priya T. · confirmed 08:51</div>
+          </div>
+        </article>
+        <article class="frow">
+          <h3>Reminders that patients actually answer.</h3>
+          <p>Two texts per visit: a reply-to-confirm the day before, and an address-and-room note an hour ahead. Unconfirmed appointments are flagged on the sheet so you can ring only the ones that matter.</p>
+          <div class="fig" aria-hidden="true">
+            <div class="track-s">
+              <div><b>Sent</b><span class="num">Wed 09:00</span></div>
+              <div><b>Confirmed</b><span class="num">Wed 09:12</span></div>
+              <div><b>Arrived</b><span class="num">Thu 10:58</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="frow">
+          <h3>Rooms, tables and the pool, never double-booked.</h3>
+          <p>Treatments carry what they need: a plinth, the hydro pool, a second therapist. Tidewater only offers times when every one of them is free, so a 90-minute post-op session cannot collide with the group class.</p>
+          <div class="fig" aria-hidden="true">
+            <div class="matrix">
+              <i></i><i class="num">09</i><i class="num">10</i><i class="num">11</i><i class="num">12</i>
+              <i>Room 1</i><s class="on"></s><s class="on"></s><s class="on"></s><s></s>
+              <i>Room 2</i><s class="on"></s><s></s><s class="on"></s><s class="on"></s>
+              <i>Pool</i><s></s><s class="on"></s><s class="on"></s><s class="x"></s>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>
+
+<section class="close">
+  <div class="wrap">
+    <div>
+      <h2>Chart next week before Monday morning.</h2>
+      <p>Import your current diary from a CSV and the first sheet is ready in an afternoon. Cancel inside 30 days and you pay nothing.</p>
+    </div>
+    <a class="btn btn-primary" href="#">Start 30-day trial</a>
+  </div>
+</section>
+<footer><div class="wrap"><span>Tidewater, scheduling for physiotherapy clinics.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">hello@tidewater.example</a></span></div></footer>
+
+<script>
+document.querySelectorAll('.open').forEach(function(b){
+  b.addEventListener('click',function(){
+    if(b.classList.contains('taken'))return;
+    b.classList.add('taken');
+    b.innerHTML='<span>'+b.dataset.who+' · booked</span><small>Text sent, reply pending</small>';
+    b.style.border='0';
+  });
+});
+</script>
+</body>
+</html>

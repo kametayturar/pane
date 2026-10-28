@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><video src="video-1-teaser.mp4" autoplay muted loop playsinline controls></video><figcaption>video-1-teaser.mp4 – 6.0 s, 1280x720</figcaption></figure><figure><img src="video-1-sheet.png" alt="look.py contact sheet (3x2)"><figcaption>look.py contact sheet (3x2)</figcaption></figure><figure><img src="video-1-frame.png" alt="look.py --at 4.0"><figcaption>look.py --at 4.0</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered video-1-teaser.mp4: 6.0 s, 1280x720, 30 fps, H.264 + silent AAC, 432 KB. Structure: title card (Tidewater / Scheduling for physiotherapy clinics), three feature beats (Fill every gap; Fewer no-shows; Every room, every therapist) each with a FEATURE n / 3 chip, end card (Book a demo at tidewater.app), 0.25 s crossfades. Built entirely with the skill's scripts (background.py, overlay.py/graphics.py via one render.py project, export.py) and checked with probe.py, look.py and check.py.
+
+What the skill changed: it forced probe/look/check verification. look.py (step 8) showed that graphics.py's 'title' template draws its accent bar through the subtitle (reproduced with two fonts, libass and --scale), so I swapped to overlay text lines (centre title + bottom tagline) inside the same render.py project instead of patching ffmpeg by hand. The skill's rule 'never guess a raw ffmpeg invocation' means design is limited to what its 42 scripts expose: no motion beyond fades, no UI mockups, flat gradient backgrounds.
+
+Not fixed / caveats: the output carries a silent AAC track (export.py default) so check.py --platform x reports audio and loudness FAIL; no music was requested so I left it. The title template bug is reported above, not resolved.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Skill's scripts live in the repo, so I cloned it to scratch (doctor only because it is the first run; the skill says only run it on failure/when asked, so this was an extra). Note the missing default font: a brand.json with a real font file is needed.</div><div class="cmd">gh repo clone kajisho5/ffmpeg-skill repo -- --depth 1 &amp;&amp; python3 scripts/_contract.py doctor</div><div class="out">ffmpeg-skill 2.10.10
+python 3.13.3; ffmpeg 7.1.1; ffprobe 7.1.1
+ok: 68 capabilities available, 0 required missing, 2 optional missing
+missing optional: external:parakeet, external:whisper
+fonts: 'DejaVu Sans' missing; renders ja zh ko ar he hi bn ta th lo ru el; emoji monochrome</div></div><div class="step"><div class="note"># Five 1.4 s teal-gradient plates: title, three feature beats, end card. 5 x 1.4 s minus 4 x 0.25 s crossfades = 6.0 s.</div><div class="cmd">python3 scripts/background.py -o bg1.mp4 --duration 1.4 --width 1280 --height 720 --gradient 0x06202e:0x0c5c73 --angle 35 --overwrite --json-brief   # x5 with different gradients</div><div class="out">{ "status": "completed", ... }  (x5)
+bg1.mp4 22,505 B  bg2.mp4 21,418 B  bg3.mp4 21,934 B  bg4.mp4 19,035 B  bg5.mp4 22,505 B</div></div><div class="step"><div class="note"># Step 8 of the skill (look at the picture) caught a defect a probe cannot: the bar collides with the subtitle.</div><div class="cmd">python3 scripts/graphics.py bg1.mp4 --template title --title "Tidewater" --subtitle "Scheduling for physiotherapy clinics" --brand brand.json --start 0 --end 1.4 -o t1.mp4   # then look.py --at 0.7</div><div class="out">"status": "completed"  -&gt; look.py: wrote f07.png
+(viewed) the template's teal accent bar (graphics.py draws it at y=398) touches the ascenders of the subtitle's first words.</div></div><div class="step"><div class="note"># Not a font issue: bar and subtitle positions are fixed offsets in the template. The skill forbids raw ffmpeg workarounds, so instead of hand-editing filters I used another script of the skill (overlay.py via render.py).</div><div class="cmd">retries: graphics.py ... --text-render ass | --scale 1.3 | brand font Arial Bold -&gt; Verdana Bold; each re-rendered and viewed with look.py --at 0.7</div><div class="out">ass: no fade + outlined regular-weight text, bar still adjacent
+--scale 1.3: bar moves to y=410, still touches subtitle
+Verdana Bold: same collision</div></div><div class="step"><div class="note"># Skill rule: 3+ steps -&gt; one render.py project, so intermediates are not hand-chained. Export preset 'x' (1280x720, H.264) because 'youtube' would upscale to 1920x1080.</div><div class="cmd">python3 scripts/render.py --init project.json  # edited into project2.json (see files): 5 clips, fade 0.25 s, overlays[] text title at 'center' + tagline at 'bottom', graphics[] 'chapter' chips, export preset x</div><div class="out">wrote project.json; edit clips/src and run: render.py project.json</div></div><div class="step"><div class="note"># Plan first, then execute (skill workflow step 3). It also shows the cost: 22 commands, 15 of them sequential re-encodes (3 graphics + 10 overlays + join/fit/export), each at CRF 18 – the skill's own 'as few re-encodes as possible' rule is not met by one-overlay-per-line, but flat-colour plates hide the generational loss.</div><div class="cmd">python3 scripts/render.py project2.json --dry-run --overwrite --json-brief</div><div class="out">→ join.py bg1.mp4 ... bg5.mp4 -o joined.mp4 --transition fade --duration 0.25 --width 1280 --fps 30
+→ fit.py joined.mp4 -o fit.mp4 --aspect 16:9 --width 1280
+→ graphics.py ... --template chapter --title "FEATURE 1 / 3" --start 1.15 --end 2.3 --position top-left   (x3)
+→ overlay.py ... --text Tidewater --position center --start 0.0 --end 1.15 --fade 0.3 --font-size 88   (title + tagline per beat, 10 total)
+→ export.py overlay09.mp4 --preset x -o tidewater-teaser.mp4
+rendered tidewater-teaser.mp4 via clips → join → fit → graphics → overlays → export
+"dry_run": true, "commands": 22</div></div><div class="step"><div class="cmd">python3 scripts/render.py project2.json --overwrite --json-brief</div><div class="out">"status": "completed",
+"verified": true,
+"summary": { "duration_s": 6.016, "width": 1280, "height": 720, "fps": 30.0, "vcodec": "h264", "acodec": "aac", "channels": 2 }
+"stages": ["clips","join","fit","graphics","overlays","export"]</div></div><div class="step"><div class="note"># Video stream is exactly 6.0 s; the container's 6.016 s is the AAC track.</div><div class="cmd">python3 scripts/probe.py tidewater-teaser.mp4</div><div class="out">duration 6.016009 | video h264 1280 x 720 30.0 fps, video duration 6.0 | audio aac 2 ch
+size 432,589 bytes</div></div><div class="step"><div class="note"># Viewed: title, three beats with FEATURE n / 3 chips, end card; no collisions. Contact-sheet timestamps are offset ~0.5 s so some tiles catch fades.</div><div class="cmd">python3 scripts/look.py tidewater-teaser.mp4 --tiles 3x2 -o sheet2.png ; python3 scripts/look.py tidewater-teaser.mp4 --at 4.0 -o f40.png</div><div class="out">contact sheet: 6 frames every 1.00s -&gt; sheet2.png
+wrote f40.png</div></div><div class="step"><div class="note"># The teaser was never asked to have sound; export.py adds a silent AAC track. Reported rather than fixed: adding music would change the content (skill: judgement rows are not silently changed).</div><div class="cmd">python3 scripts/check.py tidewater-teaser.mp4 --platform x</div><div class="out">PASS duration 6.02s | aspect 16:9 | resolution 1280x720 | fps 30 | vfr constant | h264 | yuv420p | bt709 | size 0.4 MB | true peak
+FAIL audio  aac 2ch 44100Hz, silent (peak -inf dB)
+WARN subtitles none
+FAIL loudness -inf LUFS [judgement]
+13 checks, 2 failed, 1 warnings</div></div></div>
+<h2>Files</h2><details open><summary>project2.json (render.py project)</summary><pre>{
+  <span <span class="k">class</span>="s">"output"</span>: <span <span class="k">class</span>="s">"tidewater-teaser.mp4"</span>,
+  <span <span class="k">class</span>="s">"frame"</span>: {
+    <span <span class="k">class</span>="s">"aspect"</span>: <span <span class="k">class</span>="s">"<span class="n">16</span>:<span class="n">9</span>"</span>,
+    <span <span class="k">class</span>="s">"width"</span>: <span class="n">1280</span>,
+    <span <span class="k">class</span>="s">"fps"</span>: <span class="n">30</span>
+  },
+  <span <span class="k">class</span>="s">"clips"</span>: [
+    {
+      <span <span class="k">class</span>="s">"src"</span>: <span <span class="k">class</span>="s">"bg1.mp4"</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"src"</span>: <span <span class="k">class</span>="s">"bg2.mp4"</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"src"</span>: <span <span class="k">class</span>="s">"bg3.mp4"</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"src"</span>: <span <span class="k">class</span>="s">"bg4.mp4"</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"src"</span>: <span <span class="k">class</span>="s">"bg5.mp4"</span>
+    }
+  ],
+  <span <span class="k">class</span>="s">"transition"</span>: {
+    <span <span class="k">class</span>="s">"<span class="k">type</span>"</span>: <span <span class="k">class</span>="s">"fade"</span>,
+    <span <span class="k">class</span>="s">"duration"</span>: <span class="n">0.25</span>
+  },
+  <span <span class="k">class</span>="s">"brand"</span>: <span <span class="k">class</span>="s">"brand.json"</span>,
+  <span <span class="k">class</span>="s">"graphics"</span>: [
+    {
+      <span <span class="k">class</span>="s">"template"</span>: <span <span class="k">class</span>="s">"chapter"</span>,
+      <span <span class="k">class</span>="s">"title"</span>: <span <span class="k">class</span>="s">"FEATURE <span class="n">1</span> / <span class="n">3</span>"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"top-left"</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">1.15</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">2.3</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"template"</span>: <span <span class="k">class</span>="s">"chapter"</span>,
+      <span <span class="k">class</span>="s">"title"</span>: <span <span class="k">class</span>="s">"FEATURE <span class="n">2</span> / <span class="n">3</span>"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"top-left"</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">2.3</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">3.45</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"template"</span>: <span <span class="k">class</span>="s">"chapter"</span>,
+      <span <span class="k">class</span>="s">"title"</span>: <span <span class="k">class</span>="s">"FEATURE <span class="n">3</span> / <span class="n">3</span>"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"top-left"</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">3.45</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">4.6</span>
+    }
+  ],
+  <span <span class="k">class</span>="s">"loudness"</span>: <span class="k">null</span>,
+  <span <span class="k">class</span>="s">"<span class="k">export</span>"</span>: {
+    <span <span class="k">class</span>="s">"preset"</span>: <span <span class="k">class</span>="s">"x"</span>,
+    <span <span class="k">class</span>="s">"normalize"</span>: <span class="k">false</span>
+  },
+  <span <span class="k">class</span>="s">"check"</span>: <span class="k">null</span>,
+  <span <span class="k">class</span>="s">"overlays"</span>: [
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Tidewater"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"center"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">88</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">0.0</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">1.15</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Scheduling <span class="k">for</span> physiotherapy clinics"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"bottom"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">34</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">0.0</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">1.15</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>,
+      <span <span class="k">class</span>="s">"margin"</span>: <span class="n">150</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Fill every gap"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"center"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">72</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">1.15</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">2.3</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Drag-and-drop clinic calendar"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"bottom"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">34</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">1.15</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">2.3</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>,
+      <span <span class="k">class</span>="s">"margin"</span>: <span class="n">150</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Fewer no-shows"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"center"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">72</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">2.3</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">3.45</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Automatic SMS and email reminders"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"bottom"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">34</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">2.3</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">3.45</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>,
+      <span <span class="k">class</span>="s">"margin"</span>: <span class="n">150</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Every room, every therapist"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"center"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">72</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">3.45</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">4.6</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"One live view <span class="k">of</span> the whole clinic"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"bottom"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">34</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">3.45</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">4.6</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>,
+      <span <span class="k">class</span>="s">"margin"</span>: <span class="n">150</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Tidewater"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"center"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">88</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">4.6</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">6.0</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>
+    },
+    {
+      <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"Book a demo at tidewater.app"</span>,
+      <span <span class="k">class</span>="s">"position"</span>: <span <span class="k">class</span>="s">"bottom"</span>,
+      <span <span class="k">class</span>="s">"font_size"</span>: <span class="n">34</span>,
+      <span <span class="k">class</span>="s">"start"</span>: <span class="n">4.6</span>,
+      <span <span class="k">class</span>="s">"end"</span>: <span class="n">6.0</span>,
+      <span <span class="k">class</span>="s">"fade"</span>: <span class="n">0.3</span>,
+      <span <span class="k">class</span>="s">"margin"</span>: <span class="n">150</span>
+    }
+  ]
+}</pre></details><details><summary>brand.json</summary><pre>{
+  <span <span class="k">class</span>="s">"font"</span>: <span <span class="k">class</span>="s">"Verdana"</span>,
+  <span <span class="k">class</span>="s">"font_file"</span>: <span <span class="k">class</span>="s">"/System/Library/Fonts/Supplemental/Verdana Bold.ttf"</span>,
+  <span <span class="k">class</span>="s">"colors"</span>: {<span <span class="k">class</span>="s">"primary"</span>: <span <span class="k">class</span>="s">"5EEAD4"</span>, <span <span class="k">class</span>="s">"text"</span>: <span <span class="k">class</span>="s">"FFFFFF"</span>, <span <span class="k">class</span>="s">"outline"</span>: <span <span class="k">class</span>="s">"<span class="n">000000</span>"</span>, <span <span class="k">class</span>="s">"background"</span>: <span <span class="k">class</span>="s">"06202E"</span>, <span <span class="k">class</span>="s">"accent"</span>: <span <span class="k">class</span>="s">"0C5C73"</span>},
+  <span <span class="k">class</span>="s">"safe_margin"</span>: <span class="n">64</span>
+}
+</pre></details>
+</main>
+
+</body></html>

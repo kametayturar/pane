@@ -1,0 +1,40 @@
+{
+  "id": "avoid-ai-writing",
+  "sets": [
+    "copy"
+  ],
+  "skillSays": [
+    "Treat AI-isms as writing-quality signals, not proof of authorship: audit, then rewrite without sanding off the author's voice.",
+    "Pick a context profile (docs, blog, email...) first; strictness changes per profile.",
+    "Scan P0/P1 patterns: Tier 1 vocabulary (delve, seamless, leverage), \"not X, it's Y\", hedge stacks, generic closers, em dashes above about one per 1,000 words.",
+    "Weigh rhythm highest: vary sentence and paragraph length, because swapping words while the metronome runs still reads as machine output.",
+    "Do not add fake first person, manufactured stakes, performed candor or invented specifics while removing tells.",
+    "Re-read your own rewrite: recycled transitions, rule-of-three and fresh inflation survive the first pass."
+  ],
+  "examples": [
+    {
+      "prompt": "copy-1",
+      "changes": [
+        "Profile: docs. Plain verbs and no promotional words (\"seamlessly\", \"effortlessly\") in the empty state",
+        "No dashes, no bold, no tidy three-part closers",
+        "Error message uses uneven sentence lengths instead of three matching clauses"
+      ]
+    },
+    {
+      "prompt": "copy-2",
+      "changes": [
+        "Rewritten for rhythm: a long sentence, then a short one (\"Start with one practitioner.\")",
+        "Removed cheerful filler (\"We're thrilled to welcome you\") and generic closing line",
+        "Kept one rule of three only; no contrast reveals; zero em dashes"
+      ]
+    },
+    {
+      "prompt": "copy-3",
+      "changes": [
+        "Headline states a specific audience (\"clinics that see the same patients every week\") rather than \"Streamline your scheduling\"",
+        "Blurbs vary in length (31, 22 and 16 words) so they do not read as a template",
+        "Tier 1 words (seamless, empower, elevate) absent; stance kept without invented stats"
+      ]
+    }
+  ]
+}

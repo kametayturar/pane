@@ -1,0 +1,43 @@
+{
+  "id": "motion-design",
+  "sets": [
+    "motion"
+  ],
+  "skillSays": [
+    "Before animating, answer an 8-step checklist: emotional target, one motion-personality archetype, primary property, duration, easing family, hero element, secondary and ambient layers, and the 1/3 rules.",
+    "Pick ONE archetype and keep it consistent (Corporate is the UI default: 200-400ms, cubic-bezier(0.2,0,0,1), 0-3% overshoot).",
+    "Build every animation in three layers: primary action, secondary support (shadow, icon, trailing text), and ambient life.",
+    "Entrances decelerate and exits accelerate; exits are 65-75% of the entrance; never linear for spatial motion, never opacity-only for important changes.",
+    "Stagger budgets: micro cascade 20-40ms with a total under 200ms; never exceed 500ms; at most one third of elements move at once and nothing travels over a third of the screen.",
+    "Provide a reduced-motion alternative and a duration palette of three values."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "Archetype chosen: Corporate. Signature curve cubic-bezier(0.2,0,0,1), exit curve cubic-bezier(0.3,0,1,1), duration palette 140 / 250 / 400ms.",
+        "Primary: toast slides 28px from the right + opacity in 250ms; exit is 180ms ease-in (72% of the entrance, inside the 65-75% rule).",
+        "Secondary layer: shadow arrives 50ms later, icon scales 0.6 to 1 in 100ms after a 50ms delay, the tick draws over 160ms at +130ms, text trails by 80ms.",
+        "Ambient layer: a linear 3.6s countdown bar (linear allowed for progress), the other rows dim to 85% and the booked row washes teal over 250ms (staging)."
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Primary container: scale(0.94) + translateY(-4px) to rest from the top-right corner in 200ms; exit 140ms ease-in (70%).",
+        "Secondary: items cascade 30ms apart starting 50ms after the container (90ms stagger span, inside the micro-cascade budget), each 160ms with a 4px rise; the trigger dots rotate 90 degrees in 200ms.",
+        "Ambient: the list behind recedes to 80% opacity while open (200ms in, 140ms out); item hover is 80ms (hover under 100ms).",
+        "Reduced motion becomes a 120ms opacity-only variant."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Card entrance recipe per the skill: 20px below + opacity in 250ms on the signature curve, shadow lands 50ms later, row content fades in 100ms later.",
+        "Success state on check-off: checkbox pops 1.12 and back (220ms), fills in 140ms, tick draws 180ms at +60ms, strike follows 200ms at +80ms; ambient layer is a progress bar that eases to done/total over 300ms.",
+        "Removal: collapse exit (scale 0.95 + opacity) 180ms ease-in, then the rest shift up in a 30ms-stepped cascade of 200ms ease-in-out starting at +80ms (exit/entrance overlap).",
+        "Empty state fades in over 250ms and out over 140ms; every duration comes from the 140/250/400 palette or the skill's tables."
+      ]
+    }
+  ]
+}

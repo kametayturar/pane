@@ -1,0 +1,22 @@
+{
+  "id": "slack-gif-creator",
+  "sets": ["code"],
+  "skillSays": [
+    "Slack message GIFs are not 128x128 emoji: pick dimensions deliberately (emoji 128x128, message ~480) and 10-30 fps, 48-128 colours",
+    "Build frames as PIL images and assemble them with GIFBuilder, which quantizes to one global palette and can drop near-duplicate frames",
+    "Only shrink the file when asked to; the optimisation levers are fewer frames, fewer colours, smaller dimensions, duplicate removal",
+    "Validate the result with validate_gif() instead of eyeballing it: dimensions, size, frame count, fps",
+    "Use easing helpers for motion and thick lines / layered shapes so the graphics look polished, not placeholder"
+  ],
+  "examples": [
+    {
+      "prompt": "video-2",
+      "changes": [
+        "Ran the skill's GIFBuilder and validate_gif helpers (installed with uv) instead of a one-shot ffmpeg palette command",
+        "validate_gif exposed that 15 fps becomes 16.7 fps because GIF delays are whole centiseconds (8 s clip would play in 7.2 s), so I chose 20 fps = exactly 50 ms",
+        "Picked a message-sized 896x504 and checked it with validate_gif(is_emoji=False); noticed is_slack_ready() defaults to the emoji check and returns False for it",
+        "Measured size at several resolutions (960x540 was 2.65 MB, 896x504 is 780 KB) before settling, and verified loop flag, per-frame delays and the loop seam"
+      ]
+    }
+  ]
+}

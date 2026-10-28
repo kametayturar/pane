@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* shadcn/ui default (neutral) theme tokens. In a real shadcn project these already exist. */
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.985 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --border: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --ring: oklch(0.556 0 0);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body {
+    @apply bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100;
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+}
+
+/* Gallery chrome that follows the chosen style (see src/styles.css) */
+.demo-stage {
+  background-color: #f4f4f4;
+  background-image: radial-gradient(rgb(0 0 0 / 0.06) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.dark .demo-stage {
+  background-color: rgb(255 255 255 / 0.03);
+  background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px);
+}
+html:is([data-style="mono"], [data-style="glass"]) body { background: var(--page-bg, #fff) }
+html:is([data-style="mono"], [data-style="glass"]) .demo-stage { background-color: var(--stage-bg, transparent); background-image: radial-gradient(var(--stage-dot, transparent) 1px, transparent 1px) }
+html:is([data-style="mono"], [data-style="glass"]) .gallery-side { background: color-mix(in oklab, var(--page-bg, #fff) 82%, transparent) }
+html[data-style="mono"] body { font-family: "Geist Mono", ui-monospace, monospace }
+html[data-style="mono"] .gallery-card, html[data-style="mono"] .demo-stage { border-radius: 4px }
+
+/* The signal colour Instrument-family demos use outside a piece. */
+:root { --inst-signal: #0060e2 }
+.dark { --inst-signal: #4d8dff }
+
+/* Screen stills: show the one that matches the theme. */
+.screen-still { display: none }
+html:not(.dark) .screen-still[data-still="-light"],
+html.dark .screen-still[data-still="-dark"] { display: block }
+
+/* ===== Glass: the wallpaper and the gallery chrome (the surfaces themselves are in src/styles.css) =====
+   Glass only reads against colour, so the page and the preview stage get a vivid gradient mesh with a fine dot grid and two
+   soft light rays: the saturated colour is what the glass picks up, the dots and ray edges are what its rim bends. CSS only.
+   The page wallpaper is a fixed pseudo-element (background-attachment: fixed janks on iOS Safari).
+   --pane-* variables come from styles.css: opaque by default, translucent where backdrop-filter is supported. */
+html[data-style="glass"] body { font-family: var(--pane-font); position: relative }
+html[data-style="glass"] body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(rgb(255 255 255 / .55) 1px, transparent 1.4px) 0 0 / 22px 22px,
+    conic-gradient(from 200deg at 78% 26%, transparent 0 34%, rgb(255 255 255 / .42) 37%, transparent 41%, transparent 55%, rgb(255 255 255 / .26) 57.5%, transparent 60.5%),
+    radial-gradient(52% 48% at 6% 4%, rgb(255 118 176 / .72), transparent 70%),
+    radial-gradient(48% 54% at 94% 8%, rgb(82 148 255 / .74), transparent 70%),
+    radial-gradient(54% 58% at 82% 98%, rgb(255 168 96 / .7), transparent 70%),
+    radial-gradient(48% 52% at 6% 94%, rgb(150 104 255 / .66), transparent 70%),
+    radial-gradient(32% 36% at 52% 46%, rgb(86 224 196 / .5), transparent 72%),
+    var(--page-bg);
+}
+html[data-style="glass"].dark body::before {
+  background:
+    radial-gradient(rgb(255 255 255 / .09) 1px, transparent 1.4px) 0 0 / 22px 22px,
+    conic-gradient(from 200deg at 78% 26%, transparent 0 34%, rgb(255 255 255 / .14) 37%, transparent 41%, transparent 55%, rgb(255 255 255 / .09) 57.5%, transparent 60.5%),
+    radial-gradient(52% 48% at 6% 4%, rgb(132 58 255 / .62), transparent 70%),
+    radial-gradient(48% 54% at 94% 8%, rgb(28 120 255 / .55), transparent 70%),
+    radial-gradient(54% 58% at 82% 98%, rgb(240 62 150 / .5), transparent 70%),
+    radial-gradient(48% 52% at 6% 94%, rgb(20 190 170 / .46), transparent 70%),
+    radial-gradient(32% 36% at 52% 46%, rgb(99 102 241 / .42), transparent 72%),
+    var(--page-bg);
+}
+html[data-style="glass"] .preview-root { background: transparent }
+
+/* The preview stage: a stronger mesh, so floating glass has colour and edges to bend. */
+html[data-style="glass"] .demo-stage {
+  background:
+    radial-gradient(rgb(255 255 255 / .6) 1px, transparent 1.4px) 0 0 / 20px 20px,
+    conic-gradient(from 200deg at 78% 20%, transparent 0 34%, rgb(255 255 255 / .5) 37%, transparent 41%, transparent 55%, rgb(255 255 255 / .3) 57.5%, transparent 60.5%),
+    radial-gradient(46% 62% at 12% 14%, rgb(255 112 172 / 1), transparent 70%),
+    radial-gradient(42% 58% at 90% 10%, rgb(70 140 255 / 1), transparent 70%),
+    radial-gradient(52% 62% at 74% 100%, rgb(255 168 92 / 1), transparent 70%),
+    radial-gradient(46% 56% at 6% 100%, rgb(146 100 255 / .95), transparent 70%),
+    radial-gradient(34% 44% at 50% 50%, rgb(96 226 200 / .8), transparent 72%),
+    #d6dcfa;
+  box-shadow: inset 0 0 0 .5px rgb(255 255 255 / .6), 0 0 0 .5px rgb(30 40 90 / .1);
+}
+html[data-style="glass"].dark .demo-stage {
+  background:
+    radial-gradient(rgb(255 255 255 / .12) 1px, transparent 1.4px) 0 0 / 20px 20px,
+    conic-gradient(from 200deg at 78% 20%, transparent 0 34%, rgb(255 255 255 / .16) 37%, transparent 41%, transparent 55%, rgb(255 255 255 / .1) 57.5%, transparent 60.5%),
+    radial-gradient(46% 62% at 12% 14%, rgb(130 60 245 / .85), transparent 70%),
+    radial-gradient(42% 58% at 90% 10%, rgb(30 110 245 / .75), transparent 70%),
+    radial-gradient(52% 62% at 74% 100%, rgb(232 50 130 / .62), transparent 70%),
+    radial-gradient(46% 56% at 6% 100%, rgb(14 160 146 / .6), transparent 70%),
+    radial-gradient(34% 44% at 50% 50%, rgb(88 80 235 / .5), transparent 72%),
+    #0a0a16;
+  box-shadow: inset 0 0 0 .5px rgb(255 255 255 / .12), 0 0 0 .5px rgb(0 0 0 / .5);
+}
+
+/* Secondary text in the gallery chrome: Tailwind's neutral-400/500/600 are tuned for white and fall under AA on tinted glass.
+   Remap them to the glass ink steps (--pane-t2/-t3). Skipped inside the preview stage (demos own their colours) and on the dark code panel. */
+html[data-style="glass"] :is(.text-neutral-400, .text-neutral-500, .text-neutral-600, .dark\:text-neutral-400, .dark\:text-neutral-500):not(:is(.demo-stage, .bg-neutral-950) *):not(.bg-neutral-950):not(:hover) { color: var(--pane-t3) }
+html[data-style="glass"] :is(.text-neutral-500, .text-neutral-600, .dark\:text-neutral-400):not(:is(.demo-stage, .bg-neutral-950) *):not(.bg-neutral-950):not(:hover) { color: var(--pane-t2) }
+
+html[data-style="glass"]:not(.dark) :is(.text-blue-600, .text-blue-700):not(:is(.demo-stage, .bg-neutral-950) *) { color: #0846ad }
+html[data-style="glass"].dark :is(.text-blue-600, .text-blue-700, .dark\:text-blue-400, .dark\:text-blue-300):not(:is(.demo-stage, .bg-neutral-950) *) { color: #8db8ff }
+
+/* Gallery cards, the sidebar and the mobile header are glass too. (App.tsx owns these class names: Tailwind utilities for the
+   hero prompt card and the link cards, so they are matched by shape.) */
+html[data-style="glass"] :is(.gallery-card, a.group.rounded-2xl.bg-white, section.rounded-3xl.bg-white) { background-color: var(--pane-tint); box-shadow: var(--pane-card) }
+html[data-style="glass"] :is(.gallery-side, body > #root header.sticky) {
+  background-color: var(--pane-tint);
+  border-color: transparent;
+  box-shadow: inset -.5px 0 0 rgb(255 255 255 / .5), 1px 0 0 rgb(30 40 90 / .08);
+}
+html[data-style="glass"] body > #root header.sticky { box-shadow: inset 0 -.5px 0 rgb(255 255 255 / .55), 0 1px 0 rgb(30 40 90 / .08) }
+html[data-style="glass"].dark .gallery-side { box-shadow: inset -.5px 0 0 rgb(255 255 255 / .12), 1px 0 0 rgb(0 0 0 / .4) }
+html[data-style="glass"].dark body > #root header.sticky { box-shadow: inset 0 -.5px 0 rgb(255 255 255 / .12), 0 1px 0 rgb(0 0 0 / .4) }
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  html[data-style="glass"] :is(.gallery-card, a.group.rounded-2xl.bg-white, section.rounded-3xl.bg-white, .gallery-side, body > #root header.sticky) { -webkit-backdrop-filter: blur(22px) saturate(2); backdrop-filter: blur(22px) saturate(2) }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  html[data-style="glass"] :is(.gallery-card, a.group.rounded-2xl.bg-white, section.rounded-3xl.bg-white, .gallery-side, body > #root header.sticky) { -webkit-backdrop-filter: none; backdrop-filter: none }
+}

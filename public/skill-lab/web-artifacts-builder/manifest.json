@@ -1,0 +1,40 @@
+{
+  "id": "web-artifacts-builder",
+  "sets": ["web"],
+  "skillSays": [
+    "Build with a fixed stack: React + TypeScript + Vite + Tailwind CSS + shadcn/ui, started from an init script that scaffolds the project with 40+ shadcn components pre-installed.",
+    "Develop the artifact by editing the generated code, using real components (Button, Card, Tabs, Select, Checkbox, Form, Badge...) and shadcn's CSS-variable theming.",
+    "Bundle everything into one self-contained HTML file (JS and CSS inlined) so it can be shared as a single artifact; testing is optional and comes after.",
+    "Explicit anti-slop rules: avoid excessive centred layouts, purple gradients, uniform rounded corners and the Inter font.",
+    "Meant for elaborate artifacts that need state or components, not for simple single-file pages."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Real shadcn/ui parts (Badge, Button, Avatar, Progress, Separator) restyled through the theme variables, into one inlined 320 KB HTML file with React in it.",
+        "Followed the anti-slop rules: left-aligned 7/5 asymmetric hero, a slightly tilted product card, an Instrument Serif and Schibsted Grotesk pairing instead of Inter, deep-green and coral instead of purple.",
+        "Corner radii are deliberately varied (sharp tag, pill buttons, one oversized corner on the card) rather than one uniform radius.",
+        "Features sit on a dark band with stepped vertical offsets instead of an even centred card grid."
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Billing period is a shadcn Tabs control in React state; prices recompute and animate with tailwindcss-animate classes.",
+        "Layout avoids the centred three-card row: a sticky left column holds the headline and toggle while plans stack as wide rows on the right.",
+        "Clinic is a solid green card with a coral button and badge; the cards use asymmetric radii instead of identical rounded boxes.",
+        "Yearly mode shows the per-month price and the real yearly total ($182.40, $470.40, $1238.40)."
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Used the stack's own form tooling: react-hook-form with a zod schema, shadcn Input, Label, Select, Checkbox and Alert.",
+        "Validation is a zod schema (valid email regex, 8-character password minimum); fields validate on touch, and submit shows an alert summary plus inline errors.",
+        "The Radix Select and Checkbox are wired into the form state by hand, so the clinic-size and terms errors work like any other field.",
+        "Added a show/hide password control, a spinner state on submit and a success screen, in the green/coral theme."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – Scheduling for physiotherapy clinics</title>
+<meta name="description" content="Tidewater fills cancellation gaps, sends reminders patients answer and books whole treatment plans for small physiotherapy clinics.">
+<meta name="theme-color" content="#FAFAF8">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--bg:#FAFAF8;--surface:#FFFFFF;--ink:#121212;--muted:#595959;--line:#E6E6E1;--ctl:#6E6E6E;--accent:#5B3FD0;--accent-hover:#4A31B5;--accent-ink:#FFFFFF;--soft:#EEEAFC;--soft-ink:#3B2A93;--err:#B42318;--err-soft:#FDECEA;--ph:#6B6B6B;--radius:12px;--font-head:'Manrope', system-ui, sans-serif;--font-body:'Manrope', system-ui, sans-serif;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1115;--surface:#171A21;--ink:#F2F3F5;--muted:#A9AFBB;--line:#2A2F3A;--ctl:#818A9C;--accent:#B3A4FF;--accent-hover:#C9BEFF;--accent-ink:#16102E;--soft:#221D3F;--soft-ink:#D5CCFF;--err:#FF9189;--err-soft:#3A1B1E;--ph:#98A0AE;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F1115;--surface:#171A21;--ink:#F2F3F5;--muted:#A9AFBB;--line:#2A2F3A;--ctl:#818A9C;--accent:#B3A4FF;--accent-hover:#C9BEFF;--accent-ink:#16102E;--soft:#221D3F;--soft-ink:#D5CCFF;--err:#FF9189;--err-soft:#3A1B1E;--ph:#98A0AE;color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:88px;}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--font-body);-webkit-font-smoothing:antialiased;}
+h1,h2,h3{font-family:var(--font-head);line-height:1.1;margin:0;letter-spacing:-.02em;text-wrap:balance;}
+h1{font-size:clamp(2.2rem,5.4vw,3.9rem);font-weight:800}
+h2{font-size:clamp(1.6rem,3.2vw,2.3rem);font-weight:800}
+h3{font-size:1.2rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+:root[data-theme="dark"] :focus-visible{outline-color:var(--accent)}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-80px;z-index:100;background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:8px;font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+header.site{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.bar{display:flex;align-items:center;gap:20px;padding-top:16px;padding-bottom:16px;min-height:72px}
+.brand{display:inline-flex;align-items:center;gap:10px;font:700 1.2rem var(--font-head);text-decoration:none;letter-spacing:-.02em;min-height:44px}
+.brand svg{width:30px;height:30px;color:var(--accent)}
+nav.primary{margin-left:auto}
+nav.primary ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;align-items:center}
+nav.primary a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;text-decoration:none;font-weight:600;font-size:.95rem;transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease;}
+nav.primary a:hover{background:var(--soft);color:var(--soft-ink)}
+nav.primary a[aria-current="page"]{background:var(--soft);color:var(--soft-ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;font:700 1rem var(--font-body);text-decoration:none;cursor:pointer;border:2px solid transparent;touch-action:manipulation;transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease;}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{background:var(--accent-hover);}
+.btn-ghost{background:transparent;border-color:var(--ctl);color:var(--ink)}
+.btn-ghost:hover{background:var(--soft);border-color:var(--accent);color:var(--soft-ink)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{cursor:progress;opacity:1}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--soft-ink);background:var(--soft);padding:6px 14px;border-radius:999px}
+.muted{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--radius) + 6px);box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px -16px rgba(0,0,0,.18)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.78rem;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--soft-ink);white-space:nowrap}
+.chip.warn{background:var(--err-soft);color:var(--err)}
+.icon{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+footer.site{padding:36px 0 48px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;margin-top:72px}
+footer.site .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (prefers-contrast:more){:root{--muted:var(--ink);--ctl:var(--ink);--line:var(--ink)}.btn-ghost{border-color:var(--ink)}}
+@media (forced-colors:active){.btn{border-color:ButtonText}.chip{border:1px solid CanvasText}}
+@media (max-width:720px){nav.primary li:not(:last-child){display:none}.bar{gap:10px}}
+
+.hero{padding:48px 0 24px}
+.hero .grid{display:grid;gap:48px;align-items:center;grid-template-columns:1.05fr .95fr}
+
+
+.hero h1{margin:20px 0 20px}
+.hero .lede{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--muted);max-width:56ch;}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.sched{padding:20px;margin:0}
+.sched figcaption{display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:700;margin-bottom:8px;flex-wrap:wrap}
+.sched ol{list-style:none;margin:0;padding:0}
+.sched li{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:14px 8px;border-top:1px solid var(--line)}
+.sched li:first-child{border-top:0}
+.sched time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--muted)}
+.sched li div{display:flex;flex-direction:column;min-width:0}
+.sched li strong{font-weight:700}
+.sched li span:not(.chip){color:var(--muted);font-size:.9rem}
+.sched li.filled{background:var(--soft);border-radius:var(--radius);border-top-color:transparent}
+.sched li.filled+li{border-top-color:transparent}
+.features{padding-top:72px;scroll-margin-top:24px}
+.features h2{max-width:20ch}
+.features ul{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:20px;grid-template-columns:repeat(3,1fr)}
+.features li{padding:28px;display:flex;flex-direction:column;gap:14px}
+.features .ico{display:grid;place-items:center;width:48px;height:48px;border-radius:var(--radius);background:var(--soft);color:var(--soft-ink)}
+.features p{color:var(--muted)}
+.cta{margin-top:72px;padding:40px;display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--soft);border-color:transparent;box-shadow:none}
+.cta h2{font-size:clamp(1.4rem,2.6vw,1.9rem);max-width:24ch}
+@media (max-width:900px){.hero .grid,.hero .grid{grid-template-columns:1fr}.features ul{grid-template-columns:1fr}}
+@media (max-width:480px){.sched li{grid-template-columns:48px 1fr}.sched li .chip{grid-column:2;justify-self:start}.cta{padding:28px 20px}.btn{width:100%}}
+</style>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site"><div class="wrap bar">
+<a class="brand" href="#top" aria-label="Tidewater home"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" width="30" height="30"><circle cx="16" cy="16" r="15" fill="currentColor" opacity=".14"/><path d="M4 18c3.2 0 3.2-3 6.4-3s3.2 3 6.4 3 3.2-3 6.4-3 3.2 3 4.8 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M4 23c3.2 0 3.2-3 6.4-3s3.2 3 6.4 3 3.2-3 6.4-3 3.2 3 4.8 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".5"/></svg><span>Tidewater</span></a>
+<nav class="primary" aria-label="Primary"><ul><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#start">Sign in</a></li></ul></nav>
+</div></header>
+<main id="main" tabindex="-1">
+<section class="hero" aria-labelledby="hero-title"><div class="wrap grid">
+<div class="copy">
+<p class="eyebrow">Scheduling for physiotherapy clinics</p>
+<h1 id="hero-title">Every treatment room full, every patient on time.</h1>
+<p class="lede"><span translate="no">Tidewater</span> is the scheduling app built for small physiotherapy clinics. It fills cancellation gaps, reminds patients without chasing them, and keeps treatment plans on track — so your front desk can look up from the screen.</p>
+<div class="actions"><a class="btn btn-primary" href="#start">Start your free trial</a><a class="btn btn-ghost" href="#features">See how it works</a></div>
+</div>
+<figure class="card sched" aria-labelledby="sched-cap">
+<figcaption id="sched-cap"><span class="day">Tuesday 14 October</span><span class="chip">3 of 4 rooms booked</span></figcaption>
+<ol>
+<li><time datetime="09:00">9:00</time><div><strong>Amara Singh</strong><span>Knee rehab, week 3</span></div><span class="chip">Confirmed</span></li>
+<li><time datetime="09:45">9:45</time><div><strong>Lucas Berg</strong><span>Lower back</span></div><span class="chip">Reminded</span></li>
+<li class="filled"><time datetime="10:30">10:30</time><div><strong>Priya Nair</strong><span>Filled from waitlist in 6 min</span></div><span class="chip">Gap filled</span></li>
+<li><time datetime="11:15">11:15</time><div><strong>Jo Okafor</strong><span>Shoulder, week 5</span></div><span class="chip">Confirmed</span></li>
+</ol></figure>
+</div></section>
+<section class="features wrap" id="features" aria-labelledby="features-title">
+<h2 id="features-title">Built around how clinics really run</h2>
+<ul>
+<li class="card"><span class="ico"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="m9 15.5 2 2 4-4"/></svg></span><h3>Cancellations fill themselves</h3><p>When a patient cancels, Tidewater offers the slot to your waitlist by text and confirms the first yes—usually within ten minutes.</p></li>
+<li class="card"><span class="ico"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><h3>Reminders patients actually answer</h3><p>Two-tap replies to confirm or reschedule, sent at the time each patient prefers. Your team stops phoning round on Monday morning.</p></li>
+<li class="card"><span class="ico"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h10M4 12h16M4 17h7"/><path d="m15 17 2 2 4-4.5"/></svg></span><h3>Treatment plans that book themselves</h3><p>Set a six-week course once. Tidewater proposes the full run of visits around each practitioner’s calendar and flags any that drift.</p></li>
+</ul>
+</section>
+<section class="wrap" id="start" aria-labelledby="cta-title"><div class="card cta"><h2 id="cta-title">Try Tidewater free for 30 days</h2><a class="btn btn-primary" href="#start">Create your account</a></div></section>
+</main>
+<footer class="site"><div class="wrap"><span>© 2026 <span translate="no">Tidewater</span> Scheduling Ltd.</span><span>Questions? hello@tidewater.example</span></div></footer>
+</body>
+</html>

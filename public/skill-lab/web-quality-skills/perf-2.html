@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="perf-2-before.png" alt="Original at 1280x800 (served without charset: emoji show as mojibake; thin 200-weight heading; cyan button at 1.8:1)."><figcaption>Original at 1280x800 (served without charset: emoji show as mojibake; thin 200-weight heading; cyan button at 1.8:1).</figcaption></figure><figure><img src="perf-2-after.png" alt="Fixed page at 1280x800."><figcaption>Fixed page at 1280x800.</figcaption></figure><figure><img src="perf-2-before-mobile.png" alt="Original at 390 px: no viewport meta, so the layout is a 980 px desktop page shrunk down."><figcaption>Original at 390 px: no viewport meta, so the layout is a 980 px desktop page shrunk down.</figcaption></figure><figure><img src="perf-2-after-mobile.png" alt="Fixed page at 390 px."><figcaption>Fixed page at 390 px.</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered a fixed landing page (site/new/index.html, full contents below). It looks the same as the original but is faster, passes automated accessibility/SEO checks and works from the keyboard.
+
+How it was done: I ran a live Lighthouse 13.5 audit (mobile, simulated slow 4G + 4x CPU, median of 3 runs) on the served page first, used the failing audits to locate the causes, fixed those, then re-ran the same audit under the same conditions and checked the keyboard flow by hand with puppeteer.
+
+Evidence (lab, localhost, cold cache, median of 3; no real-user CrUX data exists for a local page, so field status is unavailable):
+- Performance score 81 -&gt; 100; FCP 2.97 s -&gt; 0.65 s; LCP 4.07 s -&gt; 0.65 s; TBT 0 -&gt; 0 and CLS 0 -&gt; 0 (neither was a problem in this lab run; the 3e7-iteration busy loop only delayed first paint). Requests 10 -&gt; 4, transfer about 90 KiB -&gt; 22 KiB.
+- Accessibility 27 -&gt; 100, SEO 80 -&gt; 100, Best practices 88 -&gt; 100.
+
+Top issues and what was done:
+1. Render blocking (trace-backed): jQuery, moment (never used) and a 2-family / 18-weight Google Fonts stylesheet with display=block blocked first paint (Lighthouse estimated 2.35 s of blocking, 600 ms of invisible-text time). Removed jQuery and moment, kept Poppins at 2 weights with display=swap, preconnect, and a non-blocking stylesheet; removed the busy loop.
+2. Accessibility: no lang, no title, no main landmark, heading order skipped, 11 text nodes failed contrast (1.8 to 3.28:1), and both the Get started button and the cookie OK were non-focusable divs/spans with onclick. Now a real link and a real button, readable colours (all at least 5.36:1, computed, see steps), a visible focus ring, hidden emoji, a main landmark, and the h2 before the h3s.
+3. SEO and standards: added doctype, charset, viewport (without it the page rendered at 980 px wide on phones), title, meta description, canonical and Open Graph tags; the testimonials are now real HTML instead of a string injected by jQuery after 1.5 s; the h1 now names the product category.
+4. The fixed cookie banner covered the page end (body gets bottom padding) and the cards now wrap on narrow screens.
+
+Not done / uncertain: the canonical and Open Graph URLs use a placeholder domain (tidewater.example) that must be replaced. I did not invent JSON-LD, a sitemap or images because there are no real facts to put in them. Google Fonts is still a third-party request; self-hosting the two weights would remove that connection and is a sensible next step. The hero tagline changed from 'The future of clinic scheduling' to '...physiotherapy clinic scheduling', and the heading weight went from 200 to 600 for legibility; both are small copy/design decisions the owner should approve. Contrast on the gradient hero was computed at both gradient endpoints only (Lighthouse cannot evaluate gradients). A score of 100 is not WCAG conformance; no screen reader was run. The remaining 'errors-in-console' item in the original run is just the missing favicon (404); the new page ships an inline empty icon.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Fetched and read these guides in full. The workflow they prescribe: measure the live page first (trace/Lighthouse), localize causes from failing audits, fix, re-run the same conditions, keep field and lab evidence separate.</div><div class="cmd">for s in web-quality-audit performance accessibility seo performance/references/MEASUREMENT.md; do gh api repos/addyosmani/web-quality-skills/contents/skills/$s... | base64 -d | wc -l; done</div><div class="out">web-quality-audit/SKILL.md: 209 lines
+performance/SKILL.md: 399 lines
+accessibility/SKILL.md: 464 lines
+seo/SKILL.md: 409 lines
+performance/references/MEASUREMENT.md: 107 lines</div></div><div class="step"><div class="note"># Lighthouse CLI is the fallback route the guide names when DevTools tooling is not available. Chrome is the installed Google Chrome, headless.</div><div class="cmd">cd site &amp;&amp; python3 -m http.server 7102 &amp;   # serves orig/ and new/
+npm i lighthouse &amp;&amp; npx lighthouse --version</div><div class="out">13.5.0</div></div><div class="step"><div class="note"># Baseline. Conditions: localhost, cold cache, mobile emulation with Lighthouse's default simulated throttling.</div><div class="cmd">npx lighthouse http://localhost:7102/orig/ --form-factor=mobile --output=json --chrome-flags='--headless=new --no-sandbox'   # x3, then node summarize.mjs orig 3</div><div class="out">{
+ "variant": "orig",
+ "runs": 3,
+ "lighthouse": "13.5.0",
+ "form": "mobile, simulated slow-4G + 4x CPU",
+ "scores": {
+  "performance": "81 (runs 81/83/71)",
+  "accessibility": "27 (runs 27/27/27)",
+  "seo": "80 (runs 80/80/80)",
+  "best-practices": "88 (runs 88/88/88)"
+ },
+ "metrics": {
+  "FCP_ms": "2968.81 (range 2729.58-4530.57)",
+  "LCP_ms": "4073.41 (range 3878.27-4530.57)",
+  "TBT_ms": "0 (range 0-0)",
+  "CLS": "0 (range 0-0)",
+  "SpeedIndex_ms": "3402.66 (range 3103.47-5285.78)"
+ },
+ "failingAudits": [
+  "best-practices: errors-in-console",
+  "accessibility: color-contrast",
+  "accessibility: document-title",
+  "accessibility: heading-order",
+  "accessibility: html-has-lang",
+  "accessibility: landmark-one-main",
+  "best-practices: doctype",
+  "best-practices: charset",
+  "seo: meta-description"
+ ]
+}</div></div><div class="step"><div class="note"># Failing audits localize the causes: three render-blocking resources (2.35 s), the font swap, 11 low-contrast nodes, plus the metadata and landmark checks.</div><div class="cmd">node details.mjs orig   # reads the failing audits in logs/orig-1.json</div><div class="out">render-blocking: Est savings of 2,350 ms; cdn.jsdelivr.net/npm/moment@2.30.1/mom=408ms, cdn.jsdelivr.net/npm/jquery@3.7.1/dist=1961ms, fonts.googleapis.com/css2?family=Inter=1533ms
+font-display: Est savings of 600 ms
+LCP breakdown: Time to first byte 2ms, Element render delay 2113ms
+unused-javascript: Est savings of 23 KiB
+third-parties: JSDelivr CDN 51 KiB, Google Fonts 37 KiB
+bootup-time: 0.1 s
+color-contrast: score 0 FAIL (11 nodes: 1.8, 2.84, 3.28)
+document-title: score 0 FAIL
+html-has-lang: score 0 FAIL
+heading-order: score 0 FAIL
+landmark-one-main: score 0 FAIL
+meta-description: score 0 FAIL
+doctype: score 0 FAIL
+charset: score 0 FAIL
+errors-in-console: score 0 FAIL</div></div><div class="step"><div class="note"># Manual check that Lighthouse cannot do: nothing on the page can be reached with Tab (focus stays on body), no viewport meta, quirks mode (BackCompat), no lang or title.</div><div class="cmd">node manual.mjs   # puppeteer, orig: Tab x4, doc metadata</div><div class="out">{
+ "variant": "orig",
+ "doc": {
+  "lang": "(none)",
+  "title": "(none)",
+  "viewportMeta": false,
+  "description": false,
+  "canonical": false,
+  "compat": "BackCompat",
+  "h1": [
+   "The future of clinic scheduling"
+  ],
+  "landmarks": []
+ },
+ "tabStops": [
+  "(body)",
+  "(body)",
+  "(body)",
+  "(body)"
+ ],
+ "bannerRemovedByKeyboard": "n/a: the OK control is a span, it cannot be focused",
+ "mobile": {
+  "innerWidth": 980,
+  "scrollWidth": 980,
+  "horizontalOverflow": false
+ }
+}</div></div><div class="step"><div class="note"># Gradient text checked at both endpoints; large heading text needs 3:1, normal text 4.5:1.</div><div class="cmd">python3 - &lt;&lt;'EOF'   # inline script: WCAG relative-luminance contrast ratio for each old and new colour pair</div><div class="out">OLD hero white on #7c3aed: 5.7:1
+OLD hero white on #06b6d4 (gradient end): 2.43:1
+OLD button #fff on #22d3ee: 1.81:1
+OLD body #999 on #fff: 2.85:1
+OLD banner #666 on #111: 3.29:1
+NEW hero white on #6d28d9: 7.1:1
+NEW hero white on #0e7490 (gradient end): 5.36:1
+NEW button #5b21b6 on #fff: 8.98:1
+NEW body #4b5563 on #fff: 7.56:1
+NEW banner #d1d5db on #111: 12.81:1
+NEW banner button #111 on #fff: 18.88:1</div></div><div class="step"><div class="note"># Rewrote the head, the hero and the banner markup, and removed all scripts except a 1-line cookie handler. Full file below.</div><div class="cmd">diff -u site/orig/index.html site/new/index.html | grep -E '^[+-]' | grep -vE '^(\+\+\+|---)' | awk '{c[substr($0,1,1)]++} END{print c["-"]" lines removed, "c["+"]" lines added"}'; wc -c site/orig/index.html site/new/index.html</div><div class="out">27 lines removed, 59 lines added
+    2040 site/orig/index.html
+    4596 site/new/index.html
+    6636 total</div></div><div class="step"><div class="note"># Same tool, same conditions, same three-run median.</div><div class="cmd">npx lighthouse http://localhost:7102/new/ ...   # x3, then node summarize.mjs new 3</div><div class="out">{
+ "variant": "new",
+ "runs": 3,
+ "lighthouse": "13.5.0",
+ "form": "mobile, simulated slow-4G + 4x CPU",
+ "scores": {
+  "performance": "100 (runs 100/100/100)",
+  "accessibility": "100 (runs 100/100/100)",
+  "seo": "100 (runs 100/100/100)",
+  "best-practices": "100 (runs 100/100/100)"
+ },
+ "metrics": {
+  "FCP_ms": "650.69 (range 647.68-651.54)",
+  "LCP_ms": "650.69 (range 647.68-651.54)",
+  "TBT_ms": "0 (range 0-0)",
+  "CLS": "0 (range 0-0)",
+  "SpeedIndex_ms": "650.69 (range 647.68-651.54)"
+ },
+ "failingAudits": []
+}</div></div><div class="step"><div class="note"># Render-blocking is gone, LCP element render delay fell from 2113 ms to 57 ms.</div><div class="cmd">node details.mjs new</div><div class="out">render-blocking: none; 
+font-display: ok
+LCP breakdown: Time to first byte 2ms, Element render delay 57ms
+unused-javascript: -
+third-parties: Google Fonts 17 KiB
+bootup-time: 0.0 s
+color-contrast: score 1 (0 nodes: )
+document-title: score 1
+html-has-lang: score 1
+heading-order: score 1
+landmark-one-main: score 1
+meta-description: score 1
+doctype: score 1
+charset: score 1
+errors-in-console: score 1</div></div><div class="step"><div class="note"># The link and the OK button are reachable in order, Enter on the focused OK button removes the banner, there is no horizontal overflow at 390 px, and the page now reports lang, title, viewport, description and canonical.</div><div class="cmd">node manual.mjs   # puppeteer, new: Tab x4, Enter on the cookie OK, 390 px overflow check</div><div class="out">{
+ "variant": "new",
+ "doc": {
+  "lang": "en",
+  "title": "Tidewater \u2013 Scheduling software for physiotherapy clinics",
+  "viewportMeta": true,
+  "description": true,
+  "canonical": true,
+  "compat": "CSS1Compat",
+  "h1": [
+   "The future of physiotherapy clinic scheduling"
+  ],
+  "landmarks": [
+   "main",
+   "div"
+  ]
+ },
+ "tabStops": [
+  "a:Get started with Tidewat",
+  "button:OK",
+  "(body)",
+  "a:Get started with Tidewat"
+ ],
+ "bannerRemovedByKeyboard": true,
+ "mobile": {
+  "innerWidth": 390,
+  "scrollWidth": 390,
+  "horizontalOverflow": false
+ }
+}</div></div></div>
+<h2>Files</h2><details open><summary>site/new/index.html</summary><pre>&lt;!doctype html&gt;
+&lt;html lang=<span <span class="k">class</span>="s">"en"</span>&gt;
+&lt;head&gt;
+&lt;meta charset=<span <span class="k">class</span>="s">"utf-<span class="n">8</span>"</span>&gt;
+&lt;meta name=<span <span class="k">class</span>="s">"viewport"</span> content=<span <span class="k">class</span>="s">"width=device-width, initial-scale=<span class="n">1</span>"</span>&gt;
+&lt;title&gt;Tidewater – Scheduling software <span class="k">for</span> physiotherapy clinics&lt;/title&gt;
+&lt;meta name=<span <span class="k">class</span>="s">"description"</span> content=<span <span class="k">class</span>="s">"Tidewater is appointment scheduling <span class="k">for</span> small physiotherapy clinics: a smart calendar, automatic reminders that cut no-shows, and insights on your clinic's schedule."</span>&gt;
+&lt;!-- Placeholder domain: replace <span class="k">with</span> the production URL --&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"canonical"</span> href=<span <span class="k">class</span>="s">"https://tidewater.example/"</span>&gt;
+&lt;meta property=<span <span class="k">class</span>="s">"og:<span class="k">type</span>"</span> content=<span <span class="k">class</span>="s">"website"</span>&gt;
+&lt;meta property=<span <span class="k">class</span>="s">"og:title"</span> content=<span <span class="k">class</span>="s">"Tidewater – Scheduling software <span class="k">for</span> physiotherapy clinics"</span>&gt;
+&lt;meta property=<span <span class="k">class</span>="s">"og:description"</span> content=<span <span class="k">class</span>="s">"A smart calendar, reminders that cut no-shows, and insights <span class="k">for</span> small physiotherapy clinics."</span>&gt;
+&lt;meta name=<span <span class="k">class</span>="s">"theme-color"</span> content=<span <span class="k">class</span>="s">"#6d28d9"</span>&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"icon"</span> href=<span <span class="k">class</span>="s">"data:,"</span>&gt;
+
+&lt;!-- Only the font that is used, only the weights that are used, swap instead <span class="k">of</span> block, and a non-blocking stylesheet --&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"preconnect"</span> href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com"</span>&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"preconnect"</span> href=<span <span class="k">class</span>="s">"https://fonts.gstatic.com"</span> crossorigin&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"preload"</span> <span class="k">as</span>=<span <span class="k">class</span>="s">"style"</span> href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com/css2?family=Poppins:wght@<span class="n">400</span>;<span class="n">600</span>&amp;display=swap"</span> onload=<span <span class="k">class</span>="s">"this.onload=<span class="k">null</span>;this.rel='stylesheet'"</span>&gt;
+&lt;noscript&gt;&lt;link rel=<span <span class="k">class</span>="s">"stylesheet"</span> href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com/css2?family=Poppins:wght@<span class="n">400</span>;<span class="n">600</span>&amp;display=swap"</span>&gt;&lt;/noscript&gt;
+&lt;style&gt;
+:root{--ink:#1f2937;--muted:#4b5563;--brand:#5b21b6}
+*{box-sizing:border-box}
+body{font-family:Poppins,system-ui,-apple-system,<span <span class="k">class</span>="s">"Segoe UI"</span>,Roboto,sans-serif;margin:<span class="n">0</span>;color:<span class="k">var</span>(--muted);background:#fff;padding-bottom:72px}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:<span class="n">0</span>;margin:-1px;overflow:hidden;clip:rect(<span class="n">0</span>,<span class="n">0</span>,<span class="n">0</span>,<span class="n">0</span>);white-space:nowrap;border:<span class="n">0</span>}
+a:focus-visible,button:focus-visible{outline:3px solid #fbbf24;outline-offset:3px}
+.hero{min-height:100vh;min-height:100svh;padding:24px;background:linear-gradient(135deg,#6d28d9,#0e7490);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.eyebrow{margin:<span class="n">0</span>;font-size:18px}
+.hero h1{font-size:clamp(36px,8vw,64px);line-height:<span class="n">1.1</span>;font-weight:<span class="n">600</span>;margin:16px <span class="n">0</span> 32px}
+.btn{display:inline-block;background:#fff;color:<span class="k">var</span>(--brand);font-weight:<span class="n">600</span>;text-decoration:none;padding:14px 28px;border-radius:30px;min-height:48px}
+.btn:hover{background:#f3e8ff}
+.features{display:flex;flex-wrap:wrap;gap:20px;padding:60px 24px;max-width:1200px;margin:<span class="n">0</span> auto}
+.card{flex:<span class="n">1</span> <span class="n">1</span> 240px;padding:24px;box-shadow:<span class="n">0</span> 10px 40px rgba(<span class="n">0</span>,<span class="n">0</span>,<span class="n">0</span>,.<span class="n">2</span>)}
+.card h3{color:<span class="k">var</span>(--ink);margin-top:<span class="n">0</span>}
+.testimonials{padding:60px 24px;min-height:400px;max-width:1200px;margin:<span class="n">0</span> auto}
+.testimonials h2{color:<span class="k">var</span>(--ink)}
+blockquote{margin:<span class="n">0</span>}
+.banner{position:fixed;bottom:<span class="n">0</span>;left:<span class="n">0</span>;right:<span class="n">0</span>;padding:12px 16px;background:#<span class="n">111</span>;color:#d1d5db;display:flex;align-items:center;gap:12px}
+.banner button{font:inherit;color:#<span class="n">111</span>;background:#fff;border:<span class="n">0</span>;border-radius:6px;padding:10px 16px;min-height:44px;cursor:pointer}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+  &lt;section <span class="k">class</span>=<span <span class="k">class</span>="s">"hero"</span>&gt;
+    &lt;p <span class="k">class</span>=<span <span class="k">class</span>="s">"eyebrow"</span>&gt;&lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;✨&lt;/span&gt; Welcome to Tidewater &lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;✨&lt;/span&gt;&lt;/p&gt;
+    &lt;h1&gt;The future <span class="k">of</span> physiotherapy clinic scheduling&lt;/h1&gt;
+    &lt;a <span class="k">class</span>=<span <span class="k">class</span>="s">"btn"</span> href=<span <span class="k">class</span>="s">"/signup"</span>&gt;Get started <span class="k">with</span> Tidewater &lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;🚀&lt;/span&gt;&lt;/a&gt;
+  &lt;/section&gt;
+  &lt;section <span class="k">class</span>=<span <span class="k">class</span>="s">"features"</span> aria-labelledby=<span <span class="k">class</span>="s">"features-title"</span>&gt;
+    &lt;h2 id=<span <span class="k">class</span>="s">"features-title"</span> <span class="k">class</span>=<span <span class="k">class</span>="s">"visually-hidden"</span>&gt;Features&lt;/h2&gt;
+    &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h3&gt;&lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;📅&lt;/span&gt; Smart calendar&lt;/h3&gt;&lt;p&gt;Our AI-powered calendar revolutionizes how you schedule.&lt;/p&gt;&lt;/div&gt;
+    &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h3&gt;&lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;💬&lt;/span&gt; Reminders&lt;/h3&gt;&lt;p&gt;Seamlessly reduce no-shows <span class="k">with</span> cutting-edge reminders.&lt;/p&gt;&lt;/div&gt;
+    &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h3&gt;&lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;📊&lt;/span&gt; Insights&lt;/h3&gt;&lt;p&gt;Unlock the power <span class="k">of</span> your data <span class="k">with</span> robust analytics.&lt;/p&gt;&lt;/div&gt;
+  &lt;/section&gt;
+  &lt;!-- Was injected by jQuery after <span class="n">1.5</span> s: now real HTML (crawlable, no layout shift, no library needed) --&gt;
+  &lt;section <span class="k">class</span>=<span <span class="k">class</span>="s">"testimonials"</span> aria-labelledby=<span <span class="k">class</span>="s">"testimonials-title"</span>&gt;
+    &lt;h2 id=<span <span class="k">class</span>="s">"testimonials-title"</span>&gt;Loved by clinics&lt;/h2&gt;
+    &lt;blockquote&gt;&lt;p&gt;<span <span class="k">class</span>="s">"Tidewater changed everything."</span> – A clinic&lt;/p&gt;&lt;/blockquote&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"banner"</span> id=<span <span class="k">class</span>="s">"cookies"</span> role=<span <span class="k">class</span>="s">"region"</span> aria-label=<span <span class="k">class</span>="s">"Cookie notice"</span>&gt;
+  &lt;span&gt;We use cookies.&lt;/span&gt;
+  &lt;button <span class="k">type</span>=<span <span class="k">class</span>="s">"button"</span> id=<span <span class="k">class</span>="s">"cookies-ok"</span>&gt;OK&lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;document.getElementById(<span <span class="k">class</span>="s">'cookies-ok'</span>).addEventListener(<span <span class="k">class</span>="s">'click'</span>,<span class="k">function</span>(){document.getElementById(<span <span class="k">class</span>="s">'cookies'</span>).remove()})&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></details>
+</main>
+
+</body></html>

@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – every appointment in place</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b1d21;--ink:#eef7f6;--muted:#9bb8bb;--teal:#35b3a8;--line:rgba(255,255,255,.14)}
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:auto}
+  body{font-family:"DM Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+  #gl{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0}
+  .veil{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 48%,rgba(11,29,33,.55),rgba(11,29,33,0) 70%),linear-gradient(180deg,rgba(11,29,33,.55),rgba(11,29,33,0) 22%,rgba(11,29,33,0) 80%,rgba(11,29,33,.7))}
+  nav{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:24px 40px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px}
+  .brand i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#0e7c86,var(--teal));display:grid;place-items:center}
+  .brand svg{width:18px;height:18px}
+  nav a{font-weight:600;font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:rgba(255,255,255,.06);padding:9px 16px;border-radius:99px;backdrop-filter:blur(6px)}
+  .track{position:relative;z-index:2;height:320vh}
+  .pin{position:sticky;top:0;height:100vh;display:grid;place-items:center;text-align:center;padding:0 24px}
+  .words{max-width:1000px}
+  .kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:20px}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:clamp(42px,7.4vw,104px);line-height:1;letter-spacing:-.03em;text-wrap:balance}
+  h1 span{display:inline-block;will-change:transform,opacity,filter}
+  .sub{margin:26px auto 0;max-width:34em;font-size:clamp(16px,1.6vw,20px);line-height:1.55;color:var(--muted)}
+  .cta{margin-top:30px;display:inline-block;font:600 15px "DM Sans",sans-serif;padding:14px 24px;border-radius:12px;background:var(--teal);color:#06201f;text-decoration:none}
+  .hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:5;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center}
+  .hint i{width:1px;height:26px;background:linear-gradient(var(--muted),transparent);display:block}
+  .meter{position:fixed;right:28px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:8px;align-items:flex-end;font-size:12px;color:var(--muted)}
+  .meter b{display:block;font-size:22px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  @media (max-width:640px){nav{padding:18px 20px}.meter{display:none}}
+</style>
+</head>
+<body>
+<nav><div class="brand"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M3 9c3-3 5-3 9 0s6 3 9 0M3 15c3-3 5-3 9 0s6 3 9 0"/></svg></i>Tidewater</div><a href="#">Book a demo</a></nav>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="veil"></div>
+<div class="meter" aria-hidden="true"><div>in place<b id="pct">0%</b></div></div>
+<main class="track" id="track">
+  <section class="pin">
+    <div class="words">
+      <div class="kicker">Tidewater · scheduling for physiotherapy</div>
+      <h1 id="h1" aria-label="Every appointment, in its place"><span>Every</span> <span>appointment,</span> <span>in</span> <span>its</span> <span>place</span></h1>
+      <p class="sub">Drifting bookings, double entries and open gaps settle into one calm week.</p>
+      <a class="cta" href="#">Start free for 14 days</a>
+    </div>
+  </section>
+</main>
+<div class="hint" aria-hidden="true"><i></i>Scroll</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.webgpu.js",
+  "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.webgpu.js",
+  "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.webgpu.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from "three/webgpu";
+import {
+  Fn, uniform, float, vec3, vec4, uv, color, time, instanceIndex, smoothstep, clamp, mix, storage, hash,
+  instancedBufferAttribute, mx_noise_vec3
+} from "three/tsl";
+
+const canvas = document.getElementById("gl");
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const forceGL = new URLSearchParams(location.search).get("renderer") === "webgl";
+
+async function createRenderer() {
+  for (const forceWebGL of forceGL || !navigator.gpu ? [true] : [false, true]) {
+    try {
+      const r = new THREE.WebGPURenderer({ canvas, antialias: true, forceWebGL });
+      await r.init();
+      return r;
+    } catch (err) { console.warn("renderer init failed", err); }
+  }
+  return null;
+}
+const renderer = await createRenderer();
+if (!renderer) throw new Error("no renderer");
+const gpu = renderer.backend.isWebGPUBackend;            // compute path needs real WebGPU; otherwise a vertex-only path draws the same motion
+console.info("backend:", gpu ? "webgpu (compute)" : "webgl2 (vertex fallback)");
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setClearColor(0x0b1d21, 1);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 80);
+
+// ---- layout: a week of appointment slots -> targets; a loose cloud -> starts ----
+const COLS = 5, ROWS = 8, PER = 60, COUNT = COLS * ROWS * PER;
+const gridW = 9.2, gridH = 5.6;
+const startArr = new Float32Array(COUNT * 3), targetArr = new Float32Array(COUNT * 3), seedArr = new Float32Array(COUNT * 3), colorArr = new Float32Array(COUNT * 3);
+const palette = [0x35b3a8, 0x7fd8d0, 0xf2e2c4, 0x0e7c86].map((h) => new THREE.Color(h));
+{
+  let k = 0;
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) {
+    const long = ((c * 7 + r * 3) % 5) === 0, w = long ? 1.4 : 0.92;
+    const cx = (c / (COLS - 1) - 0.5) * gridW, cy = (0.5 - r / (ROWS - 1)) * gridH, col = palette[(c + r * 2) % 4];
+    for (let i = 0; i < PER; i++, k++) {
+      targetArr.set([cx + (i / (PER - 1) - 0.5) * w, cy + (Math.random() - 0.5) * 0.24, (Math.random() - 0.5) * 0.05], k * 3);
+      const a = Math.random() * Math.PI * 2, rad = 3 + Math.random() * 9;
+      startArr.set([Math.cos(a) * rad * 1.3, (Math.random() - 0.5) * 9, (Math.random() - 0.3) * 14], k * 3);
+      seedArr.set([Math.random() * 6.283, 0.4 + Math.random() * 0.9, (c / COLS) * 0.35 + (r / ROWS) * 0.25 + Math.random() * 0.2], k * 3);   // phase, speed, settle delay
+      colorArr.set([col.r, col.g, col.b], k * 3);
+    }
+  }
+}
+
+// ---- shared uniforms ----
+const uProgress = uniform(0);      // 0 = drifting, 1 = in place (scroll + time)
+const uDt = uniform(0.016);
+
+// ---- the sprite material both paths share ----
+const sprite = new THREE.SpriteNodeMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+const colorA = instancedBufferAttribute(new THREE.InstancedBufferAttribute(colorArr, 3));
+const d = uv().sub(0.5).length();
+sprite.colorNode = vec4(colorA, smoothstep(0.5, 0.1, d).mul(0.9));
+sprite.scaleNode = float(0.13);
+
+let update = null;           // compute node (WebGPU only)
+let posAttr = null;
+
+const settleOf = (delay) => smoothstep(0, 1, clamp(uProgress.mul(1.5).sub(delay).div(0.7), 0, 1));
+
+if (gpu) {
+  // ---------- WebGPU: a compute pass integrates a spring toward each slot, plus noise drift while unsettled ----------
+  posAttr = new THREE.StorageInstancedBufferAttribute(startArr.slice(), 3);
+  const velAttr = new THREE.StorageInstancedBufferAttribute(new Float32Array(COUNT * 3), 3);
+  const tgtAttr = new THREE.StorageInstancedBufferAttribute(targetArr, 3);
+  const seedBuf = new THREE.StorageInstancedBufferAttribute(seedArr, 3);
+  const posBuf = storage(posAttr, "vec3", COUNT), velBuf = storage(velAttr, "vec3", COUNT);
+  const tgtBuf = storage(tgtAttr, "vec3", COUNT), seedS = storage(seedBuf, "vec3", COUNT);
+
+  update = Fn(() => {
+    const p = posBuf.element(instanceIndex), v = velBuf.element(instanceIndex);
+    const t = tgtBuf.element(instanceIndex), s = seedS.element(instanceIndex);
+    const local = settleOf(s.z);                                    // 0..1, staggered per slot
+    const drift = float(1).sub(local);
+    const flow = mx_noise_vec3(p.mul(0.22).add(vec3(s.x, 0, time.mul(0.12)))).mul(1.6).mul(s.y);
+    const accel = t.sub(p).mul(local.mul(20))                       // spring toward the slot
+      .add(flow.mul(drift))                                         // loose drift before it settles
+      .sub(p.mul(0.06).mul(drift));                                 // keep the cloud near the scene
+    v.addAssign(accel.mul(uDt));
+    v.mulAssign(float(1).sub(uDt.mul(local.mul(7.5).add(0.7))).max(0));   // light drag adrift, near-critical damping settled
+    p.addAssign(v.mul(uDt));
+  })().compute(COUNT);
+
+  sprite.positionNode = posBuf.toAttribute();
+} else {
+  // ---------- WebGL 2 fallback: the same look, evaluated in the vertex stage from per-instance attributes ----------
+  const startA = instancedBufferAttribute(new THREE.InstancedBufferAttribute(startArr, 3));
+  const targetA = instancedBufferAttribute(new THREE.InstancedBufferAttribute(targetArr, 3));
+  const seedA = instancedBufferAttribute(new THREE.InstancedBufferAttribute(seedArr, 3));
+  const local = settleOf(seedA.z), drift = float(1).sub(local);
+  const wob = vec3(
+    seedA.x.add(time.mul(0.35).mul(seedA.y)).sin().mul(0.9),
+    seedA.x.mul(1.3).add(time.mul(0.3).mul(seedA.y)).cos().mul(0.7),
+    seedA.x.mul(0.7).add(time.mul(0.22).mul(seedA.y)).sin().mul(1.1)
+  ).mul(drift);
+  sprite.positionNode = mix(startA.add(wob), targetA, local);
+}
+
+const quad = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1), sprite, COUNT);
+{ const m = new THREE.Matrix4(); for (let i = 0; i < COUNT; i++) quad.setMatrixAt(i, m); }
+quad.frustumCulled = false;
+scene.add(quad);
+
+// ---- scroll + time drive the scene (same behaviour for both paths) ----
+const track = document.getElementById("track");
+const words = [...document.querySelectorAll("#h1 span")], pct = document.getElementById("pct");
+const smooth = (x) => x * x * (3 - 2 * x), clamp01 = (x) => Math.min(1, Math.max(0, x));
+let scrollP = 0, p = 0, intro = 0;
+const readScroll = () => { const max = track.offsetHeight - innerHeight; scrollP = max > 0 ? clamp01(scrollY / max) : 0; };
+addEventListener("scroll", readScroll, { passive: true });
+
+function fitDist() {
+  const vFov = THREE.MathUtils.degToRad(camera.fov / 2);
+  return Math.max(10.5, (gridW / 2 + 1.1) / (Math.tan(vFov) * camera.aspect));
+}
+function resize() {
+  renderer.setSize(innerWidth, innerHeight, false);
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); readScroll();
+}
+addEventListener("resize", () => { resize(); if (reduceMotion.matches) renderer.render(scene, camera); });
+resize();
+
+function step(t, dt) {
+  intro = Math.min(1, intro + dt / 7);
+  p = THREE.MathUtils.damp(p, Math.max(smooth(intro) * 0.82, scrollP), 2.4, dt);
+  uProgress.value = p; uDt.value = dt;
+  const orbit = (1 - p) * Math.sin(t * 0.12) * 0.55, dist = THREE.MathUtils.lerp(15, fitDist(), smooth(p));
+  camera.position.set(Math.sin(orbit) * dist * 0.5, (1 - p) * 1.4, Math.cos(orbit * 0.5) * dist);
+  camera.lookAt(0, 0, 0);
+  sprite.scaleNode.value = THREE.MathUtils.lerp(0.12, 0.068, p);
+  words.forEach((w, i) => {
+    const k = smooth(clamp01((p * 1.25 - 0.05 - i * 0.06) / 0.4));
+    w.style.opacity = k; w.style.filter = "blur(" + (1 - k) * 10 + "px)"; w.style.transform = "translateY(" + (1 - k) * 18 + "px)";
+  });
+  pct.textContent = Math.round(p * 100) + "%";
+}
+
+let last = performance.now(), t = 0;
+function frame(now) {
+  const dt = Math.min((now - last) / 1000, 0.033); last = now; t += dt;
+  step(t, dt);
+  if (update) renderer.compute(update);
+  renderer.render(scene, camera);
+}
+function applyMotionPreference() {
+  renderer.setAnimationLoop(null);
+  if (reduceMotion.matches) {          // settle instantly, draw one calm frame
+    intro = 1; p = 1; for (let i = 0; i < 90; i++) { step(i / 60, 1 / 60); if (update) renderer.compute(update); }
+    renderer.render(scene, camera);
+  } else { last = performance.now(); renderer.setAnimationLoop(frame); }
+}
+reduceMotion.addEventListener("change", applyMotionPreference);
+applyMotionPreference();
+
+renderer.backend.device?.lost.then((info) => { if (info.reason !== "destroyed" && !sessionStorage.getItem("gpu-retry")) { try { sessionStorage.setItem("gpu-retry", "1"); } catch {} location.reload(); } });
+addEventListener("pagehide", () => { renderer.setAnimationLoop(null); quad.geometry.dispose(); sprite.dispose(); renderer.dispose(); });
+</script>
+</body>
+</html>

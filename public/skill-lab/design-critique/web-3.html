@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create your Tidewater account</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--sand:#f6f2ea;--paper:#fffdf9;--ink:#0d2b3a;--ink2:#41596a;--line:#d6cfbf;--teal:#0f6f7d;--teal-d:#0a5560;--mint:#d6ebe5;--coral:#e8714f;--err:#b3261e;--errbg:#fdeceb}
+*{box-sizing:border-box;margin:0}
+body{font:400 16px/1.5 "DM Sans",system-ui,sans-serif;color:var(--ink);background:var(--sand);min-height:100vh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+aside{background:var(--ink);color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+aside::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-40px;height:260px;background:radial-gradient(ellipse at 30% 100%,#0f6f7d 0,transparent 62%),radial-gradient(ellipse at 80% 110%,#1d8a96 0,transparent 55%);opacity:.55;pointer-events:none}
+.logo{font:600 22px "Fraunces",serif;display:flex;gap:10px;align-items:center;text-decoration:none;color:#fff}
+.logo svg{width:26px;height:26px}
+aside h1{font:500 clamp(32px,3.2vw,44px)/1.08 "Fraunces",serif;letter-spacing:-.02em;margin:0 0 18px;max-width:11em}
+aside ul{list-style:none;padding:0;display:grid;gap:12px;color:#c4d4dc;font-size:16px;position:relative;z-index:1}
+aside li{display:flex;gap:10px}aside li svg{width:18px;height:18px;margin-top:3px;color:#7fd1c2;flex:none}
+aside .mid{position:relative;z-index:1}
+aside small{color:#9db3bf;font-size:13px;position:relative;z-index:1}
+main{display:grid;place-items:center;padding:32px 40px}
+form{width:100%;max-width:440px}
+h2{font:500 32px/1.1 "Fraunces",serif;letter-spacing:-.02em;margin-bottom:6px}
+.sub{color:var(--ink2);margin-bottom:20px}.sub a,.terms a{color:var(--teal);font-weight:600;text-underline-offset:3px}
+.field{margin-bottom:14px}
+label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.inp{position:relative}
+input[type=text],input[type=email],input[type=password],select{width:100%;height:48px;padding:0 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;color:var(--ink);background:var(--paper);transition:border-color .15s,box-shadow .15s}
+input:hover,select:hover{border-color:#b8b09d}
+input:focus,select:focus{outline:0;border-color:var(--teal);box-shadow:0 0 0 4px #0f6f7d26}
+select{appearance:none;background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%2341596a' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m2 5 5 5 5-5'/%3E%3C/svg%3E") no-repeat right 14px center}
+.hint{font-size:13px;color:var(--ink2);margin-top:6px}
+.msg{display:none;align-items:flex-start;gap:6px;font-size:13px;font-weight:500;color:var(--err);margin-top:6px}
+.msg svg{width:16px;height:16px;flex:none;margin-top:1px}
+.field.bad input:not([type=checkbox]),.field.bad select{border-color:var(--err);background:var(--errbg);padding-right:44px}
+.field.bad .msg{display:flex}.field.bad .hint{display:none}
+.field.bad input:not([type=checkbox]):focus{box-shadow:0 0 0 4px #b3261e22}
+.field.ok input:not([type=checkbox]){border-color:#2f8f6f}
+.show{all:unset;position:absolute;right:4px;top:2px;height:44px;width:44px;display:grid;place-items:center;cursor:pointer;color:var(--ink2);border-radius:10px}
+.show:hover{color:var(--ink)}.show:focus-visible{outline:3px solid var(--coral)}
+.show svg{width:20px;height:20px}
+.meter{display:flex;gap:4px;margin-top:8px}.meter i{flex:1;height:4px;border-radius:2px;background:#e4ddcd;transition:background .2s}
+.chk{display:flex;gap:12px;align-items:flex-start;margin:6px 0 6px;position:relative}
+.chk input{appearance:none;flex:none;width:24px;height:24px;border:1.5px solid var(--line);border-radius:7px;background:var(--paper);cursor:pointer;margin-top:1px;display:grid;place-items:center}
+.chk input:checked{background:var(--teal);border-color:var(--teal)}
+.chk input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.chk input:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.chk label{font-weight:400;margin:0;font-size:15px;cursor:pointer}
+.field.bad .chk input{border-color:var(--err)}
+.btn{width:100%;min-height:52px;margin-top:16px;border:0;border-radius:999px;background:var(--teal);color:#fff;font:600 16px "DM Sans";cursor:pointer;transition:background .15s,transform .1s}
+.btn:hover{background:var(--teal-d)}.btn:active{transform:scale(.99)}
+.summary{display:none;gap:10px;background:var(--errbg);color:var(--err);border-radius:12px;padding:12px 14px;font-size:14px;font-weight:500;margin-bottom:20px}
+.summary.on{display:flex}.summary svg{width:18px;height:18px;flex:none;margin-top:2px}
+.done{display:none;text-align:center;padding:30px 0}.done.on{display:block}.done h2{margin:14px 0 6px}
+.done .tick{width:56px;height:56px;margin:auto;border-radius:50%;background:var(--mint);display:grid;place-items:center;color:var(--teal)}
+.fine{text-align:center;color:var(--ink2);font-size:13px;margin-top:14px}
+@media(max-width:860px){body{grid-template-columns:1fr}aside{padding:24px 24px 28px}aside .mid ul,aside small{display:none}aside h1{font-size:28px;margin:28px 0 0}main{padding:32px 20px 48px}}
+</style></head><body>
+<aside>
+  <a class="logo" href="#"><svg viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="12" fill="#0f6f7d"/><path d="M3.5 15c3 0 3-3 6-3s3 3 6 3 3-3 6-3M3.5 19.5c3 0 3-3 6-3s3 3 6 3 3-3 6-3" stroke="#fffdf9" stroke-width="1.7" stroke-linecap="round"/></svg>Tidewater</a>
+  <div class="mid"><h1>Set up your clinic's calendar in ten minutes.</h1>
+  <ul><li><svg viewBox="0 0 18 18" fill="none"><path d="m3.5 9.5 3.3 3.3L14.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>14-day free trial, no card needed</li><li><svg viewBox="0 0 18 18" fill="none"><path d="m3.5 9.5 3.3 3.3L14.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Import patients from a spreadsheet</li><li><svg viewBox="0 0 18 18" fill="none"><path d="m3.5 9.5 3.3 3.3L14.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Cancel any time, keep your data</li></ul></div>
+  <small>Used by 400+ physiotherapy clinics</small>
+</aside>
+<main>
+<form id="f" novalidate>
+  <div id="formbody">
+  <h2>Create your account</h2>
+  <p class="sub">Already with Tidewater? <a href="#">Log in</a></p>
+  <div class="summary" id="sum" role="alert"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm-1 4.5h2v5H9V6Zm0 6.5h2v2H9v-2Z"/></svg><span id="sumt"></span></div>
+
+  <div class="field" id="fn"><label for="n">Full name</label>
+    <div class="inp"><input type="text" id="n" autocomplete="name" aria-describedby="n-m"></div>
+    <p class="msg" id="n-m"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm-1 4.5h2v5H9V6Zm0 6.5h2v2H9v-2Z"/></svg>Tell us your name so teammates recognise you.</p></div>
+
+  <div class="field" id="fe"><label for="e">Work email</label>
+    <div class="inp"><input type="email" id="e" autocomplete="email" placeholder="you@clinic.com" aria-describedby="e-m"></div>
+    <p class="msg" id="e-m"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm-1 4.5h2v5H9V6Zm0 6.5h2v2H9v-2Z"/></svg><span>Enter a valid email address, like name@clinic.com.</span></p></div>
+
+  <div class="field" id="fp"><label for="p">Password</label>
+    <div class="inp"><input type="password" id="p" autocomplete="new-password" aria-describedby="p-h p-m">
+    <button type="button" class="show" id="sh" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 10S4.5 4.5 10 4.5 18.5 10 18.5 10 15.5 15.5 10 15.5 1.5 10 1.5 10Z"/><circle cx="10" cy="10" r="2.5"/></svg></button></div>
+    <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <p class="hint" id="p-h">At least 8 characters.</p>
+    <p class="msg" id="p-m"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm-1 4.5h2v5H9V6Zm0 6.5h2v2H9v-2Z"/></svg><span id="p-mt">Use at least 8 characters.</span></p></div>
+
+  <div class="field" id="fs"><label for="s">Clinic size</label>
+    <div class="inp"><select id="s" aria-describedby="s-m"><option value="">Select team size</option><option>Just me</option><option>2–5 therapists</option><option>6–15 therapists</option><option>16+ therapists</option></select></div>
+    <p class="msg" id="s-m"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm-1 4.5h2v5H9V6Zm0 6.5h2v2H9v-2Z"/></svg>Choose a size so we can suggest the right plan.</p></div>
+
+  <div class="field" id="ft"><div class="chk"><input type="checkbox" id="t" aria-describedby="t-m"><label for="t" class="terms">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</label></div>
+    <p class="msg" id="t-m"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm-1 4.5h2v5H9V6Zm0 6.5h2v2H9v-2Z"/></svg>Please accept the terms to continue.</p></div>
+
+  <button class="btn" type="submit">Create account</button>
+  <p class="fine">Free for 14 days. No credit card required.</p>
+  </div>
+  <div class="done" id="done" role="status"><div class="tick"><svg width="28" height="28" viewBox="0 0 18 18" fill="none"><path d="m3.5 9.5 3.3 3.3L14.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h2>You're in. Check your inbox.</h2><p class="sub" style="margin:0">We sent a confirmation link to <b id="who"></b>.</p></div>
+</form>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const rules={
+ fn:()=>$('n').value.trim().length>0,
+ fe:()=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('e').value.trim()),
+ fp:()=>$('p').value.length>=8,
+ fs:()=>$('s').value!=='',
+ ft:()=>$('t').checked};
+const inputOf={fn:'n',fe:'e',fp:'p',fs:'s',ft:'t'};
+function check(k,show=true){const ok=rules[k]();const f=$(k);
+  if(k==='fp'){$('p-mt').textContent=$('p').value?`That's ${$('p').value.length} – use at least 8 characters.`:'Enter a password with at least 8 characters.'}
+  f.classList.toggle('bad',show&&!ok);f.classList.toggle('ok',show&&ok&&k!=='ft');
+  $(inputOf[k]).setAttribute('aria-invalid',show&&!ok);return ok}
+Object.keys(rules).forEach(k=>{const el=$(inputOf[k]);
+  el.addEventListener('blur',()=>{if(el.value||k==='ft'||el.dataset.touched)check(k);el.dataset.touched=1});
+  el.addEventListener('input',()=>{if($(k).classList.contains('bad'))check(k)});
+  el.addEventListener('change',()=>{if(k==='fs'||k==='ft')check(k)})});
+$('p').addEventListener('input',e=>{const v=e.target.value;let s=0;if(v.length>=8)s++;if(v.length>=12)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/\d|\W/.test(v))s++;
+  document.querySelectorAll('.meter i').forEach((b,i)=>b.style.background=i<s?['#d9603f','#e0a23a','#7fb069','#2f8f6f'][s-1]:'')});
+$('sh').onclick=()=>{const p=$('p');const show=p.type==='password';p.type=show?'text':'password';$('sh').setAttribute('aria-pressed',show);$('sh').setAttribute('aria-label',show?'Hide password':'Show password')};
+$('f').addEventListener('submit',e=>{e.preventDefault();
+  const bad=Object.keys(rules).filter(k=>!check(k));
+  $('sum').classList.toggle('on',bad.length>0);
+  if(bad.length){$('sumt').textContent=bad.length===1?'1 thing needs your attention.':bad.length+' things need your attention.';$(inputOf[bad[0]]).focus();return}
+  $('who').textContent=$('e').value;$('formbody').style.display='none';$('done').classList.add('on')});
+</script>
+</body></html>

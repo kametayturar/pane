@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paying accounts per plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; padding: 32px 20px; }
+  .wrap { max-width: 1040px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .sub { color: #64748b; font-size: 14px; margin-bottom: 18px; }
+  .legend { display: flex; gap: 20px; margin-bottom: 8px; font-size: 14px; flex-wrap: wrap; }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  svg { width: 100%; height: auto; display: block; }
+  svg text { font-family: 'Inter', sans-serif; }
+  .tip { position: absolute; background: #0f172a; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; pointer-events: none; opacity: 0; transition: opacity .12s; white-space: nowrap; }
+  .chart { position: relative; }
+  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+  .summary div { background: #f1f5f9; border-radius: 10px; padding: 12px 14px; }
+  .summary b { display: block; font-size: 20px; }
+  .summary small { color: #64748b; font-size: 12px; }
+  @media (max-width: 600px) { .summary { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Paying accounts per plan</h1>
+  <p class="sub">Monthly paying accounts by plan, January–December</p>
+  <div class="legend">
+    <span><i style="background:#0891b2"></i>Solo</span>
+    <span><i style="background:#3b82f6"></i>Clinic</span>
+    <span><i style="background:#8b5cf6"></i>Group</span>
+  </div>
+  <div class="chart" id="chart"><div class="tip" id="tip"></div></div>
+  <div class="summary" id="summary"></div>
+</div>
+<script>
+const data = {
+  months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  solo: [410,430,455,470,488,502,515,521,530,548,566,590],
+  clinic: [220,236,251,262,280,297,309,316,322,335,349,366],
+  group: [60,63,66,70,74,77,79,80,82,85,88,92]
+};
+const series = [['solo','Solo','#0891b2'],['clinic','Clinic','#3b82f6'],['group','Group','#8b5cf6']];
+const W = 960, H = 440, m = { l: 56, r: 70, t: 20, b: 40 };
+const iw = W - m.l - m.r, ih = H - m.t - m.b;
+const x = i => m.l + (i / 11) * iw;
+const y = v => m.t + ih - (v / 700) * ih;
+let s = `<svg viewBox="0 0 ${W} ${H}" id="svg">`;
+for (let v = 0; v <= 700; v += 100) {
+  s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="#e2e8f0"/>`;
+  s += `<text x="${m.l - 10}" y="${y(v) + 4}" text-anchor="end" font-size="12" fill="#64748b">${v}</text>`;
+}
+data.months.forEach((mo, i) => { s += `<text x="${x(i)}" y="${H - 14}" text-anchor="middle" font-size="12" fill="#64748b">${mo}</text>`; });
+series.forEach(([k, name, c]) => {
+  const pts = data[k].map((v, i) => `${x(i)},${y(v)}`).join(' ');
+  s += `<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+  data[k].forEach((v, i) => { s += `<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="#fff" stroke="${c}" stroke-width="2"/>`; });
+  s += `<text x="${x(11) + 10}" y="${y(data[k][11]) + 4}" font-size="13" font-weight="600" fill="${c}">${data[k][11]}</text>`;
+});
+s += `<line id="vl" y1="${m.t}" y2="${m.t + ih}" stroke="#94a3b8" stroke-dasharray="4 4" opacity="0"/>`;
+s += `<rect id="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/>`;
+s += '</svg>';
+document.getElementById('chart').insertAdjacentHTML('afterbegin', s);
+
+const svg = document.getElementById('svg'), tip = document.getElementById('tip'), vl = document.getElementById('vl');
+svg.addEventListener('mousemove', e => {
+  const r = svg.getBoundingClientRect();
+  const px = (e.clientX - r.left) / r.width * W;
+  const i = Math.max(0, Math.min(11, Math.round((px - m.l) / iw * 11)));
+  vl.setAttribute('x1', x(i)); vl.setAttribute('x2', x(i)); vl.setAttribute('opacity', 1);
+  tip.innerHTML = `<b>${data.months[i]}</b><br>Solo: ${data.solo[i]}<br>Clinic: ${data.clinic[i]}<br>Group: ${data.group[i]}`;
+  tip.style.left = Math.min(r.width - 110, (x(i) / W) * r.width + 12) + 'px';
+  tip.style.top = '20px'; tip.style.opacity = 1;
+});
+svg.addEventListener('mouseleave', () => { tip.style.opacity = 0; vl.setAttribute('opacity', 0); });
+
+const total = i => data.solo[i] + data.clinic[i] + data.group[i];
+const sm = document.getElementById('summary');
+sm.innerHTML = `
+  <div><b>${total(11)}</b><small>Total paying accounts, Dec</small></div>
+  <div><b>+${Math.round((total(11) / total(0) - 1) * 100)}%</b><small>Growth since Jan (${total(0)} → ${total(11)})</small></div>
+  <div><b>+${Math.round((data.group[11] / data.group[0] - 1) * 100)}%</b><small>Group plan growth</small></div>
+  <div><b>${Math.round(data.solo[11] / total(11) * 100)}%</b><small>Share of accounts on Solo</small></div>`;
+</script>
+</body>
+</html>

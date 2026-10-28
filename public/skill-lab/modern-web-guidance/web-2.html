@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f1f5f3;--paper:#fff;--ink:#0f2a2c;--muted:#53696a;--line:#d9e3df;--accent:#0b7a75;--accent-d:#085c58;--accent-l:#d6efec;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Inter',system-ui,sans-serif;
+  --gutter:clamp(1.25rem,1rem + 2vw,2.5rem);
+}
+@layer base,components;
+@layer base{
+  *,*::before,*::after{box-sizing:border-box}*{margin:0}
+  body{font-family:var(--sans);font-size:1rem;line-height:1.6;background:var(--bg);color:var(--ink);overflow-wrap:break-word}
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:3px solid #e08b00;outline-offset:3px}
+  h1,h2{font-family:var(--serif);font-weight:400;line-height:1.05;text-wrap:balance}
+  p{text-wrap:pretty}
+}
+@layer components{
+  .wrap{inline-size:min(100% - 2*var(--gutter),72rem);margin-inline:auto}
+  .site-head{display:flex;align-items:center;justify-content:space-between;padding-block:1.25rem}
+  .brand{display:flex;align-items:center;gap:.6rem;font-family:var(--serif);font-size:1.75rem;line-height:1}
+  .brand svg{inline-size:1.6rem;block-size:1.6rem}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-block-size:2.75rem;padding-inline:1.4rem;border-radius:.75rem;font-weight:600;font-size:.9375rem;border:1px solid transparent;transition:background-color .2s,border-color .2s}
+  .btn-pri{background:var(--accent);color:#fff}.btn-pri:hover{background:var(--accent-d)}
+  .btn-sec{border-color:var(--line);background:var(--paper)}.btn-sec:hover{border-color:var(--ink)}
+  .btn-block{inline-size:100%}
+  .intro{text-align:center;padding-block:2.5rem 1rem}
+  .kicker{font-size:.8125rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+  .intro h1{font-size:clamp(2.5rem,1.5rem + 4.5vw,4.75rem);margin:.75rem auto 1rem;max-inline-size:14ch}
+  .intro p.lead{color:var(--muted);font-size:1.1875rem;max-inline-size:36ch;margin-inline:auto}
+  /* billing switch: native <input switch>, falls back to a styled checkbox */
+  .billing{display:inline-flex;align-items:center;gap:.9rem;margin-block-start:2rem;font-weight:500}
+  .billing label{cursor:pointer;color:var(--muted);transition:color .2s}
+  .billing label[data-on=true]{color:var(--ink);font-weight:600}
+  .billing .save{font-size:.75rem;background:var(--accent);color:#fff;border-radius:99px;padding:.1rem .55rem;margin-inline-start:.35rem}
+  input[type=checkbox][switch]{accent-color:var(--accent);margin:0;cursor:pointer}
+  input[type=checkbox][switch]:focus-visible{outline:3px solid #e08b00;outline-offset:4px}
+  html.no-switch input[type=checkbox][switch]{appearance:none;inline-size:3rem;block-size:1.75rem;border-radius:99px;background:#b9c9c5;position:relative;transition:background-color .2s}
+  html.no-switch input[type=checkbox][switch]::before{content:"";position:absolute;inset-block-start:.2rem;inset-inline-start:.2rem;inline-size:1.35rem;block-size:1.35rem;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgb(0 0 0 / .3);transition:transform .2s}
+  html.no-switch input[type=checkbox][switch]:checked{background:var(--accent)}
+  html.no-switch input[type=checkbox][switch]:checked::before{transform:translateX(1.25rem)}
+  /* plans: container-driven layout */
+  .plans{list-style:none;padding:0;display:grid;gap:1.25rem;padding-block:2.5rem 3rem;grid-template-columns:repeat(auto-fit,minmax(min(17.5rem,100%),1fr));align-items:stretch}
+  .plans>li{container-type:inline-size}
+  .plan{position:relative;block-size:100%;display:grid;grid-template-rows:auto auto auto 1fr;gap:1.25rem;background:var(--paper);border:1px solid var(--line);border-radius:1.25rem;padding:1.5rem}
+  .plan.pop{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 24px 48px -24px rgb(11 122 117 / .5)}
+  .badge{position:absolute;inset-block-start:-.8rem;inset-inline-start:1.5rem;background:var(--accent);color:#fff;font-size:.75rem;font-weight:600;letter-spacing:.04em;padding:.2rem .75rem;border-radius:99px}
+  .plan h2{font-size:2.1rem}
+  .blurb{color:var(--muted);font-size:.9375rem;margin-block-start:.25rem}
+  .price{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .5rem;font-variant-numeric:tabular-nums}
+  .price b{font-family:var(--serif);font-weight:400;font-size:clamp(3rem,1rem + 14cqi,4rem);line-height:1}
+  .price span,.price s{color:var(--muted);font-size:.9375rem;white-space:nowrap}
+  .billed{font-size:.8125rem;color:var(--muted);min-block-size:1.4em;margin-block-start:.35rem}
+  .feats{list-style:none;padding:1.25rem 0 0;border-block-start:1px solid var(--line);display:grid;gap:.7rem;font-size:.9688rem;align-content:start}
+  .feats li{display:grid;grid-template-columns:1.25rem 1fr;gap:.6rem}
+  .feats svg{inline-size:1.1rem;block-size:1.1rem;margin-block-start:.22rem;stroke:var(--accent);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .note{font-size:.8125rem;color:var(--muted);background:#e7efec;border-radius:.7rem;padding:.5rem .75rem}
+  @container (min-width:28rem){.feats{grid-template-columns:1fr 1fr;column-gap:1.5rem}}
+  .fine{text-align:center;color:var(--muted);font-size:.875rem;padding-block-end:2rem}
+  .site-foot{border-block-start:1px solid var(--line);padding-block:1.5rem;color:var(--muted);font-size:.875rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-head">
+    <a class="brand" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0b7a75"/><path d="M3 21c3-3 6-3 9 0s6 3 9 0 5-2 8 0v11H3z" fill="#d6efec"/></svg>Tidewater</a>
+    <a class="btn btn-pri" href="#start">Start free</a>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="kicker">Pricing</p>
+      <h1>Simple plans for every size of clinic</h1>
+      <p class="lead">Every plan starts with a 30-day free trial. Change or cancel whenever the clinic changes.</p>
+      <div class="billing">
+        <label for="yearly" data-on="true" id="l-m">Monthly</label>
+        <input type="checkbox" switch id="yearly" name="yearly" aria-label="Bill yearly and save 20%">
+        <label for="yearly" data-on="false" id="l-y">Yearly <span class="save">Save 20%</span></label>
+      </div>
+    </section>
+    <ul class="plans" id="plans" aria-live="polite"></ul>
+    <p class="fine">Prices in USD. Yearly billing takes 20% off every plan.</p>
+  </main>
+  <footer class="site-foot">© 2026 Tidewater · Scheduling for small physiotherapy clinics</footer>
+</div>
+<script>
+// Native <input switch> where supported (Safari 17.4+); otherwise the checkbox is restyled via .no-switch.
+if(!('switch' in HTMLInputElement.prototype)){
+  document.documentElement.classList.add('no-switch');
+  const cb=document.getElementById('yearly');cb.setAttribute('role','switch');
+}
+const CHECK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+const plans=[
+  {name:'Solo',monthly:19,blurb:'One therapist running their own practice.',cta:'Start with Solo',feats:['1 therapist calendar','Up to 150 appointments / month','SMS and email reminders','Online booking page','Email support']},
+  {name:'Clinic',monthly:49,pop:true,blurb:'Growing teams that share rooms.',cta:'Start with Clinic',feats:['Up to 8 therapists','Unlimited appointments','Room and equipment booking','Automatic waitlist','Insurance export (CSV)','Priority chat support']},
+  {name:'Group',monthly:129,blurb:'Multi-site clinics with shared reporting.',cta:'Talk to us',note:'Includes 3 onboarding calls with a Tidewater specialist.',feats:['Unlimited therapists and sites','Cross-site scheduling','Roles and permissions','SSO and audit log','Custom reminders and branding','Dedicated onboarding']}
+];
+const money=n=>'$'+(Number.isInteger(n)?n:n.toFixed(2));
+const cb=document.getElementById('yearly');
+function render(){
+  const y=cb.checked;
+  document.getElementById('l-m').dataset.on=!y;document.getElementById('l-y').dataset.on=y;
+  document.getElementById('plans').innerHTML=plans.map(p=>{
+    const now=y?p.monthly*.8:p.monthly;
+    return `<li><article class="plan${p.pop?' pop':''}">
+      ${p.pop?'<span class="badge">Most popular</span>':''}
+      <div><h2>${p.name}</h2><p class="blurb">${p.blurb}</p></div>
+      <div><div class="price"><b>${money(now)}</b><span>/ month</span>${y?`<s>${money(p.monthly)}</s>`:''}</div>
+        <p class="billed">${y?`Billed ${money(p.monthly*12*.8)} per year`:'Billed monthly, cancel anytime'}</p></div>
+      <a class="btn ${p.pop?'btn-pri':'btn-sec'} btn-block" href="#start">${p.cta}</a>
+      <div><ul class="feats">${p.feats.map(f=>`<li>${CHECK}<span>${f}</span></li>`).join('')}</ul>${p.note?`<p class="note" style="margin-block-start:1rem">${p.note}</p>`:''}</div>
+    </article></li>`}).join('');
+}
+cb.addEventListener('change',render);render();
+</script>
+</body>
+</html>

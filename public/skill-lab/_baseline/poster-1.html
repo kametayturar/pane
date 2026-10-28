@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Hour – jazz concert series</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .poster {
+    --w: min(calc(100vw - 32px), calc((100vh - 32px) * 0.72));
+    width: var(--w); aspect-ratio: 18/25; position: relative; overflow: hidden; color: #fff; font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, #0b1437 0%, #14308a 45%, #3a5bd0 72%, #f6a35c 100%);
+    container-type: inline-size;
+  }
+  .stars i { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; opacity: .7; }
+  .moon { position: absolute; top: 33%; left: 50%; width: 30cqw; height: 30cqw; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff8e1, #ffd88a); box-shadow: 0 0 8cqw rgba(255,216,138,.5); }
+  .skyline { position: absolute; bottom: 0; left: 0; width: 100%; height: 30%; }
+  .top { position: absolute; top: 5cqw; left: 0; right: 0; text-align: center; font-size: 2.6cqw; letter-spacing: .5em; text-transform: uppercase; color: #cfd9ff; }
+  .title { position: absolute; top: 10%; left: 0; right: 0; text-align: center; font-family: 'Playfair Display', serif; font-weight: 900; line-height: .9; }
+  .title .a { font-size: 17cqw; display: block; }
+  .title .b { font-size: 17cqw; display: block; font-style: italic; font-weight: 400; color: #ffd88a; }
+  .info { position: absolute; left: 0; right: 0; bottom: 5cqw; text-align: center; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,.5); }
+  .info .dates { font-family: 'Playfair Display', serif; font-size: 5.5cqw; font-weight: 700; margin-bottom: 1.5cqw; }
+  .info .venue { font-size: 2.8cqw; letter-spacing: .2em; text-transform: uppercase; }
+  .info .acts { font-size: 2.5cqw; margin-top: 1.5cqw; color: #ffe6c2; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="stars" id="stars"></div>
+  <div class="top">A late-night jazz concert series</div>
+  <div class="moon"></div>
+  <div class="title"><span class="a">Blue</span><span class="b">Hour</span></div>
+  <svg class="skyline" viewBox="0 0 400 120" preserveAspectRatio="none">
+    <path fill="#0a1030" d="M0 120V70h20V50h16v25h14V35h22v40h18V58h24V28h18v34h20V45h26v30h14V55h22V20h20v40h18V50h26v25h20V40h16v35h24V60h20v60z"/>
+    <g fill="#ffd88a" opacity=".85">
+      <rect x="26" y="58" width="4" height="5"/><rect x="58" y="45" width="4" height="5"/><rect x="62" y="60" width="4" height="5"/><rect x="142" y="38" width="4" height="5"/>
+      <rect x="146" y="52" width="4" height="5"/><rect x="214" y="64" width="4" height="5"/><rect x="262" y="30" width="4" height="5"/><rect x="266" y="45" width="4" height="5"/>
+      <rect x="328" y="55" width="4" height="5"/><rect x="340" y="70" width="4" height="5"/><rect x="372" y="64" width="4" height="5"/>
+    </g>
+  </svg>
+  <div class="info">
+    <div class="dates">Fridays in October · 10 pm</div>
+    <div class="venue">The Cellar Room · 14 Dock Street</div>
+    <div class="acts">Featuring the Mara Quartet · Ellis Hart Trio · Nina Soto &amp; Friends</div>
+  </div>
+</div>
+<script>
+  const st = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) { const s = document.createElement('i'); s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 50 + '%'; s.style.opacity = .3 + Math.random() * .6; st.appendChild(s); }
+</script>
+</body>
+</html>

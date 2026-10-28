@@ -1,0 +1,40 @@
+{
+  "id": "design-critique",
+  "sets": ["web"],
+  "skillSays": [
+    "Review a design in five lenses: first impression (2 seconds), usability, visual hierarchy, consistency and accessibility.",
+    "Be specific and give the reason: name the element that competes or fails, tie it to a user need, never just 'the layout is confusing'.",
+    "Always propose a fix, not only a problem, and rate findings by severity (critical, moderate, minor).",
+    "Also say what already works so good decisions are kept, and match the feedback to the stage of the work.",
+    "End with a short ranked list of priority recommendations, most impactful first."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "First impression: the first draft's centred headline had no proof of the product, so the hero now shows a real Tuesday day-view with a 'reminder sent' chip beside the copy.",
+        "Hierarchy: one filled primary CTA with a text-link secondary instead of two equal buttons, and the headline in Fraunces serif against a clean DM Sans body.",
+        "Consistency/polish: emoji icons became one set of stroke SVG icons, and the three equal cards became numbered columns each ending in a concrete outcome ('38% fewer no-shows').",
+        "Accessibility: 44px+ targets, visible focus ring, strong ink-on-sand contrast and a stacked mobile layout."
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Usability: the bare on/off switch was ambiguous, so it became a labelled Monthly/Yearly segmented control with a '-20%' tag and arrow-key support.",
+        "Hierarchy: the Clinic plan is the single inverted card with a 'Most popular' badge and the only filled CTA; the others use outline buttons.",
+        "Clarity: yearly mode shows the real saving ('Billed $470.40 a year' with the old total struck through) instead of only changing the number.",
+        "Consistency: every card got an audience line and 'Everything in X, plus' lists, so plans compare line by line."
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Usability: errors were only shown on submit; validation now runs on blur, clears as you fix the field, and the submit gives a summary and focuses the first problem.",
+        "Error states: each message sits under its field with an icon, red border and tinted fill (not colour alone) and is linked with aria-describedby / aria-invalid.",
+        "Added missing affordances the first draft lacked: a password hint and strength meter, a show-password toggle, a 'Select team size' prompt and a proper custom checkbox with a linked Terms label.",
+        "Added context: a side panel saying what the user gets, so the page doesn't read as a bare floating card."
+      ]
+    }
+  ]
+}

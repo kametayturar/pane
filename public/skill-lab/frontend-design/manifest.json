@@ -1,0 +1,32 @@
+{
+  "id": "frontend-design",
+  "sets": ["web"],
+  "skillSays": [
+    "Act as a design lead with a distinct point of view: ground the work in the real subject (its materials, vernacular and audience) and take aesthetic risk, rather than reaching for a template.",
+    "Plan first, then build: write a compact token plan (4-6 named hex colours, type roles, a layout concept with ASCII wireframes, principles), and review it against a list of known generic AI defaults before coding.",
+    "The hero should open with the most characteristic thing in the subject's world (an interactive moment, a live demo), not the default big-number-plus-gradient treatment.",
+    "Typography carries the personality: choose faces deliberately, set a clear scale, and avoid tells such as one accented word in a headline, all-caps labels, eyebrows and 01/02/03 numbering unless the content really is a sequence.",
+    "Spend boldness in one place, keep motion sparse (one orchestrated moment, not fade-up on every section) and write UI copy that is plain, specific and verb-led.",
+    "Hold a quality floor (mobile, focus states, reduced motion, contrast) and critique your own screenshots before finishing."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Took the brand name literally: the hero's centrepiece is a drawn tide curve with appointments as yellow buoys you can hover or focus, instead of a stock dashboard mockup.",
+      "Committed to a narrow, heavy Bricolage Grotesque headline over Instrument Sans body, on a sea-glass / harbour-blue / buoy-yellow palette instead of a default white-and-indigo SaaS look.",
+      "Features are three rows of different shapes (waitlist log, text thread, room grid) with one inverted band, not three identical icon cards; no eyebrows or numbered markers.",
+      "Only one orchestrated motion: the curve draws in and buoys appear in turn; everything else is quiet."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Plans are rows of a fare-table, not three cards; the recommended plan is simply the one filled deep-blue row.",
+      "Oversized heavy numerals carry the pricing; on yearly the old price is struck and the real yearly total is stated.",
+      "The monthly/yearly switch is a large two-option control with a buoy-yellow Save 20% tag.",
+      "Copy is plain and verb-led ('Choose Clinic', 'Billed monthly')."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "A split screen with a half-width deep headline ('Open your clinic's diary') and a flat tide-line motif replaces the centred card form.",
+      "Errors are a full-width yellow strip with an icon and a specific fix ('you have 5'), so they never rely on colour alone.",
+      "Inputs are square-cornered with solid 2px ink borders and a yellow focus ring, matching the page's blunt, printed character.",
+      "Labels sit above fields in sentence case with no placeholder-only labelling."
+    ]}
+  ]
+}

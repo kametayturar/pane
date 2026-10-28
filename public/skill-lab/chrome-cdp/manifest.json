@@ -1,0 +1,33 @@
+{
+  "id": "chrome-cdp",
+  "sets": [
+    "code"
+  ],
+  "skillSays": [
+    "Drive a real Chrome over raw CDP with a small CLI (scripts/cdp.mjs): list, nav, snap, eval, click, clickxy, type, shot, net",
+    "Needs Chrome remote debugging and Node 22+; a per-tab background daemon holds the session, so the 'Allow debugging' prompt appears once per tab",
+    "Use only on explicit user approval to inspect a page open in Chrome; the browser is the user's real session",
+    "Screenshots are viewport-only at native resolution: image px = CSS px x DPR, and Input events take CSS pixels",
+    "Prefer `snap --compact` over `html` for page structure; use `type` (not eval) for cross-origin iframes; collect data in one eval rather than index-based selectors across calls"
+  ],
+  "examples": [
+    {
+      "prompt": "browser-1",
+      "changes": [
+        "Learned from the tool that `click` only calls element.click() and does not focus inputs; switched to clickxy at the element centre plus `type`, so the form was filled like a user would",
+        "Read results with a single eval returning the error texts and banner as JSON instead of guessing from a screenshot",
+        "Used `net` to confirm no request was sent on a successful signup",
+        "Used snap --compact to get the accessibility tree of the form before touching it"
+      ]
+    },
+    {
+      "prompt": "browser-2",
+      "changes": [
+        "There is no console command, so injected unhandledrejection/error and fetch hooks with eval before the click; the daemon keeps the page alive, so the log was readable afterwards",
+        "Printed typeof selected next to the visually selected slot to show the mismatch between UI and state",
+        "Ran a control (click the slot, then Book) in the same live tab to prove the cause",
+        "Saved viewport screenshots with the DPR note for the report"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="video-2-slack.gif" alt="video-2-slack.gif – 960x540, 12 fps, 8.0 s loop, 1.12 MB"><figcaption>video-2-slack.gif – 960x540, 12 fps, 8.0 s loop, 1.12 MB</figcaption></figure><figure><img src="video-2-sheet.png" alt="look.py contact sheet of the GIF"><figcaption>look.py contact sheet of the GIF</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered video-2-slack.gif: 960x540, 96 frames at 12 fps (delays alternate 80/90 ms, total exactly 8.0 s), infinite loop, 1.12 MB (limit 2 MB), palette-optimised with the skill's own export.py gif preset.
+
+What the skill changed: it routes this request to a script (export.py --preset gif, plus fit.py --width for size) instead of a hand-written ffmpeg command, and it requires probe first and look.py after. Using only its documented flags the GIF could be enlarged from the preset's 480 px to 960 px (fit.py --width 960, then export.py --no-scale) without leaving the skill.
+
+Trade-offs: 12 fps is fixed by the preset (no flag to change it), so motion is limited to 12 fps; the preset uses one palette for the whole clip. Nothing could not run.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Skill step 1: plan from probe numbers.</div><div class="cmd">python3 scripts/probe.py fixtures/video/clip.mp4</div><div class="out">duration 8.0, h264 High, 1280x720, 30 fps, variable_frame_rate_suspected false, no audio, 292,987 B</div></div><div class="step"><div class="note"># The skill's own GIF preset: 480 px wide, 12 fps, palette-optimised.</div><div class="cmd">python3 scripts/export.py clip.mp4 --preset gif -o clip_gif_default.gif --dry-run --json-brief</div><div class="out">[dry-run] ffmpeg ... -filter_complex '[0:v]fps=12,scale=480:-2,split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle' -loop 0 clip_gif_default.gif</div></div><div class="step"><div class="note"># Works, but 480 px wide makes the UI's small labels hard to read, and ~1.7 MB of the 2 MB budget is unused.</div><div class="cmd">python3 scripts/export.py clip.mp4 --preset gif -o clip_gif_default.gif --json-brief</div><div class="out">"verified": true, "summary": { "duration_s": 8.0, "width": 480, "height": 270, "fps": 12.5 }
+clip_gif_default.gif = 326,283 B</div></div><div class="step"><div class="note"># The export preset only knows 480 px; the documented way around it is fit.py --width then export.py --no-scale.</div><div class="cmd">python3 scripts/fit.py clip.mp4 --width 800 -o clip_800.mp4 &amp;&amp; python3 scripts/export.py clip_800.mp4 --preset gif --no-scale -o clip_800.gif</div><div class="out">800x450 @12.5 fps: 921,223 B</div></div><div class="step"><div class="note"># Largest size that stays comfortably under 2 MB; delivered.</div><div class="cmd">python3 scripts/fit.py clip.mp4 --width 960 -o clip_960.mp4 &amp;&amp; python3 scripts/export.py clip_960.mp4 --preset gif --no-scale -o clip_960.gif</div><div class="out">960x540 @12.5 fps: 1,173,118 B (1.12 MB)</div></div><div class="step"><div class="note"># Viewed: node labels and sidebar text are legible.</div><div class="cmd">python3 scripts/look.py clip_960.gif --tiles 3x2 -o clip_960_sheet.png</div><div class="out">contact sheet: 6 frames every 1.33s
+wrote clip_960_sheet.png</div></div><div class="step"><div class="note"># export.py alternates 80/90 ms delays to hit 12 fps on average, so playback is exactly real-time (no speed-up) and the GIF loops forever.</div><div class="cmd">python3 scripts/probe.py clip_960.gif; python3 -c "PIL: per-frame durations"</div><div class="out">gif 960x540, nb_frames 96, duration 8.0, size_bytes 1173118
+96 frames, frame delays {80, 90} ms -&gt; total 8.0 s, loop 0</div></div></div>
+
+</main>
+
+</body></html>

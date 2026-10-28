@@ -1,0 +1,32 @@
+{
+  "id": "ffmpeg-skill",
+  "sets": ["code"],
+  "skillSays": [
+    "Route every request to one of 42 bundled scripts (cut, fit, export, overlay, graphics, caption, join, render...); never fall back to a hand-written raw ffmpeg command",
+    "Probe inputs first and plan from real numbers; prefer lossless; plan with --dry-run --json, then execute; never overwrite the user's originals",
+    "Three or more steps belong in one render.py project.json, not a hand-chained pipeline; delivery requests use a platform template or export preset",
+    "Check the deliverable (check.py --platform X) and look at the picture (look.py contact sheet) before reporting; a probe cannot see a caption on a face",
+    "Finish with a fixed five-line report: Done / Steps / Check / Look / Notes, with numbers taken from the tool's JSON, never from memory",
+    "Judgement calls (what is a good cut, caption wording, grading taste) are reported, not silently decided by the tool"
+  ],
+  "examples": [
+    {
+      "prompt": "video-1",
+      "changes": [
+        "Built the teaser from the skill's own scripts (background.py plates, overlay.py text, graphics.py chips) inside one render.py project instead of a single raw ffmpeg filtergraph",
+        "look.py (view the picture) caught a defect a probe cannot: graphics.py's title template draws its accent bar through the subtitle; I reproduced it with three font/render variants and replaced it with overlay text",
+        "check.py --platform x flagged the silent AAC track as FAIL; reported as a note rather than adding music nobody asked for",
+        "Chose export preset x (1280x720) over youtube (1920x1080) so the output matches the requested frame size"
+      ]
+    },
+    {
+      "prompt": "video-2",
+      "changes": [
+        "Used the skill's export.py gif preset (palette-optimised) rather than a hand-built palettegen command, after a probe of the source",
+        "Went beyond the preset's 480 px with the documented fit.py --width + export.py --no-scale route, reaching 960x540 at 1.12 MB (under the 2 MB limit)",
+        "Verified with probe.py and per-frame delays: 96 frames, 80/90 ms alternation, exactly 8.0 s, loop forever; viewed a look.py contact sheet for readability",
+        "Trade-off kept honest: the preset fixes 12 fps, so smoothness is limited to that"
+      ]
+    }
+  ]
+}

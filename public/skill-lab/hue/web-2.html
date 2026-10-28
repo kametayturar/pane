@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet">
+
+<style>
+:root{
+  /* primitives (design-model.yaml) */
+  --n0:#FFFFFF;--n50:#F4F6F6;--n100:#ECEFEF;--n200:#DDE2E3;--n300:#C5CDCF;--n400:#98A4A8;--n500:#6B787D;--n600:#505C61;--n700:#3C474C;--n800:#28323A;--n900:#17212A;--n950:#0E161D;
+  --s50:#FFF4E8;--s100:#FFE3C7;--s200:#FFC894;--s300:#FAA35C;--s400:#F4883A;--s500:#E8751A;--s600:#C45E0C;--s700:#9A4607;--s950:#2B1302;
+  --red50:#FDECEA;--red700:#B3261E;--red900:#5C1410;--green50:#E6F4EC;--green700:#1E7A52;--green900:#0F3D29;
+  /* semantic, light */
+  --background:var(--n50);--bg:var(--background);--surface1:var(--n0);--surface2:var(--n100);--surface3:var(--n200);
+  --border:var(--n200);--border-visible:var(--n600);
+  --text1:var(--n900);--text2:var(--n700);--text3:var(--n600);--text4:var(--n400);
+  --accent:var(--s500);--accent-text:var(--s700);--accent-subtle:var(--s50);
+  --action:var(--n900);--on-action:var(--n50);--action-hover:var(--n700);
+  --success:var(--green700);--success-bg:var(--green50);--error:var(--red700);--error-bg:var(--red50);
+  --display:'Bricolage Grotesque','Hanken Grotesk',system-ui,sans-serif;--body:'Hanken Grotesk',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;
+  --r-control:8px;--r-component:14px;--r-pill:999px;--r-element:4px;
+  --ease:cubic-bezier(.3,.7,.2,1);--fast:120ms;--normal:220ms;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --background:var(--n950);--surface1:var(--n900);--surface2:var(--n800);--surface3:var(--n700);--border:var(--n800);--border-visible:var(--n400);
+  --text1:var(--n50);--text2:var(--n300);--text3:var(--n400);--text4:var(--n600);
+  --accent:var(--s400);--accent-text:var(--s300);--accent-subtle:var(--s950);--action:var(--n50);--on-action:var(--n950);--action-hover:var(--n200);
+  --success:#5FD3A1;--success-bg:var(--green900);--error:#FF9A92;--error-bg:var(--red900);color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --background:var(--n950);--surface1:var(--n900);--surface2:var(--n800);--surface3:var(--n700);--border:var(--n800);--border-visible:var(--n400);
+  --text1:var(--n50);--text2:var(--n300);--text3:var(--n400);--text4:var(--n600);
+  --accent:var(--s400);--accent-text:var(--s300);--accent-subtle:var(--s950);--action:var(--n50);--on-action:var(--n950);--action-hover:var(--n200);
+  --success:#5FD3A1;--success-bg:var(--green900);--error:#FF9A92;--error-bg:var(--red900);color-scheme:dark}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--background);color:var(--text1);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+h1,h2,h3{font-family:var(--display);line-height:1.08}
+a{color:inherit}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:22px;line-height:1;display:inline-block;width:22px;height:22px;overflow:hidden;white-space:nowrap;font-feature-settings:'liga';-webkit-font-feature-settings:'liga';flex:none}
+.label{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.nav{display:flex;align-items:center;gap:32px;padding-top:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font:700 21px/1 var(--display);letter-spacing:-.02em;text-decoration:none;margin-right:auto}
+.logo .ms{color:var(--accent);font-size:26px;width:26px;height:26px}
+.nav ul{display:flex;gap:28px;list-style:none;padding:0;font-size:14.5px;font-weight:500}
+.nav ul a{text-decoration:none;color:var(--text2)}.nav ul a:hover{color:var(--text1)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15px/1 var(--body);padding:14px 22px;border-radius:var(--r-control);border:1.5px solid var(--action);background:var(--action);color:var(--on-action);text-decoration:none;cursor:pointer;transition:background var(--normal) var(--ease),color var(--normal) var(--ease)}
+.btn:hover{background:var(--action-hover);border-color:var(--action-hover)}
+.btn.line{background:transparent;color:var(--text1)}
+.btn.line:hover{background:var(--surface2);border-color:var(--text1)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mode{width:44px;height:44px;border-radius:var(--r-control);border:1.5px solid var(--border-visible);background:transparent;color:var(--text1);display:grid;place-items:center;cursor:pointer}
+.mode:hover{background:var(--surface2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:900px){.nav ul{display:none}}
+@media (max-width:480px){.wrap{padding:0 20px}.nav{gap:12px}.nav .btn{display:none}}
+
+.pricing{padding-top:56px;padding-bottom:84px}
+.ph{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:48px}
+h1{font-size:clamp(34px,4.6vw,56px);letter-spacing:-.035em;margin:16px 0 14px;max-width:14ch}
+.lead{color:var(--text2);max-width:46ch;font-size:17px}
+.tog{display:inline-flex;border:1.5px solid var(--text1);border-radius:var(--r-control);overflow:hidden}
+.tog button{font:600 14px var(--body);padding:12px 20px;border:0;background:transparent;color:var(--text1);cursor:pointer;display:inline-flex;gap:8px;align-items:center;transition:background var(--normal) var(--ease),color var(--normal) var(--ease)}
+.tog button.on{background:var(--action);color:var(--on-action)}
+.sv{font:500 11px var(--mono);padding:3px 6px;border-radius:var(--r-element);background:var(--accent);color:var(--n950)}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);border-top:1.5px solid var(--text1);border-bottom:1px solid var(--border)}
+.plan{display:flex;flex-direction:column;padding:32px 32px 36px;border-left:1px solid var(--border)}
+.plan:first-child{border-left:0;padding-left:0}.plan:last-child{padding-right:0}
+.plan.inv{background:var(--action);color:var(--on-action);border-left:0;margin-top:-1.5px;padding-top:33px;border-radius:0 0 var(--r-component) var(--r-component)}
+.plan.inv .label,.plan.inv .for,.plan.inv .per,.plan.inv .bill{color:color-mix(in srgb,var(--on-action) 78%,transparent)}
+.pop{margin-left:8px;padding:4px 7px;border-radius:var(--r-element);background:var(--accent);color:var(--n950);letter-spacing:.06em}
+.plan h2{font-size:30px;letter-spacing:-.025em;margin:18px 0 6px}
+.for{color:var(--text3);font-size:14.5px;margin-bottom:26px}
+.price{display:flex;align-items:baseline;gap:8px}
+.amt{font:500 54px/1 var(--mono);letter-spacing:-.04em}
+.per{font:400 13px var(--mono);color:var(--text3)}
+.bill{font:400 12.5px var(--mono);color:var(--text3);margin:10px 0 26px;min-height:18px}
+.plan .btn{width:100%}
+.plan.inv .btn{background:var(--on-action);border-color:var(--on-action);color:var(--action)}
+.plan.inv .btn:hover{background:var(--surface2)}
+.plan ul{list-style:none;padding:26px 0 0;margin:28px 0 0;border-top:1px solid var(--border);display:grid;gap:12px;font-size:15px}
+.plan.inv ul{border-color:color-mix(in srgb,var(--on-action) 25%,transparent)}
+.plan li{display:flex;gap:10px;align-items:center}.plan li .ms{font-size:20px;width:20px;height:20px;color:var(--accent-text)}
+.plan.inv li .ms{color:var(--accent)}
+.fine{margin-top:28px;font:400 12.5px var(--mono);color:var(--text3)}
+@media (max-width:900px){.plans{grid-template-columns:1fr;border-bottom:0}.plan,.plan:first-child,.plan:last-child{padding:28px 20px;border-left:0;border-bottom:1px solid var(--border)}.plan.inv{margin:0;border-radius:var(--r-component);border:0}}
+
+</style>
+</head>
+<body>
+<header class="wrap nav">
+  <a class="logo" href="#"><span class="ms" aria-hidden="true">tsunami</span>Tidewater</a>
+  <ul><li><a href="#features">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Clinics</a></li></ul>
+  <button class="mode" id="theme" type="button" aria-label="Toggle light or dark"><span class="ms">dark_mode</span></button>
+  <a class="btn" href="#">Book a demo</a>
+</header>
+<main class="wrap pricing">
+  <div class="ph">
+    <div><p class="label">Pricing</p><h1>One calendar, sized to your clinic.</h1><p class="lead">Every plan includes online booking, SMS reminders and a 30-day free trial. Switch plans whenever your team changes.</p></div>
+    <div class="tog" role="group" aria-label="Billing period">
+      <button type="button" class="on" data-p="m" aria-pressed="true">Monthly</button>
+      <button type="button" data-p="y" aria-pressed="false">Yearly <span class="sv">-20%</span></button>
+    </div>
+  </div>
+  <div class="plans">
+    <article class="plan">
+      <p class="label">Plan 01</p><h2>Solo</h2><p class="for">One therapist, one practice.</p>
+      <p class="price"><span class="amt" data-m="19" data-y="15">$19</span><span class="per">/ month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="$182 billed yearly">Billed monthly</p>
+      <a class="btn line" href="#">Start with Solo</a>
+      <ul><li><span class="ms">check</span>1 therapist calendar</li><li><span class="ms">check</span>Online booking page</li><li><span class="ms">check</span>Email and SMS reminders</li><li><span class="ms">check</span>Up to 150 patients</li></ul>
+    </article>
+    <article class="plan inv">
+      <p class="label">Plan 02 <span class="pop">Most popular</span></p><h2>Clinic</h2><p class="for">Small teams sharing rooms.</p>
+      <p class="price"><span class="amt" data-m="49" data-y="39">$49</span><span class="per">/ month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="$470 billed yearly">Billed monthly</p>
+      <a class="btn" href="#">Start with Clinic</a>
+      <ul><li><span class="ms">check</span>Up to 8 therapists</li><li><span class="ms">check</span>Room and equipment booking</li><li><span class="ms">check</span>Waitlist that fills cancellations</li><li><span class="ms">check</span>Unlimited patients</li><li><span class="ms">check</span>Utilisation reports</li></ul>
+    </article>
+    <article class="plan">
+      <p class="label">Plan 03</p><h2>Group</h2><p class="for">Multi-site practices.</p>
+      <p class="price"><span class="amt" data-m="129" data-y="103">$129</span><span class="per">/ month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="$1,238 billed yearly">Billed monthly</p>
+      <a class="btn line" href="#">Talk to us about Group</a>
+      <ul><li><span class="ms">check</span>Unlimited therapists and sites</li><li><span class="ms">check</span>Cross-site patient records</li><li><span class="ms">check</span>Role-based permissions</li><li><span class="ms">check</span>Priority support line</li><li><span class="ms">check</span>Data export and API access</li></ul>
+    </article>
+  </div>
+  <p class="fine">Prices in US dollars. Yearly billing is 20% below twelve monthly payments.</p>
+</main>
+
+<script>
+(function(){var b=document.getElementById('theme');if(!b)return;var i=b.firstElementChild;function cur(){var d=document.documentElement;return d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function sync(){i.textContent=cur()==='dark'?'light_mode':'dark_mode'}sync();
+b.addEventListener('click',function(){document.documentElement.setAttribute('data-theme',cur()==='dark'?'light':'dark');sync()})})();
+(function(){var btns=document.querySelectorAll('.tog button');
+function setP(p){btns.forEach(function(b){var on=b.dataset.p===p;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+ document.querySelectorAll('[data-m]').forEach(function(el){var v=el.dataset[p];el.textContent=el.classList.contains('amt')?'$'+v:v});}
+btns.forEach(function(b){b.addEventListener('click',function(){setP(b.dataset.p)})});})();
+
+</script>
+</body>
+</html>

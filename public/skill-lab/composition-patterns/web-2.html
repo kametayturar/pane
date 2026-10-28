@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"react":"https://esm.sh/react@19","react-dom/client":"https://esm.sh/react-dom@19/client"}}</script>
+<style>
+:root{--bg:#f5f2ea;--paper:#fffdf8;--ink:#12302e;--muted:#5a6e6b;--line:#e2dccd;--teal:#0f766e;--teal-d:#0a5852;--teal-l:#d7ece8;--sand:#ece5d3;--amber:#d98a1f;--err:#b3261e;--ok:#1d7a46;--r:16px;--serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.01em}
+.brand i{width:26px;height:26px;border-radius:8px;background:var(--teal);position:relative;display:block;overflow:hidden}
+.brand i::after{content:"";position:absolute;left:-4px;right:-4px;bottom:5px;height:9px;border-radius:50%;background:var(--teal-l);opacity:.9}
+.nav{display:flex;align-items:center;gap:26px;font-size:15px;color:var(--muted)}
+.nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:999px;padding:12px 22px;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s,transform .2s,border-color .2s}
+.btn:focus-visible,.slot:focus-visible,.seg button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f0b34a;outline-offset:2px}
+.btn-pri{background:var(--teal);color:#fff}.btn-pri:hover{background:var(--teal-d)}
+.btn-sec{background:transparent;border-color:var(--line);color:var(--ink)}.btn-sec:hover{border-color:var(--ink)}
+.btn-block{width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--teal)}
+.eyebrow::before{content:"";width:18px;height:2px;background:currentColor;border-radius:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;line-height:1.08}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+footer.ftr{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:14px;margin-top:40px}
+/* view source */
+.vs-btn{position:fixed;right:16px;bottom:16px;z-index:50;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.2);display:inline-flex;gap:6px;align-items:center}
+.vs-btn code{font:600 12px ui-monospace,Menlo,monospace}
+.vs-panel{position:fixed;right:16px;bottom:62px;z-index:49;width:min(620px,calc(100vw - 32px));height:min(70vh,560px);background:#0f1b1a;color:#cfe4e0;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}
+.vs-panel[hidden]{display:none}
+.vs-panel header{display:flex;align-items:baseline;gap:10px;padding:12px 16px;border-bottom:1px solid #243a37;font-size:13px}
+.vs-panel header b{color:#fff}
+.vs-panel header span{color:#7f9d98;flex:1}
+.vs-panel header button{background:#243a37;border:0;color:#cfe4e0;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer}
+.vs-panel pre{margin:0;overflow:auto;padding:16px;font:12px/1.6 ui-monospace,Menlo,monospace;flex:1;tab-size:2}
+.vs-panel .k{color:#f0b34a}.vs-panel .c{color:#6f8f8a}
+
+.pricing{padding:24px 0 40px;text-align:center}
+.pricing h1{font-size:clamp(36px,4.6vw,56px);margin:14px auto 14px;max-width:16em}
+.pricing .lead{color:var(--muted);font-size:18px;max-width:34em;margin:0 auto}
+.seg{display:inline-flex;margin:30px auto 8px;background:var(--sand);border-radius:999px;padding:4px;position:relative}
+.seg button{border:0;background:transparent;border-radius:999px;padding:9px 20px;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer;display:inline-flex;gap:8px;align-items:center;transition:color .2s,background .2s}
+.seg button[aria-checked=true]{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(18,48,46,.18)}
+.seg .save{font-size:11.5px;background:var(--teal);color:#fff;border-radius:99px;padding:2px 8px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;margin-top:34px;text-align:left}
+.plan{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:18px;height:100%}
+.plan.is-pop{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal),0 30px 50px -30px rgba(15,118,110,.45)}
+.plan .badge{position:absolute;top:-13px;left:28px;background:var(--teal);color:#fff;font-size:12px;font-weight:600;letter-spacing:.04em;padding:4px 12px;border-radius:99px}
+.plan h2{font-size:28px}
+.plan .for{color:var(--muted);font-size:14.5px;margin-top:4px;min-height:3.1em}
+.price{display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums}
+.price b{font-family:var(--serif);font-weight:500;font-size:46px;letter-spacing:-.03em;line-height:1}
+.price span,.price s{white-space:nowrap}.price span{color:var(--muted);font-size:15px}
+.price s{color:var(--muted);font-size:15px;margin-left:4px}
+.billed{font-size:13px;color:var(--muted);min-height:1.5em;margin-top:10px}
+.feats{list-style:none;padding:20px 0 0;border-top:1px solid var(--line);display:grid;gap:11px;font-size:15px;flex:1;align-content:start}
+.feats li{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start}
+.feats svg{width:18px;height:18px;margin-top:2px;stroke:var(--teal);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.plan .note{font-size:13px;color:var(--muted);background:var(--sand);border-radius:10px;padding:8px 12px}
+.fine{text-align:center;color:var(--muted);font-size:14px;margin-top:28px}
+@media (max-width:900px){.plans{grid-template-columns:1fr;max-width:520px;margin-inline:auto}.nav a:not(.btn){display:none}.plan .for{min-height:0}}
+@media (max-width:480px){.wrap{padding:0 18px}.plan{padding:24px}.seg button{padding:9px 14px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" id="app">
+import {createElement as h, createContext, use, useState} from 'react';
+import {createRoot} from 'react-dom/client';
+
+// <composition>
+// 1. The provider is the ONLY place that knows how billing state is stored or priced.
+//    UI parts depend on the { state, actions, meta } interface, not on useState.
+const PricingContext = createContext(null);
+
+function PricingProvider({children}) {
+  const [billing, setBilling] = useState('monthly');
+  const yearly = billing === 'yearly';
+  const meta = {
+    discount: 0.2,
+    price: (monthly) => yearly ? monthly * 0.8 : monthly,
+    billedLine: (monthly) => yearly ? `Billed $${(monthly * 12 * 0.8).toFixed(2)} per year` : 'Billed monthly, cancel anytime',
+  };
+  return h(PricingContext, {value: {state: {billing}, actions: {setBilling}, meta}}, children);
+}
+
+// 2. Compound toggle: reads and writes through context.
+const Pricing = {
+  Toggle() {
+    const {state, actions, meta} = use(PricingContext);
+    const opt = (id, label, extra) => h('button', {
+      key: id, type: 'button', role: 'radio', 'aria-checked': state.billing === id,
+      onClick: () => actions.setBilling(id),
+    }, label, extra);
+    return h('div', {className: 'seg', role: 'radiogroup', 'aria-label': 'Billing period'},
+      opt('monthly', 'Monthly'),
+      opt('yearly', 'Yearly', h('span', {className: 'save'}, `Save ${meta.discount * 100}%`)));
+  },
+  Grid: ({children}) => h('div', {className: 'plans'}, children),
+};
+
+// 3. A plan is assembled from parts. No `featured`, `primary`, `showBadge` flags.
+const Plan = {
+  Frame:         ({children}) => h('article', {className: 'plan'}, children),
+  FeaturedFrame: ({children}) => h('article', {className: 'plan is-pop'}, children),
+  Badge: ({children}) => h('span', {className: 'badge'}, children),
+  Header: ({name, blurb}) => h('div', null, h('h2', null, name), h('p', {className: 'for'}, blurb)),
+  Price({monthly}) {
+    const {state, meta} = use(PricingContext);
+    const now = meta.price(monthly);
+    return h('div', null,
+      h('div', {className: 'price'},
+        h('b', null, '$' + (Number.isInteger(now) ? now : now.toFixed(2))),
+        h('span', null, '/ month'),
+        state.billing === 'yearly' && h('s', null, '$' + monthly)),
+      h('p', {className: 'billed'}, meta.billedLine(monthly)));
+  },
+  Features: ({items}) => h('ul', {className: 'feats'}, items.map(t =>
+    h('li', {key: t}, h('svg', {viewBox: '0 0 24 24', 'aria-hidden': true}, h('path', {d: 'M5 12.5l4.5 4.5L19 7'})), h('span', null, t)))),
+  Note: ({children}) => h('p', {className: 'note'}, children),
+  Cta:        ({children}) => h('a', {className: 'btn btn-sec btn-block', href: '#start'}, children),
+  PrimaryCta: ({children}) => h('a', {className: 'btn btn-pri btn-block', href: '#start'}, children),
+};
+
+// 4. Explicit variants: each plan reads like what it renders.
+function SoloPlan() {
+  return h(Plan.Frame, null,
+    h(Plan.Header, {name: 'Solo', blurb: 'One therapist running their own practice.'}),
+    h(Plan.Price, {monthly: 19}),
+    h(Plan.Cta, null, 'Start with Solo'),
+    h(Plan.Features, {items: ['1 therapist calendar', 'Up to 150 appointments / month', 'SMS and email reminders', 'Online booking page', 'Email support']}));
+}
+function ClinicPlan() {
+  return h(Plan.FeaturedFrame, null,
+    h(Plan.Badge, null, 'Most popular'),
+    h(Plan.Header, {name: 'Clinic', blurb: 'A growing team that shares rooms and equipment.'}),
+    h(Plan.Price, {monthly: 49}),
+    h(Plan.PrimaryCta, null, 'Start with Clinic'),
+    h(Plan.Features, {items: ['Up to 8 therapists', 'Unlimited appointments', 'Room and equipment booking', 'Automatic waitlist', 'Insurance export (CSV)', 'Priority chat support']}));
+}
+function GroupPlan() {
+  return h(Plan.Frame, null,
+    h(Plan.Header, {name: 'Group', blurb: 'Multi-site clinics with shared reporting.'}),
+    h(Plan.Price, {monthly: 129}),
+    h(Plan.Cta, null, 'Talk to us'),
+    h(Plan.Features, {items: ['Unlimited therapists and sites', 'Cross-site scheduling', 'Roles and permissions', 'SSO and audit log', 'Custom reminders and branding', 'Dedicated onboarding']}),
+    h(Plan.Note, null, 'Includes 3 onboarding calls with a Tidewater specialist.'));
+}
+// </composition>
+
+function App() {
+  return h('div', null,
+    h('div', {className: 'wrap'},
+      h('header', {className: 'hdr'},
+        h('a', {className: 'brand', href: '#'}, h('i'), 'Tidewater'),
+        h('nav', {className: 'nav', 'aria-label': 'Main'}, h('a', {href: '#'}, 'Features'), h('a', {href: '#'}, 'Pricing'), h('a', {className: 'btn btn-pri', href: '#start'}, 'Start free'))),
+      h('main', null,
+        h('section', {className: 'pricing'},
+          h('span', {className: 'eyebrow'}, 'Pricing'),
+          h('h1', null, 'Simple plans for every size of clinic'),
+          h('p', {className: 'lead'}, 'Every plan starts with a 30-day free trial. Change or cancel whenever the clinic changes.'),
+          h(PricingProvider, null, h(Pricing.Toggle), h(Pricing.Grid, null, h(SoloPlan), h(ClinicPlan), h(GroupPlan))),
+          h('p', {className: 'fine'}, 'Prices in USD. Yearly billing takes 20% off every plan.')))),
+    h('footer', {className: 'ftr'}, h('div', {className: 'wrap'}, '© 2026 Tidewater · Scheduling for small physiotherapy clinics')));
+}
+createRoot(document.getElementById('root')).render(h(App));
+</script>
+<button class="vs-btn" id="vsBtn" type="button" aria-expanded="false" aria-controls="vsPanel">View source <code>&lt;/&gt;</code></button>
+<aside class="vs-panel" id="vsPanel" hidden aria-label="Component source"><header><b>Composition layer</b><span>the compound components this page is built from</span><button type="button" id="vsClose">Close</button></header><pre><code id="vsCode"></code></pre></aside>
+<script>
+(function(){
+  var btn=document.getElementById('vsBtn'),panel=document.getElementById('vsPanel'),code=document.getElementById('vsCode');
+  var src=document.getElementById('app').textContent;
+  var a=src.indexOf('// <composition>'),b=src.indexOf('// </composition>');
+  var text=(a>-1&&b>a?src.slice(a+16,b):src).replace(/^\n+/,'').replace(/\s+$/,'');
+  var esc=function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')};
+  code.innerHTML=esc(text).split('\n').map(function(l){
+    if(/^\s*\/\//.test(l))return '<span class="c">'+l+'</span>';
+    return l.replace(/\b(function|const|return|export|import|from)\b/g,'<span class="k">$1</span>');
+  }).join('\n');
+  function set(o){panel.hidden=!o;btn.setAttribute('aria-expanded',o)}
+  btn.onclick=function(){set(panel.hidden)};
+  document.getElementById('vsClose').onclick=function(){set(false)};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false)});
+})();
+</script>
+
+</body>
+</html>

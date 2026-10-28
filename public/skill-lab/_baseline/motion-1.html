@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toast notification</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f1f5f9; height: 100vh; overflow: hidden; position: relative; }
+  .app { padding: 32px; color: #94a3b8; font-size: 14px; }
+  .app h2 { color: #334155; font-size: 20px; margin-bottom: 16px; }
+  .row { height: 48px; background: #fff; border-radius: 10px; margin-bottom: 10px; max-width: 520px; border: 1px solid #e2e8f0; }
+  .toast {
+    position: fixed; top: 24px; right: 24px; display: flex; align-items: center; gap: 12px;
+    background: #0f172a; color: #fff; padding: 14px 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(15,23,42,.3);
+    transform: translateX(130%); opacity: 0; max-width: calc(100vw - 48px); overflow: hidden;
+  }
+  .toast .ic { width: 28px; height: 28px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toast .ic svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .toast .msg { font-size: 15px; font-weight: 500; }
+  .toast .bar { position: absolute; left: 0; bottom: 0; height: 3px; background: #10b981; width: 100%; transform-origin: left; }
+  .toast.show { animation: slideIn .45s cubic-bezier(.22,1,.36,1) forwards; }
+  .toast.show .bar { animation: shrink 2.6s linear forwards; }
+  .toast.hide { animation: slideOut .35s ease-in forwards; }
+  @keyframes slideIn { from { transform: translateX(130%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(130%); opacity: 0; } }
+  @keyframes shrink { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+  .replay { position: fixed; bottom: 20px; left: 20px; padding: 8px 14px; border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; font-family: inherit; font-size: 13px; cursor: pointer; }
+  .replay:hover { background: #f8fafc; }
+</style>
+</head>
+<body>
+<div class="app">
+  <h2>Schedule</h2>
+  <div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></span>
+  <span class="msg">Appointment booked for Tue 10:30</span>
+  <span class="bar"></span>
+</div>
+<button class="replay" id="replay">Replay</button>
+<script>
+  const toast = document.getElementById('toast');
+  let timers = [];
+  function clear() { timers.forEach(clearTimeout); timers = []; }
+  function cycle() {
+    clear();
+    toast.className = 'toast';
+    void toast.offsetWidth;
+    timers.push(setTimeout(() => { toast.classList.add('show'); }, 400));
+    timers.push(setTimeout(() => { toast.classList.remove('show'); toast.classList.add('hide'); }, 400 + 450 + 2600));
+    timers.push(setTimeout(cycle, 400 + 450 + 2600 + 350 + 1200));
+  }
+  document.getElementById('replay').addEventListener('click', cycle);
+  cycle();
+</script>
+</body>
+</html>

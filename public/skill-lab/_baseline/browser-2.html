@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-2-nothing.png" alt="Click Book with the pre-highlighted 10:30 slot: nothing happens (no result, no request)"><figcaption>Click Book with the pre-highlighted 10:30 slot: nothing happens (no result, no request)</figcaption></figure><figure><img src="browser-2-after-select.png" alt="After explicitly clicking 14:00: request sent, 'Booked 14:00' shown"><figcaption>After explicitly clicking 14:00: request sent, 'Booked 14:00' shown</figcaption></figure></div>
+<h2>Result</h2><div class="result">Cause: `selected` is never set when the page loads, so the Book button's handler throws before it does anything.
+
+In book(), the 10:30 slot looks selected only because the template adds the CSS class `sel` when `i === 1`. The variable `selected` (declared with `let selected`, so undefined) is assigned only inside the slot's click handler. The Book handler starts with `await fetch("/api/book", { body: JSON.stringify({ slot: selected.id }) })`, and `selected.id` throws "TypeError: Cannot read properties of undefined (reading 'id')" while building the request. Because the handler is async, the error becomes an unhandled promise rejection: no UI change, no request, nothing for the user to see, which is exactly "does nothing".
+
+Evidence (puppeteer + Chrome, page http://localhost:7003/#book):
+- On load the DOM shows slot s2 highlighted (class sel) while `selected` is undefined.
+- Click "Book appointment" without touching a slot: result div stays empty, the request log shows no POST /api/book at all, and the page reports pageerror "Cannot read properties of undefined (reading 'id')".
+- Click the 14:00 slot first (selected becomes {id:"s3",time:"14:00"}), then Book: the POST /api/book is sent and the page shows "Booked 14:00". So the button works, the highlighted default is the problem.
+
+Second bug hiding behind it: once the click works, the app shows "Booked 14:00" even though POST /api/book returned 404 here (the handler never reads `res`). Failures are reported to the user as success.
+
+Suggested fix (not applied, the task was to diagnose): initialise the selection from the same source as the highlight (`let selected = SLOTS[1]`, or render `sel` from `selected`), disable the button until a slot is chosen, and check `res.ok` before showing the success message.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># A = bug reproduced with no POST and a pageerror; C = works after choosing a slot; D = the exception reproduced directly</div><div class="cmd">node t2.mjs   # puppeteer: load #book, click Book, record DOM, network, console, then click a slot and retry</div><div class="out">initial: {"result":"","selClass":"s1,s2*,s3","selectedVar":"undefined","btnDisabled":false,"listenerAttached":true}
+A) click Book with the pre-highlighted slot (10:30): {"result":"","selClass":"s1,s2*,s3","selectedVar":"undefined","btnDisabled":false,"listenerAttached":true}
+   requests after click: []
+   console: ["error: Failed to load resource: the server responded with a status of 404 (Not Found)","pageerror: Cannot read properties of undefined (reading 'id')"]
+B) source of the highlight: i === 1 ? " sel" : "" | selected assigned in: selected = SLOTS.find((s) =&gt; s.id === el.dataset.id)
+C) after clicking 14:00 slot, selected = {"id":"s3","time":"14:00"}
+   result: {"result":"Booked 14:00","selClass":"s1,s2,s3*","selectedVar":"[object Object]","btnDisabled":false,"listenerAttached":true} requests: ["POST /api/book","  -&gt; 404 /api/book"] console: ["error: Failed to load resource: the server responded with a status of 404 (Not Found)"]
+D) fresh #book page, `selected` = undefined | first Book click calls selected.id -&gt; TypeError: Cannot read properties of undefined (reading 'id')</div></div><div class="step"><div class="note"># source: `selected` assigned only in the slot click; highlight comes from `i === 1 ? " sel" : ""`</div><div class="cmd">sed -n 46,54p index.html   # the handlers</div><div class="out">  view.querySelectorAll(".slot").forEach((el) =&gt; el.addEventListener("click", () =&gt; {
+    view.querySelectorAll(".slot").forEach((x) =&gt; x.classList.remove("sel")); el.classList.add("sel")
+    selected = SLOTS.find((s) =&gt; s.id === el.dataset.id)
+  }))
+  document.getElementById("book").addEventListener("click", async () =&gt; {
+    const res = await fetch("/api/book", { method: "POST", body: JSON.stringify({ slot: selected.id }) })
+    document.getElementById("result").innerHTML = `&lt;div class="ok"&gt;Booked ${selected.time}&lt;/div&gt;`
+  })
+}</div></div><div class="step"><div class="note"># visual confirmation</div><div class="cmd">(viewed book-nothing.png and book-after-select.png)</div><div class="out">Before: slot 10:30 highlighted, empty result area after clicking Book. After picking 14:00: green 'Booked 14:00'.</div></div></div>
+<h2>Files</h2><details open><summary>t2.mjs (diagnosis script)</summary><pre><span class="k">import</span> puppeteer <span class="k">from</span> <span <span class="k">class</span>="s">"/Users/kametayturar/agentic-ui/ai-answer/docs/review/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js"</span>
+<span class="k">const</span> b = <span class="k">await</span> puppeteer.launch({ executablePath: <span <span class="k">class</span>="s">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span>, headless: <span class="k">true</span>, args: [<span <span class="k">class</span>="s">"--no-sandbox"</span>] })
+<span class="k">const</span> p = <span class="k">await</span> b.newPage(); <span class="k">await</span> p.setViewport({ width: <span class="n">900</span>, height: <span class="n">600</span> })
+<span class="k">const</span> reqs = [], logs = []
+p.on(<span <span class="k">class</span>="s">"request"</span>, (r) =&gt; reqs.push(r.method() + <span <span class="k">class</span>="s">" "</span> + <span class="k">new</span> URL(r.url()).pathname))
+p.on(<span <span class="k">class</span>="s">"response"</span>, (r) =&gt; { <span class="k">if</span> (r.url().includes(<span <span class="k">class</span>="s">"/api/"</span>)) reqs.push(<span <span class="k">class</span>="s">"  -&gt; "</span> + r.status() + <span <span class="k">class</span>="s">" "</span> + <span class="k">new</span> URL(r.url()).pathname) })
+p.on(<span <span class="k">class</span>="s">"console"</span>, (m) =&gt; logs.push(m.<span class="k">type</span>() + <span <span class="k">class</span>="s">": "</span> + m.text()))
+p.on(<span <span class="k">class</span>="s">"pageerror"</span>, (e) =&gt; logs.push(<span <span class="k">class</span>="s">"pageerror: "</span> + e.message.split(<span <span class="k">class</span>="s">"\n"</span>)[<span class="n">0</span>]))
+<span class="k">await</span> p.goto(<span <span class="k">class</span>="s">"http://localhost:<span class="n">7003</span>/#book"</span>, { waitUntil: <span <span class="k">class</span>="s">"load"</span> })
+<span class="k">const</span> info = () =&gt; p.evaluate(() =&gt; ({ result: document.getElementById(<span <span class="k">class</span>="s">"result"</span>).innerText, selClass: [...document.querySelectorAll(<span <span class="k">class</span>="s">".slot"</span>)].map((s) =&gt; s.dataset.id + (s.classList.contains(<span <span class="k">class</span>="s">"sel"</span>) ? <span <span class="k">class</span>="s">"*"</span> : <span <span class="k">class</span>="s">""</span>)).join(<span <span class="k">class</span>="s">","</span>), selectedVar: String(selected), btnDisabled: document.getElementById(<span <span class="k">class</span>="s">"book"</span>).disabled, listenerAttached: <span class="k">true</span> }))
+console.log(<span <span class="k">class</span>="s">"initial:"</span>, JSON.stringify(<span class="k">await</span> info()))
+<span class="k">const</span> n0 = reqs.length
+<span class="k">await</span> p.click(<span <span class="k">class</span>="s">"#book"</span>); <span class="k">await</span> <span class="k">new</span> Promise((r) =&gt; setTimeout(r, <span class="n">400</span>))
+console.log(<span <span class="k">class</span>="s">"A) click Book <span class="k">with</span> the pre-highlighted slot (<span class="n">10</span>:<span class="n">30</span>):"</span>, JSON.stringify(<span class="k">await</span> info()))
+console.log(<span <span class="k">class</span>="s">"   requests after click:"</span>, JSON.stringify(reqs.slice(n0)))
+console.log(<span <span class="k">class</span>="s">"   console:"</span>, JSON.stringify(logs))
+<span class="k">await</span> p.screenshot({ path: <span <span class="k">class</span>="s">"book-nothing.png"</span> })
+<span class="c">// Proof of cause: the highlighted slot is only CSS (i === 1 -&gt; class sel), `selected` is only set in the slot click handler</span>
+console.log(<span <span class="k">class</span>="s">"B) source <span class="k">of</span> the highlight:"</span>, <span class="k">await</span> p.evaluate(() =&gt; book.toString().match(/i === <span class="n">1</span> \? <span <span class="k">class</span>="s">" sel"</span> : <span <span class="k">class</span>="s">""</span>/)?.[<span class="n">0</span>]), <span <span class="k">class</span>="s">"| selected assigned <span class="k">in</span>:"</span>, <span class="k">await</span> p.evaluate(() =&gt; (book.toString().match(/selected = [^\n]*/) || [])[<span class="n">0</span>]))
+<span class="c">// choose a slot explicitly</span>
+logs.length = <span class="n">0</span>; <span class="k">const</span> n1 = reqs.length
+<span class="k">await</span> p.click(<span <span class="k">class</span>="s">".slot[data-id=s3]"</span>); console.log(<span <span class="k">class</span>="s">"C) after clicking <span class="n">14</span>:<span class="n">00</span> slot, selected ="</span>, <span class="k">await</span> p.evaluate(() =&gt; JSON.stringify(selected)))
+<span class="k">await</span> p.click(<span <span class="k">class</span>="s">"#book"</span>); <span class="k">await</span> <span class="k">new</span> Promise((r) =&gt; setTimeout(r, <span class="n">400</span>))
+console.log(<span <span class="k">class</span>="s">"   result:"</span>, JSON.stringify(<span class="k">await</span> info()), <span <span class="k">class</span>="s">"requests:"</span>, JSON.stringify(reqs.slice(n1)), <span <span class="k">class</span>="s">"console:"</span>, JSON.stringify(logs))
+<span class="k">await</span> p.screenshot({ path: <span <span class="k">class</span>="s">"book-after-select.png"</span> })
+<span class="k">await</span> p.reload()
+console.log(<span <span class="k">class</span>="s">"D) fresh #book page, `selected` ="</span>, <span class="k">await</span> p.evaluate(() =&gt; String(selected)), <span <span class="k">class</span>="s">"| first Book click calls selected.id -&gt;"</span>, <span class="k">await</span> p.evaluate(() =&gt; { <span class="k">try</span> { selected.id } <span class="k">catch</span> (e) { <span class="k">return</span> e.name + <span <span class="k">class</span>="s">": "</span> + e.message } }))
+<span class="k">await</span> b.close()
+</pre></details>
+</main>
+
+</body></html>

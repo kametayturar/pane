@@ -1,0 +1,23 @@
+{
+  "id": "remotion-best-practices",
+  "sets": ["code"],
+  "skillSays": [
+    "It is a router: video creation loads remotion-create, markup rules load remotion-markup, rendering loads remotion-render.",
+    "Scaffold with 'npx create-video@latest --yes --blank --no-tailwind' into a new subfolder when the folder isn't empty, and add packages with 'npx remotion add' so versions match.",
+    "Start Remotion Studio and open the preview before writing the composition; render only when the user explicitly asks for the MP4.",
+    "Drive every animation from useCurrentFrame()/interpolate() with Easing.bezier; CSS transitions don't render. Keep interpolate() inline in style and use the scale/translate/rotate properties, not transform strings.",
+    "Design a video, not a webpage: one focal point per scene, safe areas (80px sides at 1080 wide), headline at least 84px and supporting text at least 44px, scaled to the composition width.",
+    "Multi-scene videos: one component per scene joined with TransitionSeries (or a named Track), with transition overlap counted in the total duration; give each composition an inline literal id and defaultProps."
+  ],
+  "examples": [
+    {
+      "prompt": "video-1",
+      "changes": [
+        "Used the official create-video scaffold plus 'npx remotion add' for @remotion/transitions and google-fonts instead of hand-rolling a project.",
+        "Started Studio on a free port first and checked it served before writing any scenes.",
+        "Built the teaser as five scene components in one TransitionSeries (fade/slide) and computed the 180-frame total including the 4 x 6 frame transition overlap.",
+        "Sized text from the skill's video-layout minimums (100px headline, 52px supporting, 96px safe margin at 1280 wide) and checked scenes with 'render --frames' stills before the full render."
+      ]
+    }
+  ]
+}

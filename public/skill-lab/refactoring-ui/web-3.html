@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;--space-10:128px;
+  --text-xs:12px;--text-sm:14px;--text-base:16px;--text-lg:18px;--text-xl:20px;--text-2xl:24px;--text-3xl:30px;--text-4xl:36px;--text-5xl:48px;--text-6xl:60px;--text-7xl:72px;
+  --weight-normal:400;--weight-bold:600;
+  --leading-tight:1;--leading-snug:1.25;--leading-normal:1.5;--leading-loose:1.75;
+  --measure:34em;
+  --grey-100:hsl(204,30%,96%);--grey-200:hsl(205,26%,90%);--grey-300:hsl(205,22%,82%);--grey-400:hsl(205,18%,60%);--grey-500:hsl(205,20%,47%);--grey-600:hsl(205,26%,37%);--grey-700:hsl(205,32%,29%);--grey-800:hsl(205,38%,21%);--grey-900:hsl(205,55%,14%);
+  --primary-100:hsl(188,70%,93%);--primary-200:hsl(188,66%,84%);--primary-300:hsl(188,60%,68%);--primary-400:hsl(189,60%,46%);--primary-500:hsl(190,88%,28%);--primary-600:hsl(191,88%,24%);--primary-700:hsl(192,88%,20%);--primary-800:hsl(194,88%,16%);--primary-900:hsl(196,88%,12%);
+  --red-100:hsl(360,100%,95%);--red-500:hsl(360,67%,44%);--red-800:hsl(360,85%,25%);
+  --yellow-100:hsl(49,100%,92%);--yellow-500:hsl(42,100%,29%);--yellow-800:hsl(38,100%,19%);
+  --green-100:hsl(152,68%,92%);--green-500:hsl(154,85%,24%);--green-800:hsl(156,100%,13%);
+  --shadow-1:0 1px 3px hsla(0,0%,0%,.2);--shadow-2:0 4px 6px hsla(0,0%,0%,.2);--shadow-3:0 5px 15px hsla(0,0%,0%,.2);--shadow-4:0 10px 24px hsla(0,0%,0%,.2);--shadow-5:0 15px 35px hsla(0,0%,0%,.2);
+  --radius:8px;--radius-full:9999px;
+  --surface:var(--grey-100);--surface-raised:#fff;--surface-sunken:var(--grey-200);
+  --border:var(--grey-300);--border-strong:var(--grey-500);
+  --text-primary:var(--grey-900);--text-secondary:var(--grey-700);--text-tertiary:var(--grey-600);--text-disabled:var(--grey-400);
+  --action:var(--primary-500);--action-text:#fff;
+  --sans:"Public Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--surface);color:var(--text-primary);font:var(--weight-normal) var(--text-base)/var(--leading-normal) var(--sans)}
+a{color:var(--primary-600)}
+:focus-visible{outline:2px solid var(--primary-400);outline-offset:2px}
+.wrap{max-width:1120px;margin-inline:auto;padding-inline:var(--space-5)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding-block:var(--space-5)}
+.logo{font-weight:var(--weight-bold);font-size:var(--text-xl);color:var(--text-primary);text-decoration:none}
+.nav ul{display:flex;gap:var(--space-6);list-style:none;padding:0;align-items:center}
+.nav a.l{color:var(--text-secondary);text-decoration:none;font-weight:var(--weight-bold);font-size:var(--text-sm)}
+.nav a.l:hover{color:var(--text-primary)}
+.btn{display:inline-flex;align-items:center;justify-content:center;font:var(--weight-bold) var(--text-base)/1 var(--sans);padding:14px var(--space-5);border-radius:var(--radius);border:2px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background-color .15s,box-shadow .15s,transform .15s}
+.btn-primary{background:var(--action);color:var(--action-text);box-shadow:var(--shadow-1)}
+.btn-primary:hover{background:var(--primary-600);box-shadow:var(--shadow-2)}
+.btn-primary:active{background:var(--primary-700);box-shadow:none}
+.btn-secondary{background:transparent;color:var(--primary-600);border-color:var(--primary-300)}
+.btn-secondary:hover{background:var(--primary-100)}
+.btn-tertiary{background:none;color:var(--primary-600);padding-inline:var(--space-2);text-decoration:underline;text-underline-offset:3px}
+@media(max-width:600px){.nav ul li:not(:last-child){display:none}}
+
+
+.card{max-width:440px;margin:var(--space-5) auto var(--space-9);background:var(--surface-raised);border-radius:var(--radius);box-shadow:0 10px 24px hsla(205,55%,14%,.12),0 1px 3px hsla(205,55%,14%,.12);padding:var(--space-7) var(--space-6)}
+h1{font-size:var(--text-3xl);font-weight:var(--weight-bold);line-height:var(--leading-snug)}
+.sub{margin-top:var(--space-2);color:var(--text-secondary);margin-bottom:var(--space-6)}
+.field{margin-bottom:var(--space-5)}
+label{display:block;font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--grey-800);margin-bottom:var(--space-2)}
+.in{width:100%;height:44px;font:var(--weight-normal) var(--text-base)/1 var(--sans);color:var(--text-primary);background:#fff;border:1px solid var(--border-strong);border-radius:var(--radius);padding:0 var(--space-3);appearance:none;transition:border-color .15s,box-shadow .15s}
+.in:hover{border-color:var(--grey-700)}
+.in:focus{outline:0;border-color:var(--primary-500);box-shadow:0 0 0 3px var(--primary-200)}
+.in[aria-invalid=true]{border-color:var(--red-500);background:var(--red-100)}
+.in[aria-invalid=true]:focus{box-shadow:0 0 0 3px hsl(360,80%,85%)}
+.help{margin-top:var(--space-2);font-size:var(--text-sm);color:var(--text-tertiary)}
+.err{display:none;margin-top:var(--space-2);font-size:var(--text-sm);color:var(--red-800);align-items:flex-start;gap:var(--space-2)}
+.err.on{display:flex}
+.err svg{flex:none;width:16px;height:16px;margin-top:2px;color:var(--red-500)}
+.has-err .help{display:none}
+.pw{position:relative}
+.pw button{position:absolute;right:var(--space-2);top:50%;transform:translateY(-50%);background:none;border:0;font:var(--weight-bold) var(--text-sm)/1 var(--sans);color:var(--primary-600);padding:var(--space-2);cursor:pointer;border-radius:4px}
+.pw .in{padding-right:64px}
+.sel{position:relative}
+.sel::after{content:"";position:absolute;right:var(--space-4);top:50%;width:8px;height:8px;border:solid var(--grey-700);border-width:0 2px 2px 0;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.chk{display:grid;grid-template-columns:20px minmax(0,1fr);gap:var(--space-3);align-items:start;margin-bottom:var(--space-6)}
+.chk input{appearance:none;width:20px;height:20px;border:1px solid var(--border-strong);border-radius:4px;background:#fff;margin:2px 0 0;cursor:pointer;display:grid;place-content:center}
+.chk input:checked{background:var(--primary-500);border-color:var(--primary-500)}
+.chk input:checked::before{content:"";width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(40deg) translate(-1px,-1px)}
+.chk input:focus-visible{outline:0;box-shadow:0 0 0 3px var(--primary-200)}
+.chk label{font-weight:var(--weight-normal);font-size:var(--text-sm);color:var(--text-secondary);margin:0}
+.chk input[aria-invalid=true]{border-color:var(--red-500);background:var(--red-100)}
+.submit{width:100%;padding:14px var(--space-5)}
+.alt{margin-top:var(--space-5);text-align:center;font-size:var(--text-sm);color:var(--text-secondary)}
+.done{display:none}.done.on{display:block}.done p{margin-top:var(--space-3);color:var(--text-secondary)}
+</style></head>
+<body>
+<div class="wrap">
+<nav class="nav" aria-label="Primary"><a class="logo" href="#">Tidewater</a><ul><li><a class="l" href="#">Sign in</a></li></ul></nav>
+<main class="card">
+<form id="f" novalidate>
+  <h1>Create your account</h1>
+  <p class="sub">Start your 30-day trial. No card required.</p>
+  <div class="field" id="g-name"><label for="name">Full name</label><input class="in" id="name" type="text" autocomplete="name" value="Mira Okafor"><p class="err" id="name-e"></p></div>
+  <div class="field" id="g-email"><label for="email">Work email</label><input class="in" id="email" type="email" autocomplete="email" value="mira@harbourroad" aria-describedby="email-e"><p class="err" id="email-e" role="alert"></p></div>
+  <div class="field" id="g-pw"><label for="pw">Password</label><div class="pw"><input class="in" id="pw" type="password" autocomplete="new-password" value="tide25" aria-describedby="pw-e pw-h"><button type="button" id="show">Show</button></div><p class="help" id="pw-h">At least 10 characters.</p><p class="err" id="pw-e" role="alert"></p></div>
+  <div class="field" id="g-size"><label for="size">Clinic size</label><div class="sel"><select class="in" id="size"><option value="">Choose a size</option><option>Just me</option><option selected>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 or more therapists</option></select></div><p class="err" id="size-e"></p></div>
+  <div class="chk"><input id="terms" type="checkbox" aria-describedby="terms-e"><div><label for="terms">I accept the <a href="#">terms of service</a> and privacy policy.</label><p class="err" id="terms-e" role="alert"></p></div></div>
+  <button class="btn btn-primary submit" type="submit">Create account</button>
+  <p class="alt">Already have an account? <a href="#">Sign in</a></p>
+</form>
+<section class="done" id="done" aria-live="polite"><h1>Check your inbox</h1><p>We sent a confirmation link to <b id="mail"></b>.</p></section>
+</main></div>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)},MIN=10;
+  var ic='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4M8 11v.5"/></svg>';
+  function put(k,el,m){var e=$(k+'-e'),g=$('g-'+k);if(m){e.innerHTML=ic+'<span>'+m+'</span>';e.classList.add('on');el.setAttribute('aria-invalid','true');if(g)g.classList.add('has-err')}else{e.classList.remove('on');el.removeAttribute('aria-invalid');if(g)g.classList.remove('has-err')}return !m}
+  var v={
+    name:function(){var e=$('name');return put('name',e,e.value.trim().split(/\s+/).length<2?'Enter your first and last name.':'')},
+    email:function(){var e=$('email'),x=e.value.trim();return put('email',e,!x?'Enter your work email.':(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(x)?'Enter a complete email address, like mira@harbourroad.com.':''))},
+    pw:function(){var e=$('pw'),n=e.value.length;return put('pw',e,n<MIN?'Use at least '+MIN+' characters. This password has '+n+'.':'')},
+    size:function(){var e=$('size');return put('size',e,e.value?'':'Choose your clinic size.')},
+    terms:function(){var e=$('terms');return put('terms',e,e.checked?'':'Accept the terms to continue.')}
+  };
+  ['name','email','pw','size'].forEach(function(k){var e=$(k);e.addEventListener('blur',v[k]);e.addEventListener('input',function(){if(e.getAttribute('aria-invalid'))v[k]()});e.addEventListener('change',function(){if(k==='size')v.size()})});
+  $('terms').addEventListener('change',function(){if(this.getAttribute('aria-invalid'))v.terms()});
+  $('show').addEventListener('click',function(){var p=$('pw'),h=p.type==='password';p.type=h?'text':'password';this.textContent=h?'Hide':'Show'});
+  $('f').addEventListener('submit',function(e){e.preventDefault();var k=['name','email','pw','size','terms'],r=k.map(function(x){return v[x]()}),i=r.indexOf(false);if(i>-1){$(k[i]).focus();return}$('mail').textContent=$('email').value;$('f').style.display='none';$('done').classList.add('on')});
+  v.email();v.pw();
+})();
+</script>
+</body></html>

@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><video src="video-1-teaser.mp4" autoplay muted loop playsinline controls></video><figcaption>video-1: Tidewater 6 s teaser (HyperFrames render)</figcaption></figure><figure><img src="video-1-frames.png" alt="Frames from the rendered MP4 at frames 15, 45, 80, 115, 150, 178"><figcaption>Frames from the rendered MP4 at frames 15, 45, 80, 115, 150, 178</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered a real 6.0 s, 1280x720, 30 fps H.264 MP4 (340 kB) rendered by the actual HyperFrames CLI (hyperframes 0.8.185: 'npx hyperframes render', Chrome capture of a seeked GSAP timeline; the CLI installed and worked, so no manual Chrome+ffmpeg fallback was needed). Project made with 'hyperframes init' (blank example): index.html is the root composition and mounts five scene sub-compositions from compositions/ (title, booking, reminders, clinic, endcard), each with its own paused GSAP timeline registered under the same id as its host. Seams are four different transitions each caused by something on screen (iris from the logo mark, iris from the cursor click on the 10:30 slot, a horizontal whip, a colour flood), the end card performs the mark (cursor clicks, fill rises, wordmark wipes in) and ends on a real button. The end-card button label and brand colours are declared as variables. The skill's craft check (line_unread) flagged 11 lines held on screen too briefly for a 6 s film; I cut the sublines and rebalanced scene timing, which left 5 warnings that are inherent to the 6 s limit (the wordmark and closing lines are held about 1 s against the skill's 2 s floor, 'No-shows, gone' 1.00 s vs 1.05 s). The skill defaults to 1920x1080 but the prompt asks for 1280x720, so the canvas is authored at 1280x720. HYPERFRAMES_SKIP_SKILLS=1 and no telemetry were set; no voiceover, captions or music were added (the film is under 15 s).</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Check the environment before starting</div><div class="cmd">npx hyperframes doctor</div><div class="out">✓ Version 0.8.185 (latest)
+✓ Node.js v24.20.0
+✓ Chrome cache: .../chrome-headless-shell/mac_arm-148.0.7778.97
+✓ FFmpeg ffmpeg 7.1.1
+✗ whisper-cpp / Kokoro / MusicGen (optional, not needed)
+✗ Docker running (not needed)</div></div><div class="step"><div class="note"># Skill: a new project is 'npx hyperframes init &lt;dir&gt;'</div><div class="cmd">HYPERFRAMES_SKIP_SKILLS=1 npx hyperframes init tidewater-hf --example blank --non-interactive --resolution 1080p --skill hyperframes</div><div class="out">(scaffolded AGENTS.md, CLAUDE.md, hyperframes.json, index.html, meta.json, package.json)</div></div><div class="step"><div class="note"># Skill: check is the gate. First pass: 0 errors, 0 warnings, 7 info (intentional overlap of outgoing/incoming scenes during the reveal)</div><div class="cmd">npx hyperframes check --json   # after writing index.html + 5 scene files</div><div class="out">"ok": true, lint errorCount 0, runtime errorCount 0, layout infoCount 7 (content_overlap at t=1.25 between title letters and booking headline, hidden under the iris reveal)</div></div><div class="step"><div class="note"># Skill: look at frames after a passing check. Found the cursor sitting over 'Maya R.' and staying on the end-card mark; headlines at 78 px were above the 4-9% frame-height range</div><div class="cmd">npx hyperframes snapshot --at 0.35,0.9,1.15,1.8,2.2,2.8,3.3,3.8,4.3,4.6,5.2,5.9</div><div class="out">13 snapshots saved to .hyperframes/artifacts/snapshots/7e072003-.../ (contact-sheet-1.jpg, contact-sheet-2.jpg)</div></div><div class="step"><div class="note"># Craft check now reports the real timing problem</div><div class="cmd">npx hyperframes check   # after moving cursor target, adding cursor exit, headlines 78 -&gt; 64 px</div><div class="out">⚠ line_unread: "Book in seconds" (3 words) is on screen 0.90 s, under its 1.05 s floor ... (11 warnings: title, taglines, subs, 'Maya R.', 'Tue 10:30 with Dr. Okafor', closing lines)
+0 error(s), 11 warning(s)
+Check passed</div></div><div class="step"><div class="note"># Scene hosts now start at 0 / 0.8 / 2.0 / 3.2 / 4.4 s so each headline holds at least ~1 s</div><div class="cmd">(edit) remove sublines + tagline, shorten SMS text, retime scene hosts, then npx hyperframes check</div><div class="out">⚠ line_unread: "No-shows, gone" (3 words) is on screen 1.00 s (±0.01 s), under its 1.05 s floor
+⚠ line_unread: The film's last line "Tidewater" (1 word) is on screen 1.07 s, under the 2.00 s a closing line needs
+⚠ line_unread: ... "Try Tidewater free" is on screen 0.86 s, under the 2.00 s ...
+(+2 more)
+0 error(s), 5 warning(s), 0 info(s)
+Check passed</div></div><div class="step"><div class="note"># Re-look at every beat and seam; layout, iris, whip and flood all read correctly</div><div class="cmd">npx hyperframes snapshot --at 0.5,0.95,1.5,2.4,3.0,3.45,4.0,4.55,4.85,5.3,5.95</div><div class="out">11 snapshots saved (contact-sheet-1.jpg, contact-sheet-2.jpg)</div></div><div class="step"><div class="note"># Skill: open the Studio preview before the delivery render (it served; the in-app browser was not opened)</div><div class="cmd">npx hyperframes preview --background --port 7153 ; curl -s -o /dev/null -w '%{http_code}' localhost:7153 ; npx hyperframes preview --stop</div><div class="out">Server    http://localhost:7153
+Running in the background.
+200
+Stopped background preview</div></div><div class="step"><div class="note"># Delivery render through the CLI</div><div class="cmd">npx hyperframes render -o renders/video-1.mp4 --skill hyperframes</div><div class="out">◇  renders/video-1.mp4
+   339.4 KB · 6.0s video · rendered in 2m 18.9s
+   screenshot capture · hardware gpu · ... capture 2m 4.6s · encode 0.1s</div></div><div class="step"><div class="note"># Verify spec; then pulled frames from the MP4 itself with ffmpeg to confirm the render matches the snapshots</div><div class="cmd">ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate,duration -of default=nw=1 renders/video-1.mp4</div><div class="out">codec_name=h264
+width=1280
+height=720
+r_frame_rate=30/1
+duration=6.000000</div></div></div>
+<h2>Files</h2><details open><summary>index.html</summary><pre>&lt;!doctype html&gt;
+&lt;html
+  lang=<span <span class="k">class</span>="s">"en"</span>
+  data-resolution=<span <span class="k">class</span>="s">"landscape"</span>
+  data-composition-variables='[
+    {<span <span class="k">class</span>="s">"id"</span>:<span <span class="k">class</span>="s">"cta"</span>,<span <span class="k">class</span>="s">"<span class="k">type</span>"</span>:<span <span class="k">class</span>="s">"string"</span>,<span <span class="k">class</span>="s">"label"</span>:<span <span class="k">class</span>="s">"End-card button"</span>,<span <span class="k">class</span>="s">"<span class="k">default</span>"</span>:<span <span class="k">class</span>="s">"Try Tidewater free"</span>,<span <span class="k">class</span>="s">"maxLength"</span>:<span class="n">28</span>},
+    {<span <span class="k">class</span>="s">"id"</span>:<span <span class="k">class</span>="s">"navy"</span>,<span <span class="k">class</span>="s">"<span class="k">type</span>"</span>:<span <span class="k">class</span>="s">"color"</span>,<span <span class="k">class</span>="s">"label"</span>:<span <span class="k">class</span>="s">"Ink / dark ground"</span>,<span <span class="k">class</span>="s">"<span class="k">default</span>"</span>:<span <span class="k">class</span>="s">"#0B2A3C"</span>},
+    {<span <span class="k">class</span>="s">"id"</span>:<span <span class="k">class</span>="s">"teal"</span>,<span <span class="k">class</span>="s">"<span class="k">type</span>"</span>:<span <span class="k">class</span>="s">"color"</span>,<span <span class="k">class</span>="s">"label"</span>:<span <span class="k">class</span>="s">"Brand teal"</span>,<span <span class="k">class</span>="s">"<span class="k">default</span>"</span>:<span <span class="k">class</span>="s">"#12A3A3"</span>},
+    {<span <span class="k">class</span>="s">"id"</span>:<span <span class="k">class</span>="s">"coral"</span>,<span <span class="k">class</span>="s">"<span class="k">type</span>"</span>:<span <span class="k">class</span>="s">"color"</span>,<span <span class="k">class</span>="s">"label"</span>:<span <span class="k">class</span>="s">"Accent"</span>,<span <span class="k">class</span>="s">"<span class="k">default</span>"</span>:<span <span class="k">class</span>="s">"#FF7A59"</span>}
+  ]'
+&gt;
+  &lt;head&gt;
+    &lt;meta charset=<span <span class="k">class</span>="s">"UTF-<span class="n">8</span>"</span> /&gt;
+    &lt;meta name=<span <span class="k">class</span>="s">"viewport"</span> content=<span <span class="k">class</span>="s">"width=<span class="n">1280</span>, height=<span class="n">720</span>"</span> /&gt;
+    &lt;script src=<span <span class="k">class</span>="s">"https://cdn.jsdelivr.net/npm/gsap@<span class="n">3.14</span>.<span class="n">2</span>/dist/gsap.min.js"</span>&gt;&lt;/script&gt;
+    &lt;style&gt;
+      :root {
+        --navy: #0b2a3c;
+        --teal: #12a3a3;
+        --teal-dark: #0e7c86;
+        --mist: #f2f8f8;
+        --mint: #d6eeee;
+        --muted: #52707e;
+        --coral: #ff7a59;
+        --font-display: <span <span class="k">class</span>="s">"Inter"</span>, sans-serif;
+      }
+      * { margin: <span class="n">0</span>; padding: <span class="n">0</span>; box-sizing: border-box; }
+      html, body {
+        width: 1280px;
+        height: 720px;
+        overflow: hidden;
+        background: <span class="k">var</span>(--navy);
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-2yit"</span> id=<span <span class="k">class</span>="s">"root"</span> data-composition-id=<span <span class="k">class</span>="s">"main"</span> data-start=<span <span class="k">class</span>="s">"<span class="n">0</span>"</span> data-duration=<span <span class="k">class</span>="s">"<span class="n">6</span>"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;
+      &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-0jc4"</span> id=<span <span class="k">class</span>="s">"title"</span> data-composition-id=<span <span class="k">class</span>="s">"title"</span> data-composition-src=<span <span class="k">class</span>="s">"compositions/title.html"</span>
+        data-start=<span <span class="k">class</span>="s">"<span class="n">0</span>"</span> data-duration=<span <span class="k">class</span>="s">"<span class="n">1.1</span>"</span> data-track-index=<span <span class="k">class</span>="s">"<span class="n">1</span>"</span> data-track-kind=<span <span class="k">class</span>="s">"graphics"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;&lt;/div&gt;
+      &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-t36i"</span> id=<span <span class="k">class</span>="s">"booking"</span> data-composition-id=<span <span class="k">class</span>="s">"booking"</span> data-composition-src=<span <span class="k">class</span>="s">"compositions/booking.html"</span>
+        data-start=<span <span class="k">class</span>="s">"<span class="n">0.8</span>"</span> data-duration=<span <span class="k">class</span>="s">"<span class="n">1.5</span>"</span> data-track-index=<span <span class="k">class</span>="s">"<span class="n">2</span>"</span> data-track-kind=<span <span class="k">class</span>="s">"graphics"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;&lt;/div&gt;
+      &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-iuyp"</span> id=<span <span class="k">class</span>="s">"reminders"</span> data-composition-id=<span <span class="k">class</span>="s">"reminders"</span> data-composition-src=<span <span class="k">class</span>="s">"compositions/reminders.html"</span>
+        data-start=<span <span class="k">class</span>="s">"<span class="n">2.0</span>"</span> data-duration=<span <span class="k">class</span>="s">"<span class="n">1.5</span>"</span> data-track-index=<span <span class="k">class</span>="s">"<span class="n">3</span>"</span> data-track-kind=<span <span class="k">class</span>="s">"graphics"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;&lt;/div&gt;
+      &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-0f40"</span> id=<span <span class="k">class</span>="s">"clinic"</span> data-composition-id=<span <span class="k">class</span>="s">"clinic"</span> data-composition-src=<span <span class="k">class</span>="s">"compositions/clinic.html"</span>
+        data-start=<span <span class="k">class</span>="s">"<span class="n">3.2</span>"</span> data-duration=<span <span class="k">class</span>="s">"<span class="n">1.5</span>"</span> data-track-index=<span <span class="k">class</span>="s">"<span class="n">4</span>"</span> data-track-kind=<span <span class="k">class</span>="s">"graphics"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;&lt;/div&gt;
+      &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-v7fe"</span> id=<span <span class="k">class</span>="s">"endcard"</span> data-composition-id=<span <span class="k">class</span>="s">"endcard"</span> data-composition-src=<span <span class="k">class</span>="s">"compositions/endcard.html"</span>
+        data-start=<span <span class="k">class</span>="s">"<span class="n">4.4</span>"</span> data-duration=<span <span class="k">class</span>="s">"<span class="n">1.6</span>"</span> data-track-index=<span <span class="k">class</span>="s">"<span class="n">5</span>"</span> data-track-kind=<span <span class="k">class</span>="s">"graphics"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+      window.__timelines = window.__timelines || {};
+      window.__timelines[<span <span class="k">class</span>="s">"main"</span>] = gsap.timeline({ paused: <span class="k">true</span> });
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre></details><details><summary>compositions/booking.html</summary><pre>&lt;template&gt;
+  &lt;style&gt;
+<span class="c">    #root { position: absolute; inset: 0; font-family: "Inter", sans-serif; color: #0b2a3c; }</span>
+<span class="c">    #booking-wrap { position: absolute; inset: 0; background: #f2f8f8; }</span>
+<span class="c">    #booking-copy { position: absolute; left: 128px; top: 0; bottom: 0; width: 470px; display: flex; flex-direction: column; justify-content: center; }</span>
+<span class="c">    #booking-idx { font-size: 24px; font-weight: 600; letter-spacing: 4px; color: #0e7c86; }</span>
+<span class="c">    #booking-h { font-size: 64px; font-weight: 800; letter-spacing: -2.5px; line-height: 1; margin-top: 10px; }</span>
+<span class="c">    #booking-h span { display: inline-block; margin-right: 0.22em; }</span>
+<span class="c">    #booking-sub { font-size: 30px; font-weight: 500; color: #52707e; margin-top: 18px; }</span>
+<span class="c">    #booking-card { position: absolute; left: 692px; top: 144px; width: 460px; height: 432px; padding: 28px; background: #fff; border-radius: 28px; box-shadow: 0 24px 60px rgba(11,42,60,.16), 0 2px 6px rgba(11,42,60,.08); }</span>
+<span class="c">    #booking-day { height: 46px; font-size: 24px; font-weight: 600; color: #52707e; }</span>
+    .bk-slot { position: relative; height: 58px; margin-bottom: 10px; border-radius: 16px; background: #eef4f5; font-size: 26px; font-weight: <span class="n">600</span>; display: flex; align-items: center; padding: <span class="n">0</span> 20px; }
+    .bk-slot b { width: 110px; font-weight: <span class="n">600</span>; }
+<span class="c">    #bk-fill { position: absolute; inset: 0; border-radius: 16px; background: #12a3a3; }</span>
+<span class="c">    #bk-time, #bk-name { position: relative; }</span>
+<span class="c">    #bk-name { color: #fff; font-weight: 500; }</span>
+<span class="c">    #bk-time { width: 110px; }</span>
+<span class="c">    #booking-cursor { position: absolute; left: 0; top: 0; width: 56px; height: 56px; }</span>
+  &lt;/style&gt;
+  &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-gqsr"</span> id=<span <span class="k">class</span>="s">"root"</span> data-composition-id=<span <span class="k">class</span>="s">"booking"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;
+    &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-kj6r"</span> id=<span <span class="k">class</span>="s">"booking-wrap"</span>&gt;
+      &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-rfxs"</span> id=<span <span class="k">class</span>="s">"booking-copy"</span>&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-olfr"</span> id=<span <span class="k">class</span>="s">"booking-idx"</span>&gt;<span class="n">01</span>&lt;/div&gt;
+        &lt;h2 data-hf-id=<span <span class="k">class</span>="s">"hf-bkre"</span> id=<span <span class="k">class</span>="s">"booking-h"</span>&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-7mes"</span>&gt;Book&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-ftaa"</span>&gt;<span class="k">in</span>&lt;/span&gt;&lt;br data-hf-id=<span <span class="k">class</span>="s">"hf-x5px"</span> /&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-2wtq"</span>&gt;seconds&lt;/span&gt;&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-37sx"</span> id=<span <span class="k">class</span>="s">"booking-card"</span>&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-b506"</span> id=<span <span class="k">class</span>="s">"booking-day"</span>&gt;Tuesday&lt;/div&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-j95y"</span> <span class="k">class</span>=<span <span class="k">class</span>="s">"bk-slot"</span>&gt;&lt;b data-hf-id=<span <span class="k">class</span>="s">"hf-brhf"</span>&gt;<span class="n">09</span>:<span class="n">30</span>&lt;/b&gt;&lt;/div&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-snfu"</span> <span class="k">class</span>=<span <span class="k">class</span>="s">"bk-slot"</span>&gt;&lt;b data-hf-id=<span <span class="k">class</span>="s">"hf-u3pm"</span>&gt;<span class="n">10</span>:<span class="n">00</span>&lt;/b&gt;&lt;/div&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-t1qv"</span> <span class="k">class</span>=<span <span class="k">class</span>="s">"bk-slot"</span>&gt;&lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-qka6"</span> id=<span <span class="k">class</span>="s">"bk-fill"</span>&gt;&lt;/div&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-hju6"</span> id=<span <span class="k">class</span>="s">"bk-time"</span> style=<span <span class="k">class</span>="s">"color:#0b2a3c"</span>&gt;<span class="n">10</span>:<span class="n">30</span>&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-kfsz"</span> id=<span <span class="k">class</span>="s">"bk-name"</span>&gt;Maya R.&lt;/span&gt;&lt;/div&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-tg1w"</span> <span class="k">class</span>=<span <span class="k">class</span>="s">"bk-slot"</span>&gt;&lt;b data-hf-id=<span <span class="k">class</span>="s">"hf-mar3"</span>&gt;<span class="n">11</span>:<span class="n">00</span>&lt;/b&gt;&lt;/div&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-tucx"</span> <span class="k">class</span>=<span <span class="k">class</span>="s">"bk-slot"</span>&gt;&lt;b data-hf-id=<span <span class="k">class</span>="s">"hf-q75g"</span>&gt;<span class="n">11</span>:<span class="n">30</span>&lt;/b&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;svg data-hf-id=<span <span class="k">class</span>="s">"hf-jz2r"</span> id=<span <span class="k">class</span>="s">"booking-cursor"</span> viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">24</span> <span class="n">24</span>"</span>&gt;&lt;path data-hf-id=<span <span class="k">class</span>="s">"hf-ejno"</span> d=<span <span class="k">class</span>="s">"M2 2l7.<span class="n">5</span> <span class="n">19</span> <span class="n">2.8</span>-<span class="n">8</span> <span class="n">8</span>-<span class="n">2</span>.8z"</span> fill=<span <span class="k">class</span>="s">"#0b2a3c"</span> stroke=<span <span class="k">class</span>="s">"#fff"</span> stroke-width=<span <span class="k">class</span>="s">"<span class="n">1.6</span>"</span> stroke-linejoin=<span <span class="k">class</span>="s">"round"</span> /&gt;&lt;/svg&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    <span class="k">const</span> tl = gsap.timeline({ paused: <span class="k">true</span> });
+<span class="c">    // reveal: iris from the title's mark</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#booking-wrap"</span>, { clipPath: <span <span class="k">class</span>="s">"circle(0px at 640px 250px)"</span> }, { clipPath: <span <span class="k">class</span>="s">"circle(1300px at 640px 250px)"</span>, duration: <span class="n">0.3</span>, ease: <span <span class="k">class</span>="s">"power2.inOut"</span> }, <span class="n">0</span>);
+<span class="c">    // copy: per word blur-in, 0.07 s apart</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#booking-idx"</span>, { opacity: <span class="n">0</span> }, { opacity: <span class="n">1</span>, duration: <span class="n">0.15</span> }, <span class="n">0.12</span>);
+    tl.fromTo(<span <span class="k">class</span>="s">"#booking-h span"</span>, { opacity: <span class="n">0</span>, filter: <span <span class="k">class</span>="s">"blur(8px)"</span> }, { opacity: <span class="n">1</span>, filter: <span <span class="k">class</span>="s">"blur(0px)"</span>, duration: <span class="n">0.14</span>, ease: <span <span class="k">class</span>="s">"power3.out"</span>, stagger: <span class="n">0.07</span> }, <span class="n">0.12</span>);
+<span class="c">    // card: blur swap on the stage, lands dead still</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#booking-card"</span>, { opacity: <span class="n">0</span>, filter: <span <span class="k">class</span>="s">"blur(10px)"</span> }, { opacity: <span class="n">1</span>, filter: <span <span class="k">class</span>="s">"blur(0px)"</span>, duration: <span class="n">0.2</span>, ease: <span <span class="k">class</span>="s">"power3.out"</span> }, <span class="n">0.18</span>);
+<span class="c">    // fill slot: hidden until the click, then caused by it on the same frame</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#bk-fill"</span>, { opacity: <span class="n">0</span> }, { opacity: <span class="n">1</span>, duration: <span class="n">0.08</span>, ease: <span <span class="k">class</span>="s">"none"</span> }, <span class="n">0.56</span>);
+    tl.fromTo(<span <span class="k">class</span>="s">"#bk-time"</span>, { color: <span <span class="k">class</span>="s">"#0b2a3c"</span> }, { color: <span <span class="k">class</span>="s">"#ffffff"</span>, duration: <span class="n">0.08</span>, ease: <span <span class="k">class</span>="s">"none"</span> }, <span class="n">0.56</span>);
+    tl.fromTo(<span <span class="k">class</span>="s">"#bk-name"</span>, { opacity: <span class="n">0</span> }, { opacity: <span class="n">1</span>, duration: <span class="n">0.12</span>, ease: <span <span class="k">class</span>="s">"power2.out"</span> }, <span class="n">0.58</span>);
+<span class="c">    // cursor: enters from off-screen right/bottom, arrives on the slot, clicks (small press), holds</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#booking-cursor"</span>, { x: <span class="n">1300</span>, y: <span class="n">760</span> }, { x: <span class="n">1040</span>, y: <span class="n">372</span>, duration: <span class="n">0.36</span>, ease: <span <span class="k">class</span>="s">"power3.out"</span> }, <span class="n">0.18</span>);
+    tl.fromTo(<span <span class="k">class</span>="s">"#booking-cursor"</span>, { scale: <span class="n">1</span> }, { scale: <span class="n">0.86</span>, duration: <span class="n">0.05</span>, ease: <span <span class="k">class</span>="s">"power2.<span class="k">in</span>"</span>, transformOrigin: <span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span>"</span> }, <span class="n">0.54</span>);
+    tl.to(<span <span class="k">class</span>="s">"#booking-cursor"</span>, { scale: <span class="n">1</span>, duration: <span class="n">0.1</span>, ease: <span <span class="k">class</span>="s">"power2.out"</span>, transformOrigin: <span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span>"</span> }, <span class="n">0.59</span>);
+    window.__timelines[<span <span class="k">class</span>="s">"booking"</span>] = tl;
+  &lt;/script&gt;
+&lt;/template&gt;
+</pre></details><details><summary>compositions/endcard.html</summary><pre>&lt;template&gt;
+  &lt;style&gt;
+<span class="c">    #root { position: absolute; inset: 0; font-family: "Inter", sans-serif; color: #fff; }</span>
+<span class="c">    #end-wrap { position: absolute; inset: 0; background: linear-gradient(135deg, #0e7c86, #0b2a3c); }</span>
+<span class="c">    #end-lockup { position: absolute; left: 0; right: 0; top: 262px; display: flex; flex-direction: column; align-items: center; }</span>
+<span class="c">    #end-row { display: flex; align-items: center; gap: 22px; height: 96px; }</span>
+<span class="c">    #end-mark { position: relative; width: 96px; height: 96px; }</span>
+<span class="c">    #end-mark svg { position: absolute; inset: 0; width: 96px; height: 96px; }</span>
+<span class="c">    #end-fillmark { clip-path: inset(100% 0 0 0); }</span>
+<span class="c">    #end-word { font-size: 84px; font-weight: 800; letter-spacing: -3px; line-height: 96px; }</span>
+<span class="c">    #end-cta { margin-top: 40px; height: 64px; padding: 0 34px; border-radius: 32px; background: #fff; color: #0b2a3c; font-size: 28px; font-weight: 600; display: flex; align-items: center; }</span>
+<span class="c">    #end-cursor { position: absolute; left: 0; top: 0; width: 56px; height: 56px; }</span>
+  &lt;/style&gt;
+  &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-dniz"</span> id=<span <span class="k">class</span>="s">"root"</span> data-composition-id=<span <span class="k">class</span>="s">"endcard"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;
+    &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-veax"</span> id=<span <span class="k">class</span>="s">"end-wrap"</span>&gt;
+      &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-u2tv"</span> id=<span <span class="k">class</span>="s">"end-lockup"</span>&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-4zhn"</span> id=<span <span class="k">class</span>="s">"end-row"</span>&gt;
+          &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-d956"</span> id=<span <span class="k">class</span>="s">"end-mark"</span>&gt;
+            &lt;svg data-hf-id=<span <span class="k">class</span>="s">"hf-h071"</span> viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">48</span> <span class="n">48</span>"</span> fill=<span <span class="k">class</span>="s">"none"</span>&gt;&lt;path data-hf-id=<span <span class="k">class</span>="s">"hf-e97v"</span> d=<span <span class="k">class</span>="s">"M4 20c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-3M4 32c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-<span class="n">3</span>"</span> stroke=<span <span class="k">class</span>="s">"#ffffff"</span> stroke-opacity=<span <span class="k">class</span>="s">".<span class="n">28</span>"</span> stroke-width=<span <span class="k">class</span>="s">"<span class="n">5</span>"</span> stroke-linecap=<span <span class="k">class</span>="s">"round"</span> /&gt;&lt;/svg&gt;
+            &lt;svg data-hf-id=<span <span class="k">class</span>="s">"hf-q7s7"</span> id=<span <span class="k">class</span>="s">"end-fillmark"</span> viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">48</span> <span class="n">48</span>"</span> fill=<span <span class="k">class</span>="s">"none"</span>&gt;&lt;path data-hf-id=<span <span class="k">class</span>="s">"hf-gc9d"</span> d=<span <span class="k">class</span>="s">"M4 20c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-3M4 32c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-<span class="n">3</span>"</span> stroke=<span <span class="k">class</span>="s">"#7fe0e0"</span> stroke-width=<span <span class="k">class</span>="s">"<span class="n">5</span>"</span> stroke-linecap=<span <span class="k">class</span>="s">"round"</span> /&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-0byk"</span> id=<span <span class="k">class</span>="s">"end-word"</span>&gt;Tidewater&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-qh1e"</span> id=<span <span class="k">class</span>="s">"end-cta"</span> data-<span class="k">var</span>-text=<span <span class="k">class</span>="s">"cta"</span>&gt;Try Tidewater free&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;svg data-hf-id=<span <span class="k">class</span>="s">"hf-f8ol"</span> id=<span <span class="k">class</span>="s">"end-cursor"</span> viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">24</span> <span class="n">24</span>"</span>&gt;&lt;path data-hf-id=<span <span class="k">class</span>="s">"hf-35ni"</span> d=<span <span class="k">class</span>="s">"M2 2l7.<span class="n">5</span> <span class="n">19</span> <span class="n">2.8</span>-<span class="n">8</span> <span class="n">8</span>-<span class="n">2</span>.8z"</span> fill=<span <span class="k">class</span>="s">"#ffffff"</span> stroke=<span <span class="k">class</span>="s">"#0b2a3c"</span> stroke-width=<span <span class="k">class</span>="s">"<span class="n">1.6</span>"</span> stroke-linejoin=<span <span class="k">class</span>="s">"round"</span> /&gt;&lt;/svg&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    <span class="k">const</span> tl = gsap.timeline({ paused: <span class="k">true</span> });
+<span class="c">    // reveal: colour flood rising from the bottom</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#end-wrap"</span>, { clipPath: <span <span class="k">class</span>="s">"inset(<span class="n">100</span>% <span class="n">0</span>% <span class="n">0</span>% <span class="n">0</span>%)"</span> }, { clipPath: <span <span class="k">class</span>="s">"inset(<span class="n">0</span>% <span class="n">0</span>% <span class="n">0</span>% <span class="n">0</span>%)"</span>, duration: <span class="n">0.3</span>, ease: <span <span class="k">class</span>="s">"power2.inOut"</span> }, <span class="n">0</span>);
+<span class="c">    // mark is performed: cursor clicks it, a fill rises through it</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#end-cursor"</span>, { x: <span class="n">1300</span>, y: <span class="n">780</span> }, { x: <span class="n">436</span>, y: <span class="n">300</span>, duration: <span class="n">0.26</span>, ease: <span <span class="k">class</span>="s">"power3.out"</span> }, <span class="n">0.05</span>);
+    tl.fromTo(<span <span class="k">class</span>="s">"#end-cursor"</span>, { scale: <span class="n">1</span> }, { scale: <span class="n">0.86</span>, duration: <span class="n">0.05</span>, ease: <span <span class="k">class</span>="s">"power2.<span class="k">in</span>"</span>, transformOrigin: <span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span>"</span> }, <span class="n">0.32</span>);
+    tl.to(<span <span class="k">class</span>="s">"#end-cursor"</span>, { scale: <span class="n">1</span>, duration: <span class="n">0.1</span>, ease: <span <span class="k">class</span>="s">"power2.out"</span>, transformOrigin: <span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span>"</span> }, <span class="n">0.37</span>);
+<span class="c">    // cursor leaves cleanly once it has clicked (exit shorter than entrance)</span>
+    tl.to(<span <span class="k">class</span>="s">"#end-cursor"</span>, { x: <span class="n">1300</span>, y: <span class="n">780</span>, duration: <span class="n">0.18</span>, ease: <span <span class="k">class</span>="s">"power3.<span class="k">in</span>"</span> }, <span class="n">0.5</span>);
+    tl.fromTo(<span <span class="k">class</span>="s">"#end-fillmark"</span>, { clipPath: <span <span class="k">class</span>="s">"inset(<span class="n">100</span>% <span class="n">0</span>% <span class="n">0</span>% <span class="n">0</span>%)"</span> }, { clipPath: <span <span class="k">class</span>="s">"inset(<span class="n">0</span>% <span class="n">0</span>% <span class="n">0</span>% <span class="n">0</span>%)"</span>, duration: <span class="n">0.22</span>, ease: <span <span class="k">class</span>="s">"power2.inOut"</span> }, <span class="n">0.32</span>);
+<span class="c">    // wordmark wipes in beside it</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#end-word"</span>, { clipPath: <span <span class="k">class</span>="s">"inset(<span class="n">0</span>% <span class="n">100</span>% <span class="n">0</span>% <span class="n">0</span>%)"</span>, opacity: <span class="n">1</span> }, { clipPath: <span <span class="k">class</span>="s">"inset(<span class="n">0</span>% <span class="n">0</span>% <span class="n">0</span>% <span class="n">0</span>%)"</span>, duration: <span class="n">0.25</span>, ease: <span <span class="k">class</span>="s">"power3.out"</span> }, <span class="n">0.5</span>);
+<span class="c">    // call to action, a real button, lands and holds</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#end-cta"</span>, { opacity: <span class="n">0</span>, filter: <span <span class="k">class</span>="s">"blur(8px)"</span> }, { opacity: <span class="n">1</span>, filter: <span <span class="k">class</span>="s">"blur(0px)"</span>, duration: <span class="n">0.15</span>, ease: <span <span class="k">class</span>="s">"power3.out"</span> }, <span class="n">0.7</span>);
+    window.__timelines[<span <span class="k">class</span>="s">"endcard"</span>] = tl;
+  &lt;/script&gt;
+&lt;/template&gt;
+</pre></details><details><summary>compositions/title.html</summary><pre>&lt;template&gt;
+  &lt;style&gt;
+<span class="c">    #root { position: absolute; inset: 0; background: radial-gradient(760px 520px at 78% 112%, #0e7c86 0%, #0b2a3c 72%); font-family: "Inter", sans-serif; color: #fff; }</span>
+<span class="c">    #title-stage { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }</span>
+<span class="c">    #title-mark { width: 84px; height: 84px; }</span>
+<span class="c">    #title-word { font-size: 172px; font-weight: 800; letter-spacing: -6px; line-height: 1; margin-top: 8px; white-space: nowrap; }</span>
+<span class="c">    #title-word span { display: inline-block; }</span>
+
+  &lt;/style&gt;
+  &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-7zk0"</span> id=<span <span class="k">class</span>="s">"root"</span> data-composition-id=<span <span class="k">class</span>="s">"title"</span> data-width=<span <span class="k">class</span>="s">"<span class="n">1280</span>"</span> data-height=<span <span class="k">class</span>="s">"<span class="n">720</span>"</span>&gt;
+    &lt;div data-hf-id=<span <span class="k">class</span>="s">"hf-62u0"</span> id=<span <span class="k">class</span>="s">"title-stage"</span>&gt;
+      &lt;svg data-hf-id=<span <span class="k">class</span>="s">"hf-26dj"</span> id=<span <span class="k">class</span>="s">"title-mark"</span> viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">48</span> <span class="n">48</span>"</span> fill=<span <span class="k">class</span>="s">"none"</span>&gt;
+        &lt;path data-hf-id=<span <span class="k">class</span>="s">"hf-4lyj"</span> d=<span <span class="k">class</span>="s">"M4 20c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-3M4 32c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-<span class="n">3</span>"</span> stroke=<span <span class="k">class</span>="s">"#12A3A3"</span> stroke-width=<span <span class="k">class</span>="s">"<span class="n">5</span>"</span> stroke-linecap=<span <span class="k">class</span>="s">"round"</span> /&gt;
+      &lt;/svg&gt;
+      &lt;h1 data-hf-id=<span <span class="k">class</span>="s">"hf-6gco"</span> id=<span <span class="k">class</span>="s">"title-word"</span>&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-efqn"</span>&gt;T&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-wbiw"</span>&gt;i&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-xifz"</span>&gt;d&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-xwr0"</span>&gt;e&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-qr8i"</span>&gt;w&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-zhz4"</span>&gt;a&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-r5jj"</span>&gt;t&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-pn38"</span>&gt;e&lt;/span&gt;&lt;span data-hf-id=<span <span class="k">class</span>="s">"hf-ry5l"</span>&gt;r&lt;/span&gt;&lt;/h1&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    <span class="k">const</span> tl = gsap.timeline({ paused: <span class="k">true</span> });
+<span class="c">    // mark: scale in on a long tail</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#title-mark"</span>, { opacity: <span class="n">0</span>, scale: <span class="n">0.6</span> }, { opacity: <span class="n">1</span>, scale: <span class="n">1</span>, duration: <span class="n">0.4</span>, ease: <span <span class="k">class</span>="s">"expo.out"</span> }, <span class="n">0.0</span>);
+<span class="c">    // name: per letter, 0.05 s apart, opacity .3 -&gt; 1 with slight blur, no position change</span>
+    tl.fromTo(<span <span class="k">class</span>="s">"#title-word span"</span>, { opacity: <span class="n">0.3</span>, filter: <span <span class="k">class</span>="s">"blur(10px)"</span> }, { opacity: <span class="n">1</span>, filter: <span <span class="k">class</span>="s">"blur(0px)"</span>, duration: <span class="n">0.16</span>, ease: <span <span class="k">class</span>="s">"power4.out"</span>, stagger: <span class="n">0.045</span> }, <span class="n">0.1</span>);
+    window.__timelines[<span <span class="k">class</span>="s">"title"</span>] = tl;
+  &lt;/script&gt;
+&lt;/template&gt;
+</pre></details>
+</main>
+
+</body></html>

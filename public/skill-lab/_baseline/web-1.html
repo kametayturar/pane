@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tidewater – Scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; color: #1f2937; background: #fff; line-height: 1.6; }
+  a { text-decoration: none; color: inherit; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+  .logo { font-weight: 800; font-size: 22px; color: #0e7490; display: flex; align-items: center; gap: 8px; }
+  .logo span.dot { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #3b82f6); display: inline-block; }
+  .nav-links { display: flex; gap: 28px; align-items: center; font-size: 15px; color: #4b5563; }
+  .btn { display: inline-block; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; transition: all .2s; cursor: pointer; border: none; }
+  .btn-primary { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #fff; box-shadow: 0 6px 16px rgba(6,182,212,.3); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(6,182,212,.4); }
+  .btn-secondary { background: #f3f4f6; color: #1f2937; }
+  .btn-secondary:hover { background: #e5e7eb; }
+  .hero { background: linear-gradient(180deg, #ecfeff 0%, #fff 100%); padding-bottom: 60px; }
+  .hero-inner { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; padding: 48px 0 24px; }
+  .badge { display: inline-block; background: #cffafe; color: #0e7490; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+  h1 { font-size: 52px; line-height: 1.1; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; }
+  h1 .grad { background: linear-gradient(135deg, #06b6d4, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.lead { font-size: 19px; color: #4b5563; margin-bottom: 32px; max-width: 520px; }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .trust { margin-top: 28px; font-size: 14px; color: #6b7280; }
+  .mock { background: #fff; border-radius: 18px; box-shadow: 0 24px 60px rgba(14,116,144,.18); padding: 20px; border: 1px solid #e5e7eb; }
+  .mock-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-weight: 700; }
+  .mock-head small { color: #6b7280; font-weight: 500; }
+  .slot { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; margin-bottom: 8px; background: #f9fafb; border-left: 4px solid #06b6d4; }
+  .slot.b { border-left-color: #3b82f6; }
+  .slot.c { border-left-color: #10b981; }
+  .slot .time { font-size: 13px; color: #6b7280; width: 62px; font-weight: 600; }
+  .slot .who { font-weight: 600; font-size: 14px; }
+  .slot .what { font-size: 12px; color: #6b7280; }
+  .features { padding: 80px 0; }
+  .features h2 { font-size: 36px; text-align: center; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+  .features .sub { text-align: center; color: #6b7280; margin-bottom: 48px; font-size: 17px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .card { border: 1px solid #e5e7eb; border-radius: 16px; padding: 28px; background: #fff; transition: box-shadow .2s, transform .2s; }
+  .card:hover { box-shadow: 0 14px 30px rgba(0,0,0,.08); transform: translateY(-4px); }
+  .icon { width: 48px; height: 48px; border-radius: 12px; background: #ecfeff; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; font-size: 24px; }
+  .card h3 { font-size: 20px; margin-bottom: 8px; }
+  .card p { color: #6b7280; font-size: 15px; }
+  footer { border-top: 1px solid #e5e7eb; padding: 28px 0; text-align: center; color: #9ca3af; font-size: 14px; }
+  @media (max-width: 860px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    h1 { font-size: 40px; }
+    .grid { grid-template-columns: 1fr; }
+    .nav-links a:not(.btn) { display: none; }
+  }
+  @media (max-width: 480px) {
+    h1 { font-size: 34px; }
+    .container { padding: 0 18px; }
+    .features h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="container">
+    <nav>
+      <div class="logo"><span class="dot"></span>Tidewater</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Log in</a>
+        <a href="#" class="btn btn-primary">Start free trial</a>
+      </div>
+    </nav>
+    <div class="hero-inner">
+      <div>
+        <span class="badge">Built for physiotherapy clinics</span>
+        <h1>Scheduling that keeps your clinic <span class="grad">flowing</span></h1>
+        <p class="lead">Tidewater helps small physiotherapy clinics fill every slot, cut no-shows and spend less time on the phone, so you can focus on your patients.</p>
+        <div class="cta-row">
+          <a href="#" class="btn btn-primary">Start free trial</a>
+          <a href="#" class="btn btn-secondary">Watch demo</a>
+        </div>
+        <p class="trust">No credit card required · Free 14-day trial · Set up in 10 minutes</p>
+      </div>
+      <div class="mock">
+        <div class="mock-head"><span>Today</span><small>Tue, 14 May</small></div>
+        <div class="slot"><span class="time">09:00</span><div><div class="who">Maria Lopez</div><div class="what">Knee rehab · Room 2</div></div></div>
+        <div class="slot b"><span class="time">10:30</span><div><div class="who">James Carter</div><div class="what">Lower back · Room 1</div></div></div>
+        <div class="slot c"><span class="time">11:15</span><div><div class="who">Aiko Tanaka</div><div class="what">Shoulder assessment · Room 3</div></div></div>
+        <div class="slot"><span class="time">13:00</span><div><div class="who">Priya Patel</div><div class="what">Sports massage · Room 2</div></div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="features" id="features">
+  <div class="container">
+    <h2>Everything your front desk needs</h2>
+    <p class="sub">Simple tools that take the hassle out of running a busy clinic.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">📅</div>
+        <h3>Smart calendar</h3>
+        <p>Drag-and-drop bookings across practitioners and rooms, with automatic conflict detection so double-bookings never happen.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔔</div>
+        <h3>Automatic reminders</h3>
+        <p>Send SMS and email reminders so patients show up. Clinics using Tidewater see up to 40% fewer no-shows.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔗</div>
+        <h3>Online booking</h3>
+        <p>Let patients book, reschedule or cancel from a link on your website, 24 hours a day, without calling the clinic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>© 2026 Tidewater. All rights reserved.</footer>
+</body>
+</html>

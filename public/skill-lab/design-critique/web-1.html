@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater – a calmer day for every clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--sand:#f6f2ea;--paper:#fffdf9;--ink:#0d2b3a;--ink2:#41596a;--line:#e2dccf;--teal:#0f6f7d;--teal-d:#0a5560;--mint:#d6ebe5;--coral:#e8714f;--sun:#f4d58d}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font:400 16px/1.55 "DM Sans",system-ui,sans-serif;color:var(--ink);background:var(--sand);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:6px}
+header{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:22px 40px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font:600 22px "Fraunces",serif;text-decoration:none;letter-spacing:-.01em}
+.logo svg{width:26px;height:26px}
+nav{display:flex;align-items:center;gap:28px;font-size:15px}
+nav a{text-decoration:none;color:var(--ink2);min-height:44px;display:inline-flex;align-items:center}
+nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;transition:transform .15s,background .15s}
+.btn.p{background:var(--teal);color:#fff}.btn.p:hover{background:var(--teal-d);transform:translateY(-1px)}
+.btn.s{min-height:44px;padding:0 20px;font-size:15px;background:var(--ink);color:#fff}
+.link{color:var(--teal);font-weight:600;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;display:inline-flex;align-items:center;min-height:44px}
+main{max-width:1200px;margin:0 auto;padding:0 40px}
+.hero{display:grid;grid-template-columns:1.02fr 1fr;gap:56px;align-items:center;padding:40px 0 64px;min-height:560px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+.eyebrow i{width:28px;height:2px;background:var(--coral)}
+h1{font:500 clamp(40px,5.2vw,68px)/1.02 "Fraunces",serif;letter-spacing:-.025em;margin-bottom:22px}
+h1 em{font-style:italic;color:var(--teal)}
+.lede{font-size:19px;color:var(--ink2);max-width:30em;margin-bottom:32px}
+.cta{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.proof{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink2)}
+.faces{display:flex}.faces b{width:32px;height:32px;border-radius:50%;border:2px solid var(--sand);margin-left:-6px;display:grid;place-items:center;font-size:11px;color:#fff}
+.faces b:first-child{margin-left:0}
+/* day view */
+.board{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:18px 18px 22px;box-shadow:0 30px 60px -30px #0d2b3a40;position:relative}
+.bh{display:flex;justify-content:space-between;align-items:center;padding:4px 6px 14px;font-size:14px}
+.bh strong{font:600 18px "Fraunces",serif}.bh span{color:var(--ink2)}
+.cols{display:grid;grid-template-columns:44px repeat(3,1fr);gap:0 10px;font-size:12px;color:var(--ink2)}
+.cols .who{text-align:center;font-weight:600;color:var(--ink);padding-bottom:10px;font-size:13px}
+.rows{position:relative;display:grid;grid-template-columns:44px repeat(3,1fr);gap:0 10px;grid-template-rows:repeat(6,48px)}
+.rows .t{border-top:1px solid var(--line);padding-top:4px;font-size:12px;color:var(--ink2)}
+.rows .g{border-top:1px solid var(--line)}
+.ap{border-radius:12px;padding:8px 10px;font-size:13px;line-height:1.3;margin:3px 0;position:relative;z-index:1;overflow:hidden}
+.ap b{display:block;font-weight:600}.ap span{opacity:.75;font-size:12px}
+.a1{grid-column:2;grid-row:1/3;background:var(--mint)}
+.a2{grid-column:3;grid-row:2/4;background:#fbe0d6}
+.a3{grid-column:4;grid-row:1/2;background:var(--sun)}
+.a4{grid-column:2;grid-row:4/6;background:#dfe6f3}
+.a5{grid-column:4;grid-row:3/5;background:var(--mint)}
+.a6{grid-column:3;grid-row:5/6;background:var(--sun)}
+.chip{position:absolute;right:-14px;bottom:-24px;background:var(--ink);color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;display:flex;gap:10px;align-items:center;box-shadow:0 14px 30px -10px #0d2b3a99;z-index:3}
+.chip svg{width:20px;height:20px;flex:none}
+.chip small{display:block;opacity:.7;font-size:12px}
+.feat{border-top:1px solid var(--line);padding:72px 0 96px}
+.feat h2{font:500 32px/1.15 "Fraunces",serif;letter-spacing:-.02em;max-width:16em;margin-bottom:48px}
+.list{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.item{padding:0 36px 0 0;position:relative}
+.item+.item{padding-left:36px;border-left:1px solid var(--line)}
+.num{font:500 14px "DM Sans";color:var(--coral);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.num svg{width:34px;height:34px;color:var(--teal)}
+.item h3{font:600 22px/1.2 "Fraunces",serif;margin-bottom:10px;letter-spacing:-.01em}
+.item p{color:var(--ink2);margin-bottom:16px}
+.stat{display:inline-block;font-size:14px;font-weight:600;color:var(--teal-d);background:var(--mint);padding:5px 12px;border-radius:999px}
+@media(max-width:960px){.hero{grid-template-columns:1fr;gap:40px;min-height:0}.list{grid-template-columns:1fr;gap:36px}.item,.item+.item{padding:0;border:0}.item+.item{border-top:1px solid var(--line);padding-top:32px}.chip{right:12px}}
+@media(max-width:600px){.board{margin-bottom:24px}header{padding:14px 20px;height:64px}main{padding:0 20px}nav a:not(.btn){display:none}.hero{padding:20px 0 48px}.lede{font-size:17px}.cta .btn{width:100%}.feat{padding:48px 0 64px}.cols,.rows{grid-template-columns:34px repeat(3,1fr);gap:0 6px}.ap{padding:6px 7px;font-size:12px}.ap span{display:none}.board{padding:12px}.chip{bottom:-18px;right:8px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header>
+  <a class="logo" href="#" aria-label="Tidewater home"><svg viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="12" fill="#0f6f7d"/><path d="M3.5 15c3 0 3-3 6-3s3 3 6 3 3-3 6-3M3.5 19.5c3 0 3-3 6-3s3 3 6 3 3-3 6-3" stroke="#fffdf9" stroke-width="1.7" stroke-linecap="round"/></svg>Tidewater</a>
+  <nav aria-label="Main"><a href="#features">Features</a><a href="#">Pricing</a><a href="#">Log in</a><a class="btn s" href="#">Start free</a></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <div class="eyebrow"><i></i>Scheduling for physiotherapy clinics</div>
+    <h1>A calmer day for <em>every</em> clinic.</h1>
+    <p class="lede">Tidewater keeps therapists, rooms and reminders in sync, so your front desk spends less time juggling and your patients actually show up.</p>
+    <div class="cta"><a class="btn p" href="#">Start 14-day free trial</a><a class="link" href="#">Book a 15-minute demo →</a></div>
+    <div class="proof"><div class="faces" aria-hidden="true"><b style="background:#0f6f7d">AO</b><b style="background:#e8714f">ML</b><b style="background:#0d2b3a">JK</b><b style="background:#6b8f71">SP</b></div>Used by 400+ small clinics · No card needed</div>
+  </div>
+  <div class="board" role="img" aria-label="Tidewater day view showing three therapists' appointments for Tuesday morning with an automatic reminder sent">
+    <div class="bh"><strong>Tuesday, 14 Oct</strong><span>6 patients · 0 conflicts</span></div>
+    <div class="cols"><span></span><span class="who">Dr. Okafor</span><span class="who">M. Lindqvist</span><span class="who">J. Kaur</span></div>
+    <div class="rows">
+      <span class="t" style="grid-row:1;grid-column:1">9:00</span><span class="t" style="grid-row:2;grid-column:1">9:30</span><span class="t" style="grid-row:3;grid-column:1">10:00</span><span class="t" style="grid-row:4;grid-column:1">10:30</span><span class="t" style="grid-row:5;grid-column:1">11:00</span><span class="t" style="grid-row:6;grid-column:1">11:30</span>
+      <i class="g" style="grid-row:1/7;grid-column:2;border:0;background:repeating-linear-gradient(#e2dccf 0 1px,transparent 1px 48px)"></i><i class="g" style="grid-row:1/7;grid-column:3;border:0;background:repeating-linear-gradient(#e2dccf 0 1px,transparent 1px 48px)"></i><i class="g" style="grid-row:1/7;grid-column:4;border:0;background:repeating-linear-gradient(#e2dccf 0 1px,transparent 1px 48px)"></i>
+      <div class="ap a1"><b>Amara T.</b><span>Knee rehab · Room 1</span></div>
+      <div class="ap a2"><b>Leo H.</b><span>Shoulder · Room 2</span></div>
+      <div class="ap a3"><b>Priya N.</b></div>
+      <div class="ap a4"><b>Sam W.</b><span>Back pain · Room 1</span></div>
+      <div class="ap a5"><b>Ines R.</b><span>Sports injury · Room 3</span></div>
+      <div class="ap a6"><b>Tom B.</b></div>
+    </div>
+    <div class="chip"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#2f9e8f"/><path d="m6 10.3 2.6 2.6L14 7.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Reminder sent to Leo H.<small>Confirmed in 4 minutes</small></span></div>
+  </div>
+</section>
+<section class="feat" id="features">
+  <h2>Three things your front desk will stop doing by hand.</h2>
+  <div class="list">
+    <article class="item"><div class="num"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="7" width="24" height="22" rx="4"/><path d="M5 14h24M11 4v6M23 4v6M11 20h4M19 20h4M11 25h4"/></svg>01</div><h3>A calendar that checks itself</h3><p>Drag a patient into a slot and Tidewater checks the therapist, the room and the equipment before it lets you double-book.</p><span class="stat">0 double-bookings</span></article>
+    <article class="item"><div class="num"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 24V15a9 9 0 0 1 18 0v9l2 3H6zM14 30a3 3 0 0 0 6 0"/></svg>02</div><h3>Reminders patients answer</h3><p>SMS and email nudges go out at the right time. Patients confirm or reschedule with one tap, no phone call needed.</p><span class="stat">38% fewer no-shows</span></article>
+    <article class="item"><div class="num"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><circle cx="24" cy="14" r="3.5"/><path d="M3 29c0-5 4-8 9-8s9 3 9 8M22 22c4 0 8 2 9 7"/></svg>03</div><h3>Everyone and everything in one view</h3><p>See each therapist's day, who is in which room, and who has a gap – and move a whole afternoon when someone calls in sick.</p><span class="stat">Free up ~5 hrs a week</span></article>
+  </div>
+</section>
+</main>
+</body></html>

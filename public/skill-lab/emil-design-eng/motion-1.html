@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f2a30;--ink-2:#4a6168;--mute:#8aa0a6;--teal:#0e7c86;--teal-d:#0a5f67;--teal-soft:#e2f1f2;--bg:#eef4f4;--card:#fff;--danger:#b4380c;--line:rgba(15,42,48,.08)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{min-height:100vh;background:var(--bg);font-family:"Figtree",system-ui,-apple-system,sans-serif;color:var(--ink);display:grid;place-items:center;padding:24px 16px 72px;line-height:1.4}
+button{font:inherit;color:inherit;cursor:pointer}
+.frame{position:relative;width:min(980px,100%);min-height:560px;background:#f9fbfb;border-radius:20px;box-shadow:0 0 0 1px var(--line),0 24px 60px -24px rgba(15,42,48,.28);overflow:hidden}
+.bar{display:flex;align-items:center;gap:28px;padding:14px 22px;background:#fff;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.logo svg{width:24px;height:24px}
+.bar nav{display:flex;gap:20px;color:var(--ink-2);font-size:14px;font-weight:500;flex:1}
+.bar nav .on{color:var(--ink);font-weight:600}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--teal-soft);color:var(--teal-d);display:grid;place-items:center;font-size:12px;font-weight:700}
+.body{padding:26px 28px 32px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;gap:12px}
+.head h1{margin:0;font-size:26px;letter-spacing:-.02em}
+.head p{margin:2px 0 0;color:var(--ink-2);font-size:14px}
+.replay{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);padding:8px 16px;border-radius:999px;border:0;background:#fff;box-shadow:0 0 0 1px var(--line),0 2px 6px rgba(15,42,48,.08);font-size:13px;font-weight:600;color:var(--ink-2);display:inline-flex;align-items:center;gap:7px}
+.replay svg{width:14px;height:14px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:520px){.bar nav{display:none}.bar{justify-content:space-between}.body{padding:18px 14px 24px}.head h1{font-size:21px}.frame{min-height:0}}
+
+.slots{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.slot{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:12px;padding:0 16px;min-height:56px;border-radius:12px;background:#fff;box-shadow:0 0 0 1px var(--line)}
+.slot time{font-variant-numeric:tabular-nums;color:var(--ink-2);font-weight:600;font-size:14px}
+.slot .who{font-size:15px}.slot .who small{display:block;color:var(--mute);font-size:12.5px}
+.slot.target{position:relative;padding:0 16px}
+.layer{grid-area:1/2;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+.slot.target time{grid-area:1/1}
+.slot.target .open{color:var(--ink-2);font-size:14px}
+.book{padding:9px 16px;border:0;border-radius:9px;background:var(--teal);color:#fff;font-weight:600;font-size:14px;box-shadow:0 1px 2px rgba(10,95,103,.4),inset 0 1px 0 rgba(255,255,255,.18)}
+.slot.target .booked{font-size:15px;font-weight:600;color:var(--teal-d)}
+.slot.target .booked small{display:block;font-weight:500;color:var(--ink-2);font-size:12.5px}
+.chip{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--teal-soft);color:var(--teal-d)}
+
+/* ---- motion ---- */
+:root{--ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1)}
+.book{transition:transform 160ms var(--ease-out)}
+.book:active,.book.pressed{transform:scale(.97)}
+.slot.target{transition:background-color 200ms ease}
+.slot.target.is-booked{background:var(--teal-soft)}
+/* two overlapping states: blur(2px) bridges the crossfade into one perceived change */
+.layer{transition:opacity 200ms var(--ease-out),filter 200ms var(--ease-out)}
+.slot.target:not(.is-booked) .booked,.slot.target.is-booked .open{opacity:0;filter:blur(2px);pointer-events:none}
+.toaster{position:absolute;right:20px;bottom:20px;width:min(420px,calc(100% - 40px));display:flex;flex-direction:column;gap:8px;pointer-events:none;z-index:9}
+.toast{pointer-events:auto;display:flex;align-items:center;gap:12px;padding:12px 10px 12px 14px;border-radius:14px;background:#0f2a30;color:#fff;box-shadow:0 12px 32px -8px rgba(15,42,48,.45),0 0 0 1px rgba(255,255,255,.06) inset;
+  opacity:1;transform:translateY(0);
+  /* exit: 180ms, system responding -> snappy */
+  transition:transform 180ms var(--ease-out),opacity 180ms var(--ease-out);
+  @starting-style{opacity:0;transform:translateY(calc(100% + 20px))}}
+/* enter: 280ms. A transition runs with the destination state's timing, so this is the entry duration */
+.toast[data-state=open]{transition-duration:280ms}
+.toast[data-state=closed]{opacity:0;transform:translateY(calc(100% + 20px))}
+.tick{flex:none;width:28px;height:28px;border-radius:50%;background:#2fb7a6;display:grid;place-items:center}
+.tick svg{width:16px;height:16px;fill:none;stroke:#0f2a30;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tmsg{flex:1;font-size:14.5px;font-weight:500}
+.tmsg small{display:block;color:#9fb8bd;font-weight:400;font-size:12.5px}
+.tbtn{flex:none;height:32px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:#7fd6ca;font-weight:600;font-size:13.5px;transition:transform 160ms var(--ease-out),background-color 160ms ease}
+.tbtn:active{transform:scale(.97)}
+.tx{width:32px;padding:0;display:grid;place-items:center;color:#9fb8bd}.tx svg{width:16px;height:16px}
+@media(hover:hover) and (pointer:fine){.tbtn:hover{background:rgba(255,255,255,.1)}.book:hover{background:var(--teal-d)}}
+@media(prefers-reduced-motion:reduce){.toast,.toast[data-state=closed]{transform:none}.toast{transition-duration:150ms;@starting-style{opacity:0;transform:none}}.book:active,.book.pressed{transform:none}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h16M7.5 3.5v3M16.5 3.5v3M5.5 5.5h13A1.5 1.5 0 0 1 20 7v11.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5V7a1.5 1.5 0 0 1 1.5-1.5Z"/></symbol><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol><symbol id="i-dup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6A1.5 1.5 0 0 0 14 4.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></symbol><symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15L6 16.5ZM10 20.5h4"/></symbol><symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="m9 9 6 6m0-6-6 6"/></symbol><symbol id="i-dots" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="12" r=".6"/><circle cx="12" cy="12" r=".6"/><circle cx="18.5" cy="12" r=".6"/></symbol><symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11m0-11-11 11"/></symbol><symbol id="i-replay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5M4.5 4.5v4h4"/></symbol></svg>
+<main class="frame">
+<header class="bar"><span class="logo"><svg viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="7" fill="#0e7c86"/><path d="M4.5 13.5c2-3 3.7-3 5.5 0s3.5 3 5.5 0 3-2.5 4-1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>Tidewater</span><nav><span class="on">Schedule</span><span>Patients</span><span>Reports</span></nav><span class="avatar">DO</span></header>
+<div class="body">
+<div class="head"><div><h1>Tuesday, 14 Oct</h1><p>Dr. Okafor · Room 2 · 5 appointments</p></div></div>
+<ul class="slots">
+<li class="slot"><time>09:00</time><div class="who">Hannah Brooks<small>Shoulder mobility</small></div></li>
+<li class="slot target" id="slot"><time>10:30</time>
+<div class="layer open" id="open"><span>Open slot</span><button class="book" id="book">Book Maya Chen</button></div>
+<div class="layer booked" id="booked" aria-hidden="true"><span>Maya Chen<small>Lower back follow-up</small></span><span class="chip">Confirmed</span></div></li>
+<li class="slot"><time>11:30</time><div class="who">Tom Reyes<small>Knee rehab, week 3</small></div></li>
+<li class="slot"><time>13:00</time><div class="who">Ines Duarte<small>Initial assessment</small></div></li>
+<li class="slot"><time>14:15</time><div class="who">Samuel Ito<small>Posture review</small></div></li>
+</ul></div>
+
+<div class="toaster" id="toaster" aria-live="polite"></div>
+</main>
+<button class="replay" id="replay" type="button"><svg><use href="#i-replay"/></svg>Replay</button>
+<script>
+
+const $=s=>document.querySelector(s);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let run=0;
+
+const slot=$('#slot'),book=$('#book'),toaster=$('#toaster');
+function showToast(){
+  const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.dataset.state='open';
+  t.innerHTML='<span class="tick"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="tmsg">Appointment booked for Tue 10:30<small>Maya Chen · Dr. Okafor</small></span><button class="tbtn" type="button">Undo</button><button class="tbtn tx" type="button" aria-label="Dismiss"><svg><use href="#i-close"/></svg></button>';
+  t.querySelector('.tx').onclick=()=>hide(t);
+  toaster.append(t);return t;
+}
+function hide(t){
+  if(!t||t.dataset.state==='closed')return;
+  t.dataset.state='closed';
+  t.addEventListener('transitionend',e=>{if(e.propertyName==='transform')t.remove()});
+  setTimeout(()=>t.remove(),500);
+}
+async function play(){
+  const my=++run, ok=async ms=>{await sleep(ms);return my===run};
+  toaster.querySelectorAll('.toast').forEach(hide);slot.classList.remove('is-booked');
+  while(my===run){
+    if(!await ok(1000))return;
+    book.classList.add('pressed');if(!await ok(150))return;book.classList.remove('pressed');
+    slot.classList.add('is-booked');const t=showToast();
+    if(!await ok(3200))return;
+    hide(t);if(!await ok(1200))return;
+    slot.classList.remove('is-booked');if(!await ok(900))return;
+  }
+}
+$('#replay').onclick=play;play();
+</script>
+</body></html>

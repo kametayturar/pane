@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Every appointment, in its place</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { font-family: 'Inter', sans-serif; background: #071a2b; color: #fff; overflow: hidden; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  .overlay { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; pointer-events: none; }
+  .eyebrow { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: #67e8f9; margin-bottom: 16px; font-weight: 600; }
+  h1 { font-size: 72px; line-height: 1.05; letter-spacing: -2.5px; font-weight: 800; max-width: 900px; text-shadow: 0 4px 30px rgba(7,26,43,.8); }
+  p { margin-top: 20px; font-size: 19px; color: #bae6fd; max-width: 520px; text-shadow: 0 2px 16px rgba(7,26,43,.9); }
+  .brand { position: fixed; top: 24px; left: 32px; font-weight: 800; font-size: 20px; color: #fff; }
+  .btn { margin-top: 28px; padding: 13px 26px; border-radius: 10px; background: #22d3ee; color: #062a3a; font-weight: 700; font-size: 15px; pointer-events: auto; text-decoration: none; }
+  @media (max-width: 700px) { h1 { font-size: 40px; letter-spacing: -1.5px; } .brand { left: 20px; } }
+</style>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }</script>
+</head>
+<body>
+<div class="brand">Tidewater</div>
+<div class="overlay">
+  <div class="eyebrow">Scheduling for physiotherapy clinics</div>
+  <h1>Every appointment, in its place</h1>
+  <p>Watch the day settle into order. Tidewater turns a scattered calendar into a clear, calm schedule.</p>
+  <a class="btn" href="#">Start free trial</a>
+</div>
+<script type="module">
+import * as THREE from 'three';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setClearColor(0x071a2b);
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x071a2b, 10, 26);
+const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
+camera.position.set(0, 0, 11);
+
+// Particles: each has a scattered position and a target position on a calendar-like grid
+const cols = 28, rows = 14, N = cols * rows;
+const scattered = new Float32Array(N * 3), target = new Float32Array(N * 3), pos = new Float32Array(N * 3), colors = new Float32Array(N * 3);
+const spacing = 0.55;
+const cA = new THREE.Color(0x22d3ee), cB = new THREE.Color(0x818cf8), cC = new THREE.Color(0x34d399);
+for (let i = 0; i < N; i++) {
+  const c = i % cols, r = Math.floor(i / cols);
+  target[i*3]   = (c - (cols - 1) / 2) * spacing;
+  target[i*3+1] = ((rows - 1) / 2 - r) * spacing;
+  target[i*3+2] = 0;
+  scattered[i*3]   = (Math.random() - 0.5) * 24;
+  scattered[i*3+1] = (Math.random() - 0.5) * 14;
+  scattered[i*3+2] = (Math.random() - 0.5) * 16;
+  const col = [cA, cB, cC][(c % 7 === 0 || r % 5 === 0) ? 1 : (r % 3 === 0 ? 2 : 0)];
+  colors.set([col.r, col.g, col.b], i*3);
+}
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+function dotTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 64;
+  const g = c.getContext('2d');
+  const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, 'rgba(255,255,255,1)'); grad.addColorStop(0.4, 'rgba(255,255,255,.8)'); grad.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = grad; g.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(c);
+}
+const mat = new THREE.PointsMaterial({ size: 0.28, map: dotTexture(), vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+const points = new THREE.Points(geo, mat);
+scene.add(points);
+
+function resize() {
+  renderer.setSize(innerWidth, innerHeight);
+  camera.aspect = innerWidth / innerHeight;
+  camera.position.z = innerWidth < 700 ? 17 : 11;
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const CYCLE = 14; // seconds: scatter -> gather -> hold -> release
+let pointer = { x: 0, y: 0 };
+addEventListener('pointermove', e => { pointer.x = e.clientX / innerWidth - 0.5; pointer.y = e.clientY / innerHeight - 0.5; });
+
+const clock = new THREE.Clock();
+function tick() {
+  const t = clock.getElapsedTime();
+  const p = (t % CYCLE) / CYCLE;
+  // 0-.1 scattered, .1-.45 gather, .45-.8 hold, .8-1 release
+  let k;
+  if (p < 0.1) k = 0;
+  else if (p < 0.45) k = ease((p - 0.1) / 0.35);
+  else if (p < 0.8) k = 1;
+  else k = 1 - ease((p - 0.8) / 0.2);
+  for (let i = 0; i < N; i++) {
+    const drift = (1 - k);
+    pos[i*3]   = scattered[i*3]   * (1 - k) + target[i*3]   * k + Math.sin(t * 0.7 + i) * 0.25 * drift;
+    pos[i*3+1] = scattered[i*3+1] * (1 - k) + target[i*3+1] * k + Math.cos(t * 0.6 + i * 1.3) * 0.25 * drift;
+    pos[i*3+2] = scattered[i*3+2] * (1 - k) + target[i*3+2] * k;
+  }
+  geo.attributes.position.needsUpdate = true;
+  points.rotation.y = (1 - k) * Math.sin(t * 0.3) * 0.4 + pointer.x * 0.25;
+  points.rotation.x = pointer.y * 0.15;
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+tick();
+</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: Coral · enrichment: Tier A CSS-art UI (no chrome) · nav: N5 · footer: Ft2
+ * pre-emit critique: P4 H4 E4 S4 R5 V4 · contrast: pass (40-41) · nav/footer: pass (42-45) · honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (49) · icons: pass (30)
+ * going with: audience = clinic owners and front-desk leads · use = start a trial · tone = utilitarian */
+:root{
+  --color-paper:      oklch(96.5% 0.005 50);
+  --color-paper-2:    oklch(94%   0.006 50);
+  --color-paper-3:    oklch(91%   0.008 50);
+  --color-surface:    oklch(99%   0.003 50);
+  --color-rule:       oklch(86%   0.008 50);
+  --color-rule-2:     oklch(72%   0.010 50);
+  --color-muted:      oklch(48%   0.012 50);
+  --color-neutral:    oklch(38%   0.012 45);
+  --color-ink-2:      oklch(26%   0.012 40);
+  --color-ink:        oklch(20%   0.010 35);
+  --color-accent:     oklch(64%   0.165 28);
+  --color-accent-ink: oklch(98%   0.005 50);
+  --color-accent-wash:oklch(94%   0.035 40);
+  --color-focus:      oklch(55%   0.17  28);
+
+  --font-display: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "Geist Mono", ui-monospace, monospace;
+
+  --text-xs: .75rem; --text-sm: .875rem; --text-base: 1rem; --text-md: 1.125rem; --text-lg: 1.375rem; --text-xl: 1.75rem;
+  --text-display:   clamp(2.5rem, 5vw + .5rem, 4.5rem);
+  --text-display-s: clamp(1.75rem, 2.4vw + .75rem, 2.5rem);
+  --tracking-display: -0.03em;
+  --tracking-tight: -0.015em;
+
+  --space-xs: .5rem; --space-sm: .75rem; --space-md: 1rem; --space-lg: 1.5rem; --space-xl: 2.5rem; --space-2xl: 4rem; --space-3xl: 6.5rem;
+  --page-max: 76rem; --page-gutter: clamp(1.25rem, 4vw, 3rem);
+  --radius-card: 8px; --radius-pill: 999px; --radius-input: 6px;
+  --rule-fine: 1px;
+  --shadow-card: 0 1px 2px oklch(20% 0.01 50 / .06);
+
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-in: cubic-bezier(.7,0,.84,0);
+  --dur-micro: 120ms; --dur-short: 220ms;
+  --z-nav: 300;
+  --hour: 3.5rem;
+}
+*{box-sizing:border-box;margin:0}
+html,body{overflow-x:clip}
+body{background:var(--color-paper);color:var(--color-ink);font:400 var(--text-base)/1.55 var(--font-body);-webkit-font-smoothing:antialiased}
+::selection{background:var(--color-ink);color:var(--color-paper)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.page{max-width:var(--page-max);margin-inline:auto;padding-inline:var(--page-gutter)}
+
+/* N5 floating pill */
+.nav-pill{position:fixed;inset:var(--space-md) auto auto 50%;transform:translateX(-50%);z-index:var(--z-nav);display:flex;align-items:center;gap:var(--space-lg);padding:var(--space-xs) var(--space-xs) var(--space-xs) var(--space-lg);background:color-mix(in oklch,var(--color-paper) 78%,transparent);backdrop-filter:blur(14px) saturate(120%);border:var(--rule-fine) solid var(--color-rule);border-radius:var(--radius-pill);box-shadow:0 8px 24px -12px oklch(0% 0 0 / .18);max-width:calc(100vw - 2rem)}
+.nav-pill .wordmark{font-weight:600;letter-spacing:var(--tracking-tight);text-decoration:none;line-height:1}
+.nav-pill ul{display:flex;gap:var(--space-lg);list-style:none;padding:0;line-height:1}
+.nav-pill ul a{text-decoration:none;color:var(--color-neutral);font-size:var(--text-sm);white-space:nowrap;transition:color var(--dur-micro) var(--ease-out)}
+.nav-pill ul a:hover{color:var(--color-ink)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding:0 var(--space-lg);border-radius:var(--radius-pill);font:500 var(--text-sm)/1 var(--font-body);text-decoration:none;white-space:nowrap;cursor:pointer;border:var(--rule-fine) solid var(--color-ink);transition:background-color var(--dur-micro) var(--ease-out),color var(--dur-micro) var(--ease-out),transform var(--dur-micro) var(--ease-out)}
+.btn-fill{background:var(--color-ink);color:var(--color-paper)}
+.btn-fill:hover{background:var(--color-ink-2)}
+.btn-line{background:transparent;color:var(--color-ink)}
+.btn-line:hover{background:var(--color-paper-3)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled,.btn[aria-disabled=true]{opacity:.55;cursor:not-allowed}
+.nav-pill .btn{min-height:2.25rem;padding:0 var(--space-md)}
+
+/* hero: Workbench — small functional heading, product leads */
+.hero{padding-block:calc(var(--space-3xl) + var(--space-sm)) var(--space-3xl);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--space-2xl);align-items:center}
+h1{font:600 var(--text-display)/1.03 var(--font-display);letter-spacing:var(--tracking-display);overflow-wrap:anywhere;min-width:0;text-wrap:balance}
+.lede{margin-top:var(--space-lg);color:var(--color-neutral);font-size:var(--text-md);max-width:46ch;line-height:1.5}
+.cta-row{display:flex;gap:var(--space-sm);flex-wrap:wrap;align-items:center;margin-top:var(--space-xl)}
+.fine{margin-top:var(--space-md);font-size:var(--text-sm);color:var(--color-muted)}
+
+/* product frame (no re-drawn chrome: hairline figure only) */
+.frame{position:relative;background:var(--color-surface);border:var(--rule-fine) solid var(--color-rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--space-md)}
+.frame-title{display:flex;justify-content:space-between;gap:var(--space-md);font-size:var(--text-sm);color:var(--color-neutral);padding-bottom:var(--space-sm);border-bottom:var(--rule-fine) solid var(--color-rule);margin-bottom:var(--space-sm)}
+.frame-title b{color:var(--color-ink);font-weight:600}
+.day{display:grid;grid-template-columns:2.75rem repeat(3,minmax(0,1fr));gap:0 var(--space-xs)}
+.day .h{font-size:var(--text-sm);font-weight:500;padding-bottom:var(--space-xs);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hours{display:grid;grid-template-rows:repeat(6,var(--hour));font-size:var(--text-xs);color:var(--color-muted)}
+.hours span{border-top:var(--rule-fine) solid var(--color-rule);padding-top:2px}
+.col{position:relative;height:calc(var(--hour) * 6);background:repeating-linear-gradient(180deg,var(--color-rule) 0 1px,transparent 1px var(--hour))}
+.a{position:absolute;left:0;right:0;top:calc(var(--s) * var(--hour) + 2px);height:calc(var(--d) * var(--hour) - 4px);background:var(--color-paper-3);border-radius:var(--radius-input);padding:var(--space-xs) var(--space-sm);font-size:var(--text-xs);line-height:1.3;overflow:hidden;color:var(--color-ink)}
+.a b{display:block;font-weight:600;font-size:var(--text-sm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a span{color:var(--color-neutral);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.a.gap{background:var(--color-accent-wash);border:var(--rule-fine) dashed var(--color-accent)}
+.a.gap b{color:var(--color-ink)}
+.a.one{display:flex;align-items:center;padding-block:0}
+.a.one b{font-size:var(--text-xs)}
+.callout{margin-top:var(--space-md);font-size:var(--text-sm);color:var(--color-ink-2);background:var(--color-surface);border:var(--rule-fine) solid var(--color-rule);border-radius:var(--radius-input);padding:var(--space-xs) var(--space-sm);display:flex;gap:var(--space-xs);align-items:center;line-height:1.35}
+.callout::before{content:"";flex:none;width:.5rem;height:.5rem;border-radius:50%;background:var(--color-accent)}
+
+/* three workbench blocks */
+.work{display:grid;gap:var(--space-3xl)}
+.block{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--space-lg) var(--space-lg);align-items:center}
+.block .frame{grid-column:1 / span 7}
+.block .cap{grid-column:9 / span 4}
+.block:nth-child(2) .frame{grid-column:6 / span 7;grid-row:1}
+.block:nth-child(2) .cap{grid-column:1 / span 4;grid-row:1}
+.block:nth-child(3) .frame{grid-column:1 / span 6}
+.block:nth-child(3) .cap{grid-column:8 / span 5}
+h2{font:600 var(--text-display-s)/1.1 var(--font-display);letter-spacing:var(--tracking-display);overflow-wrap:anywhere;text-wrap:balance}
+.cap p{margin-top:var(--space-md);color:var(--color-neutral);max-width:46ch}
+.cap .n{margin-top:var(--space-md);font-size:var(--text-sm);color:var(--color-muted)}
+
+.wl{display:grid;gap:0;font-size:var(--text-sm)}
+.wl .r{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.6fr) auto;gap:var(--space-md);align-items:center;padding:var(--space-sm) 0;border-top:var(--rule-fine) solid var(--color-rule)}
+.wl .r:first-child{border-top:0}
+.wl .who b{font-weight:600;display:block}
+.wl .who span,.wl .want{color:var(--color-neutral)}
+.chip{display:inline-flex;align-items:center;min-height:1.5rem;padding:0 var(--space-sm);border-radius:var(--radius-pill);font-size:var(--text-xs);white-space:nowrap;border:var(--rule-fine) solid var(--color-rule-2);color:var(--color-ink-2)}
+.chip.on{background:var(--color-ink);color:var(--color-paper);border-color:var(--color-ink)}
+.chip.hot{border-color:var(--color-accent);background:var(--color-accent-wash)}
+
+.rem{width:100%;border-collapse:collapse;font-size:var(--text-sm)}
+.rem th{text-align:left;font-weight:500;color:var(--color-muted);padding:0 var(--space-sm) var(--space-sm) 0;font-size:var(--text-xs)}
+.rem td{padding:var(--space-sm) var(--space-sm) var(--space-sm) 0;border-top:var(--rule-fine) solid var(--color-rule);white-space:nowrap}
+.rem td:first-child{white-space:normal}
+.rem tr.flag td{background:var(--color-accent-wash)}
+.rem tr.flag td:first-child{padding-left:var(--space-sm)}
+
+.cta-strip{margin-top:var(--space-3xl);margin-bottom:var(--space-xl);display:flex;justify-content:space-between;align-items:center;gap:var(--space-lg);flex-wrap:wrap;background:var(--color-ink);color:var(--color-paper);border-radius:var(--radius-card);padding:var(--space-lg) var(--space-lg) var(--space-lg) var(--space-xl)}
+.cta-strip p{font-size:var(--text-lg);font-weight:500;letter-spacing:var(--tracking-tight);max-width:30ch;line-height:1.25}
+.cta-strip .btn{background:var(--color-paper);color:var(--color-ink);border-color:var(--color-paper)}
+.cta-strip .btn:hover{background:var(--color-paper-3)}
+.cta-strip :focus-visible{outline-color:var(--color-paper)}
+
+/* Ft2 */
+.foot-line{border-top:var(--rule-fine) solid var(--color-rule);padding-block:var(--space-lg);font-size:var(--text-sm);color:var(--color-muted);display:flex;justify-content:space-between;gap:var(--space-md);flex-wrap:wrap}
+
+@media (max-width:60rem){
+  .hero{grid-template-columns:minmax(0,1fr);gap:var(--space-xl);padding-bottom:var(--space-2xl)}
+  .block,.block:nth-child(n){grid-template-columns:minmax(0,1fr)}
+  .block .frame,.block .cap,.block:nth-child(n) .frame,.block:nth-child(n) .cap{grid-column:1;grid-row:auto}
+}
+@media (max-width:40rem){
+  .nav-pill ul li:not(:last-child){display:none}
+  .nav-pill{gap:var(--space-md)}
+  .cta-strip{padding:var(--space-lg)}
+  .wl .r{grid-template-columns:minmax(0,1fr) auto}
+  .wl .want{display:none}
+  .frame-title span:last-child{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<nav class="nav-pill" aria-label="Primary">
+  <a class="wordmark" href="#">Tidewater</a>
+  <ul><li><a href="#waiting">Waiting list</a></li><li><a href="#reminders">Reminders</a></li><li><a href="#">Pricing</a></li></ul>
+  <a class="btn btn-fill" href="#">Start free</a>
+</nav>
+
+<main class="page">
+  <section class="hero">
+    <div>
+      <h1>A diary that fills its own gaps.</h1>
+      <p class="lede">Scheduling for small physiotherapy clinics. Cancellations go to your waiting list before the slot goes cold.</p>
+      <div class="cta-row">
+        <a class="btn btn-fill" href="#">Start free trial</a>
+        <a class="btn btn-line" href="#waiting">See how it works</a>
+      </div>
+      <p class="fine">30 days, no card required.</p>
+    </div>
+
+    <figure class="frame" aria-label="Day view for three therapists, Thursday">
+      <figcaption class="frame-title"><b>Thursday</b><span>Harbour Road Physio</span></figcaption>
+      <div class="day">
+        <div></div><div class="h">Ana Reyes</div><div class="h">Dev Malik</div><div class="h">Mira Okafor</div>
+        <div class="hours mono" aria-hidden="true"><span>08:00</span><span>09:00</span><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span></div>
+        <div class="col">
+          <div class="a" style="--s:0;--d:1"><b>M. Fiala</b><span>Knee review</span></div>
+          <div class="a" style="--s:1;--d:1"><b>T. Brandt</b><span>Shoulder</span></div>
+          <div class="a" style="--s:2;--d:1.5"><b>R. Singh</b><span>Post-op, 90 min</span></div>
+          <div class="a gap" style="--s:3.5;--d:1"><b>Open</b><span>Offered to 3</span></div>
+          <div class="a" style="--s:4.5;--d:1"><b>K. Mensah</b><span>Hip mobility</span></div>
+          <div class="a one" style="--s:5.5;--d:.5"><b>D. Halloran</b></div>
+        </div>
+        <div class="col">
+          <div class="a" style="--s:0;--d:1.5"><b>J. Nowak</b><span>Hamstring, 90 min</span></div>
+          <div class="a" style="--s:1.5;--d:1"><b>E. Park</b><span>Calf strain</span></div>
+          <div class="a" style="--s:2.5;--d:1"><b>A. Costa</b><span>Shoulder</span></div>
+          <div class="a" style="--s:3.5;--d:1"><b>B. Lindqvist</b><span>Knee taping</span></div>
+          <div class="a" style="--s:4.5;--d:1"><b>H. Aziz</b><span>Groin</span></div>
+          <div class="a one" style="--s:5.5;--d:.5"><b>F. Ramos</b></div>
+        </div>
+        <div class="col">
+          <div class="a" style="--s:0;--d:1.5"><b>G. Petrov</b><span>Hip replacement</span></div>
+          <div class="a" style="--s:1.5;--d:1"><b>N. Abara</b><span>Pool</span></div>
+          <div class="a" style="--s:2.5;--d:1"><b>W. Chen</b><span>Pool</span></div>
+          <div class="a" style="--s:3.5;--d:1.5"><b>I. Larsen</b><span>Stroke rehab</span></div>
+          <div class="a" style="--s:5;--d:1"><b>V. Moreau</b><span>Pool</span></div>
+        </div>
+      </div>
+      <p class="callout">Ortiz cancelled at 08:42. Three patients were texted a minute later.</p>
+    </figure>
+  </section>
+
+  <section class="work" aria-label="What Tidewater does">
+    <article class="block" id="waiting">
+      <figure class="frame" aria-label="Waiting list with offers">
+        <figcaption class="frame-title"><b>Waiting list</b><span>Thursday 11:30, 60 min, Ana Reyes</span></figcaption>
+        <div class="wl">
+          <div class="r"><div class="who"><b>Priya Thakur</b><span>Waiting 9 days</span></div><div class="want">Thursday or Friday mornings</div><span class="chip on">Accepted 08:51</span></div>
+          <div class="r"><div class="who"><b>Omar Said</b><span>Waiting 6 days</span></div><div class="want">Any weekday after 11:00</div><span class="chip">Slot taken</span></div>
+          <div class="r"><div class="who"><b>Ines Varga</b><span>Waiting 4 days</span></div><div class="want">Mornings, pool only</div><span class="chip">Slot taken</span></div>
+          <div class="r"><div class="who"><b>Tom Becker</b><span>Waiting 2 days</span></div><div class="want">Evenings</div><span class="chip hot">Not a match</span></div>
+        </div>
+      </figure>
+      <div class="cap">
+        <h2>Cancellations are offered before you notice them.</h2>
+        <p>When a slot opens, Tidewater texts the patients whose treatment length and preferred times fit it, longest wait first. The first yes books it.</p>
+      </div>
+    </article>
+
+    <article class="block" id="reminders">
+      <figure class="frame" aria-label="Reminder status for tomorrow">
+        <figcaption class="frame-title"><b>Tomorrow, Friday</b><span>Confirmations</span></figcaption>
+        <table class="rem">
+          <thead><tr><th scope="col">Patient</th><th scope="col">Time</th><th scope="col">Reminder</th><th scope="col">Reply</th></tr></thead>
+          <tbody>
+            <tr><td>M. Fiala</td><td class="mono">08:00</td><td class="mono">Thu 09:00</td><td>Confirmed</td></tr>
+            <tr><td>T. Brandt</td><td class="mono">09:00</td><td class="mono">Thu 09:00</td><td>Confirmed</td></tr>
+            <tr class="flag"><td>R. Singh</td><td class="mono">10:00</td><td class="mono">Thu 09:00</td><td>No reply, ring</td></tr>
+            <tr><td>K. Mensah</td><td class="mono">12:30</td><td class="mono">Thu 09:00</td><td>Confirmed</td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <div class="cap">
+        <h2>Ring only the patients who have not replied.</h2>
+        <p>Every visit gets a reply-to-confirm text the day before. Anyone who has not answered is marked on the sheet, so the front desk starts with a short call list.</p>
+      </div>
+    </article>
+
+    <article class="block">
+      <figure class="frame" aria-label="Room and equipment availability">
+        <figcaption class="frame-title"><b>Rooms and equipment</b><span>Thursday 12:30, 90 min</span></figcaption>
+        <div class="wl">
+          <div class="r"><div class="who"><b>Room 1, plinth</b><span>Free</span></div><div class="want">Ana Reyes</div><span class="chip on">Needed</span></div>
+          <div class="r"><div class="who"><b>Hydro pool</b><span>Group class until 13:00</span></div><div class="want">Mira Okafor</div><span class="chip hot">Busy</span></div>
+          <div class="r"><div class="who"><b>Second therapist</b><span>Dev Malik, free</span></div><div class="want">For lifting</div><span class="chip on">Needed</span></div>
+        </div>
+      </figure>
+      <div class="cap">
+        <h2>Treatments book the room, the pool and a second pair of hands.</h2>
+        <p>Each treatment lists what it needs. Tidewater only offers times when all of it is free, so a post-op session cannot collide with a class.</p>
+      </div>
+    </article>
+  </section>
+
+  <aside class="cta-strip">
+    <p>Try it on next week's diary.</p>
+    <a class="btn" href="#">Start free trial</a>
+  </aside>
+</main>
+
+<footer class="page"><div class="foot-line"><span>Tidewater, scheduling for physiotherapy clinics.</span><span>hello@tidewater.example</span></div></footer>
+</body>
+</html>

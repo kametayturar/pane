@@ -1,0 +1,55 @@
+{
+  "id": "improve-animations",
+  "sets": ["motion"],
+  "skillSays": [
+    "An advisor skill: survey a codebase's motion first (stack, tokens, personality, which elements are used 100+ times a day), then audit it, and turn findings into plans another agent can execute.",
+    "It audits eight categories: purpose and frequency, easing and duration, physicality and origin, interruptibility, performance, accessibility, cohesion and tokens, and missed opportunities.",
+    "Every finding is re-read at its file:line before it is reported, and exempt cases (a centred modal, a long marketing animation) are dropped.",
+    "Findings are ranked by leverage as a table (severity, category, location, fix), followed by two to four additive 'missed opportunities'; the default is to plan the top three to five.",
+    "Plans are self-contained: exact cubic-beziers, durations, file paths and verification steps, so a model with no taste can execute them; extend the repo's tokens rather than inventing parallel ones.",
+    "Workflow used here: build a first draft, audit it, write plans, then run `execute` on them to produce the shipped version."
+  ],
+  "audit": {
+    "findings": [
+      { "n": 1, "severity": "HIGH", "category": "Performance", "location": "motion-1: .toaster { bottom: -90px -> 20px }, cubic-bezier(.68,-.55,.27,1.55) in / linear out", "fix": "Persistent .toast with transform + opacity transitions, ease-out, 280ms in / 180ms out" },
+      { "n": 2, "severity": "HIGH", "category": "Performance", "location": "motion-2: .menu { max-height 0 -> 260px; padding; opacity linear }", "fix": "scale(0.96) + opacity from the trigger's origin, 180ms in / 120ms out" },
+      { "n": 3, "severity": "HIGH", "category": "Performance", "location": "motion-3: .task { max-height .6s ease; margin .6s }, keyframe slideLeft .45s ease-in-out", "fix": "transition enter 180ms + FLIP for the gap at 220ms" },
+      { "n": 4, "severity": "MEDIUM", "category": "Easing / tokens", "location": "transition: all in 8 places; five durations (.25/.3/.35/.45/.6s) and four easings", "fix": "Shared tokens: --ease-out, --ease-in-out, --dur-hover 100ms, --dur-press 160ms, --dur-exit 120ms, --dur-enter 180ms, --dur-move 220ms" },
+      { "n": 5, "severity": "MEDIUM", "category": "Accessibility", "location": "ungated :hover scale(1.08)/scale(1.05)/padding-left; no prefers-reduced-motion", "fix": "(hover:hover) and (pointer:fine) gating; fade-only reduced-motion branch" }
+    ],
+    "missedOpportunities": [
+      "Toast gives no sense of how long it will stay: a linear scaleX countdown would explain it.",
+      "Menu items all arrive at once: a 35ms stagger fits the 30-80ms rule.",
+      "Clearing the whole task list is a rare moment with no acknowledgement."
+    ]
+  },
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "Plan 001: the draft moved the toast by animating `bottom` (a layout property) with an overshooting cubic-bezier(.68,-.55,.27,1.55) in and a linear 350ms out. Shipped: one persistent element, transform: translateY(calc(100% + 24px)) to none plus opacity, 280ms in and 180ms out on cubic-bezier(0.23,1,0.32,1).",
+        "Because it is a transition on a data-open attribute, a Replay that lands mid-exit retargets from the current position instead of snapping.",
+        "Plan 004: every duration and easing now reads from :root tokens (--dur-toast-in 280ms, --dur-toast-out 180ms, --dur-press 160ms, --dur-enter 180ms, --ease-out), replacing .3s/.35s/.45s and four different curves.",
+        "Plan 005: hover colours gated behind (hover:hover) and (pointer:fine), scale(0.97) on :active, and a reduced-motion branch that keeps the fade."
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Plan 002: the draft grew the menu by animating max-height 0 to 260px, padding and a linear opacity over .35s. Shipped: scale(0.96) + opacity, transform-origin at the trigger centre, 180ms open (--dur-enter) and 120ms close (--dur-exit), cubic-bezier(0.23,1,0.32,1); no layout property is animated.",
+        "The item hover that animated padding-left (a layout shift on every hover) is now a 100ms background-colour change (--dur-hover) gated behind (hover:hover) and (pointer:fine).",
+        "Keyboard opening (Enter, Space, ArrowDown) and Escape run with duration 0, per the audit's 'never animate keyboard actions' rule.",
+        "transition: all on the trigger replaced by named properties from the shared tokens."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Plan 003: the draft used a keyframe slideLeft .45s ease-in-out for adds and a .6s max-height/margin collapse for removals. Shipped: opacity + translateY(8px) transition over 180ms for adds, a 120ms exit, and a FLIP that moves sibling rows with transform for 220ms on cubic-bezier(0.77,0,0.175,1).",
+        "The FLIP reads its duration and curve from the same --dur-move and --ease-in-out tokens the CSS uses, so motion constants live in one place.",
+        "Check tick went from `all .25s linear` and a 400ms ease-in fade to 160ms opacity + scale(0.8 to 1); the strikethrough colour fades over 180ms.",
+        "Add button: ungated scale(1.05) hover replaced by scale(0.97) on press; reduced-motion branch drops the slides and the FLIP."
+      ]
+    }
+  ]
+}

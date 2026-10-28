@@ -1,0 +1,38 @@
+{
+  "id": "modern-web-guidance",
+  "sets": ["web"],
+  "skillSays": [
+    "Before writing any web UI, search the guide catalogue (npx modern-web-guidance search) with a short capability query, then retrieve the matching guides.",
+    "Treat model memory of web APIs as possibly stale and follow the retrieved guides instead of ad-hoc patterns.",
+    "Prefer native platform features (container queries, :user-invalid, input switch, scroll-driven animations) over libraries.",
+    "For features that are not Baseline widely available, implement the guide's fallback (feature detection, class fallback), and respect prefers-reduced-motion.",
+    "Cross-check the finished code against the retrieved guides before concluding.",
+    "End by disclosing which guides shaped the code, with the non-obvious choice each one forced."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Applied the typography guide: rem sizes, text-wrap: balance on headings and pretty on paragraphs, clamp() mixing rem + vw for the h1, and unitless line-height",
+        "Applied responsive-design and size-aware-styling: svh for the hero height and an inline-size container on the schedule board that reveals the room tags only when there is space",
+        "Added the feature-card rise as a scroll-driven animation wrapped in @supports (animation-timeline: view()) and (animation-range: entry) plus prefers-reduced-motion, with no polyfill because it is decorative"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Built the monthly/yearly toggle as a native <input type=checkbox switch> with accent-color, adding a feature-detected styled fallback for browsers without switch support (the guide's fallback rule)",
+        "Plan cards are inline-size containers: feature lists go two-column from 28rem of card width, and the price scales with cqi units",
+        "Prices sit in an aria-live region so the screen reader hears the change when the switch flips"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Errors use :user-invalid / :user-valid so nothing is red on load or mid-typing; the guide's class fallback is wired in for engines without the selector",
+        "Synced aria-invalid with the visual state (set on blur, cleared on input) and linked fields with aria-describedby / aria-errormessage, per the accessible-error-announcement guide",
+        "Format hints and the password rule sit above the field so autofill popovers and mobile keyboards cannot cover them; email also gets a pattern because type=email accepts jordan@clinic; the submit button is not disabled until a valid submit"
+      ]
+    }
+  ]
+}

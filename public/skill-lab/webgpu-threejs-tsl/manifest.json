@@ -1,0 +1,33 @@
+{
+  "id": "webgpu-threejs-tsl",
+  "sets": [
+    "3d"
+  ],
+  "skillSays": [
+    "Import from three/webgpu and three/tsl, and await renderer.init() before touching the renderer.",
+    "Write shaders as TSL node graphs in JavaScript (Fn, uniform, method chaining) on the NodeMaterial slots: colorNode, positionNode, emissiveNode, opacityNode.",
+    "GPU particles use storage buffers plus Fn(...)().compute(count), run with renderer.compute().",
+    "Inside TSL, plain JS reassignment is invisible to the graph: use .assign(), .toVar() or select().",
+    "Handle device loss, and remember WebGPURenderer can fall back to a WebGL 2 backend.",
+    "Prefer built-in post-processing and node materials over hand-written WGSL unless needed."
+  ],
+  "examples": [
+    {
+      "prompt": "3d-1",
+      "changes": [
+        "The orb's wobble, fresnel rim and colors are TSL nodes (mx_noise_float into positionNode, a view-angle fresnel into colorNode and emissiveNode); the slot ring is one InstancedMesh animated per instance on the GPU with instanceIndex and time, no JS per frame",
+        "The renderer is created with await init() and a try order of WebGPU then forced WebGL 2; the same TSL material graph rendered on both (checked with ?renderer=webgl)",
+        "A device.lost handler reloads once instead of leaving a dead canvas"
+      ]
+    },
+    {
+      "prompt": "3d-2",
+      "changes": [
+        "On real WebGPU a compute shader integrates each particle (spring toward its slot, noise drift while unsettled) in storage buffers; sprites read positions straight from the buffer",
+        "WebGPU was available in this headless Chrome. When the backend is WebGL 2 the page switches to a fallback path that computes the same scatter-to-grid motion in the vertex stage from instanced attributes, so it still renders (checked with ?renderer=webgl)",
+        "The TSL gotcha is respected: buffer elements use addAssign / mulAssign, no JS variable reassignment inside the shader"
+      ]
+    }
+  ],
+  "notes": "Pinned to three@0.170.0 per the brief. That release has no instancedArray helper or three.tsl.js (TSL is exported from three.webgpu.js), so storage(new StorageInstancedBufferAttribute(...)) is used, which is the same idea. WebGL 2 fallback is a vertex-stage path, not compute."
+}

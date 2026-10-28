@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – Scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Design plan
+   Ground #E4ECEE sea-glass | Ink #0B2230 harbour | Deep #123F55 | Foam #F7FBFB | Buoy #F2C230
+   Type: Bricolage Grotesque (display, narrow & heavy) + Instrument Sans (body)
+   Idea: the clinic day as a printed tide table; appointments ride the curve. */
+:root{--ground:#E4ECEE;--ink:#0B2230;--deep:#123F55;--foam:#F7FBFB;--buoy:#F2C230;--mute:#4A6270;--rule:#B9CBD1}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--ground);color:var(--ink);font:17px/1.6 "Instrument Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--deep);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+header{display:flex;justify-content:space-between;align-items:center;height:84px}
+.mark{font:800 26px/1 "Bricolage Grotesque";font-stretch:80%;letter-spacing:-.03em;text-decoration:none}
+nav{display:flex;gap:32px;align-items:center;font-weight:500;font-size:16px}
+nav a{text-decoration:none}nav a:hover{text-decoration:underline;text-underline-offset:5px}
+.btn{display:inline-flex;align-items:center;height:52px;padding:0 26px;background:var(--ink);color:var(--foam);font:600 16px "Instrument Sans";text-decoration:none;border-radius:4px;transition:transform .2s,background .2s}
+.btn:hover{background:var(--deep)}.btn:active{transform:translateY(1px)}
+.btn.sm{height:42px;padding:0 18px;font-size:15px}
+.btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.alt:hover{background:var(--ink);color:var(--foam)}
+
+/* hero */
+.hero{padding:40px 0 0}
+h1{font:800 clamp(64px,10.6vw,152px)/.86 "Bricolage Grotesque";font-stretch:75%;letter-spacing:-.022em;max-width:11ch}
+.hero-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px;align-items:end;margin-top:36px}
+.hero p{font-size:21px;line-height:1.5;max-width:34em;color:var(--deep)}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.tide{margin-top:48px;position:relative;background:var(--deep);color:var(--foam);border-radius:4px 4px 0 0;padding:28px 0 0;overflow:hidden}
+.tide-in{padding:0 40px}
+.tide-top{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap}
+.tide h2{font:700 22px/1.2 "Bricolage Grotesque";font-stretch:85%;letter-spacing:-.01em}
+.tide-top span{color:#A9C7D3;font-size:15px}
+.tide svg{display:block;width:100%;height:auto;margin-top:10px;overflow:visible}
+.curve{fill:none;stroke:var(--foam);stroke-width:2.5;stroke-dasharray:3000;stroke-dashoffset:3000;animation:draw 2.2s .3s cubic-bezier(.5,0,.1,1) forwards}
+.fill{fill:#1B5570;opacity:0;animation:fadein 1.2s 1.6s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+.buoy{cursor:pointer;outline:none}
+.buoy circle.d{fill:var(--buoy);transition:r .2s}
+.buoy .ring{fill:none;stroke:var(--buoy);stroke-width:1.5;opacity:0;transition:opacity .2s}
+.buoy:hover .ring,.buoy:focus-visible .ring,.buoy.on .ring{opacity:1}
+.buoy text{fill:var(--foam);font:500 13px "Instrument Sans"}
+.buoy .t{font-weight:700;fill:var(--buoy)}
+.buoy{opacity:0;animation:fadein .5s forwards;animation-delay:calc(1.2s + var(--n)*.14s)}
+.gapbuoy circle.d{fill:none;stroke:var(--buoy);stroke-width:2;stroke-dasharray:4 4}
+.hour{fill:#7FA6B7;font:500 12px "Instrument Sans"}
+.hl{stroke:#2A6682;stroke-width:1}
+.readout{background:var(--buoy);color:var(--ink);padding:14px 40px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;gap:16px;min-height:52px;align-items:center}
+.readout b{font-family:"Bricolage Grotesque";font-stretch:85%;font-size:18px}
+.readout span{font-weight:500}
+
+/* features */
+.feat{padding:120px 0 40px}
+.feat>.wrap>h2{font:800 clamp(44px,6vw,84px)/.92 "Bricolage Grotesque";font-stretch:75%;letter-spacing:-.02em;max-width:13ch;margin-bottom:72px}
+.row{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;padding:56px 0;align-items:center}
+.row+.row{padding-top:56px}
+.row:nth-child(even){background:linear-gradient(0deg,transparent,transparent)}
+.row h3{font:700 clamp(30px,3.2vw,44px)/1 "Bricolage Grotesque";font-stretch:80%;letter-spacing:-.025em;margin-bottom:16px}
+.row p{color:var(--deep);max-width:30em}
+.art{background:var(--foam);border-radius:4px;padding:28px;min-height:260px;display:flex;flex-direction:column;justify-content:center}
+.band{background:var(--deep);color:var(--foam);margin-top:64px}
+.band .art{background:#0F3548}
+.band .row p{color:#CFE1E8}
+/* waitlist */
+.wl{list-style:none;padding:0;display:grid;gap:0}
+.wl li{display:grid;grid-template-columns:72px 1fr auto;gap:16px;align-items:center;padding:14px 0;font-size:16px}
+.wl li+li{box-shadow:0 -1px 0 var(--rule)}
+.wl time{font:700 20px "Bricolage Grotesque";font-stretch:85%}
+.wl em{font-style:normal;font-weight:600;background:var(--buoy);padding:2px 10px;border-radius:99px;font-size:14px}
+.wl .x{color:var(--mute);text-decoration:line-through}
+/* sms */
+.sms{display:grid;gap:10px;max-width:420px}
+.bub{padding:14px 18px;border-radius:18px 18px 18px 4px;background:#0F3548;color:var(--foam);font-size:16px}
+.band .bub{background:var(--foam);color:var(--ink)}
+.bub.me{justify-self:end;border-radius:18px 18px 4px 18px;background:var(--buoy);color:var(--ink);font-weight:600}
+/* rooms */
+.rooms{display:grid;grid-template-columns:90px repeat(8,1fr);gap:4px;font-size:13px}
+.rooms .n{align-self:center;font-weight:600;font-size:15px}
+.rooms i{display:block;height:34px;background:var(--ground);border-radius:3px}
+.rooms i.b{background:var(--deep)}.rooms i.y{background:var(--buoy)}
+.rooms i.w{background:repeating-linear-gradient(135deg,var(--ground) 0 5px,#C9D8DC 5px 7px)}
+.hrs{display:contents;color:var(--mute)}
+.hrs span{text-align:left}
+footer{padding:48px 0 56px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:var(--mute);font-size:15px}
+footer .mark{color:var(--ink)}
+
+@media (max-width:860px){
+  .wrap{padding:0 20px}.tide-in,.readout{padding-left:20px;padding-right:20px}
+  nav a:not(.btn){display:none}
+  .hero-row{grid-template-columns:1fr}.hero p{font-size:19px}
+  .row{grid-template-columns:1fr;gap:28px;padding:40px 0}
+  .feat{padding-top:80px}
+  .art{padding:20px;min-height:0}
+  .tide svg{min-width:720px}
+  .tide-scroll{overflow-x:auto}
+  .rooms{grid-template-columns:64px repeat(8,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.curve{animation:none;stroke-dashoffset:0}.fill,.buoy{animation:none;opacity:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="mark" href="#">Tidewater</a>
+    <nav aria-label="Main"><a href="#features">Features</a><a href="#">Pricing</a><a href="#">Sign in</a><a class="btn sm" href="#">Start free</a></nav>
+  </header>
+
+  <section class="hero">
+    <h1>The day runs on the tide</h1>
+    <div class="hero-row">
+      <p>Tidewater keeps a physiotherapy clinic's diary moving: cancellations refilled from the waitlist, patients reminded by text, every room in view.</p>
+      <div class="cta"><a class="btn" href="#">Start 30 days free</a><a class="btn alt" href="#features">See the features</a></div>
+    </div>
+    <div class="tide">
+      <div class="tide-in">
+        <div class="tide-top"><h2>Tuesday at Northside Physio</h2><span>Tap a buoy to see the booking</span></div>
+      </div>
+      <div class="tide-scroll">
+      <svg id="chart" viewBox="0 0 1200 300" role="group" aria-label="Appointments across Tuesday, plotted on a tide curve">
+        <path class="fill" id="area"/>
+        <g id="grid"></g>
+        <path class="curve" id="curve"/>
+        <g id="buoys"></g>
+      </svg></div>
+      <div class="readout" aria-live="polite"><b id="r1">10:30 · Rotator cuff review</b><span id="r2">Lena Voss, 60 minutes, Room 2</span></div>
+    </div>
+  </section>
+</div>
+
+<section class="feat" id="features">
+  <div class="wrap">
+    <h2>Three jobs the front desk stops doing</h2>
+
+    <div class="row">
+      <div><h3>Gaps fill themselves</h3><p>When a patient cancels, Tidewater offers the slot to your waitlist in order of fit and books the first yes. You see the refilled hour, not the phone calls.</p></div>
+      <div class="art">
+        <ul class="wl" aria-label="Waitlist offer for 10:30">
+          <li><time>10:30</time><span class="x">Alan Burke, cancelled</span><span></span></li>
+          <li><time>10:31</time><span>Offer sent to Maya R.</span><span></span></li>
+          <li><time>10:34</time><span>Maya R. replied yes</span><em>Booked</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="band"><div class="wrap">
+    <div class="row">
+      <div class="art"><div class="sms"><div class="bub">Hi Daniel, you have a 9:00 visit tomorrow at Northside Physio.</div><div class="bub me">Can we move to 9:30?</div><div class="bub">Done. See you at 9:30 in Room 2.</div></div></div>
+      <div><h3>Reminders patients answer</h3><p>A text goes out the day before. Patients confirm or move the visit in one reply, and the diary updates itself. No-shows fall without a single call.</p></div>
+    </div>
+  </div></div>
+  <div class="wrap">
+    <div class="row">
+      <div><h3>Every room on one page</h3><p>Therapists, rooms and treatment bays share one timeline, so an over-booked bay shows up before the patient does.</p></div>
+      <div class="art">
+        <div class="rooms" role="img" aria-label="Room utilisation from 9 to 5">
+          <span></span><div class="hrs" style="display:contents"><span>9</span><span>10</span><span>11</span><span>12</span><span>1</span><span>2</span><span>3</span><span>4</span></div>
+          <span class="n">Room 1</span><i class="b"></i><i class="b"></i><i class="y"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="y"></i><i class="b"></i>
+          <span class="n">Room 2</span><i class="b"></i><i class="y"></i><i class="b"></i><i class="b"></i><i class="w"></i><i class="b"></i><i class="b"></i><i class="b"></i>
+          <span class="n">Gym bay</span><i class="y"></i><i class="b"></i><i class="b"></i><i class="w"></i><i class="b"></i><i class="y"></i><i class="b"></i><i class="b"></i>
+        </div>
+      </div>
+    </div>
+    <footer><a class="mark" href="#">Tidewater</a><span>Scheduling for small physiotherapy clinics</span><span>© 2026 Tidewater Health Software</span></footer>
+  </div>
+</section>
+
+<script>
+const NS='http://www.w3.org/2000/svg',W=1200,H=300,T0=8,T1=18;
+const X=t=>60+(t-T0)/(T1-T0)*(W-120);
+const level=t=>150-Math.sin((t-T0)/(T1-T0)*Math.PI*2.1-0.6)*78-Math.sin((t-T0)*.9)*10;
+let d='';for(let t=T0;t<=T1+.01;t+=.1)d+=(t===T0?'M':'L')+X(t).toFixed(1)+' '+level(t).toFixed(1);
+curve.setAttribute('d',d);area.setAttribute('d',d+`L${X(T1)} ${H}L${X(T0)} ${H}Z`);
+for(let h=T0;h<=T1;h+=2){const g=document.createElementNS(NS,'g');g.innerHTML=`<line class="hl" x1="${X(h)}" x2="${X(h)}" y1="30" y2="${H-26}"/><text class="hour" x="${X(h)}" y="${H-8}" text-anchor="middle">${h>12?h-12:h}${h<12?' am':' pm'}</text>`;grid.appendChild(g)}
+const appts=[
+ {t:9,n:'Hip mobility',w:'Daniel Cho, 60 minutes, Room 1'},
+ {t:10.5,n:'Rotator cuff review',w:'Lena Voss, 60 minutes, Room 2'},
+ {t:12,n:'Open slot',w:'Offered to 3 people on the waitlist',gap:1},
+ {t:13.5,n:'Gait assessment',w:'Tom Reyes, 30 minutes, Gym bay'},
+ {t:15,n:'Follow-up',w:'Priya Nair, 30 minutes, Room 1'},
+ {t:16.5,n:'Sports return plan',w:'Jess Park, 45 minutes, Room 2'}
+];
+const fmt=t=>{const h=Math.floor(t),m=Math.round((t-h)*60);return (h>12?h-12:h)+':'+String(m).padStart(2,'0')};
+appts.forEach((a,i)=>{
+  const x=X(a.t),y=level(a.t),up=i%2===0;
+  const g=document.createElementNS(NS,'g');g.setAttribute('class','buoy'+(a.gap?' gapbuoy':''));g.setAttribute('tabindex',0);g.setAttribute('role','button');g.setAttribute('aria-label',`${fmt(a.t)} ${a.n}`);g.style.setProperty('--n',i);
+  const ly=up?y-34:y+46, ty=up?y-52:y+30;
+  g.innerHTML=`<line x1="${x}" x2="${x}" y1="${y}" y2="${up?y-28:y+24}" stroke="#7FA6B7" stroke-width="1"/><circle class="ring" cx="${x}" cy="${y}" r="15"/><circle class="d" cx="${x}" cy="${y}" r="8"/><text class="t" x="${x}" y="${up?y-48:y+44}" text-anchor="middle">${fmt(a.t)}</text>`;
+  const show=()=>{r1.textContent=`${fmt(a.t)} · ${a.n}`;r2.textContent=a.w;document.querySelectorAll('.buoy').forEach(b=>b.classList.toggle('on',b===g))};
+  g.addEventListener('mouseenter',show);g.addEventListener('focus',show);g.addEventListener('click',show);
+  buoys.appendChild(g);if(i===1)g.classList.add('on');
+});
+</script>
+</body>
+</html>

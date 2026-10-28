@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – appointment toast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef4f4; --card:#fff; --ink:#0f2a2e; --muted:#5b7276; --line:#d9e5e6;
+    --teal:#0e7c86; --teal-d:#0a5b63; --teal-l:#d7eeee; --sand:#f4e9d8;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{font-family:"DM Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow:hidden}
+  .app{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:200px 1fr;gap:24px;height:100vh}
+  .side{display:flex;flex-direction:column;gap:6px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;margin-bottom:18px}
+  .brand i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--teal),#35b3a8);display:grid;place-items:center}
+  .brand svg{width:18px;height:18px}
+  .nav{padding:9px 12px;border-radius:10px;color:var(--muted);font-weight:500;font-size:14px}
+  .nav.on{background:var(--teal-l);color:var(--teal-d)}
+  .main{display:flex;flex-direction:column;gap:16px;min-width:0}
+  .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  h1{font-size:24px;letter-spacing:-.01em}
+  .top p{color:var(--muted);font-size:14px;margin-top:2px}
+  .btns{display:flex;gap:8px}
+  button{font:inherit;cursor:pointer}
+  .btn{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:10px;font-weight:600;font-size:14px}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .btn:focus-visible{outline:3px solid #7fd0d4;outline-offset:2px}
+  .grid{display:grid;grid-template-columns:56px repeat(3,1fr);background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;flex:1;min-height:0;grid-template-rows:auto repeat(3,1fr)}
+  .col-h{padding:12px 10px;font-size:13px;font-weight:600;border-bottom:1px solid var(--line);color:var(--muted);text-align:center}
+  .time{font-size:12px;color:var(--muted);padding:14px 8px;border-top:1px solid var(--line);text-align:right}
+  .slot{border-top:1px solid var(--line);border-left:1px solid var(--line);padding:6px;position:relative}
+  .appt{border-radius:9px;padding:8px 10px;font-size:12.5px;font-weight:600;background:var(--teal-l);color:var(--teal-d);line-height:1.3}
+  .appt small{display:block;font-weight:500;opacity:.75}
+  .appt.sand{background:var(--sand);color:#6b4b14}
+  .appt.new{background:var(--teal);color:#fff;transform-origin:left center}
+  /* toast */
+  .toast-wrap{position:fixed;top:20px;right:20px;width:min(380px,calc(100vw - 32px));z-index:10;pointer-events:none}
+  .toast{background:#0f2a2e;color:#fff;border-radius:14px;padding:14px 16px 16px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 18px 40px -12px rgba(15,42,46,.45),0 2px 6px rgba(15,42,46,.2);overflow:hidden;position:relative;visibility:hidden}
+  .ico{flex:none;width:30px;height:30px;border-radius:50%;background:#35b3a8;display:grid;place-items:center}
+  .ico svg{width:18px;height:18px}
+  .ico path{stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .txt{flex:1;min-width:0}
+  .txt b{display:block;font-size:14.5px}
+  .txt span{font-size:13px;color:#a9c4c6}
+  .x{background:none;border:0;color:#a9c4c6;padding:2px 4px;font-size:18px;line-height:1;pointer-events:auto}
+  .bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:#35b3a8;transform-origin:left center}
+  @media (max-width:640px){
+    .app{grid-template-columns:1fr;padding:16px}
+    .side{display:none}
+    .grid{grid-template-columns:44px repeat(2,1fr)}
+    .grid .hide-m{display:none}
+    .toast-wrap{top:12px;right:16px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Navigation">
+    <div class="brand"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M3 9c3-3 5-3 9 0s6 3 9 0M3 15c3-3 5-3 9 0s6 3 9 0"/></svg></i>Tidewater</div>
+    <div class="nav on">Schedule</div><div class="nav">Patients</div><div class="nav">Reminders</div><div class="nav">Reports</div>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div><h1>Tuesday schedule</h1><p>Harbour Physio · 3 therapists</p></div>
+      <div class="btns"><button class="btn" id="replay" type="button">Replay</button><button class="btn primary" type="button">New booking</button></div>
+    </div>
+    <div class="grid" role="presentation">
+      <div class="col-h"></div><div class="col-h">Dr. Okafor</div><div class="col-h">M. Lindqvist</div><div class="col-h hide-m">S. Reyes</div>
+      <div class="time">09:00</div>
+      <div class="slot"><div class="appt">Hip mobility<small>R. Aldous</small></div></div>
+      <div class="slot"></div>
+      <div class="slot hide-m"><div class="appt sand">Shoulder rehab<small>T. Nakamura</small></div></div>
+      <div class="time">10:30</div>
+      <div class="slot"></div>
+      <div class="slot" id="slot"><div class="appt new" id="newAppt">New patient intake<small>Priya Raman · 45 min</small></div></div>
+      <div class="slot hide-m"></div>
+      <div class="time">12:00</div>
+      <div class="slot"><div class="appt sand">Knee review<small>B. Osei</small></div></div>
+      <div class="slot"><div class="appt">Back pain<small>L. Ferreira</small></div></div>
+      <div class="slot hide-m"></div>
+    </div>
+  </main>
+</div>
+
+<div class="toast-wrap" aria-live="polite">
+  <div class="toast" id="toast" role="status">
+    <div class="ico"><svg viewBox="0 0 24 24"><path id="tick" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <div class="txt"><b>Appointment booked for Tue 10:30</b><span>Priya Raman · confirmation sent</span></div>
+    <button class="x" id="close" type="button" aria-label="Dismiss notification">×</button>
+    <div class="bar" id="bar"></div>
+  </div>
+</div>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+  const TL = {
+    duration: 5.4, rest: 2.0,            // rest = the stable state shown when motion is reduced
+    segments: [
+      { id: "appt-in",   start: 0.20, end: 0.70, curve: "outCubic" },
+      { id: "toast-in",  start: 0.45, end: 1.10, curve: "outBack" },
+      { id: "tick",      start: 0.90, end: 1.35, curve: "inOut" },
+      { id: "wait",      start: 1.10, end: 4.10, curve: "linear" },
+      { id: "toast-out", start: 4.10, end: 4.55, curve: "inCubic" },
+      { id: "appt-out",  start: 4.35, end: 4.75, curve: "inCubic" }
+    ]
+  };
+
+  // ---- one timeline manifest = the only place timing lives (the page reads it, never re-states it) ----
+  const clamp01 = (x) => Math.min(1, Math.max(0, x));
+  const ease = {
+    linear: (x) => x,
+    outCubic: (x) => 1 - Math.pow(1 - x, 3),
+    inCubic: (x) => x * x * x,
+    inOut: (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2),
+    outBack: (x) => { const c1 = 1.55, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  };
+  const seg = (id) => TL.segments.find((s) => s.id === id);
+  // progress of a segment at time t (0..1), shaped by its curve
+  const prog = (id, t) => { const s = seg(id); return ease[s.curve || "linear"](clamp01((t - s.start) / (s.end - s.start))); };
+
+  // ---- autonomous controller: time advances by itself, render(t) is a pure function of t ----
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  let t0 = performance.now(), raf;
+  const tick = (now) => { render(((now - t0) / 1000) % TL.duration); raf = requestAnimationFrame(tick); };
+  const play = () => { cancelAnimationFrame(raf); t0 = performance.now(); raf = requestAnimationFrame(tick); };
+  const start = () => { if (reduce.matches) { cancelAnimationFrame(raf); render(TL.rest); document.getElementById("replay").hidden = true; } else { document.getElementById("replay").hidden = false; play(); } };
+  reduce.addEventListener("change", start);
+  document.getElementById("replay").addEventListener("click", play);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && !reduce.matches) play(); });
+
+  const toast = $("#toast"), bar = $("#bar"), tickEl = $("#tick"), appt = $("#newAppt");
+  tickEl.style.strokeDasharray = 24;
+  function render(t) {
+    const tin = prog("toast-in", t), tout = prog("toast-out", t);
+    const a = prog("appt-in", t) * (1 - prog("appt-out", t));
+    toast.style.transform = "translateX(" + (120 * (1 - tin) + 120 * tout) + "px)";
+    toast.style.opacity = clamp01(tin * 3) * (1 - tout);
+    toast.style.visibility = t > 0.45 && t < 4.55 ? "visible" : "hidden";
+    bar.style.transform = "scaleX(" + (1 - prog("wait", t)) + ")";
+    tickEl.style.strokeDashoffset = 24 * (1 - prog("tick", t));
+    appt.style.opacity = a;
+    appt.style.transform = "scaleX(" + (0.6 + 0.4 * prog("appt-in", t)) + ")";
+  }
+  $("#close").addEventListener("click", () => { t0 = performance.now() - 4100; });
+  start();
+</script>
+</body>
+</html>

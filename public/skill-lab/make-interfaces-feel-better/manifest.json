@@ -1,0 +1,41 @@
+{
+  "id": "make-interfaces-feel-better",
+  "sets": ["motion"],
+  "skillSays": [
+    "Treat polish as a stack of small details: concentric border radius (outer = inner + padding), layered transparent box-shadows instead of borders for depth, optical alignment, antialiased type, tabular-nums for changing numbers, text-wrap balance and pretty.",
+    "Press feedback is always scale(0.96), never below 0.95, and every transition lists exact properties (scale, opacity, filter), never transition: all.",
+    "Contextual icons swap by cross-fading with exactly scale 0.25 to 1, opacity 0 to 1, blur 4px to 0 (CSS cubic-bezier(0.2,0,0,1) when no motion library is installed, spring bounce 0 when one is).",
+    "Infrequent staged entrances are split into chunks and staggered about 100ms with opacity + translateY(12px) + blur(4px); exits are softer: a small fixed translateY, 150ms, ease-out.",
+    "Motion restraint: routine, high-frequency interactions get no custom animation, only an instant response or a 100-150ms colour/opacity change, and motion is never the only feedback channel.",
+    "Interactive targets keep a 40-44px hit area (extended with a pseudo-element), and each review states mode, scope, evidence and a verdict."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "The toast is split into chunks that stagger in 100ms apart (icon tile, message, Undo, dismiss), each fading up with opacity 0, translateY(12px), blur(4px) over 400ms ease-out; as a one-off success state it earns the staging.",
+        "Its leading icon cross-fades calendar to check using exactly scale 0.25 to 1, opacity 0 to 1, blur 4px to 0 over 300ms on cubic-bezier(0.2,0,0,1), with both SVGs kept in the DOM since no motion library is present.",
+        "Exit is deliberately softer and shorter than the 400ms enter: opacity to 0, translateY(-12px), blur(4px) in 150ms ease-out.",
+        "Depth comes from a five-layer box-shadow instead of a border, the card is concentric (18px outer = 10px icon tile + 8px padding), time uses tabular-nums, copy uses text-wrap: pretty, Book/Undo use scale(0.96) on press with transition-property: scale, background-color, and the close button gets a 40px hit area via ::after."
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Menu enter is opacity + translateY(-8px) + blur(4px) over 220ms ease-out; exit is the same shape in 150ms ease-out, so the exit is softer and shorter, with no stagger because a dropdown is a routine interaction.",
+        "Item hover is only a 100ms background-color change (no movement) and the destructive item carries a red icon and label as the static cue, in line with motion restraint.",
+        "The three-dot trigger morphs into a close icon using the contextual swap values (scale 0.25 to 1, blur 4px to 0, opacity 0 to 1, 300ms cubic-bezier(0.2,0,0,1)) instead of just toggling visibility.",
+        "Concentric radii (menu 16px = item 10px + 6px padding), layered shadow instead of a border, icons at 1.5px stroke beside 400-weight text, 40px minimum item height and trigger hit area."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Adding a task is high-frequency, so the new row only fades in (opacity, 150ms, via @starting-style); no slide, no stagger, no scale.",
+        "The checkbox tick uses the contextual-icon values: scale 0.25 to 1, opacity 0 to 1, blur 4px to 0 over 300ms, while the fill and the strikethrough colour change over 150ms ease-out, so completion is shown by both motion and a static cue.",
+        "Removal is the subtle exit (opacity 0, translateY(-12px), blur(4px), 150ms ease-out) followed by immediate removal, rather than a height collapse: the skill prefers removing at once when extra motion adds no information.",
+        "'2 of 3 done' uses tabular-nums so the digits don't shift, Add uses scale(0.96) on press with transition-property: scale, background-color, the checkbox and remove button extend to 40px hit areas, and the page header splits and staggers (100ms) once on first load only."
+      ]
+    }
+  ]
+}

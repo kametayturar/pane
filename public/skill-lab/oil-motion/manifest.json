@@ -1,0 +1,40 @@
+{
+  "id": "oil-motion",
+  "sets": [
+    "motion"
+  ],
+  "skillSays": [
+    "It is a pipeline for turning AI-generated video or frame sequences into web animation driven by scroll, pointer, drag, audio, data or time.",
+    "Start by locking a concept contract: driver, time_control (scrub, segment-play or autonomous), input semantics, rest state and reduced-motion state.",
+    "Keep timing in one manifest (states, segments, hold times). Pages and controllers read it and never keep a second set of constants.",
+    "Pick the delivery format (alpha atlas, chroma video, baked video) and the runtime controller separately, via a budget script.",
+    "Pilot first on the real page, then QA reverse playback, cold cache, DPR, mobile and failure cases.",
+    "It explicitly declines pure CSS/JS interface transitions and micro-interactions and hands those to ordinary front-end code."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "The skill's own scope rule marks a toast as plain UI motion, so no AI media was generated (the pipeline also needs a ZenMux key); only its contract and manifest ideas were applied",
+        "All timing sits in one TL manifest of segments (start, end, curve) and render(t) is a pure function of time, so the page keeps no second timeline",
+        "An autonomous controller advances t on requestAnimationFrame and loops; reduced motion renders the manifest's rest state once and hides Replay"
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Same out-of-scope outcome as motion-1: built as ordinary front-end code, with the skill's controller and manifest structure as the only borrowed parts",
+        "Cursor travel, menu open, item stagger, highlight steps and close are separate manifest segments with named curves, rendered together from one t",
+        "Because render(t) is deterministic the sequence can be seeked and replayed from any frame without state to reset"
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Out of scope for the skill (UI micro-interaction): no generated media, manifest-driven vanilla JS instead",
+        "Typing, add, two check-offs and two removals are segments; row positions are derived from removal progress, so rows below slide up by transform only",
+        "Rest state is defined up front (a stable mid-sequence frame) and used as the reduced-motion view"
+      ]
+    }
+  ]
+}

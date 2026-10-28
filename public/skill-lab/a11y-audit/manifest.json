@@ -1,0 +1,43 @@
+{
+  "id": "a11y-audit",
+  "sets": [
+    "web"
+  ],
+  "skillSays": [
+    "Audit against WCAG 2.2 AA and ARIA patterns, returning criterion-referenced findings with severity and a specific fix",
+    "P0 set for every component: keyboard operable, focus visible (3:1), accessible name/role/state, contrast 4.5:1 text and 3:1 UI, target size at least 24x24, no colour-only signalling",
+    "Check the WCAG 2.2 additions: Focus Not Obscured (2.4.11), Target Size (2.5.8), Accessible Authentication (3.3.8)",
+    "Measure contrast in a real render across default, hover and focus states; never state a ratio that was not measured",
+    "Check reduced-motion handling and dark mode",
+    "Accessibility may never be traded for aesthetics"
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Measured contrast in a real browser render and found 18 failing text pairs (muted grey at 3.78:1, button hover 2.76:1); after darkening, the minimum is 5.94:1 in light and 7.25:1 in dark",
+        "Added a sticky header with scroll-padding-top so focused elements are not hidden behind it (2.4.11 Focus Not Obscured)",
+        "Built a real prefers-color-scheme dark theme and measured it too, instead of assuming the tokens carry over",
+        "Every interactive element is at least 44px tall (above the 24px floor of 2.5.8), with a 3px focus outline"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Measured states, not just rest: toggle and 'Start with Clinic' button fell to 2.76:1 on hover; fixed so the hover state also passes (minimum 5.94:1 light, 7.25:1 dark)",
+        "Billing toggle is a radio fieldset with a role=status announcement and a visible selected state that is not colour-only",
+        "Per-plan CTAs have unique visible text ('Start with Solo') so the accessible name matches the visible label (2.5.3)",
+        "Added prefers-reduced-motion and prefers-contrast handling and measured both colour schemes"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Accessible Authentication (3.3.8): password allows paste and password managers (autocomplete=new-password), has a Show toggle, and has no CAPTCHA or memory test",
+        "Placeholders raised from sub-3:1 to at least 4.5:1 and borders to at least 3:1; minimum text ratio 4.66:1 light and 5.88:1 dark",
+        "Added an error summary (role=alert) with links to each field plus inline aria-describedby errors that use icon and text, not colour alone",
+        "Focus moves to the summary on submit; all controls at least 44px tall, so the 2.5.8 target size is met with room to spare"
+      ]
+    }
+  ]
+}

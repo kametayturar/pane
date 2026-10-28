@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ Layer 1: primitive tokens (raw values) ============ */
+:root {
+  --color-teal-50: #effcfa; --color-teal-100: #d3f6f0; --color-teal-200: #a9ebe1; --color-teal-300: #72dacd;
+  --color-teal-400: #3cc1b3; --color-teal-500: #1fa597; --color-teal-600: #14857b; --color-teal-700: #136a64;
+  --color-teal-800: #14544f; --color-teal-900: #12443f; --color-teal-950: #052a28;
+  --color-gray-0: #ffffff; --color-gray-50: #fafafa; --color-gray-100: #f5f5f5; --color-gray-200: #e5e5e5;
+  --color-gray-300: #d4d4d4; --color-gray-400: #a3a3a3; --color-gray-500: #737373; --color-gray-600: #525252;
+  --color-gray-700: #404040; --color-gray-800: #262626; --color-gray-900: #171717; --color-gray-950: #0a0a0a;
+  --color-red-500: #ef4444; --color-red-600: #dc2626; --color-red-300: #fca5a5;
+  --color-amber-500: #f59e0b;
+
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem;
+  --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem; --space-24: 6rem;
+
+  --font-sans: "Inter", system-ui, sans-serif; --font-mono: "JetBrains Mono", Menlo, monospace;
+  --font-size-xs: 0.75rem; --font-size-sm: 0.875rem; --font-size-base: 1rem; --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem; --font-size-2xl: 1.5rem; --font-size-4xl: 2.25rem; --font-size-6xl: 3.75rem;
+  --font-weight-medium: 500; --font-weight-semibold: 600; --font-weight-bold: 700;
+  --line-height-tight: 1.1; --line-height-normal: 1.5; --line-height-relaxed: 1.7;
+  --letter-spacing-tight: -0.025em;
+
+  --radius-sm: 0.25rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --duration-fast: 120ms; --duration-base: 200ms; --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ============ Layer 2: semantic tokens (meaning) – light ============ */
+:root, :root.light {
+  color-scheme: light;
+  --text-primary: var(--color-gray-900);
+  --text-secondary: var(--color-gray-600);
+  --text-tertiary: var(--color-gray-500);
+  --text-on-interactive: var(--color-gray-0);
+  --text-link: var(--color-teal-700);
+  --surface-default: var(--color-gray-0);
+  --surface-elevated: var(--color-gray-50);
+  --surface-sunken: var(--color-teal-50);
+  --surface-accent-subtle: var(--color-teal-100);
+  --border-default: var(--color-gray-200);
+  --border-strong: var(--color-gray-300);
+  --interactive-primary: var(--color-teal-700);
+  --interactive-primary-hover: var(--color-teal-800);
+  --focus-ring: var(--color-teal-500);
+  --feedback-danger: var(--color-red-600);
+  --shadow-elevated: var(--shadow-md);
+}
+/* ============ Semantic tokens – dark (class OR system preference) ============ */
+:root.dark {
+  color-scheme: dark;
+  --text-primary: var(--color-gray-50);
+  --text-secondary: var(--color-gray-400);
+  --text-tertiary: var(--color-gray-500);
+  --text-on-interactive: var(--color-teal-950);
+  --text-link: var(--color-teal-300);
+  --surface-default: var(--color-gray-950);
+  --surface-elevated: var(--color-gray-900);
+  --surface-sunken: #0b1f1e;
+  --surface-accent-subtle: var(--color-teal-900);
+  --border-default: var(--color-gray-800);
+  --border-strong: var(--color-gray-700);
+  --interactive-primary: var(--color-teal-400);
+  --interactive-primary-hover: var(--color-teal-300);
+  --focus-ring: var(--color-teal-400);
+  --feedback-danger: var(--color-red-300);
+  --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.6);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not(.dark) {
+    color-scheme: dark;
+    --text-primary: var(--color-gray-50); --text-secondary: var(--color-gray-400); --text-tertiary: var(--color-gray-500);
+    --text-on-interactive: var(--color-teal-950); --text-link: var(--color-teal-300);
+    --surface-default: var(--color-gray-950); --surface-elevated: var(--color-gray-900); --surface-sunken: #0b1f1e;
+    --surface-accent-subtle: var(--color-teal-900);
+    --border-default: var(--color-gray-800); --border-strong: var(--color-gray-700);
+    --interactive-primary: var(--color-teal-400); --interactive-primary-hover: var(--color-teal-300);
+    --focus-ring: var(--color-teal-400); --feedback-danger: var(--color-red-300);
+    --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.6);
+  }
+}
+@media (prefers-contrast: more) { :root { --border-default: var(--border-strong); --text-secondary: var(--text-primary); } }
+@media (prefers-reduced-motion: reduce) { :root { --duration-fast: 0ms; --duration-base: 0ms; } *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; } }
+
+/* ============ Layer 3: component tokens (specific usage) ============ */
+:root {
+  --button-bg: var(--interactive-primary);
+  --button-bg-hover: var(--interactive-primary-hover);
+  --button-text: var(--text-on-interactive);
+  --button-radius: var(--radius-md);
+  --button-padding-x: var(--space-5);
+  --button-padding-y: var(--space-3);
+  --button-secondary-border: var(--border-strong);
+  --card-bg: var(--surface-elevated);
+  --card-border: var(--border-default);
+  --card-radius: var(--radius-xl);
+  --card-padding: var(--space-6);
+  --badge-bg: var(--surface-accent-subtle);
+  --badge-text: var(--text-link);
+  --input-bg: var(--surface-default);
+  --input-border: var(--border-strong);
+  --input-radius: var(--radius-md);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font-sans);font-size:var(--font-size-base);line-height:var(--line-height-normal);color:var(--text-primary);background:var(--surface-default);transition:background var(--duration-base) var(--ease-out),color var(--duration-base) var(--ease-out);-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+.container{max-width:1120px;margin-inline:auto;padding-inline:var(--space-6)}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);font:inherit;font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);padding:var(--button-padding-y) var(--button-padding-x);border-radius:var(--button-radius);border:1px solid transparent;background:var(--button-bg);color:var(--button-text);cursor:pointer;text-decoration:none;transition:background var(--duration-fast) var(--ease-out),border-color var(--duration-fast),transform var(--duration-fast)}
+.btn:hover{background:var(--button-bg-hover)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.btn--secondary{background:transparent;color:var(--text-primary);border-color:var(--button-secondary-border)}
+.btn--secondary:hover{background:var(--surface-elevated)}
+.btn--lg{--button-padding-x:var(--space-6);--button-padding-y:var(--space-4);font-size:var(--font-size-base)}
+.btn--block{width:100%}
+.site-header{border-bottom:1px solid var(--border-default);background:var(--surface-default)}
+.site-header .container{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);height:64px}
+.brand{display:flex;align-items:center;gap:var(--space-2);font-weight:var(--font-weight-bold);letter-spacing:var(--letter-spacing-tight);color:var(--text-primary);text-decoration:none}
+.brand svg{width:26px;height:26px;color:var(--interactive-primary)}
+.nav{display:flex;align-items:center;gap:var(--space-6);font-size:var(--font-size-sm)}
+.nav a{color:var(--text-secondary);text-decoration:none}.nav a:hover{color:var(--text-primary)}
+.theme-switch{display:inline-flex;padding:2px;border:1px solid var(--border-default);border-radius:var(--radius-full);background:var(--surface-elevated)}
+.theme-switch button{font:inherit;font-size:var(--font-size-xs);font-weight:var(--font-weight-medium);padding:4px 10px;border:0;border-radius:var(--radius-full);background:transparent;color:var(--text-secondary);cursor:pointer}
+.theme-switch button[aria-pressed="true"]{background:var(--surface-default);color:var(--text-primary);box-shadow:var(--shadow-sm)}
+@media(max-width:720px){.nav a{display:none}.container{padding-inline:var(--space-4)}}
+
+/* component tokens: form controls */
+:root{
+  --field-gap: var(--space-5);
+  --label-text: var(--text-primary);
+  --hint-text: var(--text-tertiary);
+  --input-height: 2.75rem;
+  --input-border-hover: var(--text-tertiary);
+  --input-border-focus: var(--focus-ring);
+  --input-border-error: var(--feedback-danger);
+  --input-error-bg: color-mix(in srgb, var(--feedback-danger) 7%, var(--input-bg));
+  --error-text: var(--feedback-danger);
+  --check-bg-on: var(--interactive-primary);
+  --check-fg-on: var(--text-on-interactive);
+}
+.signup{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 65px)}
+.pitch{background:var(--surface-sunken);border-right:1px solid var(--border-default);padding:var(--space-16) var(--space-12);display:flex;flex-direction:column;justify-content:center;gap:var(--space-8)}
+.pitch h1{font-size:clamp(2rem,3.4vw,2.75rem);line-height:var(--line-height-tight);letter-spacing:var(--letter-spacing-tight);max-width:22rem}
+.pitch ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-4);color:var(--text-secondary);max-width:26rem}
+.pitch li{display:grid;grid-template-columns:24px 1fr;gap:var(--space-3);line-height:var(--line-height-normal)}
+.pitch li svg{width:22px;height:22px;color:var(--interactive-primary)}
+.quote{border-left:3px solid var(--interactive-primary);padding-left:var(--space-4);max-width:26rem;font-size:var(--font-size-sm);color:var(--text-secondary);line-height:var(--line-height-relaxed)}
+.quote b{display:block;margin-top:var(--space-2);color:var(--text-primary);font-weight:var(--font-weight-semibold)}
+.formwrap{display:grid;place-items:center;padding:var(--space-12) var(--space-6)}
+form{width:100%;max-width:26rem;display:grid;gap:var(--field-gap)}
+form h2{font-size:var(--font-size-2xl);letter-spacing:var(--letter-spacing-tight)}
+form .sub{margin-top:calc(var(--space-4) * -1);font-size:var(--font-size-sm);color:var(--text-secondary)}
+form .sub a{color:var(--text-link)}
+.field{display:grid;gap:var(--space-2)}
+.field label{font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);color:var(--label-text)}
+.control{width:100%;height:var(--input-height);padding:0 var(--space-3);font:inherit;font-size:var(--font-size-base);color:var(--text-primary);background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--input-radius);transition:border-color var(--duration-fast),box-shadow var(--duration-fast);appearance:none}
+.control::placeholder{color:var(--text-tertiary)}
+.control:hover{border-color:var(--input-border-hover)}
+.control:focus{outline:0;border-color:var(--input-border-focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus-ring) 28%,transparent)}
+.control[aria-invalid="true"]{border-color:var(--input-border-error);background:var(--input-error-bg)}
+.control[aria-invalid="true"]:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--input-border-error) 28%,transparent)}
+select.control{padding-right:2.5rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;background-size:1.1rem}
+.hint{font-size:var(--font-size-xs);color:var(--hint-text)}
+.error{display:none;align-items:center;gap:6px;font-size:var(--font-size-sm);color:var(--error-text)}
+.error svg{width:16px;height:16px;flex:none}
+.field.is-invalid .error{display:flex}
+.field.is-invalid .hint{display:none}
+.pw{position:relative}
+.pw .control{padding-right:4.5rem}
+.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);height:32px;padding:0 10px;border:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-link);font:inherit;font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);cursor:pointer}
+.meter{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.meter i{height:4px;border-radius:var(--radius-full);background:var(--border-default);transition:background var(--duration-base)}
+.meter[data-level="1"] i:nth-child(-n+1){background:var(--feedback-danger)}
+.meter[data-level="2"] i:nth-child(-n+2){background:var(--color-amber-500)}
+.meter[data-level="3"] i:nth-child(-n+3){background:var(--color-teal-500)}
+.meter[data-level="4"] i{background:var(--color-teal-500)}
+.check{display:grid;grid-template-columns:20px 1fr;gap:var(--space-3);align-items:start;font-size:var(--font-size-sm);color:var(--text-secondary);line-height:var(--line-height-normal)}
+.check input{appearance:none;width:20px;height:20px;margin:0;border:1px solid var(--input-border);border-radius:var(--radius-sm);background:var(--input-bg);display:grid;place-content:center;cursor:pointer;transition:background var(--duration-fast),border-color var(--duration-fast)}
+.check input::after{content:"";width:10px;height:6px;border-left:2px solid var(--check-fg-on);border-bottom:2px solid var(--check-fg-on);transform:rotate(-45deg) scale(0);margin-top:-2px;transition:transform var(--duration-fast) var(--ease-out)}
+.check input:checked{background:var(--check-bg-on);border-color:var(--check-bg-on)}
+.check input:checked::after{transform:rotate(-45deg) scale(1)}
+.check input:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.check input[aria-invalid="true"]{border-color:var(--input-border-error)}
+.check a{color:var(--text-link)}
+.done{display:none;padding:var(--space-4);border-radius:var(--radius-md);background:var(--surface-accent-subtle);color:var(--text-primary);font-size:var(--font-size-sm)}
+.done.show{display:block}
+@media(max-width:900px){.signup{grid-template-columns:1fr}.pitch{display:none}.formwrap{padding:var(--space-8) var(--space-4)}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container">
+  <a class="brand" href="#"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="5" width="26" height="24" rx="6" stroke="currentColor" stroke-width="2.4"/><path d="M3 12h26" stroke="currentColor" stroke-width="2.4"/><path d="M8 21c2.5-3 4.5-3 7 0s4.5 3 9 0" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Tidewater</a>
+  <nav class="nav" aria-label="Primary"><a href="#">Features</a><a href="#">Pricing</a><a href="#">Sign in</a>
+    <div class="theme-switch" role="group" aria-label="Theme"><button data-theme-btn="light" aria-pressed="false">Light</button><button data-theme-btn="dark" aria-pressed="false">Dark</button><button data-theme-btn="system" aria-pressed="true">Auto</button></div>
+  </nav>
+</div></header>
+
+<main class="signup">
+  <aside class="pitch">
+    <h1>Set up your clinic's diary in an afternoon.</h1>
+    <ul>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" opacity=".3"/><path d="M7.5 12.3l3 3 6-6.6"/></svg>14-day free trial, no card required</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" opacity=".3"/><path d="M7.5 12.3l3 3 6-6.6"/></svg>Import patients and appointments from CSV</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" opacity=".3"/><path d="M7.5 12.3l3 3 6-6.6"/></svg>Reminders switched on from day one</li>
+    </ul>
+    <p class="quote">"We went from two phone lines ringing all morning to patients booking themselves at 10pm."<b>Dr. Lena Hart, Harbour Physio</b></p>
+  </aside>
+
+  <div class="formwrap">
+    <form id="f" novalidate>
+      <h2>Create your account</h2>
+      <p class="sub">Already have one? <a href="#">Sign in</a></p>
+
+      <div class="field" data-field="name">
+        <label for="name">Full name</label>
+        <input class="control" id="name" name="name" autocomplete="name" placeholder="Maya Okafor" aria-describedby="name-err" required>
+        <p class="error" id="name-err" role="alert"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v4.5M10 13.5h.01"/></svg><span>Please enter your full name.</span></p>
+      </div>
+
+      <div class="field" data-field="email">
+        <label for="email">Work email</label>
+        <input class="control" id="email" name="email" type="email" autocomplete="email" placeholder="maya@harbourphysio.com" value="maya@harbourphysio" aria-describedby="email-hint email-err" required>
+        <p class="hint" id="email-hint">We'll send your confirmation link here.</p>
+        <p class="error" id="email-err" role="alert"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v4.5M10 13.5h.01"/></svg><span>Enter a valid email address, like name@clinic.com.</span></p>
+      </div>
+
+      <div class="field" data-field="password">
+        <label for="password">Password</label>
+        <div class="pw"><input class="control" id="password" name="password" type="password" autocomplete="new-password" value="tide7" aria-describedby="pw-hint pw-err" required><button type="button" id="showpw" aria-controls="password" aria-pressed="false">Show</button></div>
+        <div class="meter" id="meter" data-level="1" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <p class="hint" id="pw-hint">At least 8 characters. A mix of letters and numbers is best.</p>
+        <p class="error" id="pw-err" role="alert"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v4.5M10 13.5h.01"/></svg><span>Password must be at least 8 characters.</span></p>
+      </div>
+
+      <div class="field" data-field="size">
+        <label for="size">Clinic size</label>
+        <select class="control" id="size" name="size" required aria-describedby="size-err">
+          <option value="">Select the number of therapists</option>
+          <option value="1">Just me (1)</option><option value="2-5">2 to 5 therapists</option><option value="6-15">6 to 15 therapists</option><option value="16+">16 or more</option>
+        </select>
+        <p class="error" id="size-err" role="alert"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v4.5M10 13.5h.01"/></svg><span>Choose the size of your clinic.</span></p>
+      </div>
+
+      <div class="field" data-field="terms">
+        <label class="check"><input type="checkbox" id="terms" name="terms" aria-describedby="terms-err"><span>I accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label>
+        <p class="error" id="terms-err" role="alert"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v4.5M10 13.5h.01"/></svg><span>You need to accept the terms to continue.</span></p>
+      </div>
+
+      <button class="btn btn--lg btn--block" type="submit">Create account</button>
+      <p class="done" id="done" role="status">Account created. Check your inbox to confirm your email.</p>
+    </form>
+  </div>
+</main>
+
+<script>
+// Theme: light | dark | system – persisted, follows prefers-color-scheme
+(function () {
+  var root = document.documentElement, mq = window.matchMedia("(prefers-color-scheme: dark)");
+  function read() { try { return localStorage.getItem("tw-theme") || "system"; } catch (e) { return "system"; } }
+  function apply(t) {
+    var dark = t === "dark" || (t === "system" && mq.matches);
+    root.classList.remove("light", "dark"); root.classList.add(dark ? "dark" : "light");
+    document.querySelectorAll("[data-theme-btn]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.themeBtn === t)); });
+  }
+  var theme = read(); apply(theme);
+  mq.addEventListener("change", function () { if (theme === "system") apply("system"); });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-theme-btn]"); if (!b) return;
+    theme = b.dataset.themeBtn; try { localStorage.setItem("tw-theme", theme); } catch (e) {} apply(theme);
+  });
+})();
+
+</script>
+<script>
+(function(){
+  var f=document.getElementById('f');
+  var ids={name:'name',email:'email',password:'password',size:'size',terms:'terms'};
+  var rules={
+    name:function(el){return el.value.trim().length>1;},
+    email:function(el){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(el.value.trim());},
+    password:function(el){return el.value.length>=8;},
+    size:function(el){return el.value!=='';},
+    terms:function(el){return el.checked;}
+  };
+  function validate(k,show){
+    var el=document.getElementById(ids[k]), ok=rules[k](el);
+    f.querySelector('[data-field="'+k+'"]').classList.toggle('is-invalid',!ok&&show);
+    if(show){ if(ok) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid','true'); }
+    return ok;
+  }
+  function meter(v){
+    var s=0; if(v.length>=8)s++; if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++; if(/\d/.test(v))s++; if(/[^A-Za-z0-9]/.test(v)||v.length>=14)s++;
+    document.getElementById('meter').dataset.level=v?Math.max(1,Math.min(s,4)):0;
+  }
+  // the two demonstration errors are visible on load
+  validate('email',true); validate('password',true); meter(document.getElementById('password').value);
+  Object.keys(ids).forEach(function(k){
+    var el=document.getElementById(ids[k]);
+    el.addEventListener('blur',function(){validate(k,true);});
+    el.addEventListener(k==='terms'||k==='size'?'change':'input',function(){
+      if(el.getAttribute('aria-invalid')) validate(k,true);
+      if(k==='password') meter(el.value);
+    });
+  });
+  var show=document.getElementById('showpw');
+  show.addEventListener('click',function(){var p=document.getElementById('password');var t=p.type==='password';p.type=t?'text':'password';show.textContent=t?'Hide':'Show';show.setAttribute('aria-pressed',String(t));});
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var bad=null; Object.keys(ids).forEach(function(k){if(!validate(k,true)&&!bad)bad=k;});
+    var d=document.getElementById('done');
+    if(bad){document.getElementById(ids[bad]).focus();d.classList.remove('show');}else d.classList.add('show');
+  });
+})();
+</script>
+</body>
+</html>

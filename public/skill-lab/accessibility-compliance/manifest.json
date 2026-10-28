@@ -1,0 +1,43 @@
+{
+  "id": "accessibility-compliance",
+  "sets": [
+    "web"
+  ],
+  "skillSays": [
+    "Build to WCAG 2.2 AA: semantic HTML first, ARIA only where native elements fall short",
+    "Keyboard first: logical focus order, always-visible focus styles, no keyboard traps, skip link to main content",
+    "Forms: real labels, required state, aria-invalid, aria-describedby for hints and errors, and an error summary that links to each field",
+    "Announce dynamic changes with live regions (role=status / alert)",
+    "Respect user preferences: prefers-reduced-motion, prefers-contrast, 200% zoom, 44px touch targets",
+    "Test with automated tools plus a screen reader; avoid low-contrast text, missing labels and colour-only cues"
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Measured contrast and found the muted text (4.22:1) and the white-on-blue button (4.14:1, 3.21:1 on hover) failing; darkened to #435568 and #0B5CAD so the lowest ratio is now 6.51:1",
+        "Added a skip link, labelled landmarks (header, nav, main, sections) and a visible 3px focus ring with offset",
+        "Made the example schedule a real labelled figure with an ordered list and <time> elements rather than a decorative picture",
+        "Switched to the Atkinson Hyperlegible typeface and added prefers-contrast and forced-colors styles"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Fixed failing contrast on the 'Pricing' eyebrow (3.86:1), the 'Most popular' badge and selected-toggle hover (3.21:1); every text pair now at least 6.51:1",
+        "Billing period is a fieldset with native radio inputs plus a role=status announcement ('Showing yearly prices. You save 20% on every plan.')",
+        "All toggle labels and CTAs are 44px or taller; selected state is shown by fill and the visible checked radio, not colour alone",
+        "Each plan is an aria-labelledby group with a labelled feature list, so a screen reader hears 'Clinic, list of 6 items'"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Placeholder contrast raised from 2.12:1 to 4.5:1 or better, and input borders raised from 1.74:1 to over 3:1 (WCAG 1.4.11)",
+        "Added an error summary (role=alert, focus moved to it on submit) whose links jump to each invalid field, plus inline errors linked with aria-describedby and aria-invalid",
+        "Error text and required asterisks recoloured from 4.38:1 to #B42318, and every error pairs an icon and text so colour is never the only cue",
+        "Password field keeps paste enabled, has autocomplete=new-password and an accessible Show/Hide toggle with aria-pressed"
+      ]
+    }
+  ]
+}

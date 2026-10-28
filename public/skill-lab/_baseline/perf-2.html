@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="perf-2-before.png" alt="Before (headless Chrome 1280x800, 2 s after load)"><figcaption>Before (headless Chrome 1280x800, 2 s after load)</figcaption></figure><figure><img src="perf-2-after.png" alt="After: same design, readable contrast, real button and link"><figcaption>After: same design, readable contrast, real button and link</figcaption></figure></div>
+<h2>Result</h2><div class="result">Audited landing.html with Lighthouse 12 (mobile preset, headless Chrome, served locally on :7001/:7002, 3 runs each) and fixed everything it flagged plus the obvious things it cannot see. Fixed page is landing.after.html (full file below).
+
+Scores (median of 3), before -&gt; after: Performance 81 -&gt; 100, Accessibility 27 -&gt; 100, SEO 80 -&gt; 100, Best practices 92 -&gt; 100. FCP 3.0 s -&gt; 0.6 s, LCP 3.7 s -&gt; 0.6 s, TBT 0 -&gt; 0 (the 30M-iteration busy loop only costs ~30 ms here, but it blocks the main thread for that long on every load and far longer on a slow phone). Headless Chrome: load event 2,143 ms -&gt; 513 ms, script time 28 ms -&gt; 0.
+
+Top issues found and fixed
+Performance: (1) render-blocking font stylesheet requesting 2 families x 9 weights with display=block (invisible text until fonts arrive) -&gt; one family, 3 weights, display=swap, loaded non-blocking with the print-media swap trick plus a noscript fallback and preconnects. This was the biggest FCP/LCP win: just adding swap and fewer weights still left FCP at 3.3 s; making the stylesheet non-blocking took it to 0.6 s. (2) jQuery + moment loaded from a CDN, blocking the parser; moment was never used and jQuery was only used for one innerHTML -&gt; both removed, testimonials are now plain HTML (no 1.5 s timer, no layout shift, crawlable). (3) A 30M-iteration empty busy loop in a script tag -&gt; deleted.
+Accessibility (27 -&gt; 100): missing lang, missing doctype (quirks mode), no &lt;main&gt; landmark; the fake heading &lt;div class="h1"&gt; and h3s directly under the h1 -&gt; real p eyebrow + h2s; the "Get started" CTA was a div with onclick (not focusable, no link semantics) -&gt; real &lt;a href&gt;; cookie "OK" span -&gt; real &lt;button&gt;; emoji hidden from screen readers with aria-hidden; contrast fixed (#999 on white -&gt; #374151; #666 on #111 -&gt; #e5e7eb; white-on-cyan button -&gt; white button with dark purple text; gradient end darkened from #06b6d4 to #0e7490 so white text passes); visible focus outlines.
+SEO (80 -&gt; 100): added &lt;title&gt;, meta description, meta viewport, lang. Also made the layout responsive (flex-wrap on cards, clamp() heading size, min-height instead of height:100vh).
+
+What I did not change / caveats: the old robots.txt failure in my first run was an artifact of my local server returning HTML for every path, so I made the server 404 unknown paths. Lighthouse's lab numbers use simulated mobile throttling and vary +-5 points between runs, so the 3 runs for each version are in the steps. CLS rose from 0.001 to 0.005 because the web font now swaps in after first paint (still far below the 0.1 threshold). Fonts still come from Google; self-hosting a subset would remove that third-party request entirely. The page's /signup target doesn't exist in the fixture.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># baseline audit</div><div class="cmd">npx lighthouse http://localhost:7001/ --chrome-flags="--headless=new --no-sandbox" --only-categories=performance,accessibility,seo,best-practices --output=json   # x3, page served by node serve.mjs landing.before.html 7001</div><div class="out">before 1 perf 84 a11y 27 seo 80 bp 92 FCP 3.0 s LCP 3.7 s TBT 0 ms CLS 0.001
+before 2 perf 78 a11y 27 seo 80 bp 92 FCP 3.7 s LCP 3.7 s TBT 0 ms CLS 0.001
+before 3 perf 81 a11y 27 seo 80 bp 92 FCP 2.9 s LCP 4.1 s TBT 0 ms CLS 0.001</div></div><div class="step"><div class="note"># the issue list that drove the fixes</div><div class="cmd">node -e '... list audits with score &lt; 0.9 from lh-before-1.json ...'</div><div class="out">failing: first-contentful-paint 0.51, largest-contentful-paint 0.59, speed-index 0.88, color-contrast 0, document-title 0, heading-order 0, html-has-lang 0, landmark-one-main 0, unused-javascript 0, doctype 0, meta-description 0, errors-in-console 0 (favicon 404)
+(insights) render-blocking requests, font display, LCP breakdown, network dependency tree, viewport</div></div><div class="step"><div class="note"># second, independent measurement (not Lighthouse); includes the font-swap version</div><div class="cmd">node shot.mjs   # puppeteer-core + CDP Performance.getMetrics, load event timing, before vs after</div><div class="out">before {"loadMs":2143,"taskDurationS":0.054,"scriptDurationS":0.028,"jsHeapMB":1.9,"nodes":161}
+after  {"loadMs":513,"taskDurationS":0.028,"scriptDurationS":0,"jsHeapMB":1.1,"nodes":108}</div></div><div class="step"><div class="note"># a11y/SEO fixed, but performance barely moved: the font CSS is the bottleneck, not just the weights</div><div class="cmd">npx lighthouse http://localhost:7002/ ... # first fix: fonts reduced + display=swap but stylesheet still render-blocking, x3</div><div class="out">after 1 perf 84 a11y 100 seo 100 bp 96 FCP 3.3 s LCP 3.3 s TBT 0 ms CLS 0.005
+after 2 perf 85 a11y 100 seo 100 bp 96 FCP 3.3 s LCP 3.3 s TBT 0 ms CLS 0.003
+after 3 perf 84 a11y 100 seo 100 bp 96 FCP 3.3 s LCP 3.3 s TBT 0 ms CLS 0.005</div></div><div class="step"><div class="note"># make the font stylesheet non-render-blocking</div><div class="cmd">edit landing.after.html: font CSS -&gt; media="print" onload="this.media='all'" + &lt;noscript&gt; fallback, add &lt;link rel=icon href=data:,&gt; (favicon 404 console error)</div><div class="out">(edited)</div></div><div class="step"><div class="note"># final numbers</div><div class="cmd">npx lighthouse http://localhost:7002/ ... --output=json   # x3 on the final page</div><div class="out">after2 1 perf 100 a11y 100 seo 100 bp 100 FCP 0.7 s LCP 0.7 s TBT 0 ms CLS 0.005
+after2 2 perf 100 a11y 100 seo 100 bp 100 FCP 0.6 s LCP 0.6 s TBT 0 ms CLS 0.005
+after2 3 perf 100 a11y 100 seo 100 bp 100 FCP 0.6 s LCP 0.6 s TBT 0 ms CLS 0.005</div></div><div class="step"><div class="note"># visual sanity check</div><div class="cmd">(viewed landing-after.png at 1280x800)</div><div class="out">Hero renders correctly: eyebrow, light-weight h1, white CTA pill, cookie bar with OK button; text legible on the gradient.</div></div></div>
+<h2>Files</h2><details open><summary>landing.html (fixed)</summary><pre>&lt;!doctype html&gt;
+&lt;html lang=<span <span class="k">class</span>="s">"en"</span>&gt;
+&lt;head&gt;
+&lt;meta charset=<span <span class="k">class</span>="s">"utf-<span class="n">8</span>"</span>&gt;
+&lt;meta name=<span <span class="k">class</span>="s">"viewport"</span> content=<span <span class="k">class</span>="s">"width=device-width, initial-scale=<span class="n">1</span>"</span>&gt;
+&lt;title&gt;Tidewater – clinic scheduling software <span class="k">for</span> physiotherapy clinics&lt;/title&gt;
+&lt;meta name=<span <span class="k">class</span>="s">"description"</span> content=<span <span class="k">class</span>="s">"Tidewater is scheduling software <span class="k">for</span> physiotherapy clinics: a smart calendar, automatic reminders that cut no-shows, and clear analytics."</span>&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"preconnect"</span> href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com"</span>&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"preconnect"</span> href=<span <span class="k">class</span>="s">"https://fonts.gstatic.com"</span> crossorigin&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"icon"</span> href=<span <span class="k">class</span>="s">"data:,"</span>&gt;
+&lt;!-- one family, only the weights used, display=swap, and loaded without blocking first paint (print-media swap) --&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"stylesheet"</span> href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com/css2?family=Poppins:wght@<span class="n">300</span>;<span class="n">400</span>;<span class="n">600</span>&amp;display=swap"</span> media=<span <span class="k">class</span>="s">"print"</span> onload=<span <span class="k">class</span>="s">"this.media='all'"</span>&gt;
+&lt;noscript&gt;&lt;link rel=<span <span class="k">class</span>="s">"stylesheet"</span> href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com/css2?family=Poppins:wght@<span class="n">300</span>;<span class="n">400</span>;<span class="n">600</span>&amp;display=swap"</span>&gt;&lt;/noscript&gt;
+&lt;style&gt;
+body{font-family:Poppins,system-ui,sans-serif;margin:<span class="n">0</span>;color:#<span class="n">374151</span>;background:#fff;line-height:<span class="n">1.5</span>}
+.hero{min-height:100vh;background:linear-gradient(135deg,#6d28d9,#0e7490);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.eyebrow{font-size:20px;margin:<span class="n">0</span>}
+.hero h1{font-size:clamp(36px,8vw,64px);font-weight:<span class="n">300</span>;margin:12px <span class="n">0</span> 28px}
+.btn{display:inline-block;background:#fff;color:#4c1d95;font-weight:<span class="n">600</span>;text-decoration:none;padding:14px 28px;border-radius:30px}
+.btn:focus-visible,.banner button:focus-visible{outline:3px solid #fde047;outline-offset:3px}
+.features{display:flex;flex-wrap:wrap;gap:20px;padding:60px 24px}
+.card{flex:<span class="n">1</span> <span class="n">1</span> 240px;padding:24px;box-shadow:<span class="n">0</span> 10px 40px rgba(<span class="n">0</span>,<span class="n">0</span>,<span class="n">0</span>,.<span class="n">2</span>)}
+.testimonials{min-height:400px;padding:60px 24px}
+.banner{position:fixed;bottom:<span class="n">0</span>;left:<span class="n">0</span>;right:<span class="n">0</span>;padding:16px;background:#<span class="n">111</span>;color:#e5e7eb}
+.banner button{margin-left:8px;padding:8px 16px;border:<span class="n">0</span>;border-radius:6px;background:#fff;color:#<span class="n">111</span>;font:inherit;cursor:pointer}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+&lt;section <span class="k">class</span>=<span <span class="k">class</span>="s">"hero"</span>&gt;
+  &lt;p <span class="k">class</span>=<span <span class="k">class</span>="s">"eyebrow"</span>&gt;&lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;✨&lt;/span&gt; Welcome to Tidewater &lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;✨&lt;/span&gt;&lt;/p&gt;
+  &lt;h1&gt;The future <span class="k">of</span> clinic scheduling&lt;/h1&gt;
+  &lt;a <span class="k">class</span>=<span <span class="k">class</span>="s">"btn"</span> href=<span <span class="k">class</span>="s">"/signup"</span>&gt;Get started &lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;🚀&lt;/span&gt;&lt;/a&gt;
+&lt;/section&gt;
+&lt;section <span class="k">class</span>=<span <span class="k">class</span>="s">"features"</span> aria-label=<span <span class="k">class</span>="s">"Features"</span>&gt;
+  &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h2&gt;&lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;📅&lt;/span&gt; Smart calendar&lt;/h2&gt;&lt;p&gt;Our AI-powered calendar revolutionizes how you schedule.&lt;/p&gt;&lt;/div&gt;
+  &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h2&gt;&lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;💬&lt;/span&gt; Reminders&lt;/h2&gt;&lt;p&gt;Seamlessly reduce no-shows <span class="k">with</span> cutting-edge reminders.&lt;/p&gt;&lt;/div&gt;
+  &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h2&gt;&lt;span aria-hidden=<span <span class="k">class</span>="s">"<span class="k">true</span>"</span>&gt;📊&lt;/span&gt; Insights&lt;/h2&gt;&lt;p&gt;Unlock the power <span class="k">of</span> your data <span class="k">with</span> robust analytics.&lt;/p&gt;&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- rendered <span class="k">in</span> the HTML instead <span class="k">of</span> injected by jQuery after <span class="n">1</span>.5s: no extra JS, no late layout shift, crawlable --&gt;
+&lt;section <span class="k">class</span>=<span <span class="k">class</span>="s">"testimonials"</span>&gt;&lt;h2&gt;Loved by clinics&lt;/h2&gt;&lt;p&gt;<span <span class="k">class</span>="s">"Tidewater changed everything."</span> – A clinic&lt;/p&gt;&lt;/section&gt;
+&lt;/main&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"banner"</span> role=<span <span class="k">class</span>="s">"region"</span> aria-label=<span <span class="k">class</span>="s">"Cookie notice"</span>&gt;We use cookies. &lt;button <span class="k">type</span>=<span <span class="k">class</span>="s">"button"</span> onclick=<span <span class="k">class</span>="s">"this.parentNode.remove()"</span>&gt;OK&lt;/button&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></details>
+</main>
+
+</body></html>

@@ -1,0 +1,53 @@
+{
+  "id": "review-animations",
+  "sets": ["motion"],
+  "skillSays": [
+    "This is a review-only skill: it measures motion code against ten non-negotiable standards (justified, frequency-appropriate, responsive easing, under 300ms, correct origin, interruptible, GPU-only, accessible, asymmetric, cohesive) and defaults to flagging; approval is earned.",
+    "Certain things are flagged on sight: transition: all, scale(0), ease-in on UI, keyframes on rapidly triggered UI, animated layout properties, ungated hover motion, missing prefers-reduced-motion, symmetric timing on press/release.",
+    "Fixes follow a strict preference order: delete the animation, reduce it, fix easing, fix origin/physicality, make it interruptible, move it to the GPU, make timing asymmetric, then polish and accessibility.",
+    "The review is a single Before / After / Why table, then a verdict grouped by impact tier ending in Block or Approve, with file:line citations and exact values from the standards.",
+    "Workflow used here: build a first draft, review it with the skill, then ship the fixed version."
+  ],
+  "review": {
+    "verdict": "Block (all three drafts)",
+    "findings": [
+      { "prompt": "motion-1", "before": "@keyframes slideIn .5s ease-in-out + transition: all .4s on the toast; exit slideOut .4s ease-in", "after": "@starting-style + transition, enter 260ms / exit 160ms, cubic-bezier(0.23,1,0.32,1), translateX(calc(100% + 24px))", "why": "Keyframes restart when re-triggered; ease-in delays the moment the user watches; 500ms is over the 300ms UI budget; all animates unintended properties" },
+      { "prompt": "motion-1", "before": ".book:hover { transform: translateY(-2px) scale(1.05) } with transition: all .3s; no :active", "after": "colour-only hover inside @media (hover:hover) and (pointer:fine); scale(0.97) on :active, 160ms", "why": "Ungated hover motion fires on touch; the press, not the hover, is the feedback" },
+      { "prompt": "motion-2", "before": ".menu { transform: scale(0); transform-origin: center; transition: all .3s ease-in }", "after": "scale(0.95) + opacity, transform-origin from the trigger, 160ms open / 110ms close, ease-out curve", "why": "scale(0), ease-in and centre origin are three separate escalation triggers on one popover" },
+      { "prompt": "motion-2", "before": ".mi:hover { transform: translateX(4px) } transition: all .2s ease-in", "after": "deleted the movement; background-color 100ms ease only", "why": "Remedial step 1: delete. Hover on a menu item happens tens of times a day" },
+      { "prompt": "motion-2", "before": "Opened by keyboard with the same 300ms animation", "after": "Enter/Space/ArrowDown and Escape set data-instant: 0ms", "why": "Keyboard-initiated actions never animate" },
+      { "prompt": "motion-3", "before": "@keyframes pop: scale(0) to 1.08 to 1, .5s, on every new task", "after": "opacity + translateY(6px), 180ms, @starting-style transition", "why": "scale(0) plus overshoot on a routine add; keyframes cannot be interrupted" },
+      { "prompt": "motion-3", "before": ".task.removing { height: 0; margin; padding } transition: all .4s ease-in", "after": "140ms opacity exit, then FLIP: siblings translateY(dy) to none, 200ms cubic-bezier(0.77,0,0.175,1)", "why": "Animating height/margin/padding runs layout and paint every frame; ease-in on an exit" },
+      { "prompt": "all", "before": "No prefers-reduced-motion handling anywhere", "after": "Travel and scale removed, fades kept (150ms)", "why": "Reduced motion means gentler, not zero" }
+    ]
+  },
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "Review blocked the draft (@keyframes slideIn .5s ease-in-out, slideOut .4s ease-in, transition: all .4s); the shipped toast is a transition with @starting-style: enter 260ms, exit 160ms, both cubic-bezier(0.23,1,0.32,1).",
+        "Kept the toast sliding in from the right edge and leaving to the right (translateX(calc(100% + 24px))) so in and out share one axis; the draft's hover scale(1.05) on Book became scale(0.97) on :active with colour-only hover behind (hover:hover) and (pointer:fine).",
+        "Slot label crossfade went from transition: all .5s to opacity + blur(2px) over 200ms.",
+        "Added a prefers-reduced-motion branch that drops the translate and keeps a 150ms fade."
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Draft opened from scale(0) with transform-origin: center and ease-in at 300ms (three escalation triggers at once). Shipped: scale(0.95) + opacity from the trigger's centre, 160ms open and 110ms close on cubic-bezier(0.23,1,0.32,1).",
+        "Followed the remedial order: deleted the translateX(4px) item hover entirely (step 1) instead of tuning it, leaving a 100ms background-colour change.",
+        "Keyboard open and Escape are instant (data-instant, 0ms); pointer open keeps the animation.",
+        "No stagger was added: the review only asks for one where everything arrives at once and this menu is opened too often to decorate."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Draft added each task with a 500ms keyframe pop from scale(0) overshooting to 1.08; shipped is a 180ms opacity + translateY(6px) transition.",
+        "Draft removed rows by animating height, margin and padding to 0 over 400ms ease-in; shipped fades out in 140ms then closes the gap with a transform-only FLIP, 200ms on cubic-bezier(0.77,0,0.175,1).",
+        "The tick and fill changed from transition: all .3s to 150ms background-color and opacity plus scale(0.8 to 1); the strikethrough is instant and the text colour fades (150ms).",
+        "Add button gets scale(0.97) on press; the ungated scale(1.05) hover was removed."
+      ]
+    }
+  ]
+}

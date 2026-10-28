@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"react":"https://esm.sh/react@19","react-dom/client":"https://esm.sh/react-dom@19/client"}}</script>
+<style>
+:root{--bg:#f5f2ea;--paper:#fffdf8;--ink:#12302e;--muted:#5a6e6b;--line:#e2dccd;--teal:#0f766e;--teal-d:#0a5852;--teal-l:#d7ece8;--sand:#ece5d3;--amber:#d98a1f;--err:#b3261e;--ok:#1d7a46;--r:16px;--serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.01em}
+.brand i{width:26px;height:26px;border-radius:8px;background:var(--teal);position:relative;display:block;overflow:hidden}
+.brand i::after{content:"";position:absolute;left:-4px;right:-4px;bottom:5px;height:9px;border-radius:50%;background:var(--teal-l);opacity:.9}
+.nav{display:flex;align-items:center;gap:26px;font-size:15px;color:var(--muted)}
+.nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:999px;padding:12px 22px;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s,transform .2s,border-color .2s}
+.btn:focus-visible,.slot:focus-visible,.seg button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f0b34a;outline-offset:2px}
+.btn-pri{background:var(--teal);color:#fff}.btn-pri:hover{background:var(--teal-d)}
+.btn-sec{background:transparent;border-color:var(--line);color:var(--ink)}.btn-sec:hover{border-color:var(--ink)}
+.btn-block{width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--teal)}
+.eyebrow::before{content:"";width:18px;height:2px;background:currentColor;border-radius:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;line-height:1.08}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+footer.ftr{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:14px;margin-top:40px}
+/* view source */
+.vs-btn{position:fixed;right:16px;bottom:16px;z-index:50;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.2);display:inline-flex;gap:6px;align-items:center}
+.vs-btn code{font:600 12px ui-monospace,Menlo,monospace}
+.vs-panel{position:fixed;right:16px;bottom:62px;z-index:49;width:min(620px,calc(100vw - 32px));height:min(70vh,560px);background:#0f1b1a;color:#cfe4e0;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}
+.vs-panel[hidden]{display:none}
+.vs-panel header{display:flex;align-items:baseline;gap:10px;padding:12px 16px;border-bottom:1px solid #243a37;font-size:13px}
+.vs-panel header b{color:#fff}
+.vs-panel header span{color:#7f9d98;flex:1}
+.vs-panel header button{background:#243a37;border:0;color:#cfe4e0;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer}
+.vs-panel pre{margin:0;overflow:auto;padding:16px;font:12px/1.6 ui-monospace,Menlo,monospace;flex:1;tab-size:2}
+.vs-panel .k{color:#f0b34a}.vs-panel .c{color:#6f8f8a}
+
+.signup{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:24px 0 56px;min-height:calc(100vh - 200px)}
+.pitch h1{font-size:clamp(36px,4.4vw,56px);margin:16px 0 18px}
+.pitch p{color:var(--muted);font-size:18px;max-width:28em}
+.pitch ul{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:12px;font-size:15.5px}
+.pitch li{display:flex;gap:12px;align-items:center}
+.pitch li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:0 30px 60px -34px rgba(18,48,46,.3)}
+.card h2{font-size:28px;margin-bottom:4px}
+.card .sub{color:var(--muted);font-size:14.5px;margin-bottom:22px}
+form{display:grid;gap:16px}
+.field{display:grid;gap:6px}
+.field label,.field .lab{font-size:14px;font-weight:600}
+.ctl{width:100%;height:46px;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;background:#fff;font-size:16px;transition:border-color .15s,box-shadow .15s}
+select.ctl{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a6e6b' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:40px}
+.ctl:hover{border-color:#c8c1af}
+.ctl:focus-visible{outline:0;border-color:var(--teal);box-shadow:0 0 0 4px rgba(15,118,110,.18)}
+.ctl[aria-invalid=true]{border-color:var(--err);background:#fdf1ef}
+.ctl[aria-invalid=true]:focus-visible{box-shadow:0 0 0 4px rgba(179,38,30,.16)}
+.hint{font-size:13px;color:var(--muted)}
+.err{display:flex;gap:6px;align-items:flex-start;color:var(--err);font-size:13.5px;font-weight:500}
+.err svg{width:16px;height:16px;flex:none;margin-top:2px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.pw{position:relative}.pw .ctl{padding-right:70px}
+.pw button{position:absolute;right:6px;top:6px;height:34px;border:0;background:transparent;border-radius:8px;padding:0 10px;font-size:13px;font-weight:600;color:var(--teal);cursor:pointer}
+.pw button:hover{background:var(--teal-l)}
+.check{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:14.5px}
+.check label{font-weight:400!important}.check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--teal)}
+.check a{color:var(--teal);text-decoration:underline;text-underline-offset:2px}
+.done{text-align:center;padding:28px 0}
+.done .tick{width:56px;height:56px;border-radius:50%;background:var(--teal-l);color:var(--teal);display:grid;place-items:center;margin:0 auto 16px}
+.done .tick svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.done h2{margin-bottom:8px}
+.done p{color:var(--muted)}
+.alt{text-align:center;font-size:14px;color:var(--muted);margin-top:4px}
+.alt a{color:var(--teal);font-weight:600}
+@media (max-width:900px){.signup{grid-template-columns:1fr;gap:32px;padding-top:8px}.nav a:not(.btn){display:none}.pitch ul{display:none}}
+@media (max-width:480px){.wrap{padding:0 18px}.card{padding:24px 20px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" id="app">
+import {createElement as h, createContext, use, useState} from 'react';
+import {createRoot} from 'react-dom/client';
+
+// <composition>
+// Form state is lifted into a provider that exposes { state, actions, meta }.
+// Field parts consume it; none of them know how validation is stored.
+const FormContext = createContext(null);
+const FieldContext = createContext(null);
+
+const rules = {
+  name:     (v) => v.trim() ? '' : 'Enter your full name.',
+  email:    (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '' : 'Enter a valid work email, like name@clinic.com.',
+  password: (v) => v.length >= 8 ? '' : 'Password is too short. Use at least 8 characters.',
+  size:     (v) => v ? '' : 'Choose your clinic size.',
+  terms:    (v) => v ? '' : 'Accept the terms to continue.',
+};
+
+function SignupProvider({children, initial}) {
+  const [values, setValues] = useState(initial.values);
+  const [touched, setTouched] = useState(initial.touched);
+  const [done, setDone] = useState(false);
+  const errors = Object.fromEntries(Object.keys(rules).map(k => [k, touched[k] ? rules[k](values[k]) : '']));
+  const actions = {
+    change: (k, v) => setValues(s => ({...s, [k]: v})),
+    blur:   (k) => setTouched(s => ({...s, [k]: true})),
+    submit: (e) => {
+      e.preventDefault();
+      const all = Object.fromEntries(Object.keys(rules).map(k => [k, true]));
+      setTouched(all);
+      if (Object.keys(rules).every(k => !rules[k](values[k]))) setDone(true);
+      else document.querySelector('[aria-invalid=true]')?.focus();
+    },
+  };
+  return h(FormContext, {value: {state: {values, errors, done}, actions, meta: {sizes: SIZES}}}, children);
+}
+
+// Field is a compound component. <Field.Root name> shares the field name with its children.
+const Field = {
+  Root: ({name, children}) => h(FieldContext, {value: name}, h('div', {className: 'field'}, children)),
+  Label: ({children}) => { const n = use(FieldContext); return h('label', {htmlFor: n}, children); },
+  Hint: ({children}) => { const n = use(FieldContext); return h('span', {id: n + '-hint', className: 'hint'}, children); },
+  Error() {
+    const n = use(FieldContext); const {state} = use(FormContext);
+    return state.errors[n] ? h('p', {id: n + '-err', className: 'err', role: 'alert'},
+      h('svg', {viewBox: '0 0 24 24', 'aria-hidden': true}, h('circle', {cx: 12, cy: 12, r: 9}), h('path', {d: 'M12 8v5M12 16.5v.01'})), state.errors[n]) : null;
+  },
+};
+
+// Controls are explicit variants that bind themselves to the form interface.
+function useBound() {
+  const n = use(FieldContext); const {state, actions} = use(FormContext);
+  return {name: n, id: n, value: state.values[n], invalid: !!state.errors[n], onBlur: () => actions.blur(n),
+          onChange: (v) => actions.change(n, v), describedBy: state.errors[n] ? n + '-err' : n + '-hint'};
+}
+const TextInput = ({type = 'text', autoComplete, inputMode}) => {
+  const f = useBound();
+  return h('input', {className: 'ctl', id: f.id, name: f.name, type, autoComplete, inputMode, value: f.value,
+    'aria-invalid': f.invalid, 'aria-describedby': f.describedBy, onBlur: f.onBlur, onChange: e => f.onChange(e.target.value)});
+};
+function PasswordInput() {
+  const f = useBound(); const [shown, setShown] = useState(false);
+  return h('div', {className: 'pw'},
+    h('input', {className: 'ctl', id: f.id, name: f.name, type: shown ? 'text' : 'password', autoComplete: 'new-password', value: f.value,
+      'aria-invalid': f.invalid, 'aria-describedby': f.describedBy, onBlur: f.onBlur, onChange: e => f.onChange(e.target.value)}),
+    h('button', {type: 'button', onClick: () => setShown(s => !s), 'aria-pressed': shown}, shown ? 'Hide' : 'Show'));
+}
+function SizeSelect() {
+  const f = useBound(); const {meta} = use(FormContext);
+  return h('select', {className: 'ctl', id: f.id, name: f.name, value: f.value, 'aria-invalid': f.invalid, 'aria-describedby': f.describedBy,
+    onBlur: f.onBlur, onChange: e => f.onChange(e.target.value)},
+    h('option', {value: ''}, 'Select clinic size'), meta.sizes.map(s => h('option', {key: s, value: s}, s)));
+}
+function TermsCheckbox() {
+  const f = useBound();
+  return h('input', {type: 'checkbox', id: f.id, name: f.name, checked: f.value, 'aria-invalid': f.invalid, 'aria-describedby': f.describedBy,
+    onBlur: f.onBlur, onChange: e => f.onChange(e.target.checked)});
+}
+
+// Field-level variants: each one reads like the thing it renders.
+const NameField = () => h(Field.Root, {name: 'name'}, h(Field.Label, null, 'Full name'), h(TextInput, {autoComplete: 'name'}), h(Field.Error));
+const EmailField = () => h(Field.Root, {name: 'email'}, h(Field.Label, null, 'Work email'),
+  h(Field.Hint, null, 'We send your booking confirmations from here.'), h(TextInput, {type: 'email', autoComplete: 'email', inputMode: 'email'}), h(Field.Error));
+const PasswordField = () => h(Field.Root, {name: 'password'}, h(Field.Label, null, 'Password'),
+  h(Field.Hint, null, 'At least 8 characters.'), h(PasswordInput), h(Field.Error));
+const SizeField = () => h(Field.Root, {name: 'size'}, h(Field.Label, null, 'Clinic size'), h(SizeSelect), h(Field.Error));
+const TermsField = () => h(Field.Root, {name: 'terms'},
+  h('div', {className: 'check'}, h(TermsCheckbox), h('label', {htmlFor: 'terms'}, 'I accept the ', h('a', {href: '#terms'}, 'terms of service'), ' and ', h('a', {href: '#privacy'}, 'privacy policy'), '.')),
+  h(Field.Error));
+function SubmitButton() { return h('button', {className: 'btn btn-pri btn-block', type: 'submit'}, 'Create account'); }
+
+// The form itself is just composition.
+function SignupForm() {
+  const {actions} = use(FormContext);
+  return h('form', {noValidate: true, onSubmit: actions.submit},
+    h(NameField), h(EmailField), h(PasswordField), h(SizeField), h(TermsField), h(SubmitButton));
+}
+function SignupSuccess() {
+  const {state} = use(FormContext);
+  return h('div', {className: 'done', role: 'status'},
+    h('div', {className: 'tick'}, h('svg', {viewBox: '0 0 24 24'}, h('path', {d: 'M5 12.5l4.5 4.5L19 7'}))),
+    h('h2', null, `Welcome, ${state.values.name.split(' ')[0]}.`), h('p', null, `We sent a confirmation link to ${state.values.email}.`));
+}
+function SignupCard() {
+  const {state} = use(FormContext);
+  return h('div', {className: 'card'},
+    state.done ? h(SignupSuccess) : [h('h2', {key: 'h'}, 'Create your account'), h('p', {key: 'p', className: 'sub'}, '30 days free. No card needed.'), h(SignupForm, {key: 'f'})]);
+}
+// </composition>
+
+const SIZES = ['Just me', '2–5 people', '6–10 people', '11–25 people', '26–50 people', '50+ people'];
+// Demo state: two fields already touched, so their validation errors are visible on load.
+const initial = {values: {name: 'Jordan Lee', email: 'jordan@clinic', password: 'tide', size: '', terms: false},
+                 touched: {name: false, email: true, password: true, size: false, terms: false}};
+
+function App() {
+  return h('div', null,
+    h('div', {className: 'wrap'},
+      h('header', {className: 'hdr'},
+        h('a', {className: 'brand', href: '#'}, h('i'), 'Tidewater'),
+        h('nav', {className: 'nav', 'aria-label': 'Main'}, h('a', {href: '#'}, 'Pricing'), h('a', {className: 'btn btn-sec', href: '#'}, 'Log in'))),
+      h('main', {className: 'signup'},
+        h('section', {className: 'pitch'},
+          h('span', {className: 'eyebrow'}, 'Start free'),
+          h('h1', null, 'Set up your clinic in an afternoon.'),
+          h('p', null, 'Import your patients, invite your therapists and send your first reminders before the day is out.'),
+          h('ul', null, h('li', null, 'Free for 30 days, no card needed'), h('li', null, 'Import from CSV or your old system'), h('li', null, 'Cancel anytime, export your data'))),
+        h(SignupProvider, {initial}, h(SignupCard)))));
+}
+createRoot(document.getElementById('root')).render(h(App));
+</script>
+<button class="vs-btn" id="vsBtn" type="button" aria-expanded="false" aria-controls="vsPanel">View source <code>&lt;/&gt;</code></button>
+<aside class="vs-panel" id="vsPanel" hidden aria-label="Component source"><header><b>Composition layer</b><span>the compound components this page is built from</span><button type="button" id="vsClose">Close</button></header><pre><code id="vsCode"></code></pre></aside>
+<script>
+(function(){
+  var btn=document.getElementById('vsBtn'),panel=document.getElementById('vsPanel'),code=document.getElementById('vsCode');
+  var src=document.getElementById('app').textContent;
+  var a=src.indexOf('// <composition>'),b=src.indexOf('// </composition>');
+  var text=(a>-1&&b>a?src.slice(a+16,b):src).replace(/^\n+/,'').replace(/\s+$/,'');
+  var esc=function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')};
+  code.innerHTML=esc(text).split('\n').map(function(l){
+    if(/^\s*\/\//.test(l))return '<span class="c">'+l+'</span>';
+    return l.replace(/\b(function|const|return|export|import|from)\b/g,'<span class="k">$1</span>');
+  }).join('\n');
+  function set(o){panel.hidden=!o;btn.setAttribute('aria-expanded',o)}
+  btn.onclick=function(){set(panel.hidden)};
+  document.getElementById('vsClose').onclick=function(){set(false)};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false)});
+})();
+</script>
+
+</body>
+</html>

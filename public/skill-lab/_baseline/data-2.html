@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why churn rose in Q3</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #e2e8f0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; color: #0f172a; }
+  .slide { background: #fff; width: 100%; max-width: 1200px; aspect-ratio: 16/9; border-radius: 12px; padding: 44px 52px; box-shadow: 0 20px 50px rgba(15,23,42,.18); display: flex; flex-direction: column; }
+  h1 { font-size: 34px; font-weight: 800; letter-spacing: -.8px; line-height: 1.15; margin-bottom: 8px; }
+  .lead { font-size: 17px; color: #475569; margin-bottom: 22px; }
+  .body { display: grid; grid-template-columns: 1.5fr 1fr; gap: 36px; flex: 1; min-height: 0; }
+  .chartbox h3 { font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600; }
+  .chartbox svg { width: 100%; height: auto; }
+  .chartbox svg text { font-family: 'Inter', sans-serif; }
+  .legend { display: flex; gap: 18px; font-size: 12px; color: #475569; margin-bottom: 4px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; }
+  .points { display: flex; flex-direction: column; gap: 14px; }
+  .pt { background: #f8fafc; border-left: 4px solid #0891b2; border-radius: 6px; padding: 12px 16px; }
+  .pt b { font-size: 26px; display: block; letter-spacing: -.5px; }
+  .pt span { font-size: 14px; color: #475569; }
+  .pt.red { border-left-color: #dc2626; }
+  .pt.red b { color: #dc2626; }
+  .pt.amber { border-left-color: #f59e0b; }
+  .take { margin-top: 16px; font-size: 15px; background: #0f172a; color: #fff; padding: 12px 18px; border-radius: 8px; }
+  @media (max-width: 800px) { .slide { aspect-ratio: auto; padding: 24px 20px; } .body { grid-template-columns: 1fr; } h1 { font-size: 24px; } }
+</style>
+</head>
+<body>
+<div class="slide">
+  <h1>Churn rose 75% in Q3, in step with slower support</h1>
+  <p class="lead">84 accounts churned in Jul–Sep versus 48 in Apr–Jun. Support tickets and first-response times climbed over the same three months.</p>
+  <div class="body">
+    <div class="chartbox">
+      <h3>Churned accounts (bars) and first response time in minutes (line)</h3>
+      <div class="legend"><span><i style="background:#cbd5e1"></i>Churned accounts</span><span><i style="background:#dc2626"></i>Q3 churned accounts</span><span><i style="background:#f59e0b"></i>First response (min)</span></div>
+      <svg id="chart" viewBox="0 0 640 330"></svg>
+    </div>
+    <div class="points">
+      <div class="pt red"><b>+75%</b><span>Churned accounts, Q3 vs Q2 (84 vs 48)</span></div>
+      <div class="pt amber"><b>37 → 65 min</b><span>Average first response time, Q2 to Q3</span></div>
+      <div class="pt"><b>+26%</b><span>Support tickets, Q3 vs Q2 (4,807 vs 3,805)</span></div>
+    </div>
+  </div>
+  <div class="take">Both churn and response time peaked in September and recovered in Oct–Dec as ticket volume fell. This suggests support capacity was a likely driver; it is a correlation, not proven cause.</div>
+</div>
+<script>
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const churn = [18,17,19,16,15,17,24,29,31,22,18,16];
+const resp = [42,39,44,37,33,41,58,66,71,49,40,36];
+const W = 640, H = 330, m = { l: 36, r: 40, t: 14, b: 30 };
+const iw = W - m.l - m.r, ih = H - m.t - m.b;
+const bw = iw / 12;
+const yC = v => m.t + ih - v / 35 * ih;
+const yR = v => m.t + ih - v / 80 * ih;
+let s = '';
+[0, 10, 20, 30].forEach(v => { s += `<line x1="${m.l}" x2="${W - m.r}" y1="${yC(v)}" y2="${yC(v)}" stroke="#e2e8f0"/><text x="${m.l - 6}" y="${yC(v) + 4}" text-anchor="end" font-size="11" fill="#64748b">${v}</text>`; });
+[0, 40, 80].forEach(v => { s += `<text x="${W - m.r + 6}" y="${yR(v) + 4}" font-size="11" fill="#b45309">${v}</text>`; });
+s += `<rect x="${m.l + bw * 6}" y="${m.t}" width="${bw * 3}" height="${ih}" fill="#fef2f2"/>`;
+s += `<text x="${m.l + bw * 7.5}" y="${m.t + 12}" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">Q3</text>`;
+churn.forEach((v, i) => {
+  const c = i >= 6 && i <= 8 ? '#dc2626' : '#cbd5e1';
+  s += `<rect x="${m.l + i * bw + 7}" y="${yC(v)}" width="${bw - 14}" height="${m.t + ih - yC(v)}" rx="3" fill="${c}"/>`;
+  s += `<text x="${m.l + i * bw + bw / 2}" y="${yC(v) - 4}" text-anchor="middle" font-size="10" fill="#475569">${v}</text>`;
+  s += `<text x="${m.l + i * bw + bw / 2}" y="${H - 10}" text-anchor="middle" font-size="11" fill="#64748b">${months[i]}</text>`;
+});
+const pts = resp.map((v, i) => `${m.l + i * bw + bw / 2},${yR(v)}`).join(' ');
+s += `<polyline points="${pts}" fill="none" stroke="#f59e0b" stroke-width="3" stroke-linejoin="round"/>`;
+resp.forEach((v, i) => { s += `<circle cx="${m.l + i * bw + bw / 2}" cy="${yR(v)}" r="3.5" fill="#fff" stroke="#f59e0b" stroke-width="2"/>`; });
+document.getElementById('chart').innerHTML = s;
+</script>
+</body>
+</html>

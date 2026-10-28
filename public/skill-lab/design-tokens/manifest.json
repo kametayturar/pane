@@ -1,0 +1,29 @@
+{
+  "id": "design-tokens",
+  "sets": ["web"],
+  "skillSays": [
+    "Build the design as tokens first, in the W3C DTCG format ($type / $value) with three tiers: primitive (raw palette), semantic (purpose aliases) and component (scoped to a control).",
+    "Generate colour ramps in OKLCH, 11 shades from 50 to 950, and check that shade 500 gives at least 4.5:1 on white and 600 at least 3:1.",
+    "Follow fixed scales: a 4px spacing base unit, a Major Third (1.25) type scale, Inter for UI, a serif for editorial and mono for data values.",
+    "Dark mode is swapped at the semantic layer only; primitives never change. Everything is referenced by alias, never hardcoded.",
+    "Validate the token file (valid JSON, every alias resolves) and contrast pairs in light and dark, and token by intent: one primary action, a neutral secondary, a separate destructive style."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Wrote design-tokens.json first (224 tokens, validated) and generated the page's CSS custom properties from it, so every colour, space and radius in the page is a var() lookup rather than a literal.",
+      "Built the brand teal as an OKLCH ramp, pinning shade 500 to pass 4.5:1 on white; the primary button uses the 600 step with white text at 6.6:1.",
+      "Paired a Lora serif display headline with Inter UI text and JetBrains Mono for the schedule times, following the skill's type roles, on a 4px spacing grid.",
+      "Added a dark theme by overriding only semantic tokens (a theme toggle flips data-theme), and used lucide-style inline SVG icons with no emoji."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Plan cards use component tokens (card border, badge) and the featured plan is marked with the primary token plus a badge, not an ad-hoc highlight colour.",
+      "Button roles follow token-by-intent: Clinic is the single filled primary, the other two are neutral outline secondary buttons, never a second coloured fill.",
+      "Prices use the mono family and the 5xl step of the scale; all spacing comes from the 4px scale and the billing toggle uses the focus-ring token."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Inputs take border, focus and error colours from component tokens; the error state pairs the error-border token with an icon and text, so it never relies on colour alone.",
+      "Control height is a sizing token (44px) and focus uses the double ring from the shadow tokens, which is part of the skill's accessibility rules.",
+      "Ran the repo's token validator and hardcode linter on the output: zero raw hex or px values outside token definitions."
+    ]}
+  ]
+}

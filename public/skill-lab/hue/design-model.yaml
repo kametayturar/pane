@@ -1,0 +1,164 @@
+name: "Tidewater"
+philosophy: "A tide table for a clinic: ruled lines, mono times, one signal colour. Ink on cool paper, and orange only where time is running out."
+primary_mode: "light"
+brand_domain: "appointment scheduling for small physiotherapy clinics"
+brand_type: "ui-rich"
+mono_for_code: true
+mono_for_metrics: true   # times, prices, counts: they are the data in a tide table
+
+primitives:
+  colors:
+    neutral:    # cool paper and ink, a touch of blue-green so it never reads as grey
+      0: "#FFFFFF"
+      50: "#F4F6F6"
+      100: "#ECEFEF"
+      200: "#DDE2E3"
+      300: "#C5CDCF"
+      400: "#98A4A8"
+      500: "#6B787D"
+      600: "#505C61"
+      700: "#3C474C"
+      800: "#28323A"
+      900: "#17212A"
+      950: "#0E161D"
+    signal:     # buoy orange, the only chromatic brand colour
+      50: "#FFF4E8"
+      100: "#FFE3C7"
+      200: "#FFC894"
+      300: "#FAA35C"
+      400: "#F4883A"
+      500: "#E8751A"
+      600: "#C45E0C"
+      700: "#9A4607"
+      800: "#733405"
+      900: "#4C2203"
+      950: "#2B1302"
+    red:   { 50: "#FDECEA", 500: "#D64545", 700: "#B3261E", 900: "#5C1410" }
+    green: { 50: "#E6F4EC", 500: "#2E9467", 700: "#1E7A52", 900: "#0F3D29" }
+    amber: { 50: "#FFF8E1", 500: "#D9A21B", 900: "#5A4000" }
+  spacing: [0, 4, 8, 12, 16, 24, 32, 48, 64, 96]
+  radii: [0, 4, 8, 14, 999]
+
+tokens:
+  colors:
+    light:
+      background: "{neutral.50}"
+      surface1: "{neutral.0}"
+      surface2: "{neutral.100}"
+      surface3: "{neutral.200}"
+      border: "{neutral.200}"
+      border_visible: "{neutral.600}"
+      text1: "{neutral.900}"
+      text2: "{neutral.700}"
+      text3: "{neutral.600}"
+      text4: "{neutral.400}"
+      accent: "{signal.500}"
+      accent_text: "{signal.700}"
+      accent_subtle: "{signal.50}"
+      action: "{neutral.900}"       # primary buttons are ink, not accent
+      on_action: "{neutral.50}"
+    dark:
+      background: "{neutral.950}"
+      surface1: "{neutral.900}"
+      surface2: "{neutral.800}"
+      surface3: "{neutral.700}"
+      border: "{neutral.800}"
+      border_visible: "{neutral.400}"
+      text1: "{neutral.50}"
+      text2: "{neutral.300}"
+      text3: "{neutral.400}"
+      text4: "{neutral.600}"
+      accent: "{signal.400}"
+      accent_text: "{signal.300}"
+      accent_subtle: "{signal.950}"
+      action: "{neutral.50}"
+      on_action: "{neutral.950}"
+    success: "{green.700}"
+    warning: "{amber.500}"
+    error: "{red.700}"
+    success_bg: { light: "{green.50}", dark: "{green.900}" }
+    warning_bg: { light: "{amber.50}", dark: "{amber.900}" }
+    error_bg:   { light: "{red.50}",   dark: "{red.900}" }
+
+  spacing: { 2xs: 4, xs: 8, sm: 12, md: 16, lg: 24, xl: 32, 2xl: 48, 3xl: 64, 4xl: 96 }
+
+  radii:
+    control: 8
+    component: 14
+    pill: 999
+    element: 4
+
+  typography:
+    display: { family: "Bricolage Grotesque", size: "58px", weight: 700, line_height: 1.04, letter_spacing: "-0.03em" }
+    heading: { family: "Bricolage Grotesque", size: "40px", weight: 700, line_height: 1.1, letter_spacing: "-0.02em" }
+    subheading: { family: "Bricolage Grotesque", size: "22px", weight: 600, line_height: 1.25 }
+    body: { family: "Hanken Grotesk", size: "16px", weight: 400, line_height: 1.6 }
+    body_sm: { family: "Hanken Grotesk", size: "14px", weight: 400, line_height: 1.5 }
+    caption: { family: "Hanken Grotesk", size: "12.5px", weight: 500, line_height: 1.4 }
+    label: { family: "IBM Plex Mono", size: "12px", weight: 500, letter_spacing: "0.08em", transform: "uppercase" }
+    mono: { family: "IBM Plex Mono", size: "14px", weight: 500 }
+    why: "Bricolage Grotesque has the slightly irregular, inked character of a printed timetable; Hanken Grotesk is a quiet humanist body; Plex Mono carries every time and price like a tide table."
+
+  elevation:
+    strategy: "flat"          # hairline borders and a background step do the depth work
+    float_only_for: "hero device window (one soft contact shadow)"
+
+  motion:
+    personality: "smooth"
+    easing: "cubic-bezier(.3,.7,.2,1)"
+    duration_fast: "120ms"
+    duration_normal: "220ms"
+
+  hero_stage:
+    preset: "grid-on-dark"       # adapted: pattern field + device subject, on light paper
+    observed_style:
+      description: "Fictional brand, so derived: faint horizontal tide-mark lines across the field, a schedule window as the subject."
+      where_used: ["hero"]
+    background:
+      medium: "pattern"
+      color_mode: "brand-tinted-neutral"
+      saturation: "flat"
+      light_source: "none"
+      falloff: "linear"
+      vignette: "off"
+      texture: "clean"
+      motion: "static"
+      intensity: "subtle"
+      safe_zone: "masked-for-text"
+      color_palette: ["#DDE2E3", "#ECEFEF", "#F4F6F6"]
+    hero:
+      subject: "device"
+      placement: "right"
+      scale: "balanced"
+    relation:
+      type: "shadow-only"
+      bleed: 0
+    disclaimer: "Pattern and window are CSS and inline SVG; no photography."
+
+  iconography:
+    observed_style:
+      description: "Fictional brand: soft, rounded, outline icons, humanist."
+      stroke_weight: "regular"
+      corner_treatment: "fully-round"
+      fill_style: "outline"
+      form_language: "humanist"
+      visual_density: "balanced"
+    fallback_kit:
+      name: "Material Symbols Rounded"
+      weight: 400
+      match_score: "high"
+      match_reasoning: "Rounded terminals and regular stroke match the soft, humanist character; it loads from Google Fonts, so no unlisted CDN is needed. Phosphor regular would be second choice."
+    disclaimer: "Icons are a best-match fallback kit, not a brand asset."
+
+components:
+  button_primary:   { source: "derived", background: "{text1}", color: "{background}", padding: "13px 22px", radius: "{radii.control}", font_weight: 600, hover: { background: "{text2}" } }
+  button_secondary: { source: "derived", background: "transparent", border: "1.5px solid {text1}", radius: "{radii.control}" }
+  card:             { source: "derived", background: "{surface1}", border: "1px solid {border}", radius: "{radii.component}", shadow: "none" }
+  input:            { source: "derived", background: "{surface1}", border: "1.5px solid {border_visible}", radius: "{radii.control}", focus: "2px accent outline, 2px offset" }
+  tag:              { source: "derived", radius: "{radii.pill}", font: "mono label" }
+  rule:             { source: "derived", description: "1px {border} hairlines separate sections and list rows instead of boxes" }
+
+app_screen:
+  archetype: "list-detail"
+  frame: "browser"
+  content_seed: "a day schedule for two therapists with one open slot"

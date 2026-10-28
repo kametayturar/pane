@@ -1,0 +1,23 @@
+{
+  "id": "hyperframes",
+  "sets": ["code"],
+  "skillSays": [
+    "HyperFrames renders HTML to video by seeking a paused GSAP timeline frame by frame, so every render is identical; use the CLI as 'npx hyperframes <command>'.",
+    "index.html is the root composition and mounts one scene per sub-composition in compositions/; host id, scene root id and timeline key must match or each render waits 45 s.",
+    "A contract of hard rules: clips need class/data-start/data-duration, no Date.now or random or timers, never tween visibility on a .clip, use fromTo inside scenes, bundled fonts only by name.",
+    "Run 'npx hyperframes check' after the last edit, then 'snapshot' and look at the frames; a passing check does not show how it looks.",
+    "Motion craft numbers: ease by role, exits 40-50% shorter than entrances, titles land dead still, vary entrances, use 3-5 transitions that each have a cause on screen, and holds of 0.5 s + 0.3 s per word.",
+    "Keep it editable: copy and brand colours as variables, one scene per sub-composition, and open the Studio preview before the delivery render."
+  ],
+  "examples": [
+    {
+      "prompt": "video-1",
+      "changes": [
+        "Built the teaser as five scene sub-compositions mounted from index.html instead of one big timeline, with matching host/scene/timeline ids.",
+        "Used four seams that each have an on-screen cause (iris from the logo, iris from the cursor click, a whip, a colour flood) instead of one fade everywhere.",
+        "The craft check flagged 11 lines held too briefly; I cut the sublines and retimed the scenes, ending with 5 unavoidable warnings for a 6 s film.",
+        "Performed the end card (cursor clicks the mark, fill rises, wordmark wipes in, then a real button) and exposed the button text and brand colours as variables."
+      ]
+    }
+  ]
+}

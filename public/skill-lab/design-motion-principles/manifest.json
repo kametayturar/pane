@@ -1,0 +1,43 @@
+{
+  "id": "design-motion-principles",
+  "sets": [
+    "motion"
+  ],
+  "skillSays": [
+    "Two modes, Create and Audit; for building it first states project context and a designer weighting (productivity SaaS = Emil primary, Jakub secondary, Jhey only for empty states).",
+    "Apply the frequency gate before any motion: rare is expressive, daily is subtle and fast, hundreds per day or keyboard-initiated is instant.",
+    "Use the cookbook recipes: enter = opacity + translateY + blur, exits subtler than enters, springs with bounce 0 or custom cubic-beziers, never bare ease or scale(0).",
+    "Animate transform, opacity and filter only; use state-driven transitions for anything the user can re-trigger.",
+    "Every animation ships with prefers-reduced-motion in the same code, and the output is self-checked against a list of Claude's known motion mistakes.",
+    "Weighting sets timing: Emil under 300ms (180ms ideal), Jakub 200-500ms, Jhey whatever serves the effect."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "Stated weighting up front (SaaS: Emil primary, Jakub secondary), so the toast stays under 300ms: enter 280ms, exit 180ms.",
+        "Enter uses the Jakub recipe: opacity + translateY(calc(100% + 4px)) + blur(4px); the spring is a bounce-0 critically damped curve sampled into a CSS linear() easing (falls back to cubic-bezier(0.23,1,0.32,1)).",
+        "Exit is deliberately subtler than enter: only translateY(12px) + opacity + blur(4px) over 180ms, not the full slide back.",
+        "Multi-layer box-shadow instead of a border, 160ms press scale(0.97) on Book, a 120ms tint flash on the booked slot, and the skill's reduced-motion block."
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Origin-aware: transform-origin top right; enter is scale(0.95) + translateY(-4px) + blur(2px) to rest in 180ms on cubic-bezier(0.23,1,0.32,1); exit is 120ms.",
+        "Frequency gate applied: menu items do not stagger and the highlight is instant, because a menu is opened hundreds of times.",
+        "State-driven transitions (not keyframes), so closing while opening retargets smoothly; layered hairline-plus-soft shadow replaces a border.",
+        "Reduced motion uses the skill's 0.01ms override so end states still apply."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Row enter is the cookbook recipe: opacity + translateY(8px) + blur(4px), 220ms; exit is subtler (translateY(-12px) + blur(4px), 160ms).",
+        "No layout properties animated: removal takes the row out of flow and closes the gap with a FLIP transform (translateY from the old offset to 0, 220ms), instead of animating height.",
+        "Checkbox icon swap follows the contextual-icon recipe: tick goes opacity 0, scale(0.8), blur(4px) to sharp in 180ms; strike-through scaleX over 220ms.",
+        "Jhey is used only for the empty state: it blurs and rises in over 300ms when the list empties, the one rare moment where delight is allowed."
+      ]
+    }
+  ]
+}

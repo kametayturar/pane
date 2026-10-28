@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  color-scheme:light dark;
+  --ref-sea-50: oklch(97.5% 0.0126 222.0);
+  --ref-sea-100: oklch(94.5% 0.0262 222.0);
+  --ref-sea-200: oklch(89.5% 0.0473 222.0);
+  --ref-sea-300: oklch(82.5% 0.0735 222.0);
+  --ref-sea-400: oklch(74.5% 0.0966 222.0);
+  --ref-sea-500: oklch(64.5% 0.1050 222.0);
+  --ref-sea-600: oklch(54.5% 0.1007 222.0);
+  --ref-sea-700: oklch(47.5% 0.0878 222.0);
+  --ref-sea-800: oklch(40.5% 0.0748 222.0);
+  --ref-sea-900: oklch(33.5% 0.0619 222.0);
+  --ref-sea-950: oklch(23.5% 0.0434 222.0);
+  --ref-coral-50: oklch(97.5% 0.0129 42.0);
+  --ref-coral-100: oklch(94.5% 0.0290 42.0);
+  --ref-coral-200: oklch(89.5% 0.0578 42.0);
+  --ref-coral-300: oklch(82.5% 0.1026 42.0);
+  --ref-coral-400: oklch(74.5% 0.1380 42.0);
+  --ref-coral-500: oklch(64.5% 0.1500 42.0);
+  --ref-coral-600: oklch(54.5% 0.1500 42.0);
+  --ref-coral-700: oklch(47.5% 0.1350 42.0);
+  --ref-coral-800: oklch(40.5% 0.1170 42.0);
+  --ref-coral-900: oklch(33.5% 0.0930 42.0);
+  --ref-coral-950: oklch(23.5% 0.0675 42.0);
+  --ref-sand-50: oklch(97.5% 0.0036 85.0);
+  --ref-sand-100: oklch(94.5% 0.0075 85.0);
+  --ref-sand-200: oklch(89.5% 0.0135 85.0);
+  --ref-sand-300: oklch(82.5% 0.0210 85.0);
+  --ref-sand-400: oklch(74.5% 0.0276 85.0);
+  --ref-sand-500: oklch(64.5% 0.0300 85.0);
+  --ref-sand-600: oklch(54.5% 0.0300 85.0);
+  --ref-sand-700: oklch(47.5% 0.0270 85.0);
+  --ref-sand-800: oklch(40.5% 0.0234 85.0);
+  --ref-sand-900: oklch(33.5% 0.0186 85.0);
+  --ref-sand-950: oklch(23.5% 0.0135 85.0);
+  --ref-neutral-50: oklch(97.5% 0.0011 230.0);
+  --ref-neutral-100: oklch(94.5% 0.0022 230.0);
+  --ref-neutral-200: oklch(89.5% 0.0040 230.0);
+  --ref-neutral-300: oklch(82.5% 0.0063 230.0);
+  --ref-neutral-400: oklch(74.5% 0.0083 230.0);
+  --ref-neutral-500: oklch(64.5% 0.0090 230.0);
+  --ref-neutral-600: oklch(54.5% 0.0090 230.0);
+  --ref-neutral-700: oklch(47.5% 0.0081 230.0);
+  --ref-neutral-800: oklch(40.5% 0.0070 230.0);
+  --ref-neutral-900: oklch(33.5% 0.0056 230.0);
+  --ref-neutral-950: oklch(23.5% 0.0040 230.0);
+  --ref-red-50: oklch(97.5% 0.0122 27.0);
+  --ref-red-100: oklch(94.5% 0.0275 27.0);
+  --ref-red-200: oklch(89.5% 0.0549 27.0);
+  --ref-red-300: oklch(82.5% 0.0977 27.0);
+  --ref-red-400: oklch(74.5% 0.1545 27.0);
+  --ref-red-500: oklch(64.5% 0.1700 27.0);
+  --ref-red-600: oklch(54.5% 0.1700 27.0);
+  --ref-red-700: oklch(47.5% 0.1530 27.0);
+  --ref-red-800: oklch(40.5% 0.1326 27.0);
+  --ref-red-900: oklch(33.5% 0.1054 27.0);
+  --ref-red-950: oklch(23.5% 0.0765 27.0);
+  --ref-green-50: oklch(97.5% 0.0144 155.0);
+  --ref-green-100: oklch(94.5% 0.0300 155.0);
+  --ref-green-200: oklch(89.5% 0.0540 155.0);
+  --ref-green-300: oklch(82.5% 0.0840 155.0);
+  --ref-green-400: oklch(74.5% 0.1104 155.0);
+  --ref-green-500: oklch(64.5% 0.1200 155.0);
+  --ref-green-600: oklch(54.5% 0.1200 155.0);
+  --ref-green-700: oklch(47.5% 0.1080 155.0);
+  --ref-green-800: oklch(40.5% 0.0936 155.0);
+  --ref-green-900: oklch(33.5% 0.0744 155.0);
+  --ref-green-950: oklch(23.5% 0.0540 155.0);
+  --ref-white: oklch(100% 0 0);
+  --bg: light-dark(var(--ref-neutral-50), var(--ref-neutral-950));
+  --surface: light-dark(var(--ref-white), var(--ref-neutral-900));
+  --sunken: light-dark(var(--ref-neutral-100), var(--ref-neutral-950));
+  --line: light-dark(var(--ref-neutral-200), var(--ref-neutral-800));
+  --text: light-dark(var(--ref-neutral-900), var(--ref-neutral-50));
+  --text2: light-dark(var(--ref-neutral-700), var(--ref-neutral-300));
+  --text3: light-dark(var(--ref-neutral-600), var(--ref-neutral-400));
+  --brand: light-dark(var(--ref-sea-700), var(--ref-sea-400));
+  --brand-hover: light-dark(var(--ref-sea-800), var(--ref-sea-300));
+  --on-brand: light-dark(var(--ref-white), var(--ref-neutral-950));
+  --tint: light-dark(var(--ref-sea-100), var(--ref-sea-900));
+  --tint-text: light-dark(var(--ref-sea-800), var(--ref-sea-200));
+  --band: light-dark(var(--ref-sea-900), var(--ref-sea-800));
+  --on-band: light-dark(var(--ref-sea-50), var(--ref-sea-50));
+  --accent: light-dark(var(--ref-coral-500), var(--ref-coral-400));
+  --on-accent: light-dark(var(--ref-neutral-950), var(--ref-neutral-950));
+  --accent-text: light-dark(var(--ref-coral-700), var(--ref-coral-300));
+  --err: light-dark(var(--ref-red-700), var(--ref-red-300));
+  --err-bg: light-dark(var(--ref-red-50), var(--ref-red-950));
+  --ok: light-dark(var(--ref-green-700), var(--ref-green-300));
+  --ok-bg: light-dark(var(--ref-green-50), var(--ref-green-950));
+}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+/* semantic layer on top of reference ramps; hover/tints are derived, not hand-picked */
+:root{
+  --font:'Manrope',system-ui,sans-serif;
+  --brand-hover-d:color-mix(in oklab,var(--brand),var(--text) 14%);
+  --brand-wash:oklch(from var(--brand) l c h / .10);
+  --brand-line:oklch(from var(--brand) l c h / .28);
+  --focus:oklch(from var(--brand) l c h / .45);
+  --shadow:0 18px 40px -22px oklch(from var(--band) l c h / .55);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font:400 16px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.1}
+a{color:var(--brand)}
+.nav{display:flex;align-items:center;gap:28px;padding-top:22px;padding-bottom:22px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;color:var(--text);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
+.logo svg{width:28px;height:28px;color:var(--brand)}
+.nav ul{display:flex;gap:26px;list-style:none;padding:0;font-size:14.5px;font-weight:600}
+.nav ul a{color:var(--text2);text-decoration:none}.nav ul a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px/1 var(--font);padding:15px 24px;border-radius:12px;border:1.5px solid transparent;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.btn.primary{background:var(--brand);color:var(--on-brand)}
+.btn.primary:hover{background:var(--brand-hover-d)}
+.btn.ghost{color:var(--brand);border-color:var(--brand-line);background:transparent}
+.btn.ghost:hover{background:var(--brand-wash);border-color:var(--brand)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.mode{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--text2);display:grid;place-items:center;cursor:pointer}
+.mode:hover{border-color:var(--brand-line);color:var(--brand)}
+.mode svg{width:20px;height:20px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:700 12px/1 var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--tint-text)}
+.eyebrow::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+body{background:linear-gradient(160deg in oklch,var(--tint) 0%,var(--bg) 45%) no-repeat}
+.split{display:grid;grid-template-columns:1fr 480px;gap:72px;align-items:center;padding-top:32px;padding-bottom:72px}
+h1{font-size:clamp(32px,4vw,48px);margin:18px 0 18px;max-width:15ch}
+.lead{color:var(--text2);font-size:17px;max-width:44ch;margin-bottom:34px}
+ol{list-style:none;padding:0;display:grid;gap:22px}
+ol li{display:flex;gap:16px;align-items:center}ol b{display:block}ol small{color:var(--text3);font-size:14px}
+.n{flex:none;width:36px;height:36px;border-radius:50%;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;font-weight:800;font-size:14px}
+ol li:last-child .n{background:var(--accent);color:var(--on-accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:36px;box-shadow:var(--shadow)}
+.card h2{font-size:26px;margin-bottom:24px}
+.field{margin-bottom:18px}
+label{display:block;font-weight:700;font-size:13.5px;margin-bottom:7px}
+input:not([type=checkbox]),select{width:100%;font:500 15.5px var(--font);color:var(--text);background:var(--surface);border:1.5px solid var(--text3);border-radius:12px;padding:13px 15px;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 4px var(--focus)}
+.sel{position:relative}.sel svg{position:absolute;right:15px;top:50%;width:18px;height:18px;transform:translateY(-50%);pointer-events:none;color:var(--text2)}
+select{appearance:none;-webkit-appearance:none;padding-right:44px}
+.hint{font-size:13px;color:var(--text3);margin-top:6px}
+.err{display:none;align-items:center;gap:8px;margin-top:8px;font-size:13.5px;font-weight:700;color:var(--err);background:var(--err-bg);padding:8px 12px;border-radius:10px}
+.err.show{display:flex}.err svg{width:18px;height:18px;flex:none}
+.invalid input:not([type=checkbox]){border-color:var(--err);box-shadow:0 0 0 3px oklch(from var(--err) l c h / .2)}
+.cb{display:flex;gap:12px;align-items:flex-start;font-weight:500;font-size:14.5px;cursor:pointer;margin:0}
+.cb input{position:absolute;opacity:0}
+.box{flex:none;width:22px;height:22px;border:1.5px solid var(--text3);border-radius:7px;display:grid;place-items:center;color:transparent;background:var(--surface);margin-top:1px}
+.box svg{width:15px;height:15px}
+.cb input:checked+.box{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.cb input:focus-visible+.box{outline:3px solid var(--focus);outline-offset:2px}
+.invalid .box{border-color:var(--err)}
+.submit{width:100%;margin-top:10px}
+@media(max-width:940px){.split{grid-template-columns:1fr;gap:36px}.nav ul{display:none}}
+@media(max-width:480px){.card{padding:24px 20px}.nav .btn{display:none}.nav{gap:12px}}
+
+</style>
+</head>
+<body>
+<header class="wrap nav">
+  <a class="logo" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c3-3 6-3 9 0s6 3 9 0"/><path d="M3 15c3-3 6-3 9 0s6 3 9 0"/></svg>Tidewater</a>
+  <ul><li><a href="#features">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Clinics</a></li></ul>
+  <button class="mode" id="theme" type="button" aria-label="Toggle light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+  <a class="btn primary" href="#">Book a demo</a>
+</header>
+<main class="wrap split">
+  <section class="pitch">
+    <p class="eyebrow">30 days free, no card</p>
+    <h1>Set up your clinic's calendar in an afternoon.</h1>
+    <p class="lead">Create your account, add your therapists and rooms, and share a booking link with patients before the day is out.</p>
+    <ol>
+      <li><span class="n">1</span><div><b>Create your account</b><small>Two minutes, one form.</small></div></li>
+      <li><span class="n">2</span><div><b>Add your team and rooms</b><small>Import a spreadsheet or type them in.</small></div></li>
+      <li><span class="n">3</span><div><b>Share your booking link</b><small>Patients book straight into open slots.</small></div></li>
+    </ol>
+  </section>
+  <section class="card">
+    <h2>Create your account</h2>
+    <form id="f" novalidate>
+      <div class="field"><label for="name">Full name</label><input id="name" autocomplete="name" value="Amara Okafor"></div>
+      <div class="field" data-k="email"><label for="email">Work email</label><input id="email" type="email" autocomplete="email" value="amara@riverside-physio" aria-describedby="email-e">
+        <p class="err" id="email-e" role="alert"><svg viewBox="0 0 24 24"><use href="#al"/></svg><span class="t"></span></p></div>
+      <div class="field" data-k="pw"><label for="pw">Password</label><input id="pw" type="password" autocomplete="new-password" value="tide" aria-describedby="pw-h pw-e">
+        <p class="hint" id="pw-h">At least 10 characters.</p>
+        <p class="err" id="pw-e" role="alert"><svg viewBox="0 0 24 24"><use href="#al"/></svg><span class="t"></span></p></div>
+      <div class="field"><label for="size">Clinic size</label><div class="sel"><select id="size"><option value="">Select a size</option><option>Just me</option><option selected>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 to 40 therapists</option><option>More than 40</option></select><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div></div>
+      <div class="field" data-k="terms"><label class="cb"><input type="checkbox" id="terms" checked aria-describedby="terms-e"><span class="box"><svg viewBox="0 0 24 24"><use href="#ck"/></svg></span><span>I accept the <a href="#">terms of service</a> and <a href="#">privacy policy</a></span></label>
+        <p class="err" id="terms-e" role="alert"><svg viewBox="0 0 24 24"><use href="#al"/></svg><span class="t"></span></p></div>
+      <button class="btn primary submit" type="submit">Create account</button>
+    </form>
+  </section>
+</main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="al" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></g></symbol></svg>
+
+<script>
+(function(){var b=document.getElementById('theme');if(!b)return;b.addEventListener('click',function(){var d=document.documentElement,c=d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.setAttribute('data-theme',c==='dark'?'light':'dark')})})();
+(function(){var $=function(i){return document.getElementById(i)};
+var rules={email:function(){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('email').value.trim())?'':'Enter a valid email address, like name@clinic.com.'},
+ pw:function(){return $('pw').value.length>=10?'':'Password is too short. Use at least 10 characters.'},
+ terms:function(){return $('terms').checked?'':'Accept the terms to continue.'}};
+function check(k){var m=rules[k](),e=$(k+'-e');e.querySelector('.t').textContent=m;e.classList.toggle('show',!!m);
+ $(k).closest('.field').classList.toggle('invalid',!!m);$(k).setAttribute('aria-invalid',!!m);return !m}
+['email','pw','terms'].forEach(function(k){$(k).addEventListener('input',function(){check(k)});$(k).addEventListener('blur',function(){check(k)})});
+$('f').addEventListener('submit',function(e){e.preventDefault();if(['email','pw','terms'].map(check).every(Boolean))$('f').querySelector('.submit').textContent='Account created'});
+['email','pw','terms'].forEach(check);})();
+
+</script>
+</body>
+</html>

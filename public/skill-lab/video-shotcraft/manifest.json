@@ -1,0 +1,23 @@
+{
+  "id": "video-shotcraft",
+  "sets": ["code"],
+  "skillSays": [
+    "Pick one of three modes before starting (Ink Press template, autonomous free creation, guided co-creation); without a stated choice, do only a read-only product check and ask.",
+    "Reproducing a product page means real screenshots: a full-page 2x texture, element cutouts and a layout.json, driven by a 2.5D PageCam camera, not hand-built UI.",
+    "The film's visual language must grow from the product's own design tokens, and motion tokens come from a brand-to-preset table instead of gut feeling.",
+    "Each shot is built from a recipe card plus its tuned demo source; parameters marked as known pitfalls must not be reduced, and one animation technique is the hero only once.",
+    "Brand wordmark holds at least one second, everything else breathes; pace is only ever corrected slower; no hand-held shake; lights and glints only for the hero, clipped to rounded edges.",
+    "Sound is pinned in a declarative table relative to the timeline after picture lock, and delivery needs an independent clean-context review with frame-numbered findings."
+  ],
+  "examples": [
+    {
+      "prompt": "video-1",
+      "changes": [
+        "Built a fictional Tidewater schedule page, screenshotted it at 2x with a layout.json, and made the whole film one continuous camera move over that real texture instead of redrawing UI per scene.",
+        "Chose motion from the skill's cards (letterpress brand open, spotlight hero card with 12-frame overshoot rise, row-embed with a teal seam, lockup with a 6 percent brake) and compressed them to fit 6 s, noting which parameters were cut.",
+        "Pinned eight SFX from the skill's library in one table relative to the timeline, then retimed six pins to measured file peaks after the independent review.",
+        "Ran the required independent Sonnet review, which caught a caption collision, patch artifacts and late SFX that my own stills had not."
+      ]
+    }
+  ]
+}

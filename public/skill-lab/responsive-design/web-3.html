@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f2ea;--paper:#fffdf8;--ink:#12302e;--muted:#5a6e6b;--line:#e2dccd;--teal:#0f766e;--teal-d:#0a5852;--teal-l:#d7ece8;--sand:#ece5d3;--err:#b3261e;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;
+  --text-sm:clamp(.875rem,.8rem + .375vw,1rem);
+  --text-base:clamp(1rem,.9rem + .5vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + .625vw,1.25rem);
+  --text-4xl:clamp(2.25rem,1.4rem + 3.4vw,3.75rem);
+  --space-sm:clamp(.5rem,.4rem + .5vw,.75rem);
+  --space-md:clamp(1rem,.8rem + 1vw,1.5rem);
+  --space-lg:clamp(1.5rem,1.2rem + 1.5vw,2.5rem);
+  --space-xl:clamp(2rem,1.5rem + 2.5vw,4rem);
+  --gutter:clamp(1.125rem,.5rem + 2.5vw,2rem);
+}
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+body{font-family:var(--sans);font-size:var(--text-base);line-height:1.6;background:var(--bg);color:var(--ink);overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #f0b34a;outline-offset:3px}
+.wrap{inline-size:min(100% - 2*var(--gutter),70rem);margin-inline:auto}
+h1,h2{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;line-height:1.08}
+.site-head{display:flex;align-items:center;justify-content:space-between;padding-block:var(--space-md)}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--serif);font-weight:600;font-size:1.4rem}
+.brand i{inline-size:1.7rem;block-size:1.7rem;border-radius:.5rem;background:var(--teal);position:relative;overflow:hidden}
+.brand i::after{content:"";position:absolute;inset-inline:-.25rem;inset-block-end:.3rem;block-size:.55rem;border-radius:50%;background:var(--teal-l)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-block-size:48px;padding-inline:1.5rem;border-radius:999px;font-weight:600;font-size:var(--text-sm);border:1px solid transparent;cursor:pointer}
+.btn-pri{background:var(--teal);color:#fff}.btn-pri:hover{background:var(--teal-d)}
+.btn-sec{border-color:var(--line)}
+.btn-block{inline-size:100%}
+/* layout: single column first, two columns from 64em. dvh keeps it honest on phones */
+.signup{display:grid;gap:var(--space-lg);align-content:center;min-block-size:min(calc(100dvh - 6rem),50rem);padding-block:var(--space-md) var(--space-xl)}
+.eyebrow{font-size:.8125rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);display:flex;gap:.5rem;align-items:center}
+.eyebrow::before{content:"";inline-size:1.1rem;block-size:2px;background:currentColor}
+.pitch h1{font-size:var(--text-4xl);margin-block:var(--space-sm)}
+.pitch p{color:var(--muted);font-size:var(--text-lg);max-inline-size:30ch}
+.pitch ul{display:none;list-style:none;padding:0;margin-block-start:var(--space-md);gap:.75rem;font-size:var(--text-sm)}
+.pitch li{display:flex;align-items:center;gap:.75rem}.pitch li::before{content:"";inline-size:.5rem;block-size:.5rem;border-radius:50%;background:var(--teal)}
+/* the form card is a container: its fields re-flow by the card's width, wherever it sits */
+.card-wrap{container:signup / inline-size}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:1.5rem;padding:var(--space-md);box-shadow:0 30px 60px -34px rgba(18,48,46,.3)}
+.card h2{font-size:clamp(1.5rem,1.2rem + 1.2vw,1.9rem)}
+.sub{color:var(--muted);font-size:var(--text-sm);margin-block:.25rem var(--space-md)}
+form{display:grid;gap:var(--space-md)}
+.row{display:grid;gap:var(--space-md)}
+.field{display:grid;gap:.4rem;min-inline-size:0}
+.field>label{font-weight:600;font-size:.875rem}
+.ctl{inline-size:100%;min-block-size:48px;border:1.5px solid var(--line);border-radius:.8rem;padding-inline:.9rem;background:#fff;font-size:1rem;/* 16px stops iOS zoom-on-focus */transition:border-color .15s,box-shadow .15s}
+select.ctl{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a6e6b' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;background-size:1.1rem;padding-inline-end:2.5rem}
+.ctl:focus-visible{outline:0;border-color:var(--teal);box-shadow:0 0 0 4px rgba(15,118,110,.18)}
+.ctl[aria-invalid=true]{border-color:var(--err);background:#fdf1ef}
+.hint{font-size:.8125rem;color:var(--muted)}
+.err{display:flex;gap:.4rem;color:var(--err);font-size:.875rem;font-weight:500}
+.err svg{inline-size:1rem;block-size:1rem;flex:none;margin-block-start:.2rem;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.pw{position:relative}.pw .ctl{padding-inline-end:4.5rem}
+.pw button{position:absolute;inset-inline-end:.25rem;inset-block:.25rem;min-inline-size:44px;border:0;background:transparent;border-radius:.6rem;font-size:.8125rem;font-weight:600;color:var(--teal);cursor:pointer}
+/* 44px hit area on the whole checkbox row */
+.check{display:grid;grid-template-columns:1.5rem 1fr;gap:.75rem;align-items:start;font-size:var(--text-sm);min-block-size:44px;padding-block:.5rem}
+.check input{inline-size:1.375rem;block-size:1.375rem;margin:0;accent-color:var(--teal)}
+.check a{color:var(--teal);text-decoration:underline;text-underline-offset:2px}
+.done{text-align:center;padding-block:var(--space-lg)}
+.done h2{margin-block:var(--space-sm)}.done p{color:var(--muted)}
+.site-foot{border-block-start:1px solid var(--line);padding-block:var(--space-md);color:var(--muted);font-size:.875rem}
+@container signup (min-width:32rem){
+  .row.two{grid-template-columns:1fr 1fr}
+}
+@media (min-width:64em){
+  .signup{grid-template-columns:1fr 1fr;gap:var(--space-xl);align-items:center}
+  .pitch ul{display:grid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-head"><a class="brand" href="#"><i></i>Tidewater</a><a class="btn btn-sec" href="#">Log in</a></header>
+  <main class="signup">
+    <section class="pitch">
+      <span class="eyebrow">Start free</span>
+      <h1>Set up your clinic in an afternoon.</h1>
+      <p>Import your patients, invite your therapists and send your first reminders before the day is out.</p>
+      <ul><li>Free for 30 days, no card needed</li><li>Import from CSV or your old system</li><li>Cancel anytime, export your data</li></ul>
+    </section>
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <h2>Create your account</h2>
+        <p class="sub">30 days free. No card needed.</p>
+        <form id="f" novalidate>
+          <div class="row two">
+            <div class="field"><label for="name">Full name</label>
+              <input class="ctl" id="name" name="name" autocomplete="name" value="Jordan Lee"><div class="msg" data-for="name"></div></div>
+            <div class="field"><label for="size">Clinic size</label>
+              <select class="ctl" id="size" name="size"><option value="">Select clinic size</option><option>Just me</option><option>2–5 people</option><option>6–10 people</option><option>11–25 people</option><option>26–50 people</option><option>50+ people</option></select><div class="msg" data-for="size"></div></div>
+          </div>
+          <div class="field"><label for="email">Work email</label><span class="hint" id="email-h">We send your booking confirmations from here.</span>
+            <input class="ctl" id="email" name="email" type="email" inputmode="email" autocomplete="email" value="jordan@clinic" aria-describedby="email-h"><div class="msg" data-for="email"></div></div>
+          <div class="field"><label for="password">Password</label><span class="hint" id="password-h">At least 8 characters.</span>
+            <div class="pw"><input class="ctl" id="password" name="password" type="password" autocomplete="new-password" value="tide" aria-describedby="password-h"><button type="button" id="show" aria-pressed="false">Show</button></div><div class="msg" data-for="password"></div></div>
+          <div class="field"><label class="check" for="terms" style="font-weight:400"><input type="checkbox" id="terms" name="terms"><span>I accept the <a href="#terms">terms of service</a> and <a href="#privacy">privacy policy</a>.</span></label><div class="msg" data-for="terms"></div></div>
+          <button class="btn btn-pri btn-block" type="submit">Create account</button>
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer class="site-foot">© 2026 Tidewater · Scheduling for small physiotherapy clinics</footer>
+</div>
+<script>
+const rules={
+  name:v=>v.trim()?'':'Enter your full name.',
+  email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?'':'Enter a valid work email, like name@clinic.com.',
+  password:v=>v.length>=8?'':'Password is too short. Use at least 8 characters.',
+  size:v=>v?'':'Choose your clinic size.',
+  terms:v=>v?'':'Accept the terms to continue.'
+};
+const ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>';
+const f=document.getElementById('f'),touched={};
+const val=k=>{const el=f.elements[k];return el.type==='checkbox'?el.checked:el.value};
+function check(k){
+  const el=f.elements[k],box=f.querySelector(`[data-for=${k}]`),m=touched[k]?rules[k](val(k)):'';
+  el.setAttribute('aria-invalid',!!m);
+  const hint=document.getElementById(k+'-h');
+  if(m){box.innerHTML=`<p class="err" id="${k}-e" role="alert">${ICON}<span>${m}</span></p>`;el.setAttribute('aria-describedby',k+'-e')}
+  else{box.innerHTML='';hint?el.setAttribute('aria-describedby',k+'-h'):el.removeAttribute('aria-describedby')}
+  return m;
+}
+Object.keys(rules).forEach(k=>{
+  const el=f.elements[k];
+  el.addEventListener('blur',()=>{touched[k]=true;check(k)});
+  el.addEventListener(el.type==='checkbox'||el.tagName==='SELECT'?'change':'input',()=>{if(touched[k])check(k)});
+});
+// demo state: two fields already touched so their errors show on load
+touched.email=touched.password=true;check('email');check('password');
+document.getElementById('show').onclick=e=>{const p=f.elements.password,s=p.type==='password';p.type=s?'text':'password';e.target.textContent=s?'Hide':'Show';e.target.setAttribute('aria-pressed',s)};
+f.addEventListener('submit',e=>{
+  e.preventDefault();
+  const errs=Object.keys(rules).map(k=>{touched[k]=true;return check(k)});
+  if(errs.some(Boolean)){f.querySelector('[aria-invalid=true]').focus();return}
+  document.getElementById('card').innerHTML=`<div class="done" role="status"><h2>Welcome, ${f.elements.name.value.split(' ')[0]}.</h2><p>We sent a confirmation link to ${f.elements.email.value}.</p></div>`;
+});
+</script>
+</body>
+</html>

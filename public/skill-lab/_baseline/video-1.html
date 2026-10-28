@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><video src="video-1-teaser.mp4" autoplay muted loop playsinline controls></video><figcaption>video-1: Tidewater teaser, 6 s, 1280x720</figcaption></figure><figure><img src="video-1-frames.png" alt="Frames at 0.5 s, 1.7 s, 3.2 s, 4.2 s, 5.7 s"><figcaption>Frames at 0.5 s, 1.7 s, 3.2 s, 4.2 s, 5.7 s</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered a 6.0 s, 1280x720, 30 fps H.264 MP4 (545 KB, 180 frames) teaser for Tidewater: title card (0-1.2 s), three feature beats of about 1.4 s each (Book in two taps / No-shows drop / Every therapist, one view) with a small animated UI card for each, and an end card with the tagline and a call to action (4.6-6 s).
+
+How: the scenes are one HTML page whose render(t) function sets opacity/transform for any time t. Headless Chrome (puppeteer-core) stepped t in 1/30 s increments and saved 180 PNG screenshots, and ffmpeg encoded them (yuv420p, crf 18, faststart). Verified with ffprobe (dimensions, fps, duration, frame count) and a contact sheet of five frames. The first contact sheet showed the feature text pinned to the top of the frame (my CSS left flex-direction at column); I fixed it and re-rendered. No audio, no custom font: Helvetica Neue from the system. Copy and the tidewater.app URL are placeholders I made up.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Check the toolchain.</div><div class="cmd">ffmpeg -version | head -1; ffmpeg -hide_banner -filters | grep -E 'drawtext|palettegen'</div><div class="out">ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+ T.C drawtext          V-&gt;V       Draw text on top of video frames using libfreetype library.
+ ... palettegen        V-&gt;V       Find the optimal palette for a given stream.</div></div><div class="step"><div class="note"># Deterministic frame-by-frame capture in headless Chrome.</div><div class="cmd"># wrote teaser.html (5 time-driven scenes, render(t) sets styles) and render.mjs (puppeteer: for i&lt;180 -&gt; render(i/30) -&gt; screenshot)
+node render.mjs</div><div class="out">frames 180</div></div><div class="step"><div class="cmd">ffmpeg -v error -y -framerate 30 -i frames/f%04d.png -c:v libx264 -pix_fmt yuv420p -crf 18 -movflags +faststart teaser.mp4</div><div class="out">(no output, success)</div></div><div class="step"><div class="note"># Visual check found a layout bug (.beat inherited flex-direction:column).</div><div class="cmd">ffmpeg -v error -y -i teaser.mp4 -vf "select='eq(n,15)+eq(n,50)+eq(n,95)+eq(n,125)+eq(n,170)',scale=640:-1,tile=5x1" -frames:v 1 sheet.png</div><div class="out">first contact sheet: beat text and cards sat at the top of the frame, not centred</div></div><div class="step"><div class="note"># Fix and re-render.</div><div class="cmd">sed -i '' 's/\.beat{display:flex;/.beat{display:flex;flex-direction:row;/' teaser.html &amp;&amp; node render.mjs &amp;&amp; ffmpeg ... teaser.mp4 &amp;&amp; ffmpeg ... sheet.png</div><div class="out">frames 180
+-rw-r--r--  1 kametayturar  wheel  545179 Oct 22 21:58 teaser.mp4
+second contact sheet: all beats centred, card animations visible</div></div><div class="step"><div class="cmd">ffprobe -v error -show_entries stream=codec_name,pix_fmt,width,height,r_frame_rate,nb_frames,duration:format=size -of default=nw=1 teaser.mp4</div><div class="out">codec_name=h264
+width=1280
+height=720
+pix_fmt=yuv420p
+r_frame_rate=30/1
+duration=6.000000
+nb_frames=180
+size=545179</div></div></div>
+<h2>Files</h2><details open><summary>teaser.html</summary><pre>&lt;!doctype html&gt;&lt;meta charset=<span <span class="k">class</span>="s">"utf-<span class="n">8</span>"</span>&gt;
+&lt;style&gt;
+*{box-sizing:border-box;margin:<span class="n">0</span>}
+body{width:1280px;height:720px;overflow:hidden;background:#0b3b4a;font-family:<span <span class="k">class</span>="s">"Helvetica Neue"</span>,Helvetica,Arial,sans-serif;color:#fff;position:relative}
+.bg{position:absolute;inset:<span class="n">0</span>;background:linear-gradient(135deg,#0b3b4a,#0f6a73 <span class="n">60</span>%,#1aa5a0)}
+.wave{position:absolute;left:-<span class="n">10</span>%;width:<span class="n">120</span>%;height:300px;border-radius:<span class="n">50</span>%;opacity:.<span class="n">12</span>;background:#fff}
+.scene{position:absolute;inset:<span class="n">0</span>;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:<span class="n">0</span>}
+.logo{font-size:110px;font-weight:<span class="n">700</span>;letter-spacing:-3px}
+.sub{font-size:34px;opacity:.<span class="n">85</span>;margin-top:14px}
+.beat{display:flex;flex-direction:row;gap:70px;align-items:center;padding:<span class="n">0</span> 110px;justify-content:flex-start;text-align:left}
+.num{font-size:34px;font-weight:<span class="n">700</span>;color:#7ff0e0;letter-spacing:3px;margin-bottom:14px}
+.h{font-size:78px;font-weight:<span class="n">700</span>;line-height:<span class="n">1.05</span>;letter-spacing:-2px}
+.p{font-size:30px;opacity:.<span class="n">85</span>;margin-top:18px;max-width:560px;line-height:<span class="n">1.35</span>}
+.card{width:420px;height:420px;border-radius:36px;background:#fff;color:#0b3b4a;padding:34px;box-shadow:<span class="n">0</span> 30px 80px rgba(<span class="n">0</span>,<span class="n">0</span>,<span class="n">0</span>,.<span class="n">35</span>);flex:none;position:relative}
+.cal .row{display:flex;gap:8px;margin-bottom:8px}
+.cal .d{flex:<span class="n">1</span>;height:48px;border-radius:10px;background:#e8f3f3}
+.slot{height:56px;border-radius:12px;margin-bottom:12px;background:#e8f3f3;display:flex;align-items:center;padding:<span class="n">0</span> 16px;font-size:22px;font-weight:<span class="n">600</span>}
+.slot.on{background:#1aa5a0;color:#fff}
+.btn{display:inline-block;margin-top:34px;background:#fff;color:#0b3b4a;font-size:32px;font-weight:<span class="n">700</span>;padding:18px 44px;border-radius:60px}
+&lt;/style&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"bg"</span>&gt;&lt;/div&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"wave"</span> style=<span <span class="k">class</span>="s">"bottom:-200px"</span>&gt;&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"wave"</span> style=<span <span class="k">class</span>="s">"bottom:-240px;opacity:.<span class="n">08</span>"</span>&gt;&lt;/div&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"scene"</span> id=<span <span class="k">class</span>="s">"s0"</span>&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"logo"</span>&gt;Tidewater&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"sub"</span>&gt;Scheduling <span class="k">for</span> physiotherapy clinics&lt;/div&gt;&lt;/div&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"scene beat"</span> id=<span <span class="k">class</span>="s">"s1"</span>&gt;&lt;div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"num"</span>&gt;<span class="n">01</span>&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"h"</span>&gt;Book <span class="k">in</span>&lt;br&gt;two taps&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"p"</span>&gt;Patients pick a slot. Your calendar fills itself.&lt;/div&gt;&lt;/div&gt;
+ &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card cal"</span>&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"row"</span>&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"d"</span>&gt;&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"d"</span>&gt;&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"d"</span> style=<span <span class="k">class</span>="s">"background:#1aa5a0"</span>&gt;&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"d"</span>&gt;&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"d"</span>&gt;&lt;/div&gt;&lt;/div&gt;
+ &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"slot"</span>&gt;<span class="n">9</span>:<span class="n">00</span> &amp;nbsp;Initial assessment&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"slot on"</span> id=<span <span class="k">class</span>="s">"sl"</span>&gt;<span class="n">10</span>:<span class="n">30</span> &amp;nbsp;Knee rehab&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"slot"</span>&gt;<span class="n">11</span>:<span class="n">15</span> &amp;nbsp;Follow-up&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"slot"</span>&gt;<span class="n">13</span>:<span class="n">00</span> &amp;nbsp;Sports massage&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"scene beat"</span> id=<span <span class="k">class</span>="s">"s2"</span>&gt;&lt;div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"num"</span>&gt;<span class="n">02</span>&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"h"</span>&gt;No-shows&lt;br&gt;drop&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"p"</span>&gt;Automatic SMS reminders, one-tap confirm or reschedule.&lt;/div&gt;&lt;/div&gt;
+ &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span> style=<span <span class="k">class</span>="s">"display:flex;flex-direction:column;justify-content:center;gap:18px"</span>&gt;&lt;div style=<span <span class="k">class</span>="s">"font-size:24px;background:#e8f3f3;padding:18px 22px;border-radius:22px 22px 22px 4px"</span> id=<span <span class="k">class</span>="s">"m1"</span>&gt;Hi Sam, see you tomorrow at <span class="n">10</span>:<span class="n">30</span>. Reply Y to confirm.&lt;/div&gt;&lt;div style=<span <span class="k">class</span>="s">"font-size:24px;background:#1aa5a0;color:#fff;padding:18px 22px;border-radius:22px 22px 4px 22px;align-self:flex-end"</span> id=<span <span class="k">class</span>="s">"m2"</span>&gt;Y&lt;/div&gt;&lt;div style=<span <span class="k">class</span>="s">"font-size:24px;font-weight:<span class="n">700</span>;color:#1aa5a0"</span> id=<span <span class="k">class</span>="s">"m3"</span>&gt;Confirmed&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"scene beat"</span> id=<span <span class="k">class</span>="s">"s3"</span>&gt;&lt;div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"num"</span>&gt;<span class="n">03</span>&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"h"</span>&gt;Every&lt;br&gt;therapist,&lt;br&gt;one view&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"p"</span>&gt;Rooms, staff and treatment plans, <span class="k">in</span> sync.&lt;/div&gt;&lt;/div&gt;
+ &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span> style=<span <span class="k">class</span>="s">"display:flex;flex-direction:column;gap:12px;justify-content:center"</span>&gt;&lt;div id=<span <span class="k">class</span>="s">"b1"</span> style=<span <span class="k">class</span>="s">"height:62px;border-radius:12px;background:#1aa5a0;width:<span class="n">80</span>%"</span>&gt;&lt;/div&gt;&lt;div id=<span <span class="k">class</span>="s">"b2"</span> style=<span <span class="k">class</span>="s">"height:62px;border-radius:12px;background:#0f6a73;width:<span class="n">60</span>%;margin-left:<span class="n">20</span>%"</span>&gt;&lt;/div&gt;&lt;div id=<span <span class="k">class</span>="s">"b3"</span> style=<span <span class="k">class</span>="s">"height:62px;border-radius:12px;background:#7ff0e0;width:<span class="n">70</span>%;margin-left:<span class="n">10</span>%"</span>&gt;&lt;/div&gt;&lt;div id=<span <span class="k">class</span>="s">"b4"</span> style=<span <span class="k">class</span>="s">"height:62px;border-radius:12px;background:#0b3b4a;width:<span class="n">45</span>%;margin-left:<span class="n">40</span>%"</span>&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"scene"</span> id=<span <span class="k">class</span>="s">"s4"</span>&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"logo"</span> style=<span <span class="k">class</span>="s">"font-size:90px"</span>&gt;Tidewater&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"sub"</span>&gt;Fewer gaps. Fuller days.&lt;/div&gt;&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"btn"</span>&gt;Start free at tidewater.app&lt;/div&gt;&lt;/div&gt;
+&lt;script&gt;
+<span class="k">const</span> clamp=(x,a=<span class="n">0</span>,b=<span class="n">1</span>)=&gt;Math.min(b,Math.max(a,x)), ease=t=&gt;<span class="n">1</span>-Math.pow(<span class="n">1</span>-clamp(t),<span class="n">3</span>);
+<span class="k">function</span> scene(el,t,a,b,dir=<span class="n">1</span>){ // fade+rise <span class="k">in</span> <span class="n">0</span>.3s, out <span class="n">0</span>.25s
+  <span class="k">const</span> i=ease((t-a)/<span class="n">0.35</span>), o=clamp((b-t)/<span class="n">0.25</span>);
+  el.style.opacity=t&lt;a||t&gt;b?<span class="n">0</span>:Math.min(i,o);
+  el.style.transform=<span <span class="k">class</span>="s">`translateY(${(<span class="n">1</span>-i)*<span class="n">30</span>*dir}px)`</span>;
+}
+<span class="k">function</span> render(t){
+  scene(s0,t,<span class="n">0</span>,<span class="n">1.2</span>); scene(s1,t,<span class="n">1.0</span>,<span class="n">2.4</span>); scene(s2,t,<span class="n">2.2</span>,<span class="n">3.6</span>); scene(s3,t,<span class="n">3.4</span>,<span class="n">4.8</span>); scene(s4,t,<span class="n">4.6</span>,<span class="n">6.01</span>);
+  s0.style.opacity = t&lt;<span class="n">1.2</span>? Math.min(ease(t/<span class="n">0.5</span>),clamp((<span class="n">1.2</span>-t)/<span class="n">0.25</span>)):<span class="n">0</span>;
+  <span class="k">const</span> w=document.querySelectorAll(<span <span class="k">class</span>="s">'.wave'</span>); w[<span class="n">0</span>].style.transform=<span <span class="k">class</span>="s">`translateX(${Math.sin(t*<span class="n">1.2</span>)*<span class="n">60</span>}px)`</span>; w[<span class="n">1</span>].style.transform=<span <span class="k">class</span>="s">`translateX(${Math.cos(t*<span class="n">1.0</span>)*<span class="n">80</span>}px)`</span>;
+  sl.style.transform=<span <span class="k">class</span>="s">`scale(${<span class="n">1</span>+<span class="n">0.04</span>*Math.sin(clamp((t-<span class="n">1.6</span>)/<span class="n">0.6</span>)*Math.PI)})`</span>;
+  m1.style.opacity=ease((t-<span class="n">2.5</span>)/<span class="n">0.3</span>); m2.style.opacity=ease((t-<span class="n">2.95</span>)/<span class="n">0.2</span>); m3.style.opacity=ease((t-<span class="n">3.2</span>)/<span class="n">0.2</span>);
+  [b1,b2,b3,b4].forEach((b,k)=&gt;{b.style.transform=<span <span class="k">class</span>="s">`scaleX(${ease((t-<span class="n">3.6</span>-k*<span class="n">0.12</span>)/<span class="n">0.4</span>)})`</span>;b.style.transformOrigin=<span <span class="k">class</span>="s">'left'</span>});
+}
+render(<span class="n">0</span>);
+&lt;/script&gt;
+</pre></details><details><summary>render.mjs</summary><pre><span class="k">import</span> puppeteer <span class="k">from</span> <span <span class="k">class</span>="s">"/Users/kametayturar/agentic-ui/ai-answer/docs/review/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js"</span>
+<span class="k">import</span> {mkdirSync} <span class="k">from</span> <span <span class="k">class</span>="s">"node:fs"</span>
+mkdirSync(<span <span class="k">class</span>="s">"frames"</span>,{recursive:<span class="k">true</span>})
+<span class="k">const</span> b=<span class="k">await</span> puppeteer.launch({executablePath:<span <span class="k">class</span>="s">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span>,headless:<span class="k">true</span>})
+<span class="k">const</span> p=<span class="k">await</span> b.newPage(); <span class="k">await</span> p.setViewport({width:<span class="n">1280</span>,height:<span class="n">720</span>})
+<span class="k">await</span> p.goto(<span <span class="k">class</span>="s">"file:///tmp/claude-<span class="n">501</span>/lab2/_baseline/v1/teaser.html"</span>)
+<span class="k">const</span> FPS=<span class="n">30</span>,N=<span class="n">6</span>*FPS
+<span class="k">for</span>(<span class="k">let</span> i=<span class="n">0</span>;i&lt;N;i++){ <span class="k">await</span> p.evaluate(t=&gt;render(t),i/FPS); <span class="k">await</span> p.screenshot({path:<span <span class="k">class</span>="s">`frames/f${String(i).padStart(<span class="n">4</span>,"<span class="n">0</span>")}.png`</span>}) }
+<span class="k">await</span> b.close(); console.log(<span <span class="k">class</span>="s">"frames"</span>,N)
+</pre></details>
+</main>
+
+</body></html>

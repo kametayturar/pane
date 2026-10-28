@@ -1,0 +1,28 @@
+{
+  "id": "shadcn",
+  "sets": ["web"],
+  "skillSays": [
+    "Use existing shadcn components before writing custom markup, and compose them (Card with Header, Title, Description, Content, Footer; Table, Badge, Avatar, Alert).",
+    "Use built-in variants and semantic tokens (bg-primary, text-muted-foreground), never raw colours; className is for layout only.",
+    "Forms are FieldGroup plus Field, with FieldLabel, FieldDescription and FieldError; validation is data-invalid on the Field and aria-invalid on the control.",
+    "Use gap utilities instead of space-x/space-y, Separator instead of hr, Badge instead of styled spans, ToggleGroup for 2-5 options, Alert for callouts.",
+    "Theme by editing OKLCH CSS variables (--primary, --radius, --border, --ring) and the .dark class, never per-component dark: overrides."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Reproduced shadcn's neutral OKLCH tokens, 0.625rem radius and Geist font, and remapped only --primary and --ring to Tidewater teal.",
+      "Composed the schedule preview from Card plus Table, Avatar with fallback and Badge variants instead of a custom styled list.",
+      "Feature section uses full Card composition (CardHeader with title and description, CardContent) and the hero announcement is a Badge, not a custom pill."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Monthly/Yearly switch is a single-select ToggleGroup, as the skill prescribes for 2-5 options, rather than looped buttons with manual active state.",
+      "Plan cards are Cards with CardHeader, CardAction (Most popular Badge), CardContent and CardFooter; the separator is a Separator, and the featured plan relies on Badge plus the default Button variant, with no colour overrides.",
+      "Savings label is a secondary Badge."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Form uses FieldGroup and Field with FieldLabel, FieldDescription and FieldError; invalid state is data-invalid on the Field plus aria-invalid on the Input.",
+      "Clinic size uses the native-select pattern, the terms control is a Checkbox in a horizontal Field, and the success message is an Alert.",
+      "Wrapped in a Card with CardHeader and CardContent; the password reveal button is a ghost Button."
+    ]}
+  ]
+}

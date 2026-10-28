@@ -1,0 +1,29 @@
+{
+  "id": "tailwind-design-system",
+  "sets": ["web"],
+  "skillSays": [
+    "Configure the design system CSS-first: tokens in @theme (here mapped through the play-CDN config), not a hand-edited palette per component.",
+    "Use semantic OKLCH colour tokens (background, foreground, primary, muted, accent, destructive, border, ring, card) and write bg-primary or text-muted-foreground instead of raw colour utilities.",
+    "Organise components as base, then variants, then sizes, then states, with a shared radius scale and animation tokens (fade-in, slide-in).",
+    "Dark mode is a class that only overrides the token values; components never carry dark: colour overrides.",
+    "Build for accessibility and responsiveness: visible focus rings with offset, aria state, reduced-motion fallbacks, mobile-first grids."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Wrote an OKLCH semantic token block (:root plus .dark) and exposed it as Tailwind colours, so the page uses bg-primary, text-muted-foreground, bg-accent and border-border with no raw colours.",
+      "Defined btn, btn-primary, btn-outline and btn-lg as a component layer (base, variant, size) with focus-visible ring and ring offset tokens.",
+      "Used the skill's animation tokens (animate-fade-in, animate-slide-in) on the hero and added motion-reduce fallbacks.",
+      "Because the Tailwind play CDN is v3, the skill's v4 @theme was mapped through tailwind.config plus CSS variables; the token structure is unchanged."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Plan cards, the featured highlight and the billing toggle use only semantic colours (border-primary, bg-accent/40, text-primary-foreground), so dark mode needs no extra rules.",
+      "Toggle state is driven by aria-checked variants (aria-checked:text-primary-foreground) rather than ad-hoc classes.",
+      "Price changes reuse the slide-in animation token with a motion-reduce fallback."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Defined one .control component class whose invalid state is an aria-invalid variant, with the destructive semantic token for border, tint and focus ring.",
+      "Added a warning/success token pair for the password-strength meter instead of raw amber and green utilities.",
+      "Labels, aria-describedby, role=alert errors and a custom checkbox built on a peer sr-only input, so it stays keyboard accessible."
+    ]}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "impeccable",
+  "sets": [
+    "web"
+  ],
+  "skillSays": [
+    "Pick the surface's mode first (Persuade for landing and pricing, Operate for a signup form) and scale ambition to it: bold world for Persuade, precision and standard controls for Operate.",
+    "For a new surface, derive several concrete visual worlds from the audience's own culture, commit to one, and never default to the category template; the brief's own words win.",
+    "Read the craft floor before any UI edit: measured contrast, tight-vs-generous spacing, 65-75ch measure, one authored motion moment, hover/focus/error/empty states, and themed browser surfaces (selection, caret, scrollbar, focus ring, tabular numerals).",
+    "Hard refusals: no kicker over headings, no section numbers, no icon-heading-text card grids, no gradient text, no glass, no hard offset shadows, no emoji as icons, no hero-metric template.",
+    "Verify the rendered result at the sizes it ships, batching the checks, and finish the job completely."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Committed to a world drawn from the audience (a harbour tide table: chart-paper ground, timetable column rhythm, Young Serif display with Martian Mono for times) instead of a generic SaaS hero",
+        "The hero is the product's real day sheet with clickable open slots and a tide-curve of chair time, not a split headline-plus-screenshot",
+        "Features are ruled table rows with a small drawn instrument each, replacing the equal icon-card trio the craft floor refuses",
+        "One authored motion: the sheet draws in once with clip-path and blur; no scattered hover or scroll effects"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Priced as a tide-table rate card: ruled columns, the middle plan inverted on a deep ground, prices set in the display serif",
+        "The monthly/yearly toggle is a gauge-like segmented control whose thumb slides and prices blur-in on swap, with the billed-yearly arithmetic shown",
+        "Checkmarks drawn from CSS borders and a single buoy-orange accent on the primary action only"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Treated the form as an Operate surface: standard labels, inputs, select and checkbox, with the world limited to palette, type and one signature move",
+        "Signature move: the password field carries a tide-gauge of ticks with a marked minimum at 10 characters",
+        "Errors name the problem and the recovery, carry an icon plus bold text (not colour alone), and move focus to the first invalid field on submit"
+      ]
+    }
+  ]
+}

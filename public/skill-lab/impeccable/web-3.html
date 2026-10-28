@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper: oklch(96.5% 0.016 188);
+  --sheet: oklch(99% 0.006 188);
+  --paper-2: oklch(92.4% 0.026 192);
+  --rule: oklch(81% 0.032 195);
+  --edge: oklch(55% 0.05 215);
+  --ink: oklch(24% 0.055 238);
+  --ink-2: oklch(40% 0.05 232);
+  --tide: oklch(45% 0.095 218);
+  --buoy: oklch(69% 0.185 48);
+  --buoy-deep: oklch(56% 0.17 44);
+  --deep: oklch(25% 0.06 238);
+  --deep-2: oklch(86% 0.03 205);
+  --err: oklch(46% 0.17 28);
+  --err-wash: oklch(95% 0.03 30);
+  --ease: cubic-bezier(.16,1,.3,1);
+  --serif: "Young Serif", Georgia, serif;
+  --sans: "Hanken Grotesk", system-ui, sans-serif;
+  --mono: "Martian Mono", ui-monospace, monospace;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font:400 1rem/1.5 var(--sans);min-height:100vh;caret-color:var(--buoy);overflow-x:hidden}
+::selection{background:var(--buoy);color:var(--deep)}
+a{color:inherit;text-underline-offset:.22em}
+:focus-visible{outline:3px solid var(--buoy);outline-offset:2px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.shell{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);min-height:100vh}
+aside{background:var(--deep);color:var(--paper);padding:clamp(1.5rem,3.5vw,3rem);display:flex;flex-direction:column;justify-content:space-between;gap:2.5rem}
+.mark{font:400 1.5rem/1 var(--serif);text-decoration:none;display:flex;align-items:center;gap:.6rem}
+.mark i{display:block;width:1.6rem;height:1.1rem;background:linear-gradient(var(--paper),var(--paper)) 0 100%/100% 2px no-repeat,repeating-linear-gradient(90deg,var(--paper) 0 2px,transparent 2px 5px) 0 0/100% 70% no-repeat}
+aside h2{font:400 clamp(1.8rem,3vw,2.6rem)/1.08 var(--serif);letter-spacing:-.01em;max-width:14ch}
+aside ol{list-style:none;padding:0;margin-top:2rem;display:grid;gap:1.1rem;color:var(--deep-2);max-width:34ch}
+aside li{display:grid;grid-template-columns:2.2rem 1fr;gap:.5rem;align-items:baseline}
+aside li span{font:500 .8rem/1 var(--mono);color:var(--buoy)}
+aside li b{color:var(--paper);font-weight:600}
+aside small{color:var(--deep-2);font-size:.88rem}
+main{padding:clamp(1.5rem,4vw,3.5rem);display:flex;align-items:center;justify-content:center}
+form,.done{width:100%;max-width:30rem}
+h1{font:400 clamp(1.8rem,2.6vw,2.3rem)/1.1 var(--serif);letter-spacing:-.01em}
+.sub{color:var(--ink-2);margin-top:.5rem;margin-bottom:1.75rem}
+.field{margin-bottom:1.15rem}
+label,.lbl{display:block;font-weight:600;font-size:.92rem;margin-bottom:.4rem}
+input[type=text],input[type=email],input[type=password],select{width:100%;font:400 1rem/1.2 var(--sans);color:var(--ink);background:var(--sheet);border:1.5px solid var(--edge);border-radius:3px;padding:.85rem .9rem;transition:border-color .2s var(--ease),background-color .2s var(--ease);appearance:none}
+input::placeholder{color:var(--ink-2);opacity:.8}
+input:hover,select:hover{border-color:var(--ink)}
+input:focus,select:focus{outline:3px solid color-mix(in oklch,var(--buoy) 70%,transparent);outline-offset:0;border-color:var(--ink)}
+input[aria-invalid=true],select[aria-invalid=true]{border-color:var(--err);background:var(--err-wash)}
+input[aria-invalid=true]:focus{border-color:var(--err)}
+.selwrap{position:relative}
+.selwrap::after{content:"";position:absolute;right:1rem;top:50%;width:.5rem;height:.5rem;border:solid var(--ink);border-width:0 2px 2px 0;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.err{display:none;margin-top:.45rem;font-size:.9rem;color:var(--err);gap:.5rem;align-items:flex-start;line-height:1.4}
+.err.on{display:flex}
+.err svg{flex:none;margin-top:.1rem}
+.err b{font-weight:700}
+.pwrow{position:relative}
+.pwrow button{position:absolute;right:.35rem;top:50%;transform:translateY(-50%);background:none;border:0;font:600 .85rem/1 var(--sans);color:var(--tide);padding:.55rem .6rem;cursor:pointer;border-radius:2px}
+.pwrow button:hover{background:var(--paper-2)}
+.pwrow input{padding-right:4.5rem}
+/* signature move: password length as a tide gauge */
+.gauge{margin-top:.6rem;display:flex;align-items:center;gap:.75rem}
+.ticks{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;flex:1;height:.9rem;position:relative}
+.ticks i{background:var(--paper-2);border:1px solid var(--rule);border-radius:1px;transition:background-color .2s var(--ease)}
+.ticks i.on{background:var(--tide);border-color:var(--tide)}
+.ticks i.on.short{background:var(--err);border-color:var(--err)}
+.ticks i:nth-child(10){margin-right:0;box-shadow:2px 0 0 -0px var(--ink)}
+.gauge span{font-size:.78rem;color:var(--ink-2);white-space:nowrap}
+.hint{font-size:.85rem;color:var(--ink-2);margin-top:.35rem}
+.check{display:grid;grid-template-columns:1.4rem 1fr;gap:.7rem;align-items:start;margin:1.4rem 0 1.5rem;font-size:.95rem}
+.check input{appearance:none;width:1.4rem;height:1.4rem;border:1.5px solid var(--edge);border-radius:3px;background:var(--sheet);margin:0;cursor:pointer;display:grid;place-content:center}
+.check input:checked{background:var(--ink);border-color:var(--ink)}
+.check input:checked::before{content:"";width:.35rem;height:.7rem;border:solid var(--paper);border-width:0 2px 2px 0;transform:rotate(40deg) translate(-1px,-1px)}
+.check label{font-weight:400;margin:0}
+.btn{width:100%;font:600 1.02rem/1 var(--sans);background:var(--buoy);color:var(--deep);border:1.5px solid var(--buoy);border-radius:3px;padding:1.05rem;cursor:pointer;transition:background-color .2s var(--ease),transform .2s var(--ease)}
+.btn:hover{background:oklch(73% 0.18 52)}
+.btn:active{transform:translateY(1px);background:var(--buoy-deep);color:#fff}
+.alt{margin-top:1.25rem;font-size:.95rem;color:var(--ink-2)}
+.done{display:none}
+.done.on{display:block}
+.done p{margin-top:.75rem;color:var(--ink-2)}
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+  aside{padding-block:1.25rem;gap:1rem}
+  aside h2,aside ol{display:none}
+  main{align-items:flex-start;padding-top:2rem}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside>
+    <a class="mark" href="#"><i aria-hidden="true"></i>Tidewater</a>
+    <div>
+      <h2>Your first day sheet in an afternoon.</h2>
+      <ol>
+        <li><span>1</span><div><b>Create the account.</b> It takes under a minute.</div></li>
+        <li><span>2</span><div><b>Import your diary</b> from a CSV or start from a blank week.</div></li>
+        <li><span>3</span><div><b>Invite your therapists.</b> Each gets their own login.</div></li>
+      </ol>
+    </div>
+    <small>30-day trial. No card needed until day 31.</small>
+  </aside>
+
+  <main>
+    <form id="f" novalidate>
+      <h1>Create your clinic account</h1>
+      <p class="sub">You will be the clinic administrator. Therapists are added later.</p>
+
+      <div class="field">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" autocomplete="name" value="Mira Okafor" required>
+        <p class="err" id="name-err"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Work email</label>
+        <input id="email" name="email" type="email" autocomplete="email" value="mira@harbourroad" required aria-describedby="email-err">
+        <p class="err" id="email-err" role="alert"></p>
+      </div>
+
+      <div class="field">
+        <label for="pw">Password</label>
+        <div class="pwrow">
+          <input id="pw" name="pw" type="password" autocomplete="new-password" value="tide25" required aria-describedby="pw-err pw-gauge">
+          <button type="button" id="show" aria-pressed="false">Show</button>
+        </div>
+        <div class="gauge" id="pw-gauge" aria-hidden="true"><div class="ticks" id="ticks"></div><span class="num" id="count"></span></div>
+        <p class="err" id="pw-err" role="alert"></p>
+      </div>
+
+      <div class="field">
+        <label for="size">Clinic size</label>
+        <div class="selwrap">
+          <select id="size" name="size" required>
+            <option value="">Choose a size</option>
+            <option>Just me</option>
+            <option selected>2 to 5 therapists</option>
+            <option>6 to 15 therapists</option>
+            <option>16 or more therapists</option>
+          </select>
+        </div>
+        <p class="err" id="size-err"></p>
+      </div>
+
+      <div class="check">
+        <input id="terms" type="checkbox" aria-describedby="terms-err">
+        <div><label for="terms">I accept the <a href="#">terms of service</a> and the <a href="#">patient data agreement</a>.</label>
+        <p class="err" id="terms-err" role="alert"></p></div>
+      </div>
+
+      <button class="btn" type="submit">Create clinic account</button>
+      <p class="alt">Already have an account? <a href="#">Sign in</a></p>
+    </form>
+
+    <section class="done" id="done" aria-live="polite">
+      <h1>Check your inbox, <span id="who"></span>.</h1>
+      <p>We sent a confirmation link to <b id="mail"></b>. It stays valid for 24 hours.</p>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  var MIN=10, $=function(i){return document.getElementById(i)};
+  var icon='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.2v4.6M8 10.8v1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+  var ticks=$('ticks'); for(var i=0;i<14;i++)ticks.appendChild(document.createElement('i'));
+  function show(id,el,msg){var e=$(id);if(msg){e.innerHTML=icon+'<span>'+msg+'</span>';e.classList.add('on');el.setAttribute('aria-invalid','true')}else{e.classList.remove('on');e.innerHTML='';el.removeAttribute('aria-invalid')}return !msg}
+  var v={
+    name:function(){var el=$('name');return show('name-err',el,el.value.trim().split(/\s+/).length<2?'<b>Enter your first and last name.</b> We use it on invoices and reminders.':'')},
+    email:function(){var el=$('email'),x=el.value.trim();var ok=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(x);
+      var m=!x?'<b>Enter your work email.</b> We send the confirmation link there.':(!ok?'<b>“'+x.replace(/</g,'&lt;')+'” is not a complete email address.</b> Add the domain ending, for example mira@harbourroad.com.':'');return show('email-err',el,m)},
+    pw:function(){var el=$('pw'),n=el.value.length;
+      var kids=ticks.children;for(var i=0;i<14;i++){kids[i].className=i<n?('on'+(n<MIN?' short':'')):''}
+      $('count').textContent=n+' of '+MIN+' characters';
+      return show('pw-err',el,n<MIN?'<b>Passwords need at least '+MIN+' characters.</b> Yours has '+n+'. Add '+(MIN-n)+' more.':'')},
+    size:function(){var el=$('size');return show('size-err',el,!el.value?'<b>Choose a clinic size.</b> It sets the plan we suggest.':'')},
+    terms:function(){var el=$('terms');return show('terms-err',el,!el.checked?'<b>Accept the terms to continue.</b>':'')}
+  };
+  ['name','email','pw','size'].forEach(function(k){
+    var el=$(k==='pw'?'pw':k);
+    el.addEventListener('blur',v[k]);
+    el.addEventListener('input',function(){if(k==='pw'||el.getAttribute('aria-invalid'))v[k]()});
+    el.addEventListener('change',function(){if(k==='size')v[k]()});
+  });
+  $('terms').addEventListener('change',function(){if($('terms').getAttribute('aria-invalid'))v.terms()});
+  $('show').addEventListener('click',function(){var p=$('pw'),on=p.type==='password';p.type=on?'text':'password';this.textContent=on?'Hide':'Show';this.setAttribute('aria-pressed',on)});
+  $('f').addEventListener('submit',function(e){
+    e.preventDefault();
+    var res=[v.name(),v.email(),v.pw(),v.size(),v.terms()];
+    var bad=['name','email','pw','size','terms'].filter(function(k,i){return !res[i]})[0];
+    if(bad){$(bad).focus();return}
+    $('who').textContent=$('name').value.split(' ')[0];$('mail').textContent=$('email').value;
+    $('f').style.display='none';$('done').classList.add('on');
+  });
+  // show the current state of the prefilled sample values
+  v.email();v.pw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet">
+
+<style>
+:root{
+  --md-sys-color-primary: #006972;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #9df0fb;
+  --md-sys-color-on-primary-container: #004f56;
+  --md-sys-color-secondary: #4a6366;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #cde7eb;
+  --md-sys-color-on-secondary-container: #324b4e;
+  --md-sys-color-tertiary: #515e7d;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #d9e2ff;
+  --md-sys-color-on-tertiary-container: #394664;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #93000a;
+  --md-sys-color-surface: #f5fafb;
+  --md-sys-color-on-surface: #171d1e;
+  --md-sys-color-on-surface-variant: #3f484a;
+  --md-sys-color-surface-dim: #d5dbdc;
+  --md-sys-color-surface-bright: #f5fafb;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #eff5f5;
+  --md-sys-color-surface-container: #e9eff0;
+  --md-sys-color-surface-container-high: #e3e9ea;
+  --md-sys-color-surface-container-highest: #dee4e4;
+  --md-sys-color-outline: #6f797a;
+  --md-sys-color-outline-variant: #bec8ca;
+  --md-sys-color-inverse-surface: #2b3132;
+  --md-sys-color-inverse-on-surface: #ecf2f3;
+  --md-sys-color-inverse-primary: #81d3de;
+  --md-sys-color-surface-tint: #006972;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+}
+:root[data-theme="dark"]{
+  --md-sys-color-primary: #81d3de;
+  --md-sys-color-on-primary: #00363c;
+  --md-sys-color-primary-container: #004f56;
+  --md-sys-color-on-primary-container: #9df0fb;
+  --md-sys-color-secondary: #b1cbcf;
+  --md-sys-color-on-secondary: #1c3437;
+  --md-sys-color-secondary-container: #324b4e;
+  --md-sys-color-on-secondary-container: #cde7eb;
+  --md-sys-color-tertiary: #b9c6ea;
+  --md-sys-color-on-tertiary: #23304d;
+  --md-sys-color-tertiary-container: #394664;
+  --md-sys-color-on-tertiary-container: #d9e2ff;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-surface: #0e1415;
+  --md-sys-color-on-surface: #dee4e4;
+  --md-sys-color-on-surface-variant: #bec8ca;
+  --md-sys-color-surface-dim: #0e1415;
+  --md-sys-color-surface-bright: #343a3b;
+  --md-sys-color-surface-container-lowest: #090f10;
+  --md-sys-color-surface-container-low: #171d1e;
+  --md-sys-color-surface-container: #1b2122;
+  --md-sys-color-surface-container-high: #252b2c;
+  --md-sys-color-surface-container-highest: #303637;
+  --md-sys-color-outline: #899294;
+  --md-sys-color-outline-variant: #3f484a;
+  --md-sys-color-inverse-surface: #dee4e4;
+  --md-sys-color-inverse-on-surface: #2b3132;
+  --md-sys-color-inverse-primary: #006972;
+  --md-sys-color-surface-tint: #81d3de;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --md-sys-color-primary: #81d3de;
+  --md-sys-color-on-primary: #00363c;
+  --md-sys-color-primary-container: #004f56;
+  --md-sys-color-on-primary-container: #9df0fb;
+  --md-sys-color-secondary: #b1cbcf;
+  --md-sys-color-on-secondary: #1c3437;
+  --md-sys-color-secondary-container: #324b4e;
+  --md-sys-color-on-secondary-container: #cde7eb;
+  --md-sys-color-tertiary: #b9c6ea;
+  --md-sys-color-on-tertiary: #23304d;
+  --md-sys-color-tertiary-container: #394664;
+  --md-sys-color-on-tertiary-container: #d9e2ff;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-surface: #0e1415;
+  --md-sys-color-on-surface: #dee4e4;
+  --md-sys-color-on-surface-variant: #bec8ca;
+  --md-sys-color-surface-dim: #0e1415;
+  --md-sys-color-surface-bright: #343a3b;
+  --md-sys-color-surface-container-lowest: #090f10;
+  --md-sys-color-surface-container-low: #171d1e;
+  --md-sys-color-surface-container: #1b2122;
+  --md-sys-color-surface-container-high: #252b2c;
+  --md-sys-color-surface-container-highest: #303637;
+  --md-sys-color-outline: #899294;
+  --md-sys-color-outline-variant: #3f484a;
+  --md-sys-color-inverse-surface: #dee4e4;
+  --md-sys-color-inverse-on-surface: #2b3132;
+  --md-sys-color-inverse-primary: #006972;
+  --md-sys-color-surface-tint: #81d3de;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+}}
+:root{
+  --md-ref-typeface-brand:'Roboto Flex',Roboto,system-ui,sans-serif;
+  /* shape */
+  --md-sys-shape-corner-none:0px;--md-sys-shape-corner-extra-small:4px;--md-sys-shape-corner-small:8px;--md-sys-shape-corner-medium:12px;--md-sys-shape-corner-large:16px;--md-sys-shape-corner-large-increased:20px;--md-sys-shape-corner-extra-large:28px;--md-sys-shape-corner-extra-large-increased:32px;--md-sys-shape-corner-extra-extra-large:48px;--md-sys-shape-corner-full:9999px;
+  /* motion */
+  --md-sys-motion-easing-emphasized:cubic-bezier(0.2,0,0,1);--md-sys-motion-easing-emphasized-decelerate:cubic-bezier(0.05,0.7,0.1,1);--md-sys-motion-easing-standard:cubic-bezier(0.2,0,0,1);
+  --md-sys-motion-duration-short3:150ms;--md-sys-motion-duration-medium2:300ms;--md-sys-motion-duration-medium4:400ms;
+  /* 8dp spacing */
+  --md-sys-spacing-1:4px;--md-sys-spacing-2:8px;--md-sys-spacing-3:12px;--md-sys-spacing-4:16px;--md-sys-spacing-6:24px;--md-sys-spacing-8:32px;--md-sys-spacing-12:48px;--md-sys-spacing-16:64px;
+  /* typescale (font shorthand: weight size/line-height family) */
+  --md-sys-typescale-display-large:400 57px/64px var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-medium:400 45px/52px var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-small:400 36px/44px var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-large:400 32px/40px var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-medium:400 28px/36px var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-small:400 24px/32px var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-large:400 22px/28px var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-medium:500 16px/24px var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-small:500 14px/20px var(--md-ref-typeface-brand);
+  --md-sys-typescale-body-large:400 16px/24px var(--md-ref-typeface-brand);
+  --md-sys-typescale-body-medium:400 14px/20px var(--md-ref-typeface-brand);
+  --md-sys-typescale-body-small:400 12px/16px var(--md-ref-typeface-brand);
+  --md-sys-typescale-label-large:500 14px/20px var(--md-ref-typeface-brand);
+  --md-sys-typescale-label-medium:500 12px/16px var(--md-ref-typeface-brand);
+  --md-sys-typescale-emphasized-display-medium:600 45px/52px var(--md-ref-typeface-brand);
+  --md-sys-typescale-emphasized-headline-medium:600 28px/36px var(--md-ref-typeface-brand);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--md-sys-color-surface);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-large);-webkit-font-smoothing:antialiased}
+.ms{font-family:'Material Symbols Outlined';font-weight:400;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;-webkit-font-feature-settings:'liga';font-feature-settings:'liga';-webkit-font-smoothing:antialiased;user-select:none;flex:none;overflow:hidden;width:24px;height:24px}
+.ms.fill{font-variation-settings:'FILL' 1}
+.ms.s18{font-size:18px;width:18px;height:18px}
+/* state layer: any .stateful gets hover/focus/pressed overlay in its content colour */
+.stateful{position:relative;isolation:isolate;overflow:hidden}
+.stateful::before{content:"";position:absolute;inset:0;background:currentColor;opacity:0;z-index:-1;transition:opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);border-radius:inherit}
+.stateful:hover::before{opacity:.08}.stateful:focus-visible::before{opacity:.1}.stateful:active::before{opacity:.1}
+:focus-visible{outline:3px solid var(--md-sys-color-secondary);outline-offset:2px}
+/* buttons */
+.md-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--md-sys-spacing-2);height:40px;padding:0 24px;border:0;border-radius:var(--md-sys-shape-corner-full);font:var(--md-sys-typescale-label-large);letter-spacing:.1px;cursor:pointer;text-decoration:none}
+.md-btn .ms{font-size:18px;width:18px;height:18px;margin-left:-8px}
+.md-btn.filled{background:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary)}
+.md-btn.tonal{background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container)}
+.md-btn.outlined{background:transparent;color:var(--md-sys-color-primary);box-shadow:inset 0 0 0 1px var(--md-sys-color-outline)}
+.md-btn.text{background:transparent;color:var(--md-sys-color-primary);padding:0 12px}
+.md-btn.lg{height:56px;padding:0 32px;font:var(--md-sys-typescale-title-medium)}
+/* app bar */
+.appbar{display:flex;align-items:center;gap:var(--md-sys-spacing-4);height:64px;padding:0 16px;max-width:1120px;margin:0 auto}
+.appbar .brand{display:flex;align-items:center;gap:12px;font:var(--md-sys-typescale-title-large);color:var(--md-sys-color-on-surface);text-decoration:none;margin-right:auto}
+.appbar .brand .ms{color:var(--md-sys-color-primary);font-size:28px;width:28px;height:28px}
+.appbar nav{display:flex;gap:4px}
+.chip{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:var(--md-sys-shape-corner-small);font:var(--md-sys-typescale-label-large);background:transparent;color:var(--md-sys-color-on-surface-variant);box-shadow:inset 0 0 0 1px var(--md-sys-color-outline-variant)}
+.chip.sel{background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container);box-shadow:none}
+.icon-btn{display:inline-grid;place-items:center;width:40px;height:40px;border:0;border-radius:var(--md-sys-shape-corner-full);background:transparent;color:var(--md-sys-color-on-surface-variant);cursor:pointer}
+.page{max-width:1120px;margin:0 auto;padding:0 16px}
+@media (max-width:600px){ .appbar nav{display:none} .md-btn.lg{height:48px;padding:0 24px} }
+@media (prefers-reduced-motion:reduce){*{transition-duration:1ms!important;animation:none!important}}
+
+.split{display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;padding-top:32px;padding-bottom:64px}
+.intro{display:grid;justify-items:start;gap:24px}
+h1{font:var(--md-sys-typescale-emphasized-display-medium);font-size:44px;line-height:52px;letter-spacing:-.5px;max-width:16ch}
+.intro>p{font:var(--md-sys-typescale-body-large);font-size:18px;line-height:28px;color:var(--md-sys-color-on-surface-variant);max-width:44ch}
+ol{list-style:none;padding:0;display:grid;gap:20px;margin-top:8px}
+ol li{display:flex;gap:16px;align-items:center}ol b{display:block;font:var(--md-sys-typescale-title-medium)}ol small{font:var(--md-sys-typescale-body-medium);color:var(--md-sys-color-on-surface-variant)}
+.n{flex:none;width:40px;height:40px;border-radius:var(--md-sys-shape-corner-full);background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container);display:grid;place-items:center;font:var(--md-sys-typescale-title-medium)}
+.form-card{background:var(--md-sys-color-surface-container-low);border-radius:var(--md-sys-shape-corner-extra-large);padding:32px}
+.form-card h2{font:var(--md-sys-typescale-headline-small);margin-bottom:24px}
+.field{margin-bottom:20px}
+.tf{position:relative}
+.tf input,.tf select{width:100%;height:56px;padding:0 16px;background:transparent;color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-large);border:1px solid var(--md-sys-color-outline);border-radius:var(--md-sys-shape-corner-extra-small);outline:none;transition:border-color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard)}
+.tf input:hover,.tf select:hover{border-color:var(--md-sys-color-on-surface)}
+.tf input:focus,.tf select:focus{border:2px solid var(--md-sys-color-primary);padding:0 15px}
+.tf label{position:absolute;left:12px;top:16px;padding:0 4px;font:var(--md-sys-typescale-body-large);color:var(--md-sys-color-on-surface-variant);background:var(--md-sys-color-surface-container-low);pointer-events:none;transform-origin:left top;transition:transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard),color var(--md-sys-motion-duration-short3)}
+.tf input:focus+label,.tf input:not(:placeholder-shown)+label,.tf select+label{transform:translateY(-24px) scale(.75)}
+.tf input:focus+label,.tf select:focus+label{color:var(--md-sys-color-primary)}
+.tf select{appearance:none;-webkit-appearance:none;padding-right:48px;cursor:pointer}
+.tf .trail{position:absolute;right:12px;top:16px;pointer-events:none;color:var(--md-sys-color-on-surface-variant)}
+.support{font:var(--md-sys-typescale-body-small);color:var(--md-sys-color-on-surface-variant);padding:4px 16px 0}
+.support.err{display:none;align-items:center;gap:8px;color:var(--md-sys-color-error)}.support.err.show{display:flex}
+.invalid .tf input{border:2px solid var(--md-sys-color-error);padding:0 15px}.invalid .tf input+label{color:var(--md-sys-color-error)}
+.cb{display:flex;gap:4px;align-items:center;font:var(--md-sys-typescale-body-medium);cursor:pointer}
+.cb input{position:absolute;opacity:0}
+.cb .box{flex:none;width:40px;height:40px;border-radius:var(--md-sys-shape-corner-full);display:grid;place-items:center;color:var(--md-sys-color-on-surface)}
+.cb .box::after{content:"";position:absolute;width:18px;height:18px;border-radius:2px;border:2px solid var(--md-sys-color-on-surface-variant);transition:background var(--md-sys-motion-duration-short3)}
+.cb .box .ms{position:relative;z-index:1;font-size:18px;width:18px;height:18px;color:transparent;font-weight:700}
+.cb input:checked+.box::after{background:var(--md-sys-color-primary);border-color:var(--md-sys-color-primary)}
+.cb input:checked+.box .ms{color:var(--md-sys-color-on-primary)}
+.cb input:focus-visible+.box{outline:3px solid var(--md-sys-color-secondary)}
+.invalid .cb .box::after{border-color:var(--md-sys-color-error)}
+.cb a{color:var(--md-sys-color-primary)}
+.submit{width:100%;margin-top:8px}
+@media (max-width:900px){.split{grid-template-columns:1fr;gap:32px}h1{font-size:36px;line-height:44px}}
+@media (max-width:480px){.appbar .md-btn.filled{display:none}.form-card{padding:24px 16px}}
+
+</style>
+</head>
+<body>
+<header class="appbar">
+  <a class="brand" href="#"><span class="ms" aria-hidden="true">waves</span>Tidewater</a>
+  <nav aria-label="Main"><a class="md-btn text stateful" href="#features">Features</a><a class="md-btn text stateful" href="#">Pricing</a><a class="md-btn text stateful" href="#">Clinics</a></nav>
+  <button class="icon-btn stateful" id="theme" type="button" aria-label="Toggle theme"><span class="ms">dark_mode</span></button>
+  <a class="md-btn filled stateful" href="#">Book a demo</a>
+</header>
+<main class="page split">
+  <section class="intro">
+    <span class="chip sel"><span class="ms s18">redeem</span>30 days free, no card</span>
+    <h1>Set up your clinic's calendar in an afternoon.</h1>
+    <p>Create your account, add your therapists and rooms, and share a booking link with patients before the day is out.</p>
+    <ol>
+      <li><span class="n">1</span><div><b>Create your account</b><small>Two minutes, one form.</small></div></li>
+      <li><span class="n">2</span><div><b>Add your team and rooms</b><small>Import a spreadsheet or type them in.</small></div></li>
+      <li><span class="n">3</span><div><b>Share your booking link</b><small>Patients book straight into open slots.</small></div></li>
+    </ol>
+  </section>
+  <section class="form-card">
+    <h2>Create your account</h2>
+    <form id="f" novalidate>
+      <div class="field"><div class="tf"><input id="name" placeholder=" " value="Amara Okafor" autocomplete="name"><label for="name">Full name</label></div></div>
+      <div class="field" data-k="email"><div class="tf"><input id="email" type="email" placeholder=" " value="amara@riverside-physio" autocomplete="email" aria-describedby="email-e"><label for="email">Work email</label></div>
+        <p class="support err" id="email-e" role="alert"><span class="ms s18 fill">error</span><span class="t"></span></p></div>
+      <div class="field" data-k="pw"><div class="tf"><input id="pw" type="password" placeholder=" " value="tide" autocomplete="new-password" aria-describedby="pw-h pw-e"><label for="pw">Password</label></div>
+        <p class="support" id="pw-h">At least 10 characters</p>
+        <p class="support err" id="pw-e" role="alert"><span class="ms s18 fill">error</span><span class="t"></span></p></div>
+      <div class="field"><div class="tf sel"><select id="size"><option value="">&nbsp;</option><option>Just me</option><option selected>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 to 40 therapists</option><option>More than 40</option></select><label for="size">Clinic size</label><span class="ms trail">arrow_drop_down</span></div></div>
+      <div class="field" data-k="terms"><label class="cb"><input type="checkbox" id="terms" checked aria-describedby="terms-e"><span class="box stateful"><span class="ms">check</span></span><span>I accept the <a href="#">terms of service</a> and <a href="#">privacy policy</a></span></label>
+        <p class="support err" id="terms-e" role="alert"><span class="ms s18 fill">error</span><span class="t"></span></p></div>
+      <button class="md-btn filled lg stateful submit" type="submit">Create account</button>
+    </form>
+  </section>
+</main>
+
+<script>
+(function(){var b=document.getElementById('theme');if(!b)return;
+b.addEventListener('click',function(){var d=document.documentElement,c=d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.setAttribute('data-theme',c==='dark'?'light':'dark');b.firstElementChild.textContent=c==='dark'?'dark_mode':'light_mode';});})();
+(function(){var $=function(i){return document.getElementById(i)};
+var rules={email:function(){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('email').value.trim())?'':'Enter a valid email address, like name@clinic.com'},
+ pw:function(){return $('pw').value.length>=10?'':'Password is too short. Use at least 10 characters'},
+ terms:function(){return $('terms').checked?'':'Accept the terms to continue'}};
+function check(k){var m=rules[k](),e=$(k+'-e');e.querySelector('.t').textContent=m;e.classList.toggle('show',!!m);
+ var f=$(k).closest('.field');f.classList.toggle('invalid',!!m);var h=$(k+'-h');if(h)h.style.display=m?'none':'';$(k).setAttribute('aria-invalid',!!m);return !m}
+['email','pw','terms'].forEach(function(k){$(k).addEventListener('input',function(){check(k)});$(k).addEventListener('blur',function(){check(k)})});
+$('f').addEventListener('submit',function(e){e.preventDefault();if(['email','pw','terms'].map(check).every(Boolean))$('f').querySelector('.submit').textContent='Account created'});
+['email','pw','terms'].forEach(check);})();
+
+</script>
+</body>
+</html>

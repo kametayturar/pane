@@ -1,0 +1,43 @@
+{
+  "id": "find-animation-opportunities",
+  "sets": [
+    "motion"
+  ],
+  "skillSays": [
+    "It is a read-only filter, not a decorator: expect to reject most motion ideas and keep only a few.",
+    "Every candidate must pass four gates in order: how often users see it, which named purpose it serves, whether it fits the speed budget, and whether motion helps or hurts function.",
+    "High-frequency and keyboard-initiated actions get no animation; delight is allowed only for rare, first-time moments.",
+    "Each suggestion carries exact values from a shared vocabulary (ease-out, ease-in-out and ease-drawer curves) and only animates transform and opacity.",
+    "Prefer CSS transitions over keyframes so rapid re-triggers retarget smoothly; gate hover effects to hover-capable pointers.",
+    "Reduced motion should be gentler, not removed."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "Toast passes the gate as occasional + spatial consistency: enters and exits the same edge via translateY(100%) + opacity, one 400ms transition on cubic-bezier(0.32,0.72,0,1) (ease-drawer), percentages not pixels.",
+        "Built with a class-toggled CSS transition (not a keyframe) so a toast dismissed mid-entry retargets instead of jumping; 4000ms hold.",
+        "The Book button gets the only extra motion: :active scale(0.97) over 160ms ease-out (feedback tier). The slot text swap and the Booked label deliberately stay instant (not worth motion).",
+        "Reduced motion becomes a 200ms opacity-only fade (gentler, not zero)."
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Menu is origin-aware: transform-origin top right (at the trigger), scale(0.95) + opacity, never scale(0).",
+        "Speed budget for dropdowns (150-250ms): open 200ms, close 150ms, both on cubic-bezier(0.23,1,0.32,1); exit is faster than enter.",
+        "Items do NOT stagger and the hover/keyboard highlight has no transition: menus are opened tens of times a day, so only the container moves.",
+        "Trigger press feedback scale(0.97) at 160ms ease-out; hover styles wrapped in (hover:hover) and (pointer:fine)."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Task list is tens-per-day, so motion is kept near-imperceptible: add/remove run 200ms in and 150ms out on cubic-bezier(0.23,1,0.32,1), with no stagger on the three items.",
+        "Rows collapse with grid-template-rows 1fr to 0fr plus opacity (the skill's height+opacity pattern) so the list closes the gap rather than teleporting.",
+        "Check-off is feedback only: 120ms fill, 160ms tick draw, 160ms strike-through sweep, checkbox :active scale(0.97).",
+        "Count pill and empty-state text swap instantly (functional data the user reads)."
+      ]
+    }
+  ]
+}

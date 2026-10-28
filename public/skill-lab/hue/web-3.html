@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet">
+
+<style>
+:root{
+  /* primitives (design-model.yaml) */
+  --n0:#FFFFFF;--n50:#F4F6F6;--n100:#ECEFEF;--n200:#DDE2E3;--n300:#C5CDCF;--n400:#98A4A8;--n500:#6B787D;--n600:#505C61;--n700:#3C474C;--n800:#28323A;--n900:#17212A;--n950:#0E161D;
+  --s50:#FFF4E8;--s100:#FFE3C7;--s200:#FFC894;--s300:#FAA35C;--s400:#F4883A;--s500:#E8751A;--s600:#C45E0C;--s700:#9A4607;--s950:#2B1302;
+  --red50:#FDECEA;--red700:#B3261E;--red900:#5C1410;--green50:#E6F4EC;--green700:#1E7A52;--green900:#0F3D29;
+  /* semantic, light */
+  --background:var(--n50);--bg:var(--background);--surface1:var(--n0);--surface2:var(--n100);--surface3:var(--n200);
+  --border:var(--n200);--border-visible:var(--n600);
+  --text1:var(--n900);--text2:var(--n700);--text3:var(--n600);--text4:var(--n400);
+  --accent:var(--s500);--accent-text:var(--s700);--accent-subtle:var(--s50);
+  --action:var(--n900);--on-action:var(--n50);--action-hover:var(--n700);
+  --success:var(--green700);--success-bg:var(--green50);--error:var(--red700);--error-bg:var(--red50);
+  --display:'Bricolage Grotesque','Hanken Grotesk',system-ui,sans-serif;--body:'Hanken Grotesk',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;
+  --r-control:8px;--r-component:14px;--r-pill:999px;--r-element:4px;
+  --ease:cubic-bezier(.3,.7,.2,1);--fast:120ms;--normal:220ms;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --background:var(--n950);--surface1:var(--n900);--surface2:var(--n800);--surface3:var(--n700);--border:var(--n800);--border-visible:var(--n400);
+  --text1:var(--n50);--text2:var(--n300);--text3:var(--n400);--text4:var(--n600);
+  --accent:var(--s400);--accent-text:var(--s300);--accent-subtle:var(--s950);--action:var(--n50);--on-action:var(--n950);--action-hover:var(--n200);
+  --success:#5FD3A1;--success-bg:var(--green900);--error:#FF9A92;--error-bg:var(--red900);color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --background:var(--n950);--surface1:var(--n900);--surface2:var(--n800);--surface3:var(--n700);--border:var(--n800);--border-visible:var(--n400);
+  --text1:var(--n50);--text2:var(--n300);--text3:var(--n400);--text4:var(--n600);
+  --accent:var(--s400);--accent-text:var(--s300);--accent-subtle:var(--s950);--action:var(--n50);--on-action:var(--n950);--action-hover:var(--n200);
+  --success:#5FD3A1;--success-bg:var(--green900);--error:#FF9A92;--error-bg:var(--red900);color-scheme:dark}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--background);color:var(--text1);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+h1,h2,h3{font-family:var(--display);line-height:1.08}
+a{color:inherit}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:22px;line-height:1;display:inline-block;width:22px;height:22px;overflow:hidden;white-space:nowrap;font-feature-settings:'liga';-webkit-font-feature-settings:'liga';flex:none}
+.label{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.nav{display:flex;align-items:center;gap:32px;padding-top:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font:700 21px/1 var(--display);letter-spacing:-.02em;text-decoration:none;margin-right:auto}
+.logo .ms{color:var(--accent);font-size:26px;width:26px;height:26px}
+.nav ul{display:flex;gap:28px;list-style:none;padding:0;font-size:14.5px;font-weight:500}
+.nav ul a{text-decoration:none;color:var(--text2)}.nav ul a:hover{color:var(--text1)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15px/1 var(--body);padding:14px 22px;border-radius:var(--r-control);border:1.5px solid var(--action);background:var(--action);color:var(--on-action);text-decoration:none;cursor:pointer;transition:background var(--normal) var(--ease),color var(--normal) var(--ease)}
+.btn:hover{background:var(--action-hover);border-color:var(--action-hover)}
+.btn.line{background:transparent;color:var(--text1)}
+.btn.line:hover{background:var(--surface2);border-color:var(--text1)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mode{width:44px;height:44px;border-radius:var(--r-control);border:1.5px solid var(--border-visible);background:transparent;color:var(--text1);display:grid;place-items:center;cursor:pointer}
+.mode:hover{background:var(--surface2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:900px){.nav ul{display:none}}
+@media (max-width:480px){.wrap{padding:0 20px}.nav{gap:12px}.nav .btn{display:none}}
+
+.split{display:grid;grid-template-columns:1fr 480px;gap:80px;align-items:start;padding-top:64px;padding-bottom:84px}
+h1{font-size:clamp(34px,4.4vw,54px);letter-spacing:-.035em;margin:18px 0 18px;max-width:14ch}
+.lead{color:var(--text2);font-size:17px;max-width:42ch;margin-bottom:38px}
+ol{list-style:none;padding:0;border-top:1.5px solid var(--text1)}
+ol li{display:flex;gap:20px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--border)}
+ol b{display:block;font-weight:600}ol small{color:var(--text3);font-size:14.5px}
+.n{font:500 13px var(--mono);color:var(--accent-text);min-width:24px}
+.card{background:var(--surface1);border:1px solid var(--border);border-radius:var(--r-component);padding:36px}
+.card h2{font-size:28px;letter-spacing:-.025em;margin-bottom:26px}
+.field{margin-bottom:20px}
+label{display:block;font:600 13.5px var(--body);margin-bottom:8px}
+input:not([type=checkbox]),select{width:100%;font:400 16px var(--body);color:var(--text1);background:var(--surface1);border:1.5px solid var(--border-visible);border-radius:var(--r-control);padding:13px 14px;transition:border-color var(--fast) var(--ease)}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:2px;border-color:var(--text1)}
+.sel{position:relative}.sel .ms{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text2)}
+select{appearance:none;-webkit-appearance:none;padding-right:44px}
+.hint{font:400 12.5px var(--mono);color:var(--text3);margin-top:7px}
+.err{display:none;align-items:center;gap:8px;margin-top:8px;font-size:14px;font-weight:600;color:var(--error)}
+.err.show{display:flex}.err .ms{font-size:20px;width:20px;height:20px}
+.invalid input:not([type=checkbox]){border-color:var(--error);box-shadow:inset 0 0 0 1px var(--error);background:var(--error-bg)}
+.cb{display:flex;gap:12px;align-items:flex-start;font:400 14.5px/1.45 var(--body);cursor:pointer;margin:0}
+.cb input{position:absolute;opacity:0}
+.box{flex:none;width:22px;height:22px;border:1.5px solid var(--border-visible);border-radius:var(--r-element);display:grid;place-items:center;color:transparent;background:var(--surface1);margin-top:0}
+.box .ms{font-size:18px;width:18px;height:18px;font-weight:700}
+.cb input:checked+.box{background:var(--action);border-color:var(--action);color:var(--on-action)}
+.cb input:focus-visible+.box{outline:2px solid var(--accent);outline-offset:2px}
+.invalid .box{border-color:var(--error)}
+.cb a{font-weight:600}
+.submit{width:100%;margin-top:8px;padding:16px}
+@media (max-width:960px){.split{grid-template-columns:1fr;gap:40px;padding-top:36px}}
+@media (max-width:480px){.card{padding:24px 20px}}
+
+</style>
+</head>
+<body>
+<header class="wrap nav">
+  <a class="logo" href="#"><span class="ms" aria-hidden="true">tsunami</span>Tidewater</a>
+  <ul><li><a href="#features">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Clinics</a></li></ul>
+  <button class="mode" id="theme" type="button" aria-label="Toggle light or dark"><span class="ms">dark_mode</span></button>
+  <a class="btn" href="#">Book a demo</a>
+</header>
+<main class="wrap split">
+  <section class="pitch">
+    <p class="label">30 days free, no card</p>
+    <h1>Set up your clinic's calendar in an afternoon.</h1>
+    <p class="lead">Create your account, add your therapists and rooms, and share a booking link with patients before the day is out.</p>
+    <ol>
+      <li><span class="n">01</span><div><b>Create your account</b><small>Two minutes, one form.</small></div></li>
+      <li><span class="n">02</span><div><b>Add your team and rooms</b><small>Import a spreadsheet or type them in.</small></div></li>
+      <li><span class="n">03</span><div><b>Share your booking link</b><small>Patients book straight into open slots.</small></div></li>
+    </ol>
+  </section>
+  <section class="card">
+    <h2>Create your account</h2>
+    <form id="f" novalidate>
+      <div class="field"><label for="name">Full name</label><input id="name" autocomplete="name" value="Amara Okafor"></div>
+      <div class="field" data-k="email"><label for="email">Work email</label><input id="email" type="email" autocomplete="email" value="amara@riverside-physio" aria-describedby="email-e">
+        <p class="err" id="email-e" role="alert"><span class="ms">error</span><span class="t"></span></p></div>
+      <div class="field" data-k="pw"><label for="pw">Password</label><input id="pw" type="password" autocomplete="new-password" value="tide" aria-describedby="pw-h pw-e">
+        <p class="hint" id="pw-h">At least 10 characters.</p>
+        <p class="err" id="pw-e" role="alert"><span class="ms">error</span><span class="t"></span></p></div>
+      <div class="field"><label for="size">Clinic size</label><div class="sel"><select id="size"><option value="">Select a size</option><option>Just me</option><option selected>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 to 40 therapists</option><option>More than 40</option></select><span class="ms">expand_more</span></div></div>
+      <div class="field" data-k="terms"><label class="cb"><input type="checkbox" id="terms" checked aria-describedby="terms-e"><span class="box"><span class="ms">check</span></span><span>I accept the <a href="#">terms of service</a> and <a href="#">privacy policy</a></span></label>
+        <p class="err" id="terms-e" role="alert"><span class="ms">error</span><span class="t"></span></p></div>
+      <button class="btn submit" type="submit">Create account</button>
+    </form>
+  </section>
+</main>
+
+<script>
+(function(){var b=document.getElementById('theme');if(!b)return;var i=b.firstElementChild;function cur(){var d=document.documentElement;return d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function sync(){i.textContent=cur()==='dark'?'light_mode':'dark_mode'}sync();
+b.addEventListener('click',function(){document.documentElement.setAttribute('data-theme',cur()==='dark'?'light':'dark');sync()})})();
+(function(){var $=function(i){return document.getElementById(i)};
+var rules={email:function(){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('email').value.trim())?'':'Enter a valid email address, like name@clinic.com.'},
+ pw:function(){return $('pw').value.length>=10?'':'Password is too short. Use at least 10 characters.'},
+ terms:function(){return $('terms').checked?'':'Accept the terms to continue.'}};
+function check(k){var m=rules[k](),e=$(k+'-e');e.querySelector('.t').textContent=m;e.classList.toggle('show',!!m);
+ $(k).closest('.field').classList.toggle('invalid',!!m);$(k).setAttribute('aria-invalid',!!m);return !m}
+['email','pw','terms'].forEach(function(k){$(k).addEventListener('input',function(){check(k)});$(k).addEventListener('blur',function(){check(k)})});
+$('f').addEventListener('submit',function(e){e.preventDefault();if(['email','pw','terms'].map(check).every(Boolean))$('f').querySelector('.submit').textContent='Account created'});
+['email','pw','terms'].forEach(check);})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "id": "web-design-guidelines",
+  "sets": [
+    "web"
+  ],
+  "skillSays": [
+    "Fetch Vercel's current Web Interface Guidelines and check the UI file against every rule, reporting terse file:line findings",
+    "Accessibility basics: labels on every control, semantic button/a, aria-hidden on decorative icons, aria-live for async updates, skip link, heading order",
+    "Focus: never remove outlines without a :focus-visible replacement; compound controls use :focus-within",
+    "Forms: autocomplete, correct type/inputmode, no blocked paste, inline errors, focus the first error, placeholders end with an ellipsis",
+    "Typography and motion: curly quotes, real ellipsis, non-breaking spaces, tabular-nums, balanced headings, no transition: all, honour prefers-reduced-motion",
+    "Content and state: Title Case headings and buttons, specific button labels, Intl number formatting, URL reflects state"
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Heading and button copy converted to Title Case ('Start Your Free Trial', 'See How It Works') and specific labels kept instead of 'Learn more'",
+        "Added a skip link, balanced headings (text-wrap: balance), tabular-nums on the schedule times and aria-hidden on all decorative icons",
+        "Brand name wrapped in translate=\"no\" and a non-breaking space in '6 min'; every transition lists its properties instead of 'transition: all'",
+        "Added color-scheme and theme-color meta, :focus-visible rings, touch-action: manipulation and a prefers-reduced-motion block"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Billing toggle state is mirrored in the URL (#yearly) and restored on load, per the 'URL reflects state' rule",
+        "Prices rendered with Intl.NumberFormat ($15.20, $1,238.40) and tabular-nums instead of hand-built strings",
+        "Toggle is a labelled fieldset of radios with an aria-live=polite status line announcing the price change",
+        "Headings and CTAs in Title Case with distinct labels ('Start With Solo', 'Start With Clinic'); transitions list explicit properties"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Every input got a matching autocomplete, name and type/inputmode; email and password set spellcheck=false and paste is never blocked",
+        "Placeholders end with an ellipsis and show an example pattern ('maya@sunrisephysio.com...'); the select has an explicit background colour for dark OS themes",
+        "Errors sit inline next to each field in an aria-live=polite region, tell the user how to fix the problem, and the first invalid field gets focus on submit",
+        "Submit stays enabled and switches to 'Creating Account...' during the request; a beforeunload guard warns about unsaved edits; password toggle uses :focus-within"
+      ]
+    }
+  ]
+}

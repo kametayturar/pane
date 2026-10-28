@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{--bg:#fafaf9;--ink:#1c1c1a;--ink-2:#55554f;--rule:#dcdcd6;--accent:#0b5d57;--accent-ink:#fff;--err:#9b2c1f;--radius:4px;--sans:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:.2em}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.w{max-width:68rem;margin-inline:auto;padding-inline:1.5rem}
+.top{display:flex;justify-content:space-between;align-items:center;padding-block:1.5rem;border-bottom:1px solid var(--rule)}
+.top b{font-weight:700;font-size:1.2rem}
+.top nav{display:flex;gap:1.5rem;align-items:center}
+.top nav a{color:var(--ink);text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+.btn{display:inline-block;font:700 1rem/1 var(--sans);padding:.9rem 1.3rem;border-radius:var(--radius);border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);text-decoration:none;cursor:pointer;transition:background-color .15s,color .15s}
+.btn:hover{background:#094a45}
+.btn.plain{background:transparent;color:var(--accent)}
+.btn.plain:hover{background:#eef3f2}
+@media (max-width:560px){.top nav a:not(.btn){display:none}}
+
+.hero{padding-block:4.5rem 3rem;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:3rem 4rem;align-items:start}
+h1{font-weight:700;font-size:clamp(2.5rem,5.4vw,4rem);line-height:1.04;letter-spacing:-.02em;max-width:12ch;text-wrap:balance}
+.hero p{margin-top:1.5rem;font-size:1.25rem;color:var(--ink-2);max-width:34ch}
+.hero .btn{margin-top:2rem}
+.day{border:1px solid var(--rule);border-radius:var(--radius);background:#fff;padding:1rem 1.25rem}
+.day h2{font-size:.95rem;font-weight:600;color:var(--ink-2);margin-bottom:.5rem}
+table{width:100%;border-collapse:collapse;font-size:.98rem;font-variant-numeric:tabular-nums}
+td,th{text-align:left;padding:.55rem 0;border-top:1px solid var(--rule)}
+th{font-weight:600;color:var(--ink-2);font-size:.85rem;border-top:0}
+td:first-child{width:4.5rem;color:var(--ink-2)}
+tr.open td{font-weight:700}
+.feat{padding-block:3rem 5rem;border-top:1px solid var(--rule)}
+.feat h2{font-size:1.75rem;font-weight:700;letter-spacing:-.01em;margin-bottom:2.5rem}
+.item{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:1rem 3rem;padding-block:1.75rem;border-top:1px solid var(--rule)}
+.item:first-of-type{border-top:0;padding-top:0}
+.item h3{font-size:1.25rem;font-weight:700;line-height:1.25}
+.item p{color:var(--ink-2);max-width:52ch}
+footer{border-top:1px solid var(--rule);padding-block:1.5rem 3rem;color:var(--ink-2);font-size:.95rem}
+@media (max-width:760px){.hero{grid-template-columns:minmax(0,1fr);padding-top:2.5rem}.item{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="w">
+<header class="top"><b>Tidewater</b><nav aria-label="Primary"><a href="#">Features</a><a href="#">Pricing</a><a class="btn plain" href="#">Sign in</a></nav></header>
+<main>
+<section class="hero">
+  <div>
+    <h1>Fewer gaps in the diary.</h1>
+    <p>Tidewater books physiotherapy clinics. When a patient cancels, the next person on your waiting list is offered the slot.</p>
+    <a class="btn" href="#">Start a 30-day trial</a>
+  </div>
+  <div class="day" aria-label="Example: Ana Reyes, Thursday">
+    <h2>Ana Reyes, Thursday</h2>
+    <table>
+      <thead><tr><th scope="col">Time</th><th scope="col">Patient</th></tr></thead>
+      <tbody>
+        <tr><td>08:00</td><td>M. Fiala, knee review</td></tr>
+        <tr><td>09:00</td><td>T. Brandt, shoulder</td></tr>
+        <tr><td>10:00</td><td>R. Singh, post-op, 90 min</td></tr>
+        <tr class="open"><td>11:30</td><td>Cancelled, offered to 3 people</td></tr>
+        <tr><td>12:30</td><td>K. Mensah, hip mobility</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="feat">
+  <h2>What it does</h2>
+  <div class="item"><h3>Fills cancelled slots</h3><p>The waiting list is texted in order of wait time, filtered by treatment length and preferred days. The first reply of yes takes the slot.</p></div>
+  <div class="item"><h3>Chases unconfirmed visits</h3><p>Patients get a text the day before and reply to confirm. The front desk sees who has not answered and rings only those.</p></div>
+  <div class="item"><h3>Books rooms with the treatment</h3><p>A treatment can need a plinth, the hydro pool or a second therapist. Tidewater offers a time only when all of them are free.</p></div>
+</section>
+</main>
+<footer>Tidewater, scheduling for physiotherapy clinics. hello@tidewater.example</footer>
+</div>
+</body>
+</html>

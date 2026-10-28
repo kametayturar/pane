@@ -1,0 +1,42 @@
+{
+  "id": "writing-guidelines",
+  "sets": [
+    "copy"
+  ],
+  "skillSays": [
+    "Review and write prose against Vercel's Writing Guidelines, fetched fresh from the source before each use.",
+    "Voice: active voice, \"you\" not \"the user\", imperative steps, contractions, sentences under about 20 words, no rhetorical questions.",
+    "Ban easy, simple, quick, very, just, really. Replace weasel words and vague quantifiers with a real number.",
+    "No em dashes or dashes as punctuation, curly quotes, a real ellipsis, spaced units (5 MB), sentence-case headings.",
+    "Flag AI tells: recap transitions, choppy stop-start fragments, spec-sheet voice, personified artifacts, template framing.",
+    "Open with a summary, keep paragraphs to 2 to 4 sentences, bold only for UI elements or a critical fact."
+  ],
+  "examples": [
+    {
+      "prompt": "copy-1",
+      "changes": [
+        "Typography rules applied: curly apostrophe in \"couldn’t\" and a non-breaking space in \"5 MB\"",
+        "Error is written as troubleshooting: acknowledge, state the facts by row, then one imperative to fix it",
+        "Active voice throughout (\"Tidewater imported no patients\") and no \"easy\" or \"just\"",
+        "Sentences kept short; no dashes used as punctuation"
+      ]
+    },
+    {
+      "prompt": "copy-2",
+      "changes": [
+        "Opens with a one-sentence summary of what the email is for, then a colon-introduced numbered list",
+        "Steps are imperatives that bold only UI elements: Click **Add practitioner**",
+        "\"We\" used once and deliberately (\"We recommend...\"); no rhetorical questions",
+        "Specific times instead of \"quickly\": \"within one business day\", \"45 minutes\""
+      ]
+    },
+    {
+      "prompt": "copy-3",
+      "changes": [
+        "Vague claims replaced with concrete ones: \"all 6 sessions\", \"24 hours before the visit\"",
+        "Feature headings in sentence case (\"Waitlist backfill\"), not Title Case",
+        "Blurbs name the actor and the action; no spec-sheet phrasing like \"provides\" or \"is configurable\""
+      ]
+    }
+  ]
+}

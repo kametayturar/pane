@@ -1,0 +1,40 @@
+{
+  "id": "archify",
+  "sets": [
+    "data"
+  ],
+  "skillSays": [
+    "Turns an answer into a checked standalone HTML page: native diagrams (architecture, workflow, sequence, timeline, ERD, tree...) or a one-page explainer.",
+    "Chooses the form from the shape of the information: events over time as a timeline, options as a comparison table, numbers as a chart.",
+    "An explainer leads with the conclusion, then up to four reasons, then one panel per question, each titled as a question.",
+    "Writing rules: short sentences, one term per thing, numbers with units, arithmetic shown once, every derived number recomputed.",
+    "Cite sources and state scope. End with a checklist when the reader must act or verify.",
+    "It is not a dashboard tool, so a \"KPI dashboard\" request becomes an answer page about the KPIs."
+  ],
+  "examples": [
+    {
+      "prompt": "data-1",
+      "changes": [
+        "Rendered as an explainer: question as title, conclusion sentence first, four numbered reasons, scope chips",
+        "Panels titled as questions (\"How did each plan grow?\") with line chart, comparison table with Fastest/Slowest badges and arithmetic shown",
+        "Ends with a checklist and a numbered source"
+      ]
+    },
+    {
+      "prompt": "data-2",
+      "changes": [
+        "Native-style timeline on a lane clock: support speed, ticket volume and accounts lost, Q3 shaded, event colour by kind",
+        "Numbered steps beside the diagram (\"July: all three move at once\")",
+        "\"What does the data not show?\" warning callout and a checklist of next checks"
+      ]
+    },
+    {
+      "prompt": "data-3",
+      "changes": [
+        "A dashboard request becomes a \"Is support healthy right now?\" answer page with facts tiles, a metric against its baseline and a comparison table",
+        "Conclusion states the verdict first; one reason flags the 1,490-ticket level where response slipped",
+        "Weekly check checklist closes the page"
+      ]
+    }
+  ]
+}

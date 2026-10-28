@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Northport Marathon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Geist+Mono:wght@300;400;500&family=Jura:wght@300&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#1a1816}
+body{display:grid;place-items:center;overflow:hidden}
+svg{display:block;height:100vh;width:auto;max-width:100vw}
+@media (max-aspect-ratio:3/4){svg{width:100vw;height:auto}}
+</style></head><body>
+<svg viewBox="0 0 900 1200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Northport Marathon poster">
+<rect width="900" height="1200" fill="#f2eee4"/>
+<g id="g"></g>
+</svg>
+<script>
+const g=document.getElementById('g');let o=[];const add=s=>o.push(s);
+const INK='#14130f',RED='#ff4a1c',GREY='#8d877a',LIGHT='#d6d0c2';
+/* seeded rng */
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const gauss=()=>{let u=0,v=0;while(!u)u=rnd();v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+/* frame + header */
+add(`<rect x="48" y="48" width="804" height="1104" fill="none" stroke="${INK}" stroke-width=".8"/>`);
+const mono=(x,y,t,{size=9,anchor='start',fill=INK,w=400,ls=1.6}={})=>add(`<text x="${x}" y="${y}" font-family="Geist Mono" font-size="${size}" font-weight="${w}" fill="${fill}" text-anchor="${anchor}" letter-spacing="${ls}">${t}</text>`);
+mono(72,92,'PLATE 42.195');mono(828,92,'DISTANCE × TIME · EVERY RUNNER, ONE ROAD',{anchor:'end'});
+/* chart region */
+const X0=96,X1=804,Y0=150,Y1=690;           // y: 0 km at bottom (Y1) → 42.195 at top (Y0)
+const T0=2.0,T1=6.5;                          // hours across
+const xT=t=>X0+(t-T0)/(T1-T0)*(X1-X0);
+const yD=d=>Y1-d/42.195*(Y1-Y0);
+/* grid: horizontal every 5 km, vertical every 30 min */
+for(let d=0;d<=40;d+=5){add(`<line x1="${X0}" y1="${yD(d)}" x2="${X1}" y2="${yD(d)}" stroke="${LIGHT}" stroke-width=".6"/>`);mono(X0-10,yD(d)+3,String(d),{anchor:'end',size:8,fill:GREY})}
+for(let t=T0;t<=T1;t+=.5){add(`<line x1="${xT(t)}" y1="${Y0}" x2="${xT(t)}" y2="${Y1}" stroke="${LIGHT}" stroke-width=".6"/>`);const h=Math.floor(t),m=Math.round((t-h)*60);mono(xT(t),Y1+22,`${h}:${String(m).padStart(2,'0')}`,{anchor:'middle',size:8,fill:GREY})}
+mono(X0-10,Y0-14,'KM',{anchor:'end',size:8,fill:GREY});
+/* finish line at 42.195 */
+add(`<line x1="${X0}" y1="${yD(42.195)}" x2="${X1}" y2="${yD(42.195)}" stroke="${INK}" stroke-width="1.4"/>`);
+add(`<text x="${X1}" y="${Y0-10}" font-family="Geist Mono" font-size="8" fill="${INK}" text-anchor="end" letter-spacing="1.6">FINISH</text>`);
+/* the fan: each runner a straight pace line from the start gun to a finish time */
+let lines='',ends='';
+const N=420;
+const times=[];
+for(let i=0;i<N;i++){
+  let t=Math.exp(Math.log(4.1)+gauss()*.22); // lognormal, mode ≈ 4h
+  if(i<9)t=2.1+i*.03+rnd()*.03;               // the front group
+  t=Math.min(Math.max(t,2.08),6.45);times.push(t);
+}
+times.sort((a,b)=>a-b);
+times.forEach((t,i)=>{
+  const x=xT(t),elite=t<2.7;
+  lines+=`<line x1="${X0}" y1="${Y1}" x2="${x.toFixed(1)}" y2="${Y0}" stroke="${elite?RED:INK}" stroke-opacity="${elite?.95:.13}" stroke-width="${elite?1.1:.45}"/>`;
+  ends+=`<circle cx="${x.toFixed(1)}" cy="${Y0}" r="${elite?2.8:1.3}" fill="${elite?RED:INK}"/>`;
+});
+add(lines);add(ends);
+/* the last 195 metres: a narrow vermillion band at the top */
+add(`<rect x="${X0}" y="${yD(42.195)}" width="${X1-X0}" height="6" fill="${RED}" fill-opacity=".9"/>`);
+/* histogram of finish times as dots above the finish line? keep below: ticks along bottom axis */
+add(`<line x1="${X0}" y1="${Y1}" x2="${X1}" y2="${Y1}" stroke="${INK}" stroke-width="1"/>`);
+add(`<circle cx="${X0}" cy="${Y1}" r="4.5" fill="${INK}"/>`);
+mono(X0,Y1+44,'START · 08:30',{size:8,fill:INK});
+/* title */
+add(`<text x="72" y="930" font-family="Big Shoulders Display" font-weight="800" font-size="200" fill="${INK}" letter-spacing="-1">42.195</text>`);
+add(`<rect x="72" y="962" width="14" height="14" fill="${RED}"/>`);
+add(`<text x="98" y="975" font-family="Big Shoulders Display" font-weight="700" font-size="22" fill="${INK}" letter-spacing="3.5">NORTHPORT MARATHON</text>`);
+/* details, right column */
+const R=828;
+mono(R,838,'SUNDAY',{anchor:'end',size:10,w:500});
+mono(R,856,'12 OCTOBER',{anchor:'end',size:10,w:500});
+mono(R,874,'START 08:30',{anchor:'end',size:10,w:500});
+add(`<line x1="${R-150}" y1="890" x2="${R}" y2="890" stroke="${INK}" stroke-width=".6"/>`);
+mono(R,908,'WATERFRONT TO',{anchor:'end',size:9,fill:GREY});
+mono(R,923,'OLD HARBOUR',{anchor:'end',size:9,fill:GREY});
+mono(R,938,'22,000 RUNNERS',{anchor:'end',size:9,fill:GREY});
+add(`<line x1="72" y1="1040" x2="828" y2="1040" stroke="${INK}" stroke-width=".8"/>`);
+mono(72,1068,'ONE START.  ONE ROAD.  ONE LINE.',{size:11,w:500,ls:3});
+mono(72,1132,'REGISTER · NORTHPORTMARATHON.EXAMPLE',{size:8.5,fill:GREY});
+mono(828,1132,'N° 42',{anchor:'end',size:8.5,fill:GREY});
+g.innerHTML=o.join('');
+</script></body></html>

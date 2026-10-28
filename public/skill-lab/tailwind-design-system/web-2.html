@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Tidewater pricing</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* Semantic tokens live as CSS variables (OKLCH); Tailwind exposes them as bg-primary, text-muted-foreground, ... */
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'ui-monospace', 'monospace'] },
+      colors: Object.fromEntries(['background','foreground','primary','primary-foreground','secondary','secondary-foreground','muted','muted-foreground','accent','accent-foreground','destructive','destructive-foreground','border','ring','card','card-foreground','ring-offset','success','warning']
+        .map(n => [n, 'oklch(from var(--color-' + n + ') l c h / <alpha-value>)'])),
+      borderRadius: { sm: 'var(--radius-sm)', md: 'var(--radius-md)', lg: 'var(--radius-lg)', xl: 'var(--radius-xl)' },
+      keyframes: {
+        'fade-in': { from: { opacity: '0' }, to: { opacity: '1' } },
+        'slide-in': { from: { transform: 'translateY(-0.5rem)', opacity: '0' }, to: { transform: 'translateY(0)', opacity: '1' } }
+      },
+      animation: { 'fade-in': 'fade-in 0.2s ease-out', 'slide-in': 'slide-in 0.3s ease-out' }
+    }
+  }
+};
+</script>
+<style type="text/tailwindcss">
+  :root {
+    --color-background: oklch(100% 0 0);
+    --color-foreground: oklch(18% 0.03 215);
+    --color-primary: oklch(43% 0.085 195);
+    --color-primary-foreground: oklch(98% 0.01 195);
+    --color-secondary: oklch(96% 0.012 195);
+    --color-secondary-foreground: oklch(24% 0.04 205);
+    --color-muted: oklch(96.5% 0.008 215);
+    --color-muted-foreground: oklch(48% 0.025 215);
+    --color-accent: oklch(94.5% 0.035 190);
+    --color-accent-foreground: oklch(30% 0.06 200);
+    --color-destructive: oklch(53% 0.22 27);
+    --color-destructive-foreground: oklch(98% 0.01 27);
+    --color-success: oklch(52% 0.13 160);
+    --color-warning: oklch(75% 0.15 75);
+    --color-border: oklch(91% 0.012 215);
+    --color-ring: oklch(55% 0.1 195);
+    --color-card: oklch(100% 0 0);
+    --color-card-foreground: oklch(18% 0.03 215);
+    --color-ring-offset: oklch(100% 0 0);
+    --radius-sm: 0.25rem; --radius-md: 0.375rem; --radius-lg: 0.5rem; --radius-xl: 0.75rem;
+    color-scheme: light;
+  }
+  .dark {
+    --color-background: oklch(15% 0.02 220);
+    --color-foreground: oklch(97% 0.01 200);
+    --color-primary: oklch(78% 0.11 190);
+    --color-primary-foreground: oklch(20% 0.04 200);
+    --color-secondary: oklch(24% 0.02 220);
+    --color-secondary-foreground: oklch(97% 0.01 200);
+    --color-muted: oklch(24% 0.02 220);
+    --color-muted-foreground: oklch(70% 0.02 215);
+    --color-accent: oklch(28% 0.04 200);
+    --color-accent-foreground: oklch(97% 0.01 200);
+    --color-destructive: oklch(65% 0.19 25);
+    --color-destructive-foreground: oklch(15% 0.02 25);
+    --color-success: oklch(74% 0.14 160);
+    --color-warning: oklch(80% 0.14 80);
+    --color-border: oklch(28% 0.02 220);
+    --color-ring: oklch(78% 0.11 190);
+    --color-card: oklch(18.5% 0.02 220);
+    --color-card-foreground: oklch(97% 0.01 200);
+    --color-ring-offset: oklch(15% 0.02 220);
+    color-scheme: dark;
+  }
+  @layer base {
+    * { @apply border-border; }
+    body { @apply bg-background text-foreground antialiased font-sans; }
+  }
+  /* Component layer: base -> variants -> sizes -> states */
+  @layer components {
+    .btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-ring-offset disabled:pointer-events-none disabled:opacity-50 h-10 px-4; }
+    .btn-primary { @apply bg-primary text-primary-foreground hover:bg-primary/90; }
+    .btn-outline { @apply border border-border bg-background hover:bg-accent hover:text-accent-foreground; }
+    .btn-lg { @apply h-12 px-7 text-base; }
+    .badge { @apply inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground; }
+  }
+</style>
+
+</head>
+<body class="min-h-screen">
+<header class="border-b border-border bg-background">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+    <a href="#" class="flex items-center gap-2 font-bold tracking-tight text-foreground">
+      <svg viewBox="0 0 32 32" fill="none" class="size-7 text-primary" aria-hidden="true"><rect x="3" y="5" width="26" height="24" rx="6" stroke="currentColor" stroke-width="2.4"/><path d="M3 12h26" stroke="currentColor" stroke-width="2.4"/><path d="M8 21c2.5-3 4.5-3 7 0s4.5 3 9 0" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      Tidewater
+    </a>
+    <nav class="flex items-center gap-6 text-sm" aria-label="Primary">
+      <a href="#" class="hidden text-muted-foreground hover:text-foreground sm:inline">Features</a>
+      <a href="#" class="hidden text-muted-foreground hover:text-foreground sm:inline">Pricing</a>
+      <a href="#" class="hidden text-muted-foreground hover:text-foreground sm:inline">Customers</a>
+      <div class="inline-flex rounded-full border border-border bg-muted p-0.5" role="group" aria-label="Theme">
+        <button data-theme-btn="light" aria-pressed="false" class="rounded-full px-2.5 py-1 text-xs font-medium text-muted-foreground aria-pressed:bg-background aria-pressed:text-foreground aria-pressed:shadow-sm">Light</button>
+        <button data-theme-btn="dark" aria-pressed="false" class="rounded-full px-2.5 py-1 text-xs font-medium text-muted-foreground aria-pressed:bg-background aria-pressed:text-foreground aria-pressed:shadow-sm">Dark</button>
+        <button data-theme-btn="system" aria-pressed="true" class="rounded-full px-2.5 py-1 text-xs font-medium text-muted-foreground aria-pressed:bg-background aria-pressed:text-foreground aria-pressed:shadow-sm">Auto</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-20">
+  <div class="mx-auto max-w-2xl text-center">
+    <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">Pricing that grows with your clinic</h1>
+    <p class="mt-4 text-lg leading-relaxed text-muted-foreground">Every plan includes online booking and reminders. Upgrade when you add therapists, not before.</p>
+  </div>
+
+  <div class="mt-8 flex items-center justify-center gap-3">
+    <div id="seg" role="radiogroup" aria-label="Billing period" class="relative inline-grid grid-cols-2 rounded-full border border-border bg-muted p-1">
+      <span id="thumb" class="absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full bg-primary transition-transform duration-200 ease-out motion-reduce:transition-none" aria-hidden="true"></span>
+      <button role="radio" aria-checked="true" data-period="monthly" class="relative rounded-full px-6 py-2 text-sm font-semibold text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-checked:text-primary-foreground">Monthly</button>
+      <button role="radio" aria-checked="false" data-period="yearly" class="relative rounded-full px-6 py-2 text-sm font-semibold text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-checked:text-primary-foreground">Yearly</button>
+    </div>
+    <span class="badge">Save 20%</span>
+  </div>
+
+  <div id="plans" class="mx-auto mt-12 grid max-w-md gap-6 md:max-w-none md:grid-cols-3"></div>
+  <p class="mt-10 text-center text-sm text-muted-foreground">Prices in USD per month. Cancel any time. Yearly plans are billed once a year.</p>
+</main>
+<script>
+// Theme: light | dark | system – persisted, follows prefers-color-scheme
+(function () {
+  var root = document.documentElement, mq = window.matchMedia("(prefers-color-scheme: dark)");
+  function read() { try { return localStorage.getItem("tw-theme") || "system"; } catch (e) { return "system"; } }
+  function apply(t) {
+    var dark = t === "dark" || (t === "system" && mq.matches);
+    root.classList.remove("light", "dark"); root.classList.add(dark ? "dark" : "light");
+    document.querySelectorAll("[data-theme-btn]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.themeBtn === t)); });
+  }
+  var theme = read(); apply(theme);
+  mq.addEventListener("change", function () { if (theme === "system") apply("system"); });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-theme-btn]"); if (!b) return;
+    theme = b.dataset.themeBtn; try { localStorage.setItem("tw-theme", theme); } catch (e) {} apply(theme);
+  });
+})();
+
+</script>
+<script>
+var CHECK='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 size-[18px] shrink-0 text-primary" aria-hidden="true"><circle cx="10" cy="10" r="8.5" opacity=".25"/><path d="M6 10.2l2.8 2.8L14 7.6"/></svg>';
+var DASH='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="mt-0.5 size-[18px] shrink-0 text-muted-foreground" aria-hidden="true"><path d="M6 10h8"/></svg>';
+var PLANS=[
+ {name:'Solo',price:19,who:'One therapist running their own diary.',cta:'Start with Solo',features:[['1 therapist, 1 room',1],['Online booking page',1],['SMS and email reminders',1],['Patient notes and CSV import',1],['Waiting-list auto-fill',0],['Team calendars',0]]},
+ {name:'Clinic',price:49,who:'A small team sharing rooms and equipment.',cta:'Start with Clinic',featured:1,features:[['Up to 6 therapists, 4 rooms',1],['Everything in Solo',1],['Waiting-list auto-fill',1],['Team calendars and room clash blocking',1],['No-show reports',1],['Priority email support',1]]},
+ {name:'Group',price:129,who:'Multi-site practices that need one overview.',cta:'Talk to us',features:[['Unlimited therapists and sites',1],['Everything in Clinic',1],['Cross-site calendars',1],['Roles, permissions and audit log',1],['Insurer and invoice exports',1],['Named onboarding specialist',1]]}
+];
+var period='monthly', root=document.getElementById('plans');
+function fmt(n){return '$'+(Number.isInteger(n)?n:n.toFixed(2));}
+function render(animate){
+  root.innerHTML=PLANS.map(function(p){
+    var m=period==='yearly'?Math.round(p.price*0.8*100)/100:p.price;
+    var billed=period==='yearly'?'Billed '+fmt(Math.round(p.price*0.8*12*100)/100)+' per year':'Billed monthly';
+    var f=p.featured;
+    return '<article class="relative flex flex-col rounded-xl border bg-card p-8 text-card-foreground '+(f?'border-2 border-primary bg-accent/40 shadow-xl':'border-border')+'">'+
+    (f?'<span class="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground">Most popular</span>':'')+
+    '<h2 class="text-xl font-semibold tracking-tight">'+p.name+'</h2>'+
+    '<p class="mt-1 min-h-[3em] text-sm text-muted-foreground">'+p.who+'</p>'+
+    '<div class="mt-6 flex items-baseline gap-2"><span class="text-5xl font-bold leading-none tracking-tight tabular-nums"><span class="inline-block '+(animate?'animate-slide-in motion-reduce:animate-none':'')+'">'+fmt(m)+'</span></span><span class="text-sm text-muted-foreground">/ month</span></div>'+
+    '<p class="mt-2 h-5 text-xs text-muted-foreground">'+billed+'</p>'+
+    '<a href="#" class="btn mt-6 w-full '+(f?'btn-primary':'btn-outline')+'">'+p.cta+'</a>'+
+    '<hr class="my-6 border-border">'+
+    '<ul class="grid gap-3 text-sm">'+p.features.map(function(x){return '<li class="grid grid-cols-[18px_1fr] items-start gap-2 '+(x[1]?'':'text-muted-foreground')+'">'+(x[1]?CHECK:DASH)+'<span>'+x[0]+'</span></li>';}).join('')+'</ul></article>';
+  }).join('');
+}
+var seg=document.getElementById('seg'), thumb=document.getElementById('thumb');
+seg.addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return; period=b.dataset.period;
+  thumb.style.transform=period==='yearly'?'translateX(100%)':'translateX(0)';
+  seg.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-checked',String(x===b));});
+  render(true);
+});
+render(false);
+</script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><video src="video-1-teaser.mp4" autoplay muted loop playsinline controls></video><figcaption>video-1: Tidewater 6 s teaser (video-shotcraft route)</figcaption></figure><figure><img src="video-1-frames.png" alt="Frames from the final MP4 at 12, 34, 50, 86, 108, 126, 142, 172"><figcaption>Frames from the final MP4 at 12, 34, 50, 86, 108, 126, 142, 172</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered a real 6.0 s, 1280x720, 30 fps H.264 + AAC MP4 (1.3 MB) rendered with 'npx remotion render' (authored on the skill's native 1920x1080 canvas and rendered at --scale=0.6666666666666666 to get 1280x720). The skill has three modes and none was chosen, so I ran the autonomous free-creation pipeline (it can't ask in this unattended run). Because Tidewater has no real product, I built a fictional Tidewater schedule page as HTML (fictional patients), took the skill's capture step on it (puppeteer-core + installed Chrome: full-page 2x texture + layout.json) and then did the film as one continuous PageCam 2.5D camera over that real screenshot: brand open (brand-ink-open, adapted: wave mark draw-on, per-letter letterpress), hero card spotlight (spotlight-hero-card, compressed from 172 to about 40 frames: lights down, side-on push, 12-frame overshoot rise, beam lap, reseat), reminder rows embedding (row-embed, same flight and teal seam mechanics, 4 rows), a glide to the week view with one ring pulse on the booked slot, and an outro lockup (logo-shrink-wordmark-lockup, compressed: mark shrinks with a 6 percent brake, shifts left, letters slide in, tagline). Brand motion tokens come from the skill's 'calm care' preset and the product's own palette and Inter. Captions are 60 px (about 5.5 percent of frame height). Eight SFX from the skill's own library are pinned in a declarative table relative to the timeline. Deviations, all forced by 6 s: card timings compressed, spotlight light pool, volumetric beam and 3D annotation left out, wordmark open holds under 1 s (outro holds about 30 frames), no BGM so no BGM/no-BGM pair. Verification: stills with 'remotion render --frames' at every beat, ffprobe, volumedetect (max -6.1 dB), and the skill's required independent review by a separate Sonnet agent; it found a caption/content collision, row-embed patch artifacts, SFX peaks lagging the visuals and glint fragments; I moved the middle caption to the top, tightened the patches, retimed six SFX pins to the measured peaks and removed the glints. Not fixed: a faint ghost of a row during its flight at frame 86, the clipped page text at the left edge during the push, and the lockup slightly off-centre; the independent review was not repeated after the fixes. The skill's audio files carry mixed Mixkit provenance (some not traceable), noted for commercial use.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Mode is not specified by the prompt, so autonomous free creation (pipeline.md) was chosen; Ink Press template not used</div><div class="cmd">gh api repos/Vincentwei1021/video-shotcraft/contents/SKILL.md ... (then references/pipeline.md, aesthetic-rules.md, sound-design.md, final-review.md, shots/{brand-ink-open,spotlight-hero-card,row-embed,logo-shrink-wordmark-lockup}.md, demos BrandInkOpen.tsx + RowEmbed.tsx, assets/lib/PageCam.tsx)</div><div class="out">SKILL.md 276 lines; pipeline.md 25 kB; aesthetic-rules.md 27 kB; ... all fetched</div></div><div class="step"><div class="note"># Project scaffold (skill points to create-video; Remotion 4.0.537)</div><div class="cmd">npx create-video@latest --yes --blank --no-tailwind shot &amp;&amp; npx remotion add @remotion/google-fonts @remotion/media @remotion/layout-utils</div><div class="out">+ @remotion/google-fonts@4.0.537
++ @remotion/media@4.0.537
++ @remotion/layout-utils@4.0.537</div></div><div class="step"><div class="note"># Stage 4: real-page capture. Full-page 2x texture plus layout.json; the page is a fictional Tidewater schedule app with invented patients</div><div class="cmd">node capture.mjs http://localhost:7155/index.html   # adapted capture-template.mjs, puppeteer-core + Google Chrome</div><div class="out">{"pageH":1820,"rows":[{"x":208,"y":790,"w":1504,"h":72},...],"hero":{"x":480,"y":290,"w":960,"h":320},"rem":{...},"week":{...},"booked":{"x":684,"y":1376,"w":240,"h":68}}
+public/textures/live/schedule-full.png: PNG image data, 3840 x 3640</div></div><div class="step"><div class="note"># Stage 6: SFX come from the skill's own library; volumes set from measured peaks (all near 0 dB, so 0.28-0.55)</div><div class="cmd">gh api .../assets/audio/sfx/{transition,impact,light}/*.mp3 &gt; public/audio/*.mp3  &amp;&amp;  ffmpeg -i X.mp3 -af volumedetect</div><div class="out">transition-soft max -0.9 dB; whoosh-fast -1.3; whoosh-big -1.5; sparkle-touch -2.2; transition-snap -4.0; hit-weak -5.6; impact-zoom-quick -1.0; shimmer-sparkle-sweep -1.0</div></div><div class="step"><div class="note"># After writing src/timeline.ts (single timetable), src/Promo.tsx, src/Root.tsx</div><div class="cmd">npx tsc --noEmit</div><div class="out">(no output, 0 errors)</div></div><div class="step"><div class="note"># Skill: still check of every beat. Found the hero card cropped at zoom 2.0 and the week caption covering the Reyes lane; fixed zoom to 1.7 and moved the camera arrival earlier. Note: remotion's default render port 3000 was occupied by another app here, so --port was required</div><div class="cmd">npx remotion render Promo out/qa/v1 --frames=10,26,44,52,62,86,108,124,140,175 --image-format=png --scale=0.5 --port=7156</div><div class="out">Rendered 10/10
++                    out/qa/v1</div></div><div class="step"><div class="note"># First full render attempt failed on float rounding of the scaled height</div><div class="cmd">npx remotion render Promo out/video-1.mp4 --scale=0.6667</div><div class="out">TypeError: The "height" prop passed to `stitchFramesToVideo()` must be an integer, but is 720.036.</div></div><div class="step"><div class="note"># Exact 2/3 as a double gives 1280x720</div><div class="cmd">npx remotion render Promo out/video-1.mp4 --scale=0.6666666666666666 --port=7156</div><div class="out">Encoded 180/180
++                    out/video-1.mp4 1.3 MB</div></div><div class="step"><div class="note"># Skill: final check must be done by an independent reviewer, not the maker</div><div class="cmd">Agent (Sonnet, clean context) independent review per final-review.md of video-1.mp4 + keyframes + SFX table</div><div class="out">Defects: caption collides with content (74-100); row-embed patch artifacts (66-92); SFX peaks lag visuals (impact ~7f late, shimmer, whoosh); glint fragments below the wordmark (16)</div></div><div class="step"><div class="note"># Fix round from the review</div><div class="cmd">(edit) caption pos top for beat 2; row patches tightened to row size; six SFX pins retimed to measured peaks; glints removed; then re-render + ffprobe + volumedetect</div><div class="out">codec_name=h264 width=1280 height=720 r_frame_rate=30/1 duration=6.000000
+codec_name=aac duration=6.016000
+max_volume: -6.1 dB</div></div></div>
+<h2>Files</h2><details open><summary>src/timeline.ts</summary><pre><span class="c">// Single source of truth for the film's timing (frames @30fps, 1920x1080 authoring canvas, rendered at 0.6667 scale = 1280x720).</span>
+<span class="c">// Every caption, SFX pin and overlay below derives from this table (skill: SHOTS is the only timetable).</span>
+<span class="k">export</span> <span class="k">const</span> FPS = <span class="n">30</span>;
+<span class="k">export</span> <span class="k">const</span> TOTAL = <span class="n">180</span>;
+
+<span class="k">export</span> <span class="k">const</span> T = {
+  brand: { <span class="k">from</span>: <span class="n">0</span>, exit: [<span class="n">22</span>, <span class="n">28</span>] <span class="k">as</span> <span class="k">const</span> },
+  pageIn: <span class="n">20</span>,
+  dark: { <span class="k">in</span>: [<span class="n">24</span>, <span class="n">32</span>] <span class="k">as</span> <span class="k">const</span>, out: [<span class="n">56</span>, <span class="n">66</span>] <span class="k">as</span> <span class="k">const</span>, max: <span class="n">0.9</span> },
+  rise: [<span class="n">36</span>, <span class="n">48</span>] <span class="k">as</span> <span class="k">const</span>,
+  beam: [<span class="n">48</span>, <span class="n">60</span>] <span class="k">as</span> <span class="k">const</span>,
+  reseat: [<span class="n">56</span>, <span class="n">64</span>] <span class="k">as</span> <span class="k">const</span>,
+  rowCues: [<span class="n">70</span>, <span class="n">74</span>, <span class="n">78</span>, <span class="n">82</span>] <span class="k">as</span> <span class="k">const</span>,
+  rowFly: <span class="n">10</span>,
+  ring: [<span class="n">102</span>, <span class="n">114</span>] <span class="k">as</span> <span class="k">const</span>,
+  dip: [<span class="n">116</span>, <span class="n">122</span>] <span class="k">as</span> <span class="k">const</span>,
+  lockup: <span class="n">122</span>,
+  pageOff: <span class="n">123</span>,
+};
+
+<span class="c">// pos: captions move to the top when the camera puts content under the bottom band</span>
+<span class="k">export</span> <span class="k">const</span> CAPTIONS = [
+  { <span class="k">from</span>: <span class="n">30</span>, to: <span class="n">66</span>, text: <span <span class="k">class</span>="s">"Book <span class="k">in</span> seconds"</span>, pos: <span <span class="k">class</span>="s">"bottom"</span> },
+  { <span class="k">from</span>: <span class="n">70</span>, to: <span class="n">100</span>, text: <span <span class="k">class</span>="s">"No-shows, gone"</span>, pos: <span <span class="k">class</span>="s">"top"</span> },
+  { <span class="k">from</span>: <span class="n">102</span>, to: <span class="n">118</span>, text: <span <span class="k">class</span>="s">"One view, whole week"</span>, pos: <span <span class="k">class</span>="s">"bottom"</span> },
+] <span class="k">as</span> <span class="k">const</span>;
+
+<span class="c">// Declarative SFX pin table: relative to the timeline above, never bare frame numbers.</span>
+<span class="k">export</span> <span class="k">const</span> SFX = [
+  { <span class="k">from</span>: <span class="n">8</span>, src: <span <span class="k">class</span>="s">"audio/transition-soft.mp3"</span>, volume: <span class="n">0.5</span>, dur: <span class="n">30</span>, note: <span <span class="k">class</span>="s">"wordmark letterpress lands"</span> },
+  { <span class="k">from</span>: T.brand.exit[<span class="n">0</span>] - <span class="n">19</span>, src: <span <span class="k">class</span>="s">"audio/whoosh-fast.mp3"</span>, volume: <span class="n">0.35</span>, dur: <span class="n">36</span>, note: <span <span class="k">class</span>="s">"brand hands off to the product page"</span> },
+  { <span class="k">from</span>: T.dark.<span class="k">in</span>[<span class="n">0</span>], src: <span <span class="k">class</span>="s">"audio/hit-weak.mp3"</span>, volume: <span class="n">0.3</span>, dur: <span class="n">18</span>, note: <span <span class="k">class</span>="s">"lights go down"</span> },
+  { <span class="k">from</span>: T.dark.<span class="k">in</span>[<span class="n">0</span>] - <span class="n">5</span>, src: <span <span class="k">class</span>="s">"audio/whoosh-big.mp3"</span>, volume: <span class="n">0.32</span>, dur: <span class="n">44</span>, note: <span <span class="k">class</span>="s">"camera push on the hero card"</span> },
+  { <span class="k">from</span>: T.beam[<span class="n">0</span>] - <span class="n">12</span>, src: <span <span class="k">class</span>="s">"audio/sparkle-touch.mp3"</span>, volume: <span class="n">0.28</span>, dur: <span class="n">40</span>, note: <span <span class="k">class</span>="s">"beam traces the card"</span> },
+  { <span class="k">from</span>: T.reseat[<span class="n">0</span>], src: <span <span class="k">class</span>="s">"audio/transition-snap.mp3"</span>, volume: <span class="n">0.5</span>, dur: <span class="n">18</span>, note: <span <span class="k">class</span>="s">"card reseats"</span> },
+  { <span class="k">from</span>: T.rowCues[<span class="n">0</span>] - <span class="n">2</span>, src: <span <span class="k">class</span>="s">"audio/transition-soft.mp3"</span>, volume: <span class="n">0.35</span>, dur: <span class="n">30</span>, note: <span <span class="k">class</span>="s">"cut <span class="k">in</span> to the reminders list (rows get a visual seam, no per-row pops)"</span> },
+  { <span class="k">from</span>: <span class="n">84</span>, src: <span <span class="k">class</span>="s">"audio/whoosh-fast.mp3"</span>, volume: <span class="n">0.3</span>, dur: <span class="n">34</span>, note: <span <span class="k">class</span>="s">"camera glides to the week view"</span> },
+  { <span class="k">from</span>: T.lockup - <span class="n">3</span>, src: <span <span class="k">class</span>="s">"audio/impact-zoom-quick.mp3"</span>, volume: <span class="n">0.55</span>, dur: <span class="n">36</span>, note: <span <span class="k">class</span>="s">"mark brakes into place (loudest moment)"</span> },
+  { <span class="k">from</span>: T.lockup - <span class="n">1</span>, src: <span <span class="k">class</span>="s">"audio/shimmer-sparkle-sweep.mp3"</span>, volume: <span class="n">0.3</span>, dur: <span class="n">44</span>, note: <span <span class="k">class</span>="s">"wordmark + tagline settle"</span> },
+] <span class="k">as</span> <span class="k">const</span>;
+</pre></details><details><summary>src/Promo.tsx</summary><pre><span class="k">import</span> { Audio } <span class="k">from</span> <span <span class="k">class</span>="s">"@remotion/media"</span>;
+<span class="k">import</span> { loadFont } <span class="k">from</span> <span <span class="k">class</span>="s">"@remotion/google-fonts/Inter"</span>;
+<span class="k">import</span> { measureText } <span class="k">from</span> <span <span class="k">class</span>="s">"@remotion/layout-utils"</span>;
+<span class="k">import</span> React <span class="k">from</span> <span <span class="k">class</span>="s">"react"</span>;
+<span class="k">import</span> { AbsoluteFill, Easing, interpolate, Sequence, staticFile, useCurrentFrame } <span class="k">from</span> <span <span class="k">class</span>="s">"remotion"</span>;
+<span class="k">import</span> { CamKey, PageCam } <span class="k">from</span> <span <span class="k">class</span>="s">"./lib/PageCam"</span>;
+<span class="k">import</span> layout <span class="k">from</span> <span <span class="k">class</span>="s">"./live-layout.json"</span>;
+<span class="k">import</span> { CAPTIONS, SFX, T } <span class="k">from</span> <span <span class="k">class</span>="s">"./timeline"</span>;
+
+<span class="k">const</span> { fontFamily } = loadFont(<span <span class="k">class</span>="s">"normal"</span>, { weights: [<span <span class="k">class</span>="s">"<span class="n">500</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">600</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">700</span>"</span>, <span <span class="k">class</span>="s">"<span class="n">800</span>"</span>], subsets: [<span <span class="k">class</span>="s">"latin"</span>] });
+
+<span class="c">// Tokens come from the product page itself (same palette and Inter as the app UI).</span>
+<span class="k">const</span> NAVY = <span <span class="k">class</span>="s">"#0B2A3C"</span>;
+<span class="k">const</span> TEAL = <span <span class="k">class</span>="s">"#12A3A3"</span>;
+<span class="k">const</span> TEAL_L = <span <span class="k">class</span>="s">"#7FE0E0"</span>;
+<span class="k">const</span> MIST = <span <span class="k">class</span>="s">"#F2F8F8"</span>;
+<span class="k">const</span> clamp = { extrapolateLeft: <span <span class="k">class</span>="s">"clamp"</span>, extrapolateRight: <span <span class="k">class</span>="s">"clamp"</span> } <span class="k">as</span> <span class="k">const</span>;
+<span class="k">const</span> TEX = staticFile(<span <span class="k">class</span>="s">"textures/live/schedule-full.png"</span>);
+<span class="k">const</span> PAGE_H = layout.pageH;
+
+<span class="k">const</span> WAVE = <span <span class="k">class</span>="s">"M4 20c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-3M4 32c5-<span class="n">7</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">14</span> 0s9 <span class="n">7</span> <span class="n">14</span> <span class="n">0</span> <span class="n">9</span>-<span class="n">7</span> <span class="n">12</span>-<span class="n">3</span>"</span>;
+
+/* ------------------------------------------------------------------ brand open (card: brand-ink-open) */
+<span class="k">const</span> BrandOpen: React.FC = () =&gt; {
+  <span class="k">const</span> frame = useCurrentFrame();
+  <span class="k">const</span> draw = interpolate(frame, [<span class="n">0</span>, <span class="n">10</span>], [<span class="n">100</span>, <span class="n">0</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.3</span>, <span class="n">0</span>, <span class="n">0.2</span>, <span class="n">1</span>) });
+  <span class="k">const</span> out = interpolate(frame, [T.brand.exit[<span class="n">0</span>], T.brand.exit[<span class="n">1</span>]], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.4</span>, <span class="n">0</span>, <span class="n">0.5</span>, <span class="n">1</span>) });
+  <span class="k">const</span> word = <span <span class="k">class</span>="s">"Tidewater"</span>.split(<span <span class="k">class</span>="s">""</span>);
+  <span class="k">return</span> (
+    &lt;AbsoluteFill style={{ backgroundColor: MIST, opacity: <span class="n">1</span> - out, justifyContent: <span <span class="k">class</span>="s">"center"</span>, alignItems: <span <span class="k">class</span>="s">"center"</span>, fontFamily }}&gt;
+      &lt;div style={{ textAlign: <span <span class="k">class</span>="s">"center"</span>, transform: <span <span class="k">class</span>="s">`translateY(${-out * <span class="n">40</span>}px) scale(${<span class="n">1</span> - out * <span class="n">0.12</span>})`</span> }}&gt;
+        &lt;svg width={<span class="n">96</span>} height={<span class="n">96</span>} viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">48</span> <span class="n">48</span>"</span> fill=<span <span class="k">class</span>="s">"none"</span> style={{ display: <span <span class="k">class</span>="s">"block"</span>, margin: <span <span class="k">class</span>="s">"<span class="n">0</span> auto 26px"</span> }}&gt;
+          &lt;path d={WAVE} stroke={TEAL} strokeWidth={<span class="n">5</span>} strokeLinecap=<span <span class="k">class</span>="s">"round"</span> pathLength={<span class="n">100</span>} strokeDasharray={<span class="n">100</span>} strokeDashoffset={draw} /&gt;
+        &lt;/svg&gt;
+        &lt;div style={{ fontSize: <span class="n">168</span>, fontWeight: <span class="n">800</span>, letterSpacing: -<span class="n">6</span>, color: NAVY, lineHeight: <span class="n">1</span>, display: <span <span class="k">class</span>="s">"inline-flex"</span>, alignItems: <span <span class="k">class</span>="s">"flex-end"</span> }}&gt;
+          {word.map((ch, i) =&gt; {
+            <span class="k">const</span> delay = <span class="n">2</span> + i * <span class="n">1.2</span>;
+            <span class="k">const</span> t = interpolate(frame, [delay, delay + <span class="n">9</span>], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.2</span>, <span class="n">0.7</span>, <span class="n">0.25</span>, <span class="n">1</span>) });
+            <span class="k">return</span> (
+              &lt;span key={i} style={{ position: <span <span class="k">class</span>="s">"relative"</span>, display: <span <span class="k">class</span>="s">"inline-block"</span>, opacity: t, transform: <span <span class="k">class</span>="s">`scale(${<span class="n">1.6</span> - <span class="n">0.6</span> * t})`</span>, transformOrigin: <span <span class="k">class</span>="s">"center bottom"</span>, filter: <span <span class="k">class</span>="s">`blur(${(<span class="n">1</span> - t) * <span class="n">6</span>}px)`</span> }}&gt;
+                {ch}
+              &lt;/span&gt;
+            );
+          })}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/AbsoluteFill&gt;
+  );
+};
+
+/* ------------------------------------------------------------------ camera (one continuous PageCam move across the three product beats) */
+<span class="k">const</span> R = (o: Partial&lt;CamKey&gt; &amp; { frame: number; cx: number; cy: number; zoom: number }): CamKey =&gt; ({ rotX: <span class="n">0</span>, rotY: <span class="n">0</span>, rotZ: <span class="n">0</span>, persp: <span class="n">1200</span>, ...o });
+<span class="k">const</span> CAM: CamKey[] = [
+  R({ frame: <span class="n">0</span>, cx: <span class="n">960</span>, cy: <span class="n">540</span>, zoom: <span class="n">1</span> }),
+  R({ frame: <span class="n">24</span>, cx: <span class="n">960</span>, cy: <span class="n">540</span>, zoom: <span class="n">1</span> }),
+<span class="c">  // push to side-on close-up of the hero card: rotY-dominant, small rotX (card Q6), then locked</span>
+  R({ frame: <span class="n">42</span>, cx: <span class="n">960</span>, cy: <span class="n">450</span>, zoom: <span class="n">1.7</span>, rotX: <span class="n">7</span>, rotY: <span class="n">28</span> }),
+  R({ frame: <span class="n">58</span>, cx: <span class="n">960</span>, cy: <span class="n">450</span>, zoom: <span class="n">1.7</span>, rotX: <span class="n">7</span>, rotY: <span class="n">28</span> }),
+  R({ frame: <span class="n">70</span>, cx: <span class="n">960</span>, cy: <span class="n">915</span>, zoom: <span class="n">1.15</span> }),
+  R({ frame: <span class="n">98</span>, cx: <span class="n">960</span>, cy: <span class="n">975</span>, zoom: <span class="n">1.22</span> }),
+  R({ frame: <span class="n">112</span>, cx: <span class="n">960</span>, cy: <span class="n">1565</span>, zoom: <span class="n">1.2</span>, rotX: <span class="n">3</span> }),
+];
+
+<span class="k">const</span> cropBg = (x: number, y: number): React.CSSProperties =&gt; ({
+  backgroundImage: <span <span class="k">class</span>="s">`url(${TEX})`</span>,
+  backgroundSize: <span <span class="k">class</span>="s">`1920px ${PAGE_H}px`</span>,
+  backgroundPosition: <span <span class="k">class</span>="s">`-${x}px -${y}px`</span>,
+});
+
+/* ------------------------------------------------------------------ hero card (card: spotlight-hero-card, compressed) */
+<span class="k">const</span> HeroCard: React.FC&lt;{ frame: number }&gt; = ({ frame }) =&gt; {
+  <span class="k">const</span> h = layout.hero;
+  <span class="k">const</span> dark = interpolate(frame, [T.dark.<span class="k">in</span>[<span class="n">0</span>], T.dark.<span class="k">in</span>[<span class="n">1</span>]], [<span class="n">0</span>, T.dark.max], { ...clamp, easing: Easing.bezier(<span class="n">0.4</span>, <span class="n">0</span>, <span class="n">0.6</span>, <span class="n">1</span>) }) *
+    interpolate(frame, [T.dark.out[<span class="n">0</span>], T.dark.out[<span class="n">1</span>]], [<span class="n">1</span>, <span class="n">0</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.4</span>, <span class="n">0</span>, <span class="n">0.6</span>, <span class="n">1</span>) });
+<span class="c">  // rise 12f with overshoot (card parameter kept: bezier(0.2,1.25,0.3,1)), hover bob, reseat</span>
+  <span class="k">const</span> rise = interpolate(frame, [T.rise[<span class="n">0</span>], T.rise[<span class="n">1</span>]], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.2</span>, <span class="n">1.25</span>, <span class="n">0.3</span>, <span class="n">1</span>) });
+  <span class="k">const</span> reseat = interpolate(frame, [T.reseat[<span class="n">0</span>], T.reseat[<span class="n">1</span>]], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.4</span>, <span class="n">0</span>, <span class="n">0.6</span>, <span class="n">1</span>) });
+  <span class="k">const</span> bob = frame &gt; T.rise[<span class="n">1</span>] &amp;&amp; frame &lt; T.reseat[<span class="n">0</span>] ? Math.sin(((frame - T.rise[<span class="n">1</span>]) / <span class="n">40</span>) * Math.PI * <span class="n">2</span>) * <span class="n">4</span> : <span class="n">0</span>;
+  <span class="k">const</span> lift = Math.max(<span class="n">0</span>, rise * (<span class="n">1</span> - reseat));
+  <span class="k">const</span> z = <span class="n">2</span> + <span class="n">90</span> * lift + bob * lift;
+  <span class="k">const</span> press = frame &gt;= T.reseat[<span class="n">1</span>] - <span class="n">2</span> &amp;&amp; frame &lt; T.reseat[<span class="n">1</span>] + <span class="n">3</span> ? <span class="n">0.997</span> : <span class="n">1</span>;
+  <span class="k">const</span> flying = frame &gt;= T.rise[<span class="n">0</span>] &amp;&amp; frame &lt;= T.reseat[<span class="n">1</span>] + <span class="n">4</span>;
+  <span class="k">const</span> patch = interpolate(frame, [T.reseat[<span class="n">1</span>], T.reseat[<span class="n">1</span>] + <span class="n">2</span>], [<span class="n">1</span>, <span class="n">0</span>], clamp);
+  <span class="k">const</span> lap = interpolate(frame, [T.beam[<span class="n">0</span>], T.beam[<span class="n">1</span>]], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.4</span>, <span class="n">0</span>, <span class="n">0.3</span>, <span class="n">1</span>) });
+  <span class="k">const</span> beamOp = interpolate(frame, [T.beam[<span class="n">0</span>], T.beam[<span class="n">0</span>] + <span class="n">2</span>, T.beam[<span class="n">1</span>] - <span class="n">2</span>, T.beam[<span class="n">1</span>] + <span class="n">2</span>], [<span class="n">0</span>, <span class="n">1</span>, <span class="n">1</span>, <span class="n">0</span>], clamp);
+  <span class="k">return</span> (
+    &lt;&gt;
+      {dark &gt; <span class="n">0.001</span> &amp;&amp; (
+        &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: <span class="n">0</span>, top: <span class="n">0</span>, width: <span class="n">1920</span>, height: PAGE_H, background: <span <span class="k">class</span>="s">`rgba(<span class="n">14</span>,<span class="n">12</span>,<span class="n">10</span>,${dark})`</span>, transform: <span <span class="k">class</span>="s">"translateZ(1px)"</span>, pointerEvents: <span <span class="k">class</span>="s">"none"</span> }} /&gt;
+      )}
+      {flying &amp;&amp; patch &gt; <span class="n">0</span> &amp;&amp; (
+        &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: h.x - <span class="n">80</span>, top: h.y - <span class="n">30</span>, width: h.w + <span class="n">160</span>, height: h.h + <span class="n">150</span>, background: MIST, opacity: patch, transform: <span <span class="k">class</span>="s">"translateZ(<span class="n">0</span>.5px)"</span> }}&gt;
+          &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: <span class="n">80</span>, top: <span class="n">30</span>, width: h.w, height: h.h, borderRadius: <span class="n">32</span>, border: <span <span class="k">class</span>="s">`2px solid ${TEAL}`</span>, opacity: <span class="n">0.55</span> * lift, boxSizing: <span <span class="k">class</span>="s">"border-box"</span> }} /&gt;
+        &lt;/div&gt;
+      )}
+      {flying &amp;&amp; (
+        &lt;div
+          style={{
+            position: <span <span class="k">class</span>="s">"absolute"</span>, left: h.x, top: h.y, width: h.w, height: h.h, borderRadius: <span class="n">32</span>, transform: <span <span class="k">class</span>="s">`translateZ(${z}px) scale(${press})`</span>,
+            boxShadow: <span <span class="k">class</span>="s">`${-<span class="n">14</span> * lift}px ${<span class="n">18</span> * lift}px ${<span class="n">44</span> * lift}px rgba(<span class="n">0</span>,<span class="n">0</span>,<span class="n">0</span>,${<span class="n">0.42</span> * lift})`</span>, background: <span <span class="k">class</span>="s">"#fff"</span>,
+          }}
+        &gt;
+          &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, inset: <span class="n">0</span>, borderRadius: <span class="n">32</span>, overflow: <span <span class="k">class</span>="s">"hidden"</span>, ...cropBg(h.x, h.y) }} /&gt;
+          &lt;svg width={h.w} height={h.h} style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, inset: <span class="n">0</span>, opacity: beamOp, filter: <span <span class="k">class</span>="s">"drop-shadow(<span class="n">0</span> <span class="n">0</span> 8px rgba(<span class="n">127</span>,<span class="n">224</span>,<span class="n">224</span>,<span class="n">0.9</span>))"</span> }}&gt;
+            &lt;rect x={<span class="n">2.5</span>} y={<span class="n">2.5</span>} width={h.w - <span class="n">5</span>} height={h.h - <span class="n">5</span>} rx={<span class="n">30</span>} fill=<span <span class="k">class</span>="s">"none"</span> stroke={TEAL_L} strokeWidth={<span class="n">5</span>} pathLength={<span class="n">1</span>} strokeDasharray=<span <span class="k">class</span>="s">"<span class="n">0.16</span> <span class="n">1</span>"</span> strokeDashoffset={-lap * <span class="n">1.16</span> + <span class="n">0.16</span>} strokeLinecap=<span <span class="k">class</span>="s">"round"</span> /&gt;
+            &lt;rect x={<span class="n">2.5</span>} y={<span class="n">2.5</span>} width={h.w - <span class="n">5</span>} height={h.h - <span class="n">5</span>} rx={<span class="n">30</span>} fill=<span <span class="k">class</span>="s">"none"</span> stroke=<span <span class="k">class</span>="s">"#fff"</span> strokeWidth={<span class="n">2.2</span>} pathLength={<span class="n">1</span>} strokeDasharray=<span <span class="k">class</span>="s">"<span class="n">0.16</span> <span class="n">1</span>"</span> strokeDashoffset={-lap * <span class="n">1.16</span> + <span class="n">0.16</span>} strokeLinecap=<span <span class="k">class</span>="s">"round"</span> /&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/&gt;
+  );
+};
+
+/* ------------------------------------------------------------------ reminder rows (card: row-embed) */
+<span class="k">const</span> FLY_EASE = Easing.bezier(<span class="n">0.5</span>, <span class="n">0</span>, <span class="n">0.8</span>, <span class="n">0.75</span>);
+<span class="k">const</span> airOf = (frame: number, cue: number) =&gt; <span class="n">1</span> - interpolate(frame, [cue, cue + T.rowFly], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: FLY_EASE });
+
+<span class="k">const</span> ReminderRows: React.FC&lt;{ frame: number }&gt; = ({ frame }) =&gt; {
+  <span class="k">const</span> rows = layout.rows;
+  <span class="k">const</span> CARD_BG = <span <span class="k">class</span>="s">"#FFFFFF"</span>; // real card background under the rows
+  <span class="k">return</span> (
+    &lt;&gt;
+      {rows.map((r, i) =&gt; {
+        <span class="k">const</span> cue = T.rowCues[i];
+        <span class="k">const</span> land = cue + T.rowFly;
+<span class="c">        // Rows are baked into the texture, so each slot is patched with the card colour until its row lands.</span>
+        <span class="k">const</span> patchOpacity = frame &lt; cue - <span class="n">8</span> ? <span class="n">0</span> : interpolate(frame, [land, land + <span class="n">2</span>], [<span class="n">1</span>, <span class="n">0</span>], clamp);
+        <span class="k">const</span> showPatchEarly = frame &gt;= T.dark.out[<span class="n">1</span>] - <span class="n">4</span>; // patches exist only once the reminders are on screen
+        <span class="k">const</span> slotHint = interpolate(frame, [cue - <span class="n">6</span>, cue + <span class="n">4</span>], [<span class="n">0.55</span>, <span class="n">1</span>], clamp);
+        <span class="k">let</span> flyer: React.ReactNode = <span class="k">null</span>;
+        <span class="k">let</span> seam: React.ReactNode = <span class="k">null</span>;
+        <span class="k">if</span> (frame &gt;= cue &amp;&amp; frame &lt; land + <span class="n">4</span>) {
+          <span class="k">const</span> air = airOf(frame, cue);
+          <span class="k">const</span> p = <span class="n">1</span> - air;
+          <span class="k">const</span> appear = interpolate(frame, [cue, cue + <span class="n">3</span>], [<span class="n">0</span>, <span class="n">1</span>], clamp);
+          <span class="k">const</span> scale = frame &lt; land ? <span class="n">1.06</span> - <span class="n">0.065</span> * p : interpolate(frame, [land, land + <span class="n">4</span>], [<span class="n">0.995</span>, <span class="n">1</span>], { ...clamp, easing: Easing.out(Easing.quad) });
+          <span class="k">const</span> vy = <span class="n">120</span> * (airOf(frame - <span class="n">0.5</span>, cue) - airOf(frame + <span class="n">0.5</span>, cue));
+          <span class="k">const</span> mb = frame &lt; land ? Math.min(<span class="n">3.2</span>, vy * <span class="n">0.22</span>) : <span class="n">0</span>;
+          flyer = (
+            &lt;div key={<span <span class="k">class</span>="s">`f${i}`</span>} style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: r.x, top: r.y, width: r.w, height: r.h, opacity: appear, transform: <span <span class="k">class</span>="s">`translateZ(2px) perspective(900px) translateY(${(-<span class="n">120</span> * air).toFixed(<span class="n">2</span>)}px) rotateX(${(<span class="n">16</span> * air).toFixed(<span class="n">3</span>)}deg) scale(${scale.toFixed(<span class="n">4</span>)})`</span>, filter: mb &gt; <span class="n">0.25</span> ? <span <span class="k">class</span>="s">`url(#row-mb-${i})`</span> : <span class="k">undefined</span> }}&gt;
+              {mb &gt; <span class="n">0.25</span> &amp;&amp; (
+                &lt;svg width={<span class="n">0</span>} height={<span class="n">0</span>} style={{ position: <span <span class="k">class</span>="s">"absolute"</span> }} aria-hidden&gt;
+                  &lt;filter id={<span <span class="k">class</span>="s">`row-mb-${i}`</span>} x=<span <span class="k">class</span>="s">"-<span class="n">5</span>%"</span> y=<span <span class="k">class</span>="s">"-<span class="n">30</span>%"</span> width=<span <span class="k">class</span>="s">"<span class="n">110</span>%"</span> height=<span <span class="k">class</span>="s">"<span class="n">160</span>%"</span>&gt;&lt;feGaussianBlur stdDeviation={<span <span class="k">class</span>="s">`<span class="n">0</span> ${mb.toFixed(<span class="n">2</span>)}`</span>} /&gt;&lt;/filter&gt;
+                &lt;/svg&gt;
+              )}
+              &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, inset: <span class="n">0</span>, borderRadius: <span class="n">16</span>, overflow: <span <span class="k">class</span>="s">"hidden"</span>, backgroundColor: <span <span class="k">class</span>="s">"#fff"</span>, ...cropBg(r.x, r.y),
+                boxShadow: <span <span class="k">class</span>="s">`inset <span class="n">0</span> 1px <span class="n">0</span> rgba(<span class="n">255</span>,<span class="n">255</span>,<span class="n">255</span>,${(<span class="n">0.9</span> * air).toFixed(<span class="n">3</span>)}), <span class="n">0</span> ${(<span class="n">34</span> * air).toFixed(<span class="n">1</span>)}px ${(<span class="n">64</span> * air).toFixed(<span class="n">1</span>)}px -${(<span class="n">10</span> * air).toFixed(<span class="n">1</span>)}px rgba(<span class="n">11</span>,<span class="n">42</span>,<span class="n">60</span>,${(<span class="n">0.26</span> * air).toFixed(<span class="n">3</span>)}), <span class="n">0</span> ${(<span class="n">6</span> * air).toFixed(<span class="n">1</span>)}px ${(<span class="n">14</span> * air).toFixed(<span class="n">1</span>)}px rgba(<span class="n">11</span>,<span class="n">42</span>,<span class="n">60</span>,${(<span class="n">0.12</span> * air).toFixed(<span class="n">3</span>)})`</span> }} /&gt;
+            &lt;/div&gt;
+          );
+        }
+        <span class="k">if</span> (frame &gt;= land &amp;&amp; frame &lt; land + <span class="n">8</span>) {
+          <span class="k">const</span> spread = interpolate(frame, [land, land + <span class="n">5</span>], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.out(Easing.cubic) });
+          <span class="k">const</span> op = interpolate(frame, [land, land + <span class="n">2</span>, land + <span class="n">8</span>], [<span class="n">1</span>, <span class="n">1</span>, <span class="n">0</span>], clamp);
+          <span class="k">const</span> w = r.w * spread;
+          seam = &lt;div key={<span <span class="k">class</span>="s">`s${i}`</span>} style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: r.x + (r.w - w) / <span class="n">2</span>, top: r.y + r.h - <span class="n">2</span>, width: w, height: <span class="n">2</span>, borderRadius: <span class="n">1</span>, transform: <span <span class="k">class</span>="s">"translateZ(3px)"</span>, opacity: op,
+            background: <span <span class="k">class</span>="s">`linear-gradient(90deg, rgba(<span class="n">18</span>,<span class="n">163</span>,<span class="n">163</span>,<span class="n">0</span>) <span class="n">0</span>%, ${TEAL} <span class="n">18</span>%, ${TEAL_L} <span class="n">50</span>%, ${TEAL} <span class="n">82</span>%, rgba(<span class="n">18</span>,<span class="n">163</span>,<span class="n">163</span>,<span class="n">0</span>) <span class="n">100</span>%)`</span>, boxShadow: <span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> 7px rgba(<span class="n">18</span>,<span class="n">163</span>,<span class="n">163</span>,<span class="n">0.45</span>)"</span> }} /&gt;;
+        }
+        <span class="k">return</span> (
+          &lt;React.Fragment key={i}&gt;
+            {showPatchEarly &amp;&amp; patchOpacity &gt; <span class="n">0</span> &amp;&amp; (
+              &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: r.x - <span class="n">2</span>, top: r.y - <span class="n">2</span>, width: r.w + <span class="n">4</span>, height: r.h + <span class="n">4</span>, borderRadius: <span class="n">18</span>, background: CARD_BG, opacity: patchOpacity, transform: <span <span class="k">class</span>="s">"translateZ(<span class="n">0</span>.5px)"</span> }}&gt;
+                &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: <span class="n">2</span>, top: <span class="n">2</span>, width: r.w, height: r.h, borderRadius: <span class="n">16</span>, border: <span <span class="k">class</span>="s">"1px dashed rgba(<span class="n">11</span>,<span class="n">42</span>,<span class="n">60</span>,<span class="n">0.18</span>)"</span>, boxSizing: <span <span class="k">class</span>="s">"border-box"</span>, opacity: slotHint }} /&gt;
+              &lt;/div&gt;
+            )}
+            {flyer}
+            {seam}
+          &lt;/React.Fragment&gt;
+        );
+      })}
+    &lt;/&gt;
+  );
+};
+
+/* ------------------------------------------------------------------ week view highlight */
+<span class="k">const</span> BookedRing: React.FC&lt;{ frame: number }&gt; = ({ frame }) =&gt; {
+  <span class="k">const</span> b = layout.booked;
+  <span class="k">const</span> t = interpolate(frame, [T.ring[<span class="n">0</span>], T.ring[<span class="n">1</span>]], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.2</span>, <span class="n">0.7</span>, <span class="n">0.25</span>, <span class="n">1</span>) });
+  <span class="k">if</span> (frame &lt; T.ring[<span class="n">0</span>] || frame &gt; T.ring[<span class="n">1</span>]) <span class="k">return</span> <span class="k">null</span>;
+  <span class="k">const</span> pad = <span class="n">8</span> + <span class="n">14</span> * t;
+  <span class="k">return</span> (
+    &lt;svg width={b.w + pad * <span class="n">2</span>} height={b.h + pad * <span class="n">2</span>} style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: b.x - pad, top: b.y - pad, opacity: <span class="n">1</span> - t * <span class="n">0.9</span>, transform: <span <span class="k">class</span>="s">"translateZ(2px)"</span>, overflow: <span <span class="k">class</span>="s">"visible"</span> }}&gt;
+      &lt;rect x={<span class="n">2</span>} y={<span class="n">2</span>} width={b.w + pad * <span class="n">2</span> - <span class="n">4</span>} height={b.h + pad * <span class="n">2</span> - <span class="n">4</span>} rx={<span class="n">14</span> + pad * <span class="n">0.6</span>} fill=<span <span class="k">class</span>="s">"none"</span> stroke={TEAL} strokeWidth={<span class="n">5</span>} /&gt;
+    &lt;/svg&gt;
+  );
+};
+
+/* ------------------------------------------------------------------ captions (screen space, &gt;=<span class="n">5</span>% frame height) */
+<span class="k">const</span> Captions: React.FC = () =&gt; {
+  <span class="k">const</span> frame = useCurrentFrame();
+  <span class="k">return</span> (
+    &lt;&gt;
+      {CAPTIONS.map((c, i) =&gt; {
+        <span class="k">if</span> (frame &lt; c.<span class="k">from</span> || frame &gt; c.to) <span class="k">return</span> <span class="k">null</span>;
+        <span class="k">const</span> inT = interpolate(frame, [c.<span class="k">from</span>, c.<span class="k">from</span> + <span class="n">6</span>], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.2</span>, <span class="n">0.7</span>, <span class="n">0.25</span>, <span class="n">1</span>) });
+        <span class="k">const</span> outT = interpolate(frame, [c.to - <span class="n">5</span>, c.to], [<span class="n">1</span>, <span class="n">0</span>], clamp);
+        <span class="k">return</span> (
+          &lt;div key={i} style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: <span class="n">0</span>, right: <span class="n">0</span>, ...(c.pos === <span <span class="k">class</span>="s">"top"</span> ? { top: <span class="n">64</span> } : { bottom: <span class="n">74</span> }), display: <span <span class="k">class</span>="s">"flex"</span>, justifyContent: <span <span class="k">class</span>="s">"center"</span>, opacity: inT * outT, filter: <span <span class="k">class</span>="s">`blur(${(<span class="n">1</span> - inT) * <span class="n">6</span>}px)`</span>, transform: <span <span class="k">class</span>="s">`translateY(${(<span class="n">1</span> - inT) * <span class="n">14</span>}px)`</span> }}&gt;
+            &lt;div style={{ fontFamily, fontSize: <span class="n">60</span>, fontWeight: <span class="n">700</span>, letterSpacing: -<span class="n">1</span>, color: <span <span class="k">class</span>="s">"#fff"</span>, background: <span <span class="k">class</span>="s">"rgba(<span class="n">11</span>,<span class="n">42</span>,<span class="n">60</span>,<span class="n">0.9</span>)"</span>, padding: <span <span class="k">class</span>="s">"16px 46px 20px"</span>, borderRadius: <span class="n">48</span>, boxShadow: <span <span class="k">class</span>="s">"<span class="n">0</span> 10px 30px rgba(<span class="n">11</span>,<span class="n">42</span>,<span class="n">60</span>,<span class="n">0.25</span>)"</span> }}&gt;{c.text}&lt;/div&gt;
+          &lt;/div&gt;
+        );
+      })}
+    &lt;/&gt;
+  );
+};
+
+/* ------------------------------------------------------------------ outro lockup (card: logo-shrink-wordmark-lockup, compressed) */
+<span class="k">const</span> WORD = <span <span class="k">class</span>="s">"Tidewater"</span>;
+<span class="k">const</span> WORD_SIZE = <span class="n">104</span>;
+<span class="k">const</span> ICON = <span class="n">120</span>;
+<span class="k">const</span> GAP = <span class="n">30</span>;
+<span class="k">const</span> { width: WORD_W } = measureText({ text: WORD, fontFamily, fontWeight: <span <span class="k">class</span>="s">"<span class="n">800</span>"</span>, fontSize: WORD_SIZE, letterSpacing: <span <span class="k">class</span>="s">"-3px"</span> } <span class="k">as</span> Parameters&lt;typeof measureText&gt;[<span class="n">0</span>]);
+
+<span class="k">const</span> Lockup: React.FC = () =&gt; {
+  <span class="k">const</span> f = useCurrentFrame() - T.lockup;
+  <span class="k">const</span> inOutCubic = Easing.inOut(Easing.cubic);
+  <span class="k">const</span> shrink = interpolate(f, [<span class="n">0</span>, <span class="n">8</span>], [<span class="n">5.4</span>, <span class="n">1</span>], { ...clamp, easing: inOutCubic });
+  <span class="k">const</span> brake = Math.sin(Math.PI * interpolate(f, [<span class="n">6</span>, <span class="n">12</span>], [<span class="n">0</span>, <span class="n">1</span>], clamp)) * <span class="n">0.06</span>; // +<span class="n">6</span>% overshoot brake
+  <span class="k">const</span> shift = interpolate(f, [<span class="n">10</span>, <span class="n">16</span>], [<span class="n">0</span>, (GAP + WORD_W) / <span class="n">2</span>], { ...clamp, easing: inOutCubic });
+  <span class="k">const</span> bg = interpolate(f, [-<span class="n">6</span>, <span class="n">0</span>], [<span class="n">0</span>, <span class="n">1</span>], clamp);
+  <span class="k">const</span> tag = interpolate(f, [<span class="n">22</span>, <span class="n">28</span>], [<span class="n">0</span>, <span class="n">1</span>], clamp);
+  <span class="k">return</span> (
+    &lt;AbsoluteFill style={{ opacity: bg, fontFamily, background: <span <span class="k">class</span>="s">`radial-gradient(1100px 700px at <span class="n">50</span>% <span class="n">55</span>%, #0E7C86 <span class="n">0</span>%, ${NAVY} <span class="n">70</span>%)`</span>, justifyContent: <span <span class="k">class</span>="s">"center"</span>, alignItems: <span <span class="k">class</span>="s">"center"</span> }}&gt;
+      &lt;div style={{ position: <span <span class="k">class</span>="s">"relative"</span>, width: <span class="n">1920</span>, height: <span class="n">300</span> }}&gt;
+        &lt;svg width={ICON} height={ICON} viewBox=<span <span class="k">class</span>="s">"<span class="n">0</span> <span class="n">0</span> <span class="n">48</span> <span class="n">48</span>"</span> fill=<span <span class="k">class</span>="s">"none"</span> style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: <span class="n">960</span> - ICON / <span class="n">2</span> - shift, top: <span class="n">40</span>, transform: <span <span class="k">class</span>="s">`scale(${shrink + brake})`</span>, transformOrigin: <span <span class="k">class</span>="s">"center"</span> }}&gt;
+          &lt;path d={WAVE} stroke={TEAL_L} strokeWidth={<span class="n">5</span>} strokeLinecap=<span <span class="k">class</span>="s">"round"</span> /&gt;
+        &lt;/svg&gt;
+        &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: <span class="n">960</span> - ICON / <span class="n">2</span> - shift + ICON + GAP, top: <span class="n">40</span>, height: ICON, display: <span <span class="k">class</span>="s">"flex"</span>, alignItems: <span <span class="k">class</span>="s">"center"</span>, fontSize: WORD_SIZE, fontWeight: <span class="n">800</span>, letterSpacing: -<span class="n">3</span>, color: <span <span class="k">class</span>="s">"#fff"</span>, whiteSpace: <span <span class="k">class</span>="s">"pre"</span> }}&gt;
+          {WORD.split(<span <span class="k">class</span>="s">""</span>).map((ch, i) =&gt; {
+            <span class="k">const</span> t = interpolate(f, [<span class="n">14</span> + i * <span class="n">0.5</span>, <span class="n">14</span> + i * <span class="n">0.5</span> + <span class="n">6</span>], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.out(Easing.cubic) });
+            <span class="k">return</span> &lt;span key={i} style={{ display: <span <span class="k">class</span>="s">"inline-block"</span>, opacity: t, transform: <span <span class="k">class</span>="s">`translateX(${(<span class="n">1</span> - t) * <span class="n">10</span>}px)`</span> }}&gt;{ch}&lt;/span&gt;;
+          })}
+        &lt;/div&gt;
+        &lt;div style={{ position: <span <span class="k">class</span>="s">"absolute"</span>, left: <span class="n">0</span>, right: <span class="n">0</span>, top: <span class="n">190</span>, textAlign: <span <span class="k">class</span>="s">"center"</span>, fontSize: <span class="n">34</span>, fontWeight: <span class="n">600</span>, letterSpacing: <span class="n">7</span>, color: TEAL_L, opacity: tag }}&gt;SCHEDULING FOR PHYSIO CLINICS&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/AbsoluteFill&gt;
+  );
+};
+
+/* ------------------------------------------------------------------ root */
+<span class="k">export</span> <span class="k">const</span> Promo: React.FC = () =&gt; {
+  <span class="k">const</span> frame = useCurrentFrame();
+  <span class="k">return</span> (
+    &lt;AbsoluteFill style={{ backgroundColor: MIST }}&gt;
+      {frame &gt;= T.pageIn &amp;&amp; frame &lt; T.pageOff &amp;&amp; (
+        &lt;PageCam src=<span <span class="k">class</span>="s">"textures/live/schedule-full.png"</span> pageH={PAGE_H} keys={CAM} frame={frame}&gt;
+          &lt;HeroCard frame={frame} /&gt;
+          &lt;ReminderRows frame={frame} /&gt;
+          &lt;BookedRing frame={frame} /&gt;
+        &lt;/PageCam&gt;
+      )}
+      {frame &lt; T.brand.exit[<span class="n">1</span>] &amp;&amp; &lt;BrandOpen /&gt;}
+      {frame &gt;= T.dip[<span class="n">0</span>] - <span class="n">2</span> &amp;&amp; frame &lt; T.dip[<span class="n">1</span>] + <span class="n">2</span> &amp;&amp; frame &lt; T.lockup &amp;&amp; &lt;AbsoluteFill style={{ background: NAVY, opacity: interpolate(frame, [T.dip[<span class="n">0</span>], T.dip[<span class="n">1</span>]], [<span class="n">0</span>, <span class="n">1</span>], { ...clamp, easing: Easing.bezier(<span class="n">0.4</span>, <span class="n">0</span>, <span class="n">0.5</span>, <span class="n">1</span>) }) }} /&gt;}
+      {frame &gt;= T.lockup - <span class="n">6</span> &amp;&amp; &lt;Lockup /&gt;}
+      {frame &lt; T.lockup - <span class="n">4</span> &amp;&amp; &lt;Captions /&gt;}
+      {SFX.map((s, i) =&gt; (
+        &lt;Sequence key={i} <span class="k">from</span>={s.<span class="k">from</span>} durationInFrames={s.dur} layout=<span <span class="k">class</span>="s">"none"</span>&gt;
+          &lt;Audio src={staticFile(s.src)} volume={s.volume} /&gt;
+        &lt;/Sequence&gt;
+      ))}
+    &lt;/AbsoluteFill&gt;
+  );
+};
+</pre></details><details><summary>capture.mjs</summary><pre><span class="c">// Adapted from the skill's capture-template.mjs (puppeteer-core + installed Chrome): full-page 2x texture + layout.json</span>
+<span class="k">import</span> puppeteer <span class="k">from</span> <span <span class="k">class</span>="s">'/Users/kametayturar/agentic-ui/ai-answer/docs/review/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js'</span>
+<span class="k">import</span> fs <span class="k">from</span> <span <span class="k">class</span>="s">'node:fs'</span>
+<span class="k">const</span> BASE = process.argv[<span class="n">2</span>]
+<span class="k">const</span> browser = <span class="k">await</span> puppeteer.launch({ executablePath: <span <span class="k">class</span>="s">'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'</span>, headless: <span class="k">true</span> })
+<span class="k">const</span> page = <span class="k">await</span> browser.newPage()
+<span class="k">await</span> page.setViewport({ width: <span class="n">1920</span>, height: <span class="n">1080</span>, deviceScaleFactor: <span class="n">2</span> })
+<span class="k">await</span> page.goto(BASE, { waitUntil: <span <span class="k">class</span>="s">'networkidle0'</span> })
+<span class="k">await</span> page.evaluate(() =&gt; document.fonts.ready)
+<span class="k">await</span> <span class="k">new</span> Promise((r) =&gt; setTimeout(r, <span class="n">800</span>))
+<span class="k">const</span> lay = <span class="k">await</span> page.evaluate(() =&gt; {
+  <span class="k">const</span> box = (e) =&gt; { <span class="k">const</span> r = e.getBoundingClientRect(); <span class="k">return</span> { x: Math.round(r.x), y: Math.round(r.y + scrollY), w: Math.round(r.width), h: Math.round(r.height) } }
+  <span class="k">const</span> out = { pageH: document.body.scrollHeight, rows: [] }
+  document.querySelectorAll(<span <span class="k">class</span>="s">'[data-lay]'</span>).forEach((e) =&gt; {
+    <span class="k">const</span> k = e.dataset.lay
+    <span class="k">if</span> (k === <span <span class="k">class</span>="s">'row'</span>) { <span class="k">const</span> b = box(e); out.rows.push(b) } <span class="k">else</span> out[k] = box(e)
+  })
+  <span class="k">return</span> out
+})
+<span class="k">await</span> page.screenshot({ path: <span <span class="k">class</span>="s">'public/textures/live/schedule-full.png'</span>, fullPage: <span class="k">true</span> })
+fs.writeFileSync(<span <span class="k">class</span>="s">'src/live-layout.json'</span>, JSON.stringify(lay, <span class="k">null</span>, <span class="n">1</span>))
+console.log(JSON.stringify(lay))
+<span class="k">await</span> browser.close()
+</pre></details>
+</main>
+
+</body></html>

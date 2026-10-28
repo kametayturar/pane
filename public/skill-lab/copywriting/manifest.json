@@ -1,0 +1,43 @@
+{
+  "id": "copywriting",
+  "sets": [
+    "copy"
+  ],
+  "skillSays": [
+    "First diagnose the input: blank brief, real voice to preserve, or a point edit. State it in one line and change only what that calls for.",
+    "Draft in named units (headline, subhead, each section), write 2 to 3 candidates per unit, keep the best and lock it.",
+    "Run each line through a three-question gate: can the reader picture it, can it be proven true or false, could a competitor write the same sentence.",
+    "Hard-ban AI tells: \"not X, it's Y\", \"no X, no Y\" lists, trailing pile-on clauses, \"The result?\" reveals, stock openers, em dashes in short copy.",
+    "Claims must be supportable. A declined claim is not dropped silently: name the evidence that would unlock it, or flag [NEED: ...].",
+    "Deliver page copy plus annotations, 2 to 3 alternatives for headlines and CTAs, and meta content."
+  ],
+  "examples": [
+    {
+      "prompt": "copy-1",
+      "changes": [
+        "Opens with a one-line diagnosis (\"A, blank brief\") before any copy",
+        "Empty-state heading names a picturable before-state (\"a spreadsheet\") instead of generic \"Import your data\"",
+        "Annotations explain each line against the three-question gate",
+        "Alternatives show the weaker options with why they lose"
+      ]
+    },
+    {
+      "prompt": "copy-2",
+      "changes": [
+        "Declined two claims (\"taking bookings within a day\", \"trusted by clinics\") and flagged the evidence needed: [NEED: median time to first booking]",
+        "Subject line states a verifiable fact rather than a greeting",
+        "No negation lists, no contrast reveals, no exclamation marks",
+        "Annotations plus subject and button alternatives"
+      ]
+    },
+    {
+      "prompt": "copy-3",
+      "changes": [
+        "Headline built to pass the swap test: \"Book the whole course of treatment in one go\"",
+        "Flagged [NEED: before/after no-show rate] instead of writing \"cut no-shows\"",
+        "Blurbs are plain and specific (reply C to confirm, R to rebook) with only one punchy line on the page",
+        "Adds meta title and description, and headline/CTA alternatives"
+      ]
+    }
+  ]
+}

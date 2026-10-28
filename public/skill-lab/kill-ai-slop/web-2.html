@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{--bg:#fafaf9;--ink:#1c1c1a;--ink-2:#55554f;--rule:#dcdcd6;--accent:#0b5d57;--accent-ink:#fff;--err:#9b2c1f;--radius:4px;--sans:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:.2em}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.w{max-width:68rem;margin-inline:auto;padding-inline:1.5rem}
+.top{display:flex;justify-content:space-between;align-items:center;padding-block:1.5rem;border-bottom:1px solid var(--rule)}
+.top b{font-weight:700;font-size:1.2rem}
+.top nav{display:flex;gap:1.5rem;align-items:center}
+.top nav a{color:var(--ink);text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+.btn{display:inline-block;font:700 1rem/1 var(--sans);padding:.9rem 1.3rem;border-radius:var(--radius);border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);text-decoration:none;cursor:pointer;transition:background-color .15s,color .15s}
+.btn:hover{background:#094a45}
+.btn.plain{background:transparent;color:var(--accent)}
+.top nav a[aria-current]{font-weight:700}
+.btn.plain:hover{background:#eef3f2}
+@media (max-width:560px){.top nav a:not(.btn){display:none}}
+
+.head{padding-block:4rem 2rem;display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap}
+h1{font-weight:700;font-size:clamp(2.2rem,4.4vw,3.25rem);line-height:1.06;letter-spacing:-.02em;max-width:16ch}
+.head p{margin-top:1rem;color:var(--ink-2);max-width:42ch}
+.per{display:inline-flex;border:1px solid var(--ink);border-radius:var(--radius);overflow:hidden}
+.per button{font:600 1rem/1 var(--sans);padding:.8rem 1.1rem;background:transparent;color:var(--ink);border:0;cursor:pointer;transition:background-color .15s,color .15s}
+.per button+button{border-left:1px solid var(--ink)}
+.per button[aria-pressed=true]{background:var(--ink);color:#fff}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);margin-bottom:4rem}
+.plan{padding:2rem 2rem 2.5rem 0;display:flex;flex-direction:column}
+.plan+.plan{padding-left:2rem;border-left:1px solid var(--rule)}
+.plan h2{font-size:1.35rem;font-weight:700}
+.plan .for{color:var(--ink-2);margin-top:.25rem;min-height:3.1em}
+.price{margin-top:1.5rem;font-size:3rem;font-weight:700;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.price small{font-size:1rem;font-weight:400;color:var(--ink-2);letter-spacing:0;margin-left:.35rem}
+.bill{margin-top:.5rem;font-size:.95rem;color:var(--ink-2);min-height:1.5em}
+.plan .btn{margin-top:1.5rem;text-align:center}
+.plan ul{list-style:none;padding:0;margin-top:1.75rem;display:grid;gap:.6rem;font-size:1rem}
+.plan li{padding-left:1.25rem;position:relative}
+.plan li::before{content:"";position:absolute;left:0;top:.55em;width:.5rem;height:2px;background:var(--ink-2)}
+.note{color:var(--ink-2);font-size:.95rem;padding-bottom:3rem}
+@media (max-width:820px){.plans{grid-template-columns:minmax(0,1fr)}.plan,.plan+.plan{padding:1.75rem 0;border-left:0;border-top:1px solid var(--rule)}.plan:first-child{border-top:0}.plan .for{min-height:0}}
+</style>
+</head>
+<body>
+<div class="w">
+<header class="top"><b>Tidewater</b><nav aria-label="Primary"><a href="#">Features</a><a href="#" aria-current="page">Pricing</a><a class="btn plain" href="#">Sign in</a></nav></header>
+<main>
+<div class="head">
+  <div><h1>Pricing by number of therapists</h1><p>Every plan has the day view, text reminders and the waiting list.</p></div>
+  <div class="per" role="group" aria-label="Billing period"><button type="button" data-m="monthly" aria-pressed="true">Monthly</button><button type="button" data-m="yearly" aria-pressed="false">Yearly, save 20%</button></div>
+</div>
+<section class="plans" aria-label="Plans">
+  <article class="plan" data-b="19">
+    <h2>Solo</h2><p class="for">One therapist running their own diary.</p>
+    <div class="price"><span class="v">$19</span><small>a month</small></div><p class="bill"></p>
+    <a class="btn plain" href="#">Choose Solo</a>
+    <ul><li>1 therapist, 1 location</li><li>Day view with drag-to-move</li><li>150 text reminders a month</li><li>Waiting list with auto-offer</li><li>CSV import of your diary</li></ul>
+  </article>
+  <article class="plan" data-b="49">
+    <h2>Clinic</h2><p class="for">Two to six therapists sharing rooms and a front desk.</p>
+    <div class="price"><span class="v">$49</span><small>a month</small></div><p class="bill"></p>
+    <a class="btn" href="#">Choose Clinic</a>
+    <ul><li>Up to 6 therapists, 1 location</li><li>Everything in Solo</li><li>Rooms, plinths and the pool as resources</li><li>Unlimited text reminders</li><li>Front-desk and therapist logins</li></ul>
+  </article>
+  <article class="plan" data-b="129">
+    <h2>Group</h2><p class="for">Several sites under one owner.</p>
+    <div class="price"><span class="v">$129</span><small>a month</small></div><p class="bill"></p>
+    <a class="btn plain" href="#">Choose Group</a>
+    <ul><li>Unlimited therapists, up to 10 locations</li><li>Everything in Clinic</li><li>Move patients between sites</li><li>Utilisation reports per site</li><li>A named onboarding contact</li></ul>
+  </article>
+</section>
+<p class="note">All plans start with 30 days free. Prices are in US dollars, before tax.</p>
+</main>
+</div>
+<script>
+(function(){
+  var g=document.querySelector('.per'),p=document.querySelectorAll('.plan');
+  function f(n){return Number.isInteger(n)?''+n:n.toFixed(2)}
+  function r(m){
+    g.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===m))});
+    p.forEach(function(e){var b=+e.dataset.b,y=m==='yearly',x=y?b*.8:b;
+      e.querySelector('.v').textContent='$'+f(x);
+      e.querySelector('.bill').textContent=y?'$'+(x*12).toFixed(2)+' billed yearly':'Billed monthly'});
+  }
+  g.addEventListener('click',function(e){var b=e.target.closest('button');if(b)r(b.dataset.m)});
+  r('monthly');
+})();
+</script>
+</body>
+</html>

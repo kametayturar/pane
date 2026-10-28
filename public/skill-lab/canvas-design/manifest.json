@@ -1,0 +1,40 @@
+{
+  "id": "canvas-design",
+  "sets": ["poster"],
+  "skillSays": [
+    "Work in two steps: first write a short design philosophy (a named visual movement, 4-6 paragraphs), then express it on a canvas as 90% visual design and 10% essential text.",
+    "Deduce a subtle, niche reference from the request and weave it into the form and colour, like a jazz musician quoting another tune, instead of drawing the subject literally.",
+    "Treat the piece like a plate from a scientific atlas: dense accumulation of repeated marks, systematic reference markers, sparse clinical typography, a limited and intentional palette.",
+    "Text is minimal and thin by default, set in distinctive fonts; nothing overlaps, nothing leaves the canvas, everything has margin.",
+    "Emphasise master-level craftsmanship, then do a final refinement pass that polishes what is there rather than adding more graphics."
+  ],
+  "examples": [
+    {
+      "prompt": "poster-1",
+      "changes": [
+        "Movement 'Nocturne Instrumentation': the jazz subject is never drawn. The reference is civil twilight, with ~700 dots on concentric rings about a sun marked at -6 degrees below a ticked horizon.",
+        "A single five-line staff holds a blues phrase whose flat 3rd, 5th and 7th notes are amber, the only warm accent on the plate.",
+        "Title in thin, wide Jura Light spaced to the full measure, supported by tiny DM Mono plate labels and one line of italic serif.",
+        "Refinement pass removed labels that touched the arcs and tuned dot size and colour by ring so the sky fades from amber to indigo."
+      ]
+    },
+    {
+      "prompt": "poster-2",
+      "changes": [
+        "Movement 'Kinetic Ledger': the subtle reference is 42.195 km. About 420 straight pace lines, one per runner, fan from a single start point to their finish times on a distance-time plate.",
+        "Only the front group and the last 195 metres are vermillion; everyone else is fine grey ink, so the colour says who leads.",
+        "Context allowed a bolder type gesture than the thin default: a huge condensed 42.195 in Big Shoulders with mono axis labels.",
+        "Final pass shrank the chart so the numeral no longer touched the time axis and kept all text inside the frame."
+      ]
+    },
+    {
+      "prompt": "poster-3",
+      "changes": [
+        "Movement 'Cartographic Strata': the map theme is carried by a 512-line portolan rhumb network (black, green and red as on real portolan charts) from 16 points around a hidden circle, with a land mass drawn as water-lining echoes.",
+        "A row of four tiny plates generated in code - T-O map, conic, Mercator and orthographic graticule - tells the history as a quiet sequence instead of text.",
+        "Thin Italiana title with Crimson Pro italic and Plex Mono labels, on parchment with oxblood and verdigris as the only accents.",
+        "Refinement removed a compass N that collided with the header and moved the plates up so captions clear the title."
+      ]
+    }
+  ]
+}

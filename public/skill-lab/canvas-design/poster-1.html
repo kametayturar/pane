@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blue Hour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400&family=DM+Mono:wght@300;400&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#02030c}
+body{display:grid;place-items:center;overflow:hidden}
+svg{display:block;height:100vh;width:auto;max-width:100vw;max-height:calc(100vw*4/3)}
+@media (max-aspect-ratio:3/4){svg{width:100vw;height:auto}}
+</style></head><body>
+<svg id="p" viewBox="0 0 900 1200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Blue Hour – late-night jazz concert series poster">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#060a24"/><stop offset=".56" stop-color="#0d1646"/><stop offset=".6" stop-color="#101a52"/><stop offset="1" stop-color="#070b26"/>
+  </linearGradient>
+  <clipPath id="sky"><rect x="72" y="128" width="756" height="572"/></clipPath>
+</defs>
+<rect width="900" height="1200" fill="url(#bg)"/>
+<g id="g"></g>
+</svg>
+<script>
+const NS='http://www.w3.org/2000/svg',g=document.getElementById('g');
+let out=[];const add=s=>out.push(s);
+const lerp=(a,b,t)=>a+(b-a)*t;
+const mix=(c1,c2,t)=>c1.map((v,i)=>Math.round(lerp(v,c2[i],t)));
+const rgb=c=>`rgb(${c[0]},${c[1]},${c[2]})`;
+const AMBER=[245,176,92],PERI=[170,188,255],COB=[52,84,214],INK=[22,34,110];
+/* plate frame */
+add(`<rect x="48" y="48" width="804" height="1104" fill="none" stroke="#3b4a9c" stroke-opacity=".55" stroke-width=".8"/>`);
+/* sky: dots on concentric rings about the point where the sun sits (450,700), hidden below the horizon */
+const cx=450,cy=700;
+let dots='';
+for(let r=40;r<=740;r+=16){
+  const t=r/740;
+  const step=Math.max(9,r*0.0)+ (6+ r*0.012);
+  const n=Math.floor(Math.PI*r/step);
+  const col=t<.16?mix(AMBER,PERI,t/.16):t<.5?mix(PERI,COB,(t-.16)/.34):mix(COB,INK,(t-.5)/.5);
+  const rad=Math.max(.7,3.6*Math.pow(1-t,1.6)+.5);
+  for(let i=0;i<=n;i++){
+    const a=Math.PI*i/n;
+    const x=cx-r*Math.cos(a),y=cy-r*Math.sin(a);
+    dots+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad.toFixed(2)}" fill="${rgb(col)}" fill-opacity="${(0.95-t*.35).toFixed(2)}"/>`;
+  }
+}
+add(`<g clip-path="url(#sky)">${dots}</g>`);
+/* altitude arcs: thin rings every 10 degrees of arc */
+let arcs='';
+for(const [r,l] of [[180,'+10°'],[360,'+20°'],[540,'+30°']]){
+  const a=Math.acos(Math.min(1,(cx-72)/r));
+  arcs+=`<path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="#c8d2ff" stroke-opacity=".28" stroke-width=".6" stroke-dasharray="1.5 5" clip-path="url(#sky)"/>`;
+}
+add(arcs);
+/* horizon with tick scale */
+add(`<line x1="72" y1="700" x2="828" y2="700" stroke="#e6ebff" stroke-width="1"/>`);
+let ticks='';
+for(let x=72,i=0;x<=828;x+=7.56,i++){
+  const L=i%10===0?14:i%5===0?9:4.5;
+  ticks+=`<line x1="${x.toFixed(2)}" y1="700" x2="${x.toFixed(2)}" y2="${700+L}" stroke="#e6ebff" stroke-opacity="${i%10===0?.9:.5}" stroke-width=".7"/>`;
+}
+add(ticks);
+/* tick labels */
+const labs=['W','','','N','','','E'];
+for(let i=0;i<=100;i+=20){const x=72+i*7.56;add(`<text x="${x}" y="732" font-family="DM Mono" font-size="9" font-weight="300" fill="#9fb0ff" text-anchor="${i===0?'start':i===100?'end':'middle'}" letter-spacing="1.2">${String(i*1.8|0).padStart(3,'0')}°</text>`)}
+/* sun marker below horizon: −6° */
+add(`<line x1="450" y1="700" x2="450" y2="744" stroke="#f5b05c" stroke-width=".8"/><circle cx="450" cy="756" r="11" fill="none" stroke="#f5b05c" stroke-width=".9"/><circle cx="450" cy="756" r="3" fill="#f5b05c"/>`);
+add(`<text x="476" y="760" font-family="DM Mono" font-size="9" fill="#f5b05c" letter-spacing="1.4" font-weight="300">−6.0°</text>`);
+/* staff: five lines, a blues phrase of notes, bar lines */
+const sy=820,sp=14;
+let staff='';
+for(let i=0;i<5;i++)staff+=`<line x1="72" y1="${sy+i*sp}" x2="828" y2="${sy+i*sp}" stroke="#aab8ff" stroke-opacity=".7" stroke-width=".7"/>`;
+for(const x of [72,256,440,624,828])staff+=`<line x1="${x}" y1="${sy}" x2="${x}" y2="${sy+4*sp}" stroke="#aab8ff" stroke-opacity=".7" stroke-width=".9"/>`;
+/* positions: steps (0 = bottom line). blue notes (flat 3rd/5th/7th) in amber */
+const phrase=[[0,0],[2,0],[3,1],[5,0],[6,0],[8,1],[10,0],[11,0],[12,0],[14,1],[16,0],[17,1],[19,0],[20,0],[22,0],[23,0],[25,1],[26,0],[28,0],[29,1],[30,0],[31,0],[33,0],[35,0],[36,1]];
+const step=(756-24)/37;
+phrase.forEach(([k,blue],i)=>{});
+const pitches=[0,3,2,4,2,3,0,5,4,3,2,5,6,4,3,2,4,1,2,3,0,2,3,4,1,2,5,3,2,4,0,2,3];
+pitches.forEach((p,i)=>{
+  const x=72+30+i*(756-60)/(pitches.length-1);
+  const y=sy+4*sp-p*(sp/2);
+  const blue=[2,5,6].includes(p)&&i%2===0;
+  staff+=`<ellipse cx="${x.toFixed(1)}" cy="${y}" rx="5.2" ry="3.8" transform="rotate(-18 ${x.toFixed(1)} ${y})" fill="${blue?'#f5b05c':'#e6ebff'}"/>`;
+});
+add(staff);
+add(`<text x="72" y="${sy+4*sp+30}" font-family="DM Mono" font-size="9" font-weight="300" fill="#8d9cf0" letter-spacing="1.6">♭3   ♭5   ♭7</text>`);
+/* title: thin, wide, fit to measure */
+add(`<text x="72" y="1020" font-family="Jura" font-weight="300" font-size="108" fill="#f3f5ff" textLength="756" lengthAdjust="spacing">BLUE HOUR</text>`);
+add(`<line x1="72" y1="1048" x2="828" y2="1048" stroke="#aab8ff" stroke-opacity=".6" stroke-width=".7"/>`);
+add(`<text x="72" y="1084" font-family="Instrument Serif" font-style="italic" font-size="26" fill="#f5b05c">late-night jazz, after the light goes</text>`);
+add(`<text x="828" y="1078" font-family="DM Mono" font-size="10" font-weight="300" fill="#c8d2ff" text-anchor="end" letter-spacing="1.6">THURSDAYS · 22:00 – 01:00</text>`);
+add(`<text x="828" y="1096" font-family="DM Mono" font-size="10" font-weight="300" fill="#8d9cf0" text-anchor="end" letter-spacing="1.6">SEASON I · TEN NIGHTS</text>`);
+/* header plate labels */
+add(`<text x="72" y="92" font-family="DM Mono" font-size="10" font-weight="300" fill="#c8d2ff" letter-spacing="2">PLATE VI</text>`);
+add(`<text x="828" y="92" font-family="DM Mono" font-size="10" font-weight="300" fill="#c8d2ff" letter-spacing="2" text-anchor="end">CIVIL TWILIGHT · 0° TO −6°</text>`);
+add(`<text x="72" y="1138" font-family="DM Mono" font-size="8.5" font-weight="300" fill="#6f7fd0" letter-spacing="1.8">OBSERVED FROM THE TERRACE · TEMPO ♩ = 58</text>`);
+add(`<text x="828" y="1138" font-family="DM Mono" font-size="8.5" font-weight="300" fill="#6f7fd0" letter-spacing="1.8" text-anchor="end">N° 1–10</text>`);
+g.innerHTML=out.join('');
+</script></body></html>

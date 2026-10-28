@@ -1,0 +1,43 @@
+{
+  "id": "accessibility-review",
+  "sets": [
+    "web"
+  ],
+  "skillSays": [
+    "Audit against the WCAG 2.1 AA quick reference: perceivable, operable, understandable, robust",
+    "Contrast: 4.5:1 for normal text, 3:1 for large text and UI components",
+    "Keyboard: every function reachable, logical focus order, visible focus indicator, no focus traps",
+    "Touch targets of at least 44x44 CSS pixels; labels or instructions on every input; errors described in text",
+    "Check landmarks, name/role/value, auto-playing media and layout at 200% zoom",
+    "Report findings by severity with a contrast table, keyboard table and screen-reader table, then priority fixes"
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Ran a contrast pass and found the primary button (3.41:1, 2.65:1 on hover) and muted copy (4.16:1) below AA; darkened the green and grey so the lowest ratio is 6.44:1",
+        "Added landmarks (header, nav, main, labelled sections) and a skip link so keyboard users can bypass the navigation",
+        "All links and buttons are 44px or taller (2.5.5), with a 3px focus outline that is not removed anywhere",
+        "The example schedule is a labelled list with <time> values rather than an image, so screen readers get the content"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Fixed the selected-toggle hover (2.65:1) and 'Most popular' badge (3.41:1); lowest text ratio is now 6.44:1",
+        "Toggle is a native radio group in a fieldset with legend 'Billing period', so it is operable by arrow keys and announced correctly (4.1.2)",
+        "Price changes are announced through a role=status region; changing the toggle does not move focus or reload anything (3.2.2)",
+        "Selected plan state uses fill plus the checked radio, never colour alone (1.4.1)"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Every input has a visible label; required fields are marked with an asterisk plus 'with an asterisk' text for screen readers (3.3.2)",
+        "Placeholder contrast raised from 2.21:1 and field borders from 1.48:1 to at least 3:1 (1.4.11)",
+        "Errors are text with an icon, tied to inputs by aria-describedby and aria-invalid, and live-announced (3.3.1); each says how to fix it",
+        "The first invalid field receives focus on submit, the checkbox hit area is 48px, and no field changes context on focus (3.2.1)"
+      ]
+    }
+  ]
+}

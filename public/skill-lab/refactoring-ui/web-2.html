@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;--space-10:128px;
+  --text-xs:12px;--text-sm:14px;--text-base:16px;--text-lg:18px;--text-xl:20px;--text-2xl:24px;--text-3xl:30px;--text-4xl:36px;--text-5xl:48px;--text-6xl:60px;--text-7xl:72px;
+  --weight-normal:400;--weight-bold:600;
+  --leading-tight:1;--leading-snug:1.25;--leading-normal:1.5;--leading-loose:1.75;
+  --measure:34em;
+  --grey-100:hsl(204,30%,96%);--grey-200:hsl(205,26%,90%);--grey-300:hsl(205,22%,82%);--grey-400:hsl(205,18%,60%);--grey-500:hsl(205,20%,47%);--grey-600:hsl(205,26%,37%);--grey-700:hsl(205,32%,29%);--grey-800:hsl(205,38%,21%);--grey-900:hsl(205,55%,14%);
+  --primary-100:hsl(188,70%,93%);--primary-200:hsl(188,66%,84%);--primary-300:hsl(188,60%,68%);--primary-400:hsl(189,60%,46%);--primary-500:hsl(190,88%,28%);--primary-600:hsl(191,88%,24%);--primary-700:hsl(192,88%,20%);--primary-800:hsl(194,88%,16%);--primary-900:hsl(196,88%,12%);
+  --red-100:hsl(360,100%,95%);--red-500:hsl(360,67%,44%);--red-800:hsl(360,85%,25%);
+  --yellow-100:hsl(49,100%,92%);--yellow-500:hsl(42,100%,29%);--yellow-800:hsl(38,100%,19%);
+  --green-100:hsl(152,68%,92%);--green-500:hsl(154,85%,24%);--green-800:hsl(156,100%,13%);
+  --shadow-1:0 1px 3px hsla(0,0%,0%,.2);--shadow-2:0 4px 6px hsla(0,0%,0%,.2);--shadow-3:0 5px 15px hsla(0,0%,0%,.2);--shadow-4:0 10px 24px hsla(0,0%,0%,.2);--shadow-5:0 15px 35px hsla(0,0%,0%,.2);
+  --radius:8px;--radius-full:9999px;
+  --surface:var(--grey-100);--surface-raised:#fff;--surface-sunken:var(--grey-200);
+  --border:var(--grey-300);--border-strong:var(--grey-500);
+  --text-primary:var(--grey-900);--text-secondary:var(--grey-700);--text-tertiary:var(--grey-600);--text-disabled:var(--grey-400);
+  --action:var(--primary-500);--action-text:#fff;
+  --sans:"Public Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--surface);color:var(--text-primary);font:var(--weight-normal) var(--text-base)/var(--leading-normal) var(--sans)}
+a{color:var(--primary-600)}
+:focus-visible{outline:2px solid var(--primary-400);outline-offset:2px}
+.wrap{max-width:1120px;margin-inline:auto;padding-inline:var(--space-5)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding-block:var(--space-5)}
+.logo{font-weight:var(--weight-bold);font-size:var(--text-xl);color:var(--text-primary);text-decoration:none}
+.nav ul{display:flex;gap:var(--space-6);list-style:none;padding:0;align-items:center}
+.nav a.l{color:var(--text-secondary);text-decoration:none;font-weight:var(--weight-bold);font-size:var(--text-sm)}
+.nav a.l:hover{color:var(--text-primary)}
+.btn{display:inline-flex;align-items:center;justify-content:center;font:var(--weight-bold) var(--text-base)/1 var(--sans);padding:14px var(--space-5);border-radius:var(--radius);border:2px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background-color .15s,box-shadow .15s,transform .15s}
+.btn-primary{background:var(--action);color:var(--action-text);box-shadow:var(--shadow-1)}
+.btn-primary:hover{background:var(--primary-600);box-shadow:var(--shadow-2)}
+.btn-primary:active{background:var(--primary-700);box-shadow:none}
+.btn-secondary{background:transparent;color:var(--primary-600);border-color:var(--primary-300)}
+.btn-secondary:hover{background:var(--primary-100)}
+.btn-tertiary{background:none;color:var(--primary-600);padding-inline:var(--space-2);text-decoration:underline;text-underline-offset:3px}
+@media(max-width:600px){.nav ul li:not(:last-child){display:none}}
+
+
+.head{text-align:left;padding-block:var(--space-8) var(--space-7);display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-6);flex-wrap:wrap}
+h1{font-size:var(--text-5xl);font-weight:var(--weight-bold);line-height:var(--leading-tight);letter-spacing:-.02em}
+.head p{margin-top:var(--space-4);font-size:var(--text-lg);color:var(--text-secondary);max-width:var(--measure)}
+.toggle{display:inline-flex;align-items:center;gap:var(--space-3);font-weight:var(--weight-bold);font-size:var(--text-sm)}
+.toggle span{color:var(--text-tertiary)}
+.toggle span.on{color:var(--text-primary)}
+.sw{width:48px;height:28px;border-radius:var(--radius-full);background:var(--grey-500);border:0;position:relative;cursor:pointer;transition:background-color .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:var(--shadow-1);transition:transform .2s}
+.sw[aria-checked=true]{background:var(--primary-500)}
+.sw[aria-checked=true]::after{transform:translateX(20px)}
+.save{background:var(--green-100);color:var(--green-800);font-size:var(--text-xs);padding:4px var(--space-2);border-radius:var(--radius-full)}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-5);align-items:stretch;padding-bottom:var(--space-9)}
+.plan{background:var(--surface-raised);border-radius:var(--radius);border:1px solid var(--border);padding:var(--space-6);display:flex;flex-direction:column}
+.plan.rec{box-shadow:0 15px 35px hsla(205,55%,14%,.16),0 1px 3px hsla(205,55%,14%,.12);border-color:transparent}
+.plan h2{font-size:var(--text-2xl);font-weight:var(--weight-bold)}
+.plan .for{margin-top:var(--space-1);color:var(--text-secondary);font-size:var(--text-sm);min-height:42px}
+.rectag{display:inline-block;margin-top:var(--space-3);background:var(--primary-100);color:var(--primary-800);font-size:var(--text-xs);font-weight:var(--weight-bold);padding:4px var(--space-2);border-radius:var(--radius-full)}
+.price{margin-top:var(--space-5);display:flex;align-items:baseline;gap:var(--space-2)}
+.price b{font-size:var(--text-5xl);font-weight:var(--weight-bold);line-height:var(--leading-tight);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.price span{color:var(--text-tertiary)}
+.bill{margin-top:var(--space-2);font-size:var(--text-sm);color:var(--text-tertiary);min-height:21px}
+.plan .btn{margin-top:var(--space-5)}
+.plan ul{list-style:none;padding:0;margin-top:var(--space-6);padding-top:var(--space-5);border-top:1px solid var(--grey-200);display:grid;gap:var(--space-3);font-size:var(--text-base)}
+.plan li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:var(--space-3);align-items:start;color:var(--text-secondary)}
+.plan li svg{width:20px;height:20px;color:var(--primary-400);margin-top:2px}
+.plan li b{color:var(--text-primary);font-weight:var(--weight-bold)}
+@media(max-width:900px){.plans{grid-template-columns:minmax(0,1fr)}.plan.rec{padding-block:var(--space-6)}h1{font-size:var(--text-4xl)}.plan .for{min-height:0}}
+</style></head>
+<body>
+<div class="wrap">
+<nav class="nav" aria-label="Primary"><a class="logo" href="#">Tidewater</a><ul><li><a class="l" href="#">Features</a></li><li><a class="l" href="#">Pricing</a></li><li><a class="btn btn-secondary" style="padding:10px var(--space-4)" href="#">Sign in</a></li></ul></nav>
+<div class="head">
+  <div><h1>Simple pricing for every clinic size.</h1><p>Every plan includes the day view, text reminders and the waiting list.</p></div>
+  <div class="toggle"><span id="lm" class="on">Monthly</span><button class="sw" id="sw" role="switch" aria-checked="false" aria-label="Bill yearly"></button><span id="ly">Yearly</span><em class="save" style="font-style:normal">Save 20%</em></div>
+</div>
+<section class="plans" aria-label="Plans">
+<article class="plan" data-b="19">
+  <h2>Solo</h2><p class="for">One therapist running their own diary.</p>
+  <div class="price"><b>$19</b><span>/month</span></div><p class="bill"></p>
+  <a class="btn btn-secondary" href="#">Start with Solo</a>
+  <ul><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span><b>1 therapist</b>, 1 location</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Day view with drag-to-move</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>150 text reminders a month</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Waiting list with auto-offer</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>CSV import of your diary</span></li></ul>
+</article>
+<article class="plan rec" data-b="49">
+  <h2>Clinic</h2><p class="for">Shared rooms and a front desk.</p><span class="rectag">Best for 2 to 6 therapists</span>
+  <div class="price"><b>$49</b><span>/month</span></div><p class="bill"></p>
+  <a class="btn btn-primary" href="#">Start with Clinic</a>
+  <ul><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span><b>Up to 6 therapists</b>, 1 location</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Everything in Solo</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Rooms, plinths and the pool as resources</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Unlimited text reminders</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Front-desk and therapist logins</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Waiting list matched by treatment length</span></li></ul>
+</article>
+<article class="plan" data-b="129">
+  <h2>Group</h2><p class="for">Several sites under one owner.</p>
+  <div class="price"><b>$129</b><span>/month</span></div><p class="bill"></p>
+  <a class="btn btn-secondary" href="#">Start with Group</a>
+  <ul><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span><b>Unlimited therapists</b>, 10 locations</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Everything in Clinic</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Move patients between sites</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Utilisation reports per site</span></li><li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>A named onboarding contact</span></li></ul>
+</article>
+</section></div>
+<script>
+(function(){
+  var sw=document.getElementById('sw'),plans=document.querySelectorAll('.plan');
+  function f(n){return Number.isInteger(n)?''+n:n.toFixed(2)}
+  function r(y){
+    sw.setAttribute('aria-checked',String(y));
+    document.getElementById('lm').className=y?'':'on';document.getElementById('ly').className=y?'on':'';
+    plans.forEach(function(p){var b=+p.dataset.b,x=y?b*.8:b;p.querySelector('.price b').textContent='$'+f(x);
+      p.querySelector('.bill').textContent=y?'$'+(x*12).toFixed(2)+' billed yearly':'Billed monthly'});
+  }
+  sw.addEventListener('click',function(){r(sw.getAttribute('aria-checked')!=='true')});
+  r(false);
+})();
+</script>
+</body></html>

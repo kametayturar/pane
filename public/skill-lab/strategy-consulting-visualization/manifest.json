@@ -1,0 +1,40 @@
+{
+  "id": "strategy-consulting-visualization",
+  "sets": [
+    "data"
+  ],
+  "skillSays": [
+    "Start from the reader's decision, then write an insight-led headline that is one proposition, not several claims joined by \"and\".",
+    "Name the comparison type (time series, ranking, correlation...) before choosing a pattern; the chart follows the question.",
+    "Fixed visual system on a 1280x720 canvas: white slide, one navy accent, grey for context, red only for risk, Georgia headline and Helvetica body, 22px reading-size floor.",
+    "Every mark carries information: honest zero baseline, direct labels instead of legends, no decorative bars, meaning never by colour alone.",
+    "Write an explicit implication line and a source line with assumptions; do not invent data, targets or sources.",
+    "Deliver the contract: strategic question, headline, recommended visualization, spec, data and assumptions, quality score."
+  ],
+  "examples": [
+    {
+      "prompt": "data-1",
+      "changes": [
+        "Headline makes one claim (\"Clinic is our fastest-growing plan...\") instead of a chart title like \"Accounts by plan\"",
+        "Clinic in navy, the other plans in grey; end labels replace a legend; zero baseline marked",
+        "Growth column beside the chart and an implication line, with the source and assumptions in the footer"
+      ]
+    },
+    {
+      "prompt": "data-2",
+      "changes": [
+        "Small multiples on a shared month axis with only Q3 highlighted",
+        "Headline quantifies the link (\"+75% as first response slowed from 37 to 65 minutes\") and the footer says it is association, not proof",
+        "Ends with an implication, and the 45-minute limit is flagged as a proposed assumption"
+      ]
+    },
+    {
+      "prompt": "data-3",
+      "changes": [
+        "KPI scorecard instead of an arbitrary dashboard: value, September peak, H1 baseline, trend per card",
+        "No targets were given, so the baseline is the H1 average and this is stated on the slide",
+        "Status is written (\"Below H1 average\") with a symbol; red is used only for the September peak"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "composition-patterns",
+  "sets": ["web"],
+  "skillSays": [
+    "Don't bolt boolean props onto one big component; build explicit variants out of small composable parts.",
+    "Structure complex UI as compound components that share a context instead of passing props through every level.",
+    "Give the provider a generic { state, actions, meta } interface, so it is the only place that knows how state is stored.",
+    "Lift state into a provider so siblings can read it without prop drilling, refs or sync-up effects.",
+    "Prefer children over renderX props; keep render props for cases where the parent passes data back.",
+    "On React 19: ref is a normal prop (no forwardRef), and use(Context) replaces useContext."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Built the hero as <Hero.Frame>/<Hero.Title>/<Hero.Actions> parts plus explicit PrimaryAction and SecondaryAction instead of one Hero with showBadge/withVisual flags",
+        "Lifted the picked appointment slot into a BookingProvider so the slot list and the far-away 'Reminder queued' card read the same state via use(), with no prop drilling",
+        "Made each feature card an explicit variant (ReminderFeature, WaitlistFeature, RoomsFeature) composed from shared Feature.* parts, so each card adds its own meter, avatars or tags as plain children"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Put billing state behind a PricingProvider exposing { state, actions, meta }; the toggle and every price read the same interface and never know how it is stored",
+        "Replaced a <Plan featured badge /> style API with explicit SoloPlan, ClinicPlan and GroupPlan components, plus Plan.FeaturedFrame and Plan.PrimaryCta instead of boolean props",
+        "The Pricing.Toggle and Plan.Price parts consume context with use(PricingContext) rather than receiving price props"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Lifted form values, touched flags and validation into a SignupProvider; Field.Root/Label/Error compose around a shared field-name context instead of a monolithic <Field error label hint required /> component",
+        "Controls are explicit variants (TextInput, PasswordInput, SizeSelect, TermsCheckbox) bound to the form interface through one useBound() hook, so swapping the state source would touch only the provider",
+        "Used React 19 style throughout: use() for context and Context as the provider element, no forwardRef"
+      ]
+    }
+  ]
+}

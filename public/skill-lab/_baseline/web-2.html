@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tidewater Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1f2937; line-height: 1.5; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 64px 24px; }
+  .head { text-align: center; margin-bottom: 36px; }
+  .head h2 { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+  .head p { color: #6b7280; font-size: 18px; }
+  .toggle-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 44px; font-weight: 600; }
+  .toggle-row span { color: #6b7280; transition: color .2s; }
+  .toggle-row span.active { color: #0f172a; }
+  .switch { position: relative; width: 56px; height: 30px; background: #cbd5e1; border-radius: 999px; border: none; cursor: pointer; transition: background .2s; }
+  .switch.on { background: #0891b2; }
+  .switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+  .switch.on::after { transform: translateX(26px); }
+  .save { background: #dcfce7; color: #15803d; font-size: 12px; padding: 3px 10px; border-radius: 999px; font-weight: 700; }
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+  .plan { background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 32px 28px; display: flex; flex-direction: column; position: relative; }
+  .plan.popular { border: 2px solid #0891b2; box-shadow: 0 20px 40px rgba(8,145,178,.15); }
+  .tag { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: #0891b2; color: #fff; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 999px; }
+  .plan h3 { font-size: 22px; margin-bottom: 4px; }
+  .plan .desc { color: #6b7280; font-size: 14px; margin-bottom: 20px; min-height: 42px; }
+  .price { display: flex; align-items: baseline; gap: 6px; }
+  .price .amount { font-size: 48px; font-weight: 800; letter-spacing: -2px; }
+  .price .per { color: #6b7280; font-size: 15px; }
+  .billed { font-size: 13px; color: #6b7280; margin: 4px 0 24px; min-height: 20px; }
+  .btn { display: block; text-align: center; padding: 12px; border-radius: 10px; font-weight: 600; text-decoration: none; margin-bottom: 24px; border: 1px solid #0891b2; color: #0891b2; background: #fff; transition: all .2s; }
+  .btn:hover { background: #ecfeff; }
+  .popular .btn { background: #0891b2; color: #fff; }
+  .popular .btn:hover { background: #0e7490; }
+  ul { list-style: none; display: flex; flex-direction: column; gap: 11px; font-size: 15px; }
+  li { display: flex; gap: 10px; align-items: flex-start; }
+  li::before { content: '✓'; color: #0891b2; font-weight: 800; }
+  @media (max-width: 900px) { .plans { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; } .head h2 { font-size: 30px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h2>Simple pricing for every clinic</h2>
+    <p>Start free for 14 days. Cancel anytime.</p>
+  </div>
+  <div class="toggle-row">
+    <span id="lbl-m" class="active">Monthly</span>
+    <button class="switch" id="sw" aria-label="Toggle yearly billing" aria-pressed="false"></button>
+    <span id="lbl-y">Yearly</span>
+    <em class="save" style="font-style:normal">Save 20%</em>
+  </div>
+  <div class="plans">
+    <div class="plan">
+      <h3>Solo</h3>
+      <p class="desc">For independent physiotherapists working on their own.</p>
+      <div class="price"><span class="amount" data-base="19">$19</span><span class="per">/ month</span></div>
+      <div class="billed" data-base="19"></div>
+      <a href="#" class="btn">Choose Solo</a>
+      <ul>
+        <li>1 practitioner</li>
+        <li>Online booking page</li>
+        <li>SMS &amp; email reminders</li>
+        <li>Up to 200 appointments / month</li>
+        <li>Email support</li>
+      </ul>
+    </div>
+    <div class="plan popular">
+      <span class="tag">Most popular</span>
+      <h3>Clinic</h3>
+      <p class="desc">For growing clinics with a small team and multiple rooms.</p>
+      <div class="price"><span class="amount" data-base="49">$49</span><span class="per">/ month</span></div>
+      <div class="billed" data-base="49"></div>
+      <a href="#" class="btn">Choose Clinic</a>
+      <ul>
+        <li>Up to 5 practitioners</li>
+        <li>Room &amp; equipment scheduling</li>
+        <li>Unlimited appointments</li>
+        <li>Waitlist &amp; auto-fill cancellations</li>
+        <li>Calendar sync (Google, Outlook)</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <h3>Group</h3>
+      <p class="desc">For multi-location practices that need control and reporting.</p>
+      <div class="price"><span class="amount" data-base="129">$129</span><span class="per">/ month</span></div>
+      <div class="billed" data-base="129"></div>
+      <a href="#" class="btn">Choose Group</a>
+      <ul>
+        <li>Unlimited practitioners</li>
+        <li>Multiple locations</li>
+        <li>Advanced reporting</li>
+        <li>Roles &amp; permissions</li>
+        <li>API access</li>
+        <li>Dedicated account manager</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+  const sw = document.getElementById('sw');
+  const lm = document.getElementById('lbl-m'), ly = document.getElementById('lbl-y');
+  function render(yearly) {
+    sw.classList.toggle('on', yearly);
+    sw.setAttribute('aria-pressed', yearly);
+    lm.classList.toggle('active', !yearly);
+    ly.classList.toggle('active', yearly);
+    document.querySelectorAll('.amount').forEach(el => {
+      const base = +el.dataset.base;
+      el.textContent = '$' + (yearly ? (base * 0.8).toFixed(2) : base);
+    });
+    document.querySelectorAll('.billed').forEach(el => {
+      const base = +el.dataset.base;
+      el.textContent = yearly ? 'Billed $' + Math.round(base * 12 * 0.8) + ' yearly (save $' + Math.round(base * 12 * 0.2) + ')' : 'Billed monthly';
+    });
+  }
+  sw.addEventListener('click', () => render(!sw.classList.contains('on')));
+  render(false);
+</script>
+</body>
+</html>

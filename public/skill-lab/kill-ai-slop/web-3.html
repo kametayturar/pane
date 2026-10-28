@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{--bg:#fafaf9;--ink:#1c1c1a;--ink-2:#55554f;--rule:#dcdcd6;--accent:#0b5d57;--accent-ink:#fff;--err:#9b2c1f;--radius:4px;--sans:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:.2em}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.w{max-width:68rem;margin-inline:auto;padding-inline:1.5rem}
+.top{display:flex;justify-content:space-between;align-items:center;padding-block:1.5rem;border-bottom:1px solid var(--rule)}
+.top b{font-weight:700;font-size:1.2rem}
+.top nav{display:flex;gap:1.5rem;align-items:center}
+.top nav a{color:var(--ink);text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+.btn{display:inline-block;font:700 1rem/1 var(--sans);padding:.9rem 1.3rem;border-radius:var(--radius);border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);text-decoration:none;cursor:pointer;transition:background-color .15s,color .15s}
+.btn:hover{background:#094a45}
+.btn.plain{background:transparent;color:var(--accent)}
+.btn.plain:hover{background:#eef3f2}
+@media (max-width:560px){.top nav a:not(.btn){display:none}}
+
+main{max-width:26rem;margin:3rem auto 5rem;padding-inline:1.5rem}
+h1{font-size:2rem;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+.sub{color:var(--ink-2);margin:.5rem 0 2rem}
+.f{margin-bottom:1.25rem}
+label{display:block;font-weight:600;margin-bottom:.4rem}
+input[type=text],input[type=email],input[type=password],select{width:100%;font:400 1rem/1.2 var(--sans);color:var(--ink);background:#fff;border:1px solid #77776f;border-radius:var(--radius);padding:.8rem .85rem;appearance:none}
+input:focus,select:focus{outline:2px solid var(--ink);outline-offset:1px}
+input[aria-invalid=true]{border:2px solid var(--err);padding:calc(.8rem - 1px) calc(.85rem - 1px)}
+.err{display:none;margin-top:.4rem;color:var(--err);font-size:.95rem}
+.err.on{display:block}
+.err b{font-weight:700}
+.selw{position:relative}.selw::after{content:"";position:absolute;right:1rem;top:50%;width:.45rem;height:.45rem;border:solid var(--ink);border-width:0 2px 2px 0;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.pw{position:relative}.pw button{position:absolute;right:.3rem;top:50%;transform:translateY(-50%);background:none;border:0;font:600 .95rem var(--sans);color:var(--accent);padding:.5rem .6rem;cursor:pointer}
+.pw input{padding-right:4.5rem}
+.chk{display:flex;gap:.7rem;align-items:flex-start;margin:1.5rem 0}
+.chk input{width:1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--accent);flex:none}
+.chk label{font-weight:400;margin:0}
+.btn{width:100%;padding:1rem}
+.alt{margin-top:1.25rem;color:var(--ink-2)}
+.done{display:none}.done.on{display:block}.done p{margin-top:.75rem;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<header class="top w"><b>Tidewater</b><nav><a href="#">Sign in</a></nav></header>
+<main>
+<form id="f" novalidate>
+  <h1>Create your account</h1>
+  <p class="sub">30 days free. No card needed.</p>
+  <div class="f"><label for="name">Full name</label><input id="name" type="text" autocomplete="name" value="Mira Okafor"><p class="err" id="name-e"></p></div>
+  <div class="f"><label for="email">Work email</label><input id="email" type="email" autocomplete="email" value="mira@harbourroad" aria-describedby="email-e"><p class="err" id="email-e" role="alert"></p></div>
+  <div class="f"><label for="pw">Password</label><div class="pw"><input id="pw" type="password" autocomplete="new-password" value="tide25" aria-describedby="pw-e"><button type="button" id="show">Show</button></div><p class="err" id="pw-e" role="alert"></p></div>
+  <div class="f"><label for="size">Clinic size</label><div class="selw"><select id="size"><option value="">Choose a size</option><option>Just me</option><option selected>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 or more therapists</option></select></div><p class="err" id="size-e"></p></div>
+  <div class="chk"><input id="terms" type="checkbox" aria-describedby="terms-e"><div><label for="terms">I accept the <a href="#">terms of service</a>.</label><p class="err" id="terms-e" role="alert"></p></div></div>
+  <button class="btn" type="submit">Create account</button>
+  <p class="alt">Already registered? <a href="#">Sign in</a></p>
+</form>
+<section class="done" id="done" aria-live="polite"><h1>Check your inbox</h1><p>We sent a confirmation link to <b id="mail"></b>.</p></section>
+</main>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)},MIN=10;
+  function put(k,el,m){var e=$(k+'-e');if(m){e.innerHTML='<b>Error.</b> '+m;e.classList.add('on');el.setAttribute('aria-invalid','true')}else{e.classList.remove('on');el.removeAttribute('aria-invalid')}return !m}
+  var v={
+    name:function(){var e=$('name');return put('name',e,e.value.trim().split(/\s+/).length<2?'Enter your first and last name.':'')},
+    email:function(){var e=$('email'),x=e.value.trim();return put('email',e,!x?'Enter your work email.':(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(x)?'This email is missing a domain ending. Use a format like mira@harbourroad.com.':''))},
+    pw:function(){var e=$('pw'),n=e.value.length;return put('pw',e,n<MIN?'The password needs at least '+MIN+' characters. It has '+n+'.':'')},
+    size:function(){var e=$('size');return put('size',e,e.value?'':'Choose your clinic size.')},
+    terms:function(){var e=$('terms');return put('terms',e,e.checked?'':'Accept the terms to continue.')}
+  };
+  ['name','email','pw','size'].forEach(function(k){var e=$(k);e.addEventListener('blur',v[k]);e.addEventListener('input',function(){if(e.getAttribute('aria-invalid'))v[k]()});e.addEventListener('change',function(){if(k==='size')v.size()})});
+  $('terms').addEventListener('change',function(){if(this.getAttribute('aria-invalid'))v.terms()});
+  $('show').addEventListener('click',function(){var p=$('pw'),h=p.type==='password';p.type=h?'text':'password';this.textContent=h?'Hide':'Show'});
+  $('f').addEventListener('submit',function(e){e.preventDefault();var k=['name','email','pw','size','terms'],r=k.map(function(x){return v[x]()}),i=r.indexOf(false);if(i>-1){$(k[i]).focus();return}$('mail').textContent=$('email').value;$('f').style.display='none';$('done').classList.add('on')});
+  v.email();v.pw();
+})();
+</script>
+</body>
+</html>

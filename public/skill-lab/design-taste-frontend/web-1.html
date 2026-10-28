@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – Scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* Direction: "The sentence is the layout" (seed 1087265469). Type redrawn: Bodoni Moda / Jost (brief allows Google Fonts only).
+   Palette keeps the dealt proportions (dark ground, bone ink, one olive block, one ochre field) with colours taken from the tidal marsh. */
+:root{
+ --bg:#10282E;--surface:#17353D;--surface-2:#1F444E;--ink:#EAE6D4;--muted:#A9BDB9;
+ --accent:#566420;--accent-ink:#EAE6D4;
+ --field-1:#C79A3E;--field-1-ink:#1F1408;--field-2:#566420;--field-2-ink:#EAE6D4;--field-3:#2F6F7E;--field-3-ink:#F4F1E4;
+ --step-small:clamp(.8125rem,.79rem + .1vw,.875rem);--step-body:clamp(1.0625rem,1rem + .25vw,1.1875rem);--step-lead:clamp(1.25rem,1.1rem + .7vw,1.625rem);--step-head:clamp(2rem,1.3rem + 3.2vw,4rem);
+ --ease:cubic-bezier(.16,1,.3,1);--pad:clamp(20px,3vw,40px);--r:10px;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 var(--step-body)/1.5 Jost,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.disp{font-family:"Bodoni Moda",Georgia,serif;font-weight:500;letter-spacing:-.025em;line-height:.95;font-optical-sizing:auto}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--field-1);outline-offset:3px}
+.pad{padding-left:var(--pad);padding-right:var(--pad)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border:0;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);font:500 17px Jost,sans-serif;text-decoration:none;cursor:pointer;transition:transform .2s var(--ease),background .2s}
+.btn:hover{background:#6B7B28}.btn:active{transform:translateY(1px)}
+.btn.sand{background:var(--field-1);color:var(--field-1-ink)}.btn.sand:hover{background:#D8AB4B}
+.mark{font:500 20px/1 "Bodoni Moda",serif;letter-spacing:-.02em;text-decoration:none}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding-top:20px;padding-bottom:20px}
+.topbar .btn{min-height:44px;padding:0 20px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.hero{min-height:100svh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.stage{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:clamp(110px,18svh,170px)}
+h1{position:relative;text-align:center;font-weight:var(--wght,500);letter-spacing:var(--track,-.025em);font-size:clamp(64px,8.4vw,148px);line-height:1;text-transform:var(--case,none);transition:font-variation-settings .15s,letter-spacing .15s}
+h1 .line{display:block;overflow:hidden;padding:.04em .1em .1em;margin:-.04em -.1em -.1em}
+h1 [data-line]{display:block;font-variation-settings:"wght" var(--wght,500)}
+@media (prefers-reduced-motion:no-preference){.js h1 [data-line]{transform:translateY(105%);animation:up 900ms var(--ease) forwards;animation-delay:calc(var(--i)*110ms + 150ms)}}
+@keyframes up{to{transform:none}}
+.sub{margin-top:96px;max-width:40ch;text-align:center;color:var(--muted);font-size:var(--step-body)}
+@media (prefers-reduced-motion:no-preference){.js .sub{opacity:0;animation:fade .8s 1.1s var(--ease) forwards}.js .hero-cta{opacity:0;animation:fade .8s 1.2s var(--ease) forwards}}
+@keyframes fade{to{opacity:1}}
+.chip{position:absolute;z-index:2;width:300px;height:84px;padding:12px 16px;border-radius:14px;background:var(--surface-2);color:var(--ink);display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr;align-items:center;gap:4px 12px;box-shadow:0 8px 24px rgba(0,0,0,.35)} /* taste-skill-ignore: data-ui chip floats over the sentence */
+.chip label,.chip .l{font:500 15px Jost;color:var(--muted)}
+.chip output{font:600 20px "Bodoni Moda",serif;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.chip input[type=range]{grid-column:1/3;width:100%;-webkit-appearance:none;appearance:none;height:28px;background:transparent;cursor:grab;margin:0}
+.chip input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:4px;background:var(--bg)}
+.chip input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-9px;border-radius:50%;background:var(--field-1);border:0}
+.chip input[type=range]::-moz-range-track{height:8px;border-radius:4px;background:var(--bg)}
+.chip input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--field-1);border:0}
+.c1{left:calc(20% - 20px);top:calc(clamp(110px,18svh,170px) - 100px);transform:rotate(-3deg)}
+.c2{left:max(16px,calc(5% - 20px));top:calc(clamp(110px,18svh,170px) + clamp(64px,8.4vw,148px) + 4px);transform:rotate(2.5deg);width:250px}
+.c3{right:calc(9% - 20px);top:calc(clamp(110px,18svh,170px) + 2*clamp(64px,8.4vw,148px) + 34px);transform:rotate(-2deg);height:72px;display:flex;justify-content:space-between;align-items:center}
+.tog{position:relative;width:64px;height:36px;flex:none;border-radius:99px;background:var(--bg);border:0;cursor:pointer;transition:background .25s}
+.tog::after{content:"";position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:50%;background:var(--muted);transition:transform .3s var(--ease),background .25s}
+.tog[aria-checked=true]{background:var(--field-2)}
+.tog[aria-checked=true]::after{transform:translateX(28px);background:var(--ink)}
+.chip .tl{display:flex;flex-direction:column;line-height:1.2}.chip .tl b{font:600 20px "Bodoni Moda",serif}
+.hero-cta{margin-top:36px}
+
+/* features: bands */
+.band{position:relative;min-height:20vh;display:grid;grid-template-columns:repeat(12,1fr);column-gap:20px;align-items:center;padding:28px var(--pad);background:var(--bg);transition:background .45s var(--ease),color .45s var(--ease)}
+.band .txt{grid-column:1/11}
+.band .tog{transition:background .25s}
+.band h2{font-size:clamp(30px,3.6vw,60px);line-height:1.05;font-weight:500;color:var(--muted);transition:color .45s}
+.band p{font-size:var(--step-lead);max-height:0;opacity:0;overflow:hidden;transition:max-height .5s var(--ease),opacity .4s,margin .4s}
+.band .tog{grid-column:11/13;justify-self:end;width:calc(1.1em * 1.9);}
+.band.on{background:var(--f);color:var(--fi)}
+.band.on h2{color:var(--fi)}
+.band.on p{max-height:80px;opacity:1;margin-top:10px}
+.band .tog{font-size:clamp(34px,3.6vw,58px);width:1.9em;height:1.1em;border-radius:99px}
+.band .tog::after{width:.9em;height:.9em;left:.1em;top:.1em}
+.band .tog[aria-checked=true]::after{transform:translateX(.8em)}
+.band.on .tog{background:rgba(0,0,0,.28)}
+
+/* proof section */
+.proof{display:grid;grid-template-columns:repeat(12,1fr);column-gap:20px;padding:clamp(64px,8vw,110px) var(--pad);align-items:center}
+.proof .say{grid-column:1/7}
+.proof h2{font-size:var(--step-head);margin-bottom:24px;max-width:12ch}
+.proof .say p{color:var(--muted);max-width:32em}
+.ui{grid-column:7/13;background:var(--surface);border-radius:var(--r);padding:24px}
+.ui h3{font:600 20px Jost;letter-spacing:0;margin-bottom:16px;display:flex;justify-content:space-between;align-items:baseline}
+.ui h3 span{font-weight:400;font-size:15px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:76px repeat(8,1fr);gap:4px;font-size:14px;align-items:stretch}
+.grid .h{color:var(--muted);padding-bottom:4px}
+.grid .rn{align-self:center;font-weight:500;font-size:15px}
+.grid i{display:block;height:44px;border-radius:5px;background:var(--surface-2)}
+.grid i.b{background:var(--field-3)}.grid i.y{background:var(--field-1)}
+.grid i.g{background:#7A6A3C}
+.grid i.y{animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.6}}
+.legend{display:flex;gap:20px;margin-top:16px;color:var(--muted);font-size:15px;flex-wrap:wrap}
+.legend span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:8px;vertical-align:-2px;background:var(--c)}
+@media (prefers-reduced-motion:no-preference){.js .rise{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.js .rise.in{opacity:1;transform:none}}
+
+
+.proof.flip .say{grid-column:7/13;order:2}.proof.flip .ui{grid-column:1/7;order:1}
+.log{list-style:none;padding:0;display:grid;gap:4px}
+.log li{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center;min-height:56px;padding:0 16px;border-radius:6px;background:var(--surface-2);font-size:17px}
+.log time{font:600 18px "Bodoni Moda",serif;font-variant-numeric:tabular-nums}
+.log .x{color:var(--muted);text-decoration:line-through}
+.log em{font-style:normal;font-weight:500;background:var(--field-1);color:var(--field-1-ink);padding:2px 12px;border-radius:99px;font-size:15px}
+.thread{display:grid;gap:8px;max-width:420px}
+.thread p{padding:12px 16px;border-radius:14px 14px 14px 4px;background:var(--surface-2);font-size:17px}
+.thread p.me{justify-self:end;border-radius:14px 14px 4px 14px;background:var(--field-1);color:var(--field-1-ink);font-weight:500}
+.thread p+p{margin-top:0}
+@media (max-width:860px){.proof.flip .say,.proof.flip .ui{grid-column:1;order:0}}
+
+/* footer */
+.foot{background:var(--ink);color:var(--bg);min-height:100svh;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.foot .top{display:grid;grid-template-columns:repeat(12,1fr);column-gap:20px;padding:clamp(60px,10vw,120px) var(--pad) 0}
+.foot .inv{grid-column:1/8}
+.foot h2{font-size:clamp(44px,5vw,80px);margin-bottom:28px;max-width:11ch}
+.foot .btn{background:var(--bg);color:var(--ink)}.foot .btn:hover{background:var(--surface-2)}
+.foot ul{grid-column:10/13;list-style:none;padding:0;display:grid;gap:6px;font-size:17px;align-content:start}
+.foot ul a{display:inline-block;padding:6px 0}
+.foot .legal{margin-top:auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:0 var(--pad) 12px;font-size:14px;position:relative;z-index:1}
+.big{font:500 clamp(120px,27vw,420px)/.8 "Bodoni Moda",serif;letter-spacing:-.04em;white-space:nowrap;transform:translateY(30%);padding-left:var(--pad)}
+@media (max-width:860px){
+ .foot{min-height:auto}
+ .stage{padding-top:56px}
+ h1{font-size:13.5vw}
+ .chip{position:relative;left:auto!important;right:auto!important;top:auto!important;width:200px;height:64px;padding:8px 12px;transform:none}
+ .chip output{font-size:17px}.chip label{font-size:14px}
+ .chip input[type=range]{height:22px}
+ .chips-t{margin-bottom:28px}
+ .sub{margin-top:32px;font-size:16px;padding:0 20px}
+ .band{min-height:132px;grid-template-columns:1fr auto;column-gap:16px}
+ .band .txt{grid-column:1}.band h2{font-size:6.4vw;max-width:20ch}.band .tog{grid-column:2;font-size:30px}
+ .band p{font-size:15px}
+ .proof{grid-template-columns:1fr;row-gap:32px}.proof .say,.ui{grid-column:1}
+ .grid{grid-template-columns:52px repeat(8,1fr);font-size:12px}.grid i{height:34px}.grid .h{font-size:13px}
+ .foot .top{grid-template-columns:1fr;row-gap:24px}.foot .inv,.foot ul{grid-column:1}.foot h2{font-size:11vw}
+ .foot ul{grid-auto-flow:column;gap:16px;justify-content:start;font-size:15px}
+ .big{font-size:27vw}
+}
+@media (max-width:860px){.hero .chips-m{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:28px}}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="topbar pad"><a class="mark" href="#">Tidewater</a><a class="btn sand" href="#">Start free</a></div>
+ <div class="stage">
+  <h1 id="h1"><span class="line"><span data-line style="--i:0">Fewer gaps,</span></span><span class="line"><span data-line style="--i:1">calmer days.</span></span></h1>
+  <div class="chip c1" data-ui><label for="r1">Booked today</label><output id="o1" for="r1">50%</output><input id="r1" type="range" min="0" max="100" value="50" aria-label="Booked today, changes the headline weight"></div>
+  <div class="chip c2" data-ui><label for="r2">Space between visits</label><output id="o2" for="r2">5 min</output><input id="r2" type="range" min="0" max="15" value="5" aria-label="Space between visits, changes the letter spacing"></div>
+  <div class="chip c3" data-ui><div class="tl"><span class="l">Text reminders</span><b id="o3">Off</b></div><button class="tog" id="t3" role="switch" aria-checked="false" aria-label="Text reminders, switches the headline to capitals"></button></div>
+  <p class="sub">Scheduling for physiotherapy clinics.</p>
+  <div class="hero-cta"><a class="btn" href="#">Start 30 days free</a></div>
+ </div>
+</header>
+
+<main>
+ <section aria-label="What Tidewater does">
+  <div class="band on" style="--f:var(--field-1);--fi:var(--field-1-ink)"><div class="txt"><h2>Cancelled hours refill from the waitlist</h2><p>Offers go to three people at once, and the first yes is booked.</p></div><button class="tog" role="switch" aria-checked="true" aria-label="Waitlist refill"></button></div>
+  <div class="band" style="--f:var(--field-3);--fi:var(--field-3-ink)"><div class="txt"><h2>Patients confirm with one text reply</h2><p>Sent the day before. Reply 1 to confirm or 2 to move the visit.</p></div><button class="tog" role="switch" aria-checked="false" aria-label="Text reminders"></button></div>
+  <div class="band on" style="--f:var(--field-2);--fi:var(--field-2-ink)"><div class="txt"><h2>Every room sits on one shared timeline</h2><p>Therapists, rooms and treatment bays share a single day view.</p></div><button class="tog" role="switch" aria-checked="true" aria-label="Shared timeline"></button></div>
+  <div class="band" style="--f:var(--surface-2);--fi:var(--ink)"><div class="txt"><h2>Double bookings are flagged as you book</h2><p>An overlap in a room or with a therapist shows before you confirm.</p></div><button class="tog" role="switch" aria-checked="false" aria-label="Overlap warnings"></button></div>
+ </section>
+
+ <section class="proof" aria-labelledby="pw">
+  <div class="say rise"><h2 id="pw">Cancelled hours find a new name</h2><p>The moment a visit is cancelled, the next people on your waitlist are offered the hour. The first yes is booked and the diary updates itself.</p></div>
+  <div class="ui rise" data-ui role="img" aria-label="Log of a cancelled 10:30 slot being offered and rebooked"><h3>Tuesday 10:30 <span>Room 2</span></h3>
+   <ul class="log"><li><time>10:30</time><span class="x">Alan Burke cancelled</span><span></span></li><li><time>10:31</time><span>Offered to Maya, Joel and Sunita</span><span></span></li><li><time>10:34</time><span>Maya replied yes</span><em>Booked</em></li></ul></div>
+ </section>
+ <section class="proof flip" aria-labelledby="pm">
+  <div class="say rise"><h2 id="pm">Reminders that get answered</h2><p>Patients get a text the day before and answer in one reply. A confirmation holds the slot and a move frees it for the waitlist.</p></div>
+  <div class="ui rise" data-ui role="img" aria-label="Text thread between Tidewater and a patient"><h3>Daniel Cho <span>Text thread</span></h3>
+   <div class="thread"><p>Hi Daniel, you have a 9:00 visit tomorrow at Northside Physio. Reply 1 to confirm or 2 to move it.</p><p class="me">2</p><p>Done. We have moved you to 9:30 in Room 2.</p></div></div>
+ </section>
+
+ <section class="proof" aria-labelledby="pr">
+  <div class="say rise"><h2 id="pr">See where the day breathes</h2><p>Open any day and the gaps are plain to see. Ochre hours are open, muted ochre hours are being offered to the waitlist, blue hours are booked.</p></div>
+  <div class="ui rise" data-ui role="img" aria-label="Timeline of three rooms from 9 to 5 with booked, open and offered hours">
+   <h3>Tuesday <span>Northside Physio</span></h3>
+   <div class="grid"><span></span><span class="h">9</span><span class="h">10</span><span class="h">11</span><span class="h">12</span><span class="h">1</span><span class="h">2</span><span class="h">3</span><span class="h">4</span>
+    <span class="rn">Room 1</span><i class="b"></i><i class="b"></i><i class="y"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="y"></i><i class="b"></i>
+    <span class="rn">Room 2</span><i class="b"></i><i class="g"></i><i class="b"></i><i class="b"></i><i class="y"></i><i class="b"></i><i class="b"></i><i class="b"></i>
+    <span class="rn">Gym bay</span><i class="y"></i><i class="b"></i><i class="b"></i><i class="g"></i><i class="b"></i><i class="y"></i><i class="b"></i><i class="b"></i></div>
+   <div class="legend"><span style="--c:var(--field-3)">Booked</span><span style="--c:var(--field-1)">Open</span><span style="--c:#7A6A3C">Offered to waitlist</span></div>
+  </div>
+ </section>
+ <section class="proof flip" aria-labelledby="po">
+  <div class="say rise"><h2 id="po">Overlaps stop at the door</h2><p>Book a second visit into an occupied room, or with a therapist who is already treating, and Tidewater says so before you confirm.</p></div>
+  <div class="ui rise" data-ui role="img" aria-label="Warning that Room 2 is already booked at 10:00"><h3>New booking <span>Tuesday 10:00</span></h3>
+   <ul class="log"><li><time>10:00</time><span>Room 2 is already booked</span><em>Overlap</em></li><li><time>10:00</time><span>Room 1 is free</span><em>Use Room 1</em></li><li><time>10:30</time><span>Room 2 is free</span><em>Move to 10:30</em></li></ul></div>
+ </section>
+
+</main>
+
+<footer class="foot">
+ <div class="top"><div class="inv"><h2>Open your diary</h2><a class="btn" href="#">Start 30 days free</a></div><ul><li><a href="#">Pricing</a></li><li><a href="#">Sign in</a></li><li><a href="#">hello@tidewater.example</a></li></ul></div>
+ <div class="legal"><span>Scheduling for small physiotherapy clinics</span><span>© 2026 Tidewater Health Software</span></div>
+ <div class="big" aria-hidden="true">Tidewater</div>
+</footer>
+
+<script>
+const root=document.documentElement,h1=document.getElementById('h1');
+const r1=document.getElementById('r1'),r2=document.getElementById('r2'),t3=document.getElementById('t3');
+function w(){const v=+r1.value;document.getElementById('o1').textContent=v+'%';h1.style.setProperty('--wght',Math.round(400+v*5));}
+function t(){const v=+r2.value;document.getElementById('o2').textContent=v+' min';h1.style.setProperty('--track',(-.04+v*.006).toFixed(3)+'em');}
+r1.addEventListener('input',w);r2.addEventListener('input',t);w();t();
+t3.addEventListener('click',()=>{const on=t3.getAttribute('aria-checked')!=='true';t3.setAttribute('aria-checked',on);document.getElementById('o3').textContent=on?'On':'Off';h1.style.setProperty('--case',on?'uppercase':'none')});
+// mobile: regroup chips beneath the sentence, untilted
+const mq=matchMedia('(max-width:860px)');
+function place(){const stage=document.querySelector('.stage'),chips=[...document.querySelectorAll('.chip')],sub=document.querySelector('.sub');
+ let wrap=document.getElementById('cw');
+ if(mq.matches){if(!wrap){wrap=document.createElement('div');wrap.id='cw';wrap.className='chips-m';sub.before(wrap);}chips.forEach(c=>wrap.appendChild(c));}
+ else if(wrap){chips.forEach(c=>stage.appendChild(c));wrap.remove();}}
+mq.addEventListener('change',place);place();
+// band switches
+document.querySelectorAll('.band').forEach(b=>{const s=b.querySelector('.tog');s.addEventListener('click',()=>{const on=s.getAttribute('aria-checked')!=='true';s.setAttribute('aria-checked',on);b.classList.toggle('on',on)})});
+// rise on scroll, once
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0,rootMargin:'0px 0px 120% 0px'});
+document.querySelectorAll('.log li,.thread p').forEach(e=>e.classList.add('rise'));
+document.querySelectorAll('.band .txt').forEach(e=>e.classList.add('rise'));
+document.querySelectorAll('.rise').forEach((el,i)=>{el.style.transitionDelay=(el.matches('li,p')?(Array.from(el.parentNode.children).indexOf(el)*110+200):(i%2)*90)+'ms';io.observe(el)});
+setTimeout(()=>document.querySelectorAll('.rise').forEach(e=>e.classList.add('in')),8000);
+</script>
+</body>
+</html>

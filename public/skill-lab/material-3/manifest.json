@@ -1,0 +1,28 @@
+{
+  "id": "material-3",
+  "sets": ["web"],
+  "skillSays": [
+    "Treat Material Design 3 as the design system: colour, type, shape and motion come from md.sys tokens, exposed on the web as --md-sys-* CSS custom properties.",
+    "Generate a full light and dark colour scheme from one seed colour and always use colours in their intended pairs (primary with on-primary, surface-container with on-surface), never raw hex.",
+    "Depth comes from tonal surface colours (surface-container-low through highest) rather than shadows; shapes use the corner tokens (full for buttons, large and extra-large for cards).",
+    "Use the 15-step type scale in Roboto Flex, an 8dp spacing grid, state layers for hover, focus and press, and the emphasized easing curves for motion.",
+    "Web is the limited platform: build components from the spec as semantic HTML and CSS, constrain width on large screens, and keep touch targets near 48dp."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Generated a teal tonal scheme (light and dark) from a seed colour with Material's colour utilities and wired every colour as a --md-sys-color-* token, paired correctly (on-primary-container text on primary-container).",
+      "Built the hero stage as a primary-container panel with a 48dp corner, a surface-container-lowest sheet inside it, M3 list items with tonal leading circles and an inverse-surface snackbar, instead of custom shadows and gradients.",
+      "Used full-pill buttons (filled, outlined, text) with a state layer overlay, display-medium emphasized headline and Roboto Flex, and Material Symbols icons, as the skill says Roboto is correct for MD3."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Used an M3 segmented button with a check on the selected segment for the monthly/yearly switch rather than a custom toggle.",
+      "Plan cards use the spec's variants: outlined cards (outline-variant) for Solo and Group and a primary-container card for the recommended Clinic plan; the button variants map to emphasis (filled, tonal, outlined).",
+      "Prices use the display-medium token and benefits are a check-icon list, with every corner taken from the shape tokens."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Built outlined text fields with the floating label that notches the outline, error state with the error colour, a 2px outline and an error icon plus supporting text.",
+      "The select is an outlined field with a trailing arrow, and the checkbox is the 18dp M3 checkbox inside a 40dp state-layer target.",
+      "The form sits on a surface-container-low card with the extra-large corner and a full-width filled button; it needed no shadows, only tonal layers."
+    ]}
+  ]
+}

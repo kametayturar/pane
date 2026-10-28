@@ -1,0 +1,29 @@
+{
+  "id": "theme-factory",
+  "sets": ["web"],
+  "skillSays": [
+    "Pick one of ten ready-made font and colour themes (Ocean Depths, Sunset Boulevard, Modern Minimalist and so on) instead of inventing a palette.",
+    "Show the themes, get an explicit choice, then apply that theme's exact hex colours and font pairing to the whole artifact.",
+    "Use the theme file as the spec: a fixed set of four colours with roles (background, accent, secondary accent, text) and one header and body font.",
+    "Keep the theme's visual identity consistent on every section and check contrast and readability after applying it.",
+    "If no preset fits, write a new named theme in the same format, show it for review, then apply it."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Chose Ocean Depths (calm, trust-building, maritime) as the theme and used only its four colours: Deep Navy #1a2332 page, Teal #2d8b8b accents, Seafoam #a8dadc secondary, Cream #f1faee text and light section.",
+      "Set headings in DejaVu Sans Bold and body in DejaVu Sans exactly as the theme file says, rather than picking a trendy display face.",
+      "Kept teal for large shapes, rules and icons only, because navy on teal is below 4.5:1; small text and buttons use seafoam or cream on navy (10:1 and above).",
+      "Alternated navy and cream sections so the whole page reads as one theme instead of mixing in extra brand colours."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Applied the same Ocean Depths palette to pricing: navy cards for Solo and Group, a cream card with teal border for the featured Clinic plan, so emphasis comes from the theme's own light/dark pair.",
+      "Toggle, badge and check icons are built from seafoam, teal and navy tints (mixed from the theme colours) with no outside colours added.",
+      "Kept the DejaVu Sans pairing for the large prices and the small billing notes, with weight (bold vs regular) doing the hierarchy work."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Form sits on a cream card over the navy page, inputs use navy borders and a teal focus ring with a seafoam halo, all from the theme.",
+      "The theme has no error colour, so the one deliberate exception is a dark red for the two validation messages, paired with an icon and text so it never relies on colour alone.",
+      "Checked contrast on every text and background pair of the card (navy on cream is 14.8:1) before finalising."
+    ]}
+  ]
+}

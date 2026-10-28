@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f1f5f9; color: #0f172a; padding: 28px 24px; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
+  h1 { font-size: 24px; }
+  header span { font-size: 14px; color: #64748b; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px 20px; }
+  .kpi small { color: #64748b; font-size: 13px; font-weight: 500; }
+  .kpi .val { font-size: 32px; font-weight: 700; margin: 4px 0; letter-spacing: -1px; }
+  .delta { font-size: 13px; font-weight: 600; }
+  .delta.good { color: #16a34a; } .delta.bad { color: #dc2626; }
+  .kpi svg { width: 100%; height: 36px; margin-top: 6px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card h3 { font-size: 15px; margin-bottom: 2px; }
+  .card .hint { font-size: 12px; color: #64748b; margin-bottom: 10px; }
+  .card svg.big { width: 100%; height: auto; }
+  svg text { font-family: 'Inter', sans-serif; }
+  @media (max-width: 900px) { .kpis { grid-template-columns: 1fr 1fr; } .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .kpis { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Support overview</h1><span>Tidewater · Jan–Dec · Compared to previous month</span></header>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid">
+    <div class="card"><h3>Support tickets per month</h3><p class="hint">Peak in September at 1,702</p><svg class="big" id="c1" viewBox="0 0 560 260"></svg></div>
+    <div class="card"><h3>First response time (minutes)</h3><p class="hint">Dashed line is a 45-minute target</p><svg class="big" id="c2" viewBox="0 0 560 260"></svg></div>
+  </div>
+</div>
+<script>
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const tickets = [1240,1190,1302,1255,1210,1340,1495,1610,1702,1420,1305,1260];
+const resp = [42,39,44,37,33,41,58,66,71,49,40,36];
+const churn = [18,17,19,16,15,17,24,29,31,22,18,16];
+const sum = a => a.reduce((x, y) => x + y, 0);
+
+function spark(arr, color) {
+  const w = 200, h = 36, mn = Math.min(...arr), mx = Math.max(...arr);
+  const p = arr.map((v, i) => `${i / (arr.length - 1) * w},${h - 4 - (v - mn) / (mx - mn || 1) * (h - 8)}`).join(' ');
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function kpi(label, val, cur, prev, arr, lowerBetter, fmt) {
+  const d = (cur - prev) / prev * 100;
+  const good = lowerBetter ? d <= 0 : d >= 0;
+  return `<div class="card kpi"><small>${label}</small><div class="val">${val}</div>
+    <div class="delta ${good ? 'good' : 'bad'}">${d >= 0 ? '▲' : '▼'} ${Math.abs(d).toFixed(1)}% vs Nov</div>${spark(arr, good ? '#16a34a' : '#dc2626')}</div>`;
+}
+document.getElementById('kpis').innerHTML =
+  kpi('Tickets (Dec)', tickets[11].toLocaleString(), tickets[11], tickets[10], tickets, true) +
+  kpi('First response (Dec)', resp[11] + ' min', resp[11], resp[10], resp, true) +
+  kpi('Churned accounts (Dec)', churn[11], churn[11], churn[10], churn, true) +
+  kpi('Tickets, full year', sum(tickets).toLocaleString(), 1, 1, tickets, true).replace(/<div class="delta[^]*?<\/div>/, '<div class="delta" style="color:#64748b">Avg ' + Math.round(sum(tickets) / 12).toLocaleString() + ' / month</div>');
+
+const W = 560, H = 260, m = { l: 44, r: 12, t: 12, b: 28 };
+const iw = W - m.l - m.r, ih = H - m.t - m.b;
+function axes(max, step, y) {
+  let s = '';
+  for (let v = 0; v <= max; v += step) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="#e2e8f0"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#64748b">${v}</text>`;
+  months.forEach((mo, i) => { s += `<text x="${m.l + (i + .5) * iw / 12}" y="${H - 8}" text-anchor="middle" font-size="11" fill="#64748b">${mo}</text>`; });
+  return s;
+}
+// bars
+{
+  const max = 2000, y = v => m.t + ih - v / max * ih, bw = iw / 12;
+  let s = axes(max, 500, y);
+  tickets.forEach((v, i) => { s += `<rect x="${m.l + i * bw + 6}" y="${y(v)}" width="${bw - 12}" height="${m.t + ih - y(v)}" rx="3" fill="${v === Math.max(...tickets) ? '#dc2626' : '#0891b2'}"/>`; });
+  document.getElementById('c1').innerHTML = s;
+}
+// line
+{
+  const max = 80, y = v => m.t + ih - v / max * ih;
+  let s = axes(max, 20, y);
+  s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(45)}" y2="${y(45)}" stroke="#16a34a" stroke-dasharray="5 4"/><text x="${W - m.r}" y="${y(45) - 5}" text-anchor="end" font-size="11" fill="#16a34a">Target 45</text>`;
+  const pts = resp.map((v, i) => `${m.l + (i + .5) * iw / 12},${y(v)}`).join(' ');
+  s += `<polyline points="${pts}" fill="none" stroke="#0891b2" stroke-width="3" stroke-linejoin="round"/>`;
+  resp.forEach((v, i) => { s += `<circle cx="${m.l + (i + .5) * iw / 12}" cy="${y(v)}" r="3.5" fill="${v > 45 ? '#dc2626' : '#0891b2'}"/>`; });
+  document.getElementById('c2').innerHTML = s;
+}
+</script>
+</body>
+</html>

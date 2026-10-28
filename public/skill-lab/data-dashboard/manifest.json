@@ -1,0 +1,40 @@
+{
+  "id": "data-dashboard",
+  "sets": [
+    "data"
+  ],
+  "skillSays": [
+    "Decide the brief first: who reads it, which one number leads, the update cadence, how dense is honest.",
+    "Compose in bands of different shapes (hero metric with its chart, narrow secondary figures, three different chart types, a table plus a feed, a deliberate footer), not four equal stat cards.",
+    "Draw every chart as inline SVG from tokens, with generated geometry, no chart library; keep a 12-column grid with explicit spans.",
+    "Check domain correctness: stacked bands sum to the total, waterfall closes, correlation matrix is symmetric with a diagonal of 1, donuts total the whole.",
+    "Accessibility per chart: role=\"img\" with a label that says what it shows, table captions, aria-sort on tables that really sort, never colour alone.",
+    "Verify in light and dark, at desktop and phone width, and look at the screenshot for stretched panels and missing category labels."
+  ],
+  "examples": [
+    {
+      "prompt": "data-1",
+      "changes": [
+        "Hero is 1,048 at about 3x body size with a stacked area whose bands sum to the total, beside narrow per-plan figures",
+        "Band 3 deliberately uses three different shapes: donut, ranked bars, sparklines",
+        "Table really sorts (aria-sort updates) with a Year/H1/H2 range tab, plus a milestones feed and footer line"
+      ]
+    },
+    {
+      "prompt": "data-2",
+      "changes": [
+        "Waterfall bridges Q2 (48) to Q3 (84) by month and closes exactly; correlation matrix is symmetric with 1.00 diagonal",
+        "Rising churn, response and tickets are shown in red with an up arrow, so \"up\" is not automatically green",
+        "Scatter, bridge and matrix form the three-shape band; a feed states \"Cause not proven\""
+      ]
+    },
+    {
+      "prompt": "data-3",
+      "changes": [
+        "Gauge, donut and heatmap fill the middle band; heatmap prints its values so colour is never the only signal",
+        "Sortable scorecard with a sparkline per KPI; dark theme toggle checked",
+        "Short panels stretched to fill their row (feed and table rows spread out) instead of leaving a void"
+      ]
+    }
+  ]
+}

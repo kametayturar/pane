@@ -1,0 +1,25 @@
+{
+  "id": "mcp-builder",
+  "sets": [
+    "code"
+  ],
+  "skillSays": [
+    "Four phases: research and plan, implement, review and test, then create 10 read-only evaluation questions",
+    "Recommended stack: TypeScript with the MCP SDK and Zod; stdio for local servers, stateless-JSON streamable HTTP for remote",
+    "Name tools {service}_{action}_{resource} in snake_case and the server {service}-mcp-server; use registerTool, not the deprecated tool()",
+    "Give every tool a thorough description, strict Zod input schema, outputSchema with structuredContent, and readOnly/destructive/idempotent/openWorld annotations",
+    "Support response_format markdown|json and limit/offset pagination with has_more and next_offset; cap response size",
+    "Return actionable error messages as isError results; never log to stdout on stdio; bind local HTTP to 127.0.0.1; test with the MCP Inspector"
+  ],
+  "examples": [
+    {
+      "prompt": "mcp-1",
+      "changes": [
+        "Named tools tidewater_* with verb-first names and wrote descriptions with Args, Returns and Use/Don't-use-when so an agent can pick the right tool",
+        "Added outputSchema and structuredContent plus annotations (cancel is marked destructive and idempotent, lookups read-only)",
+        "Added response_format and limit/offset pagination to listing tools, and errors that tell the agent the next tool to call (409 -> tidewater_get_availability)",
+        "Tested with the Inspector CLI and UI, an SDK client scenario and curl over streamable HTTP; skipped the LLM evaluation phase, which needs an API key"
+      ]
+    }
+  ]
+}

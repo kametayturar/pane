@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  color-scheme:light dark;
+  --ref-sea-50: oklch(97.5% 0.0126 222.0);
+  --ref-sea-100: oklch(94.5% 0.0262 222.0);
+  --ref-sea-200: oklch(89.5% 0.0473 222.0);
+  --ref-sea-300: oklch(82.5% 0.0735 222.0);
+  --ref-sea-400: oklch(74.5% 0.0966 222.0);
+  --ref-sea-500: oklch(64.5% 0.1050 222.0);
+  --ref-sea-600: oklch(54.5% 0.1007 222.0);
+  --ref-sea-700: oklch(47.5% 0.0878 222.0);
+  --ref-sea-800: oklch(40.5% 0.0748 222.0);
+  --ref-sea-900: oklch(33.5% 0.0619 222.0);
+  --ref-sea-950: oklch(23.5% 0.0434 222.0);
+  --ref-coral-50: oklch(97.5% 0.0129 42.0);
+  --ref-coral-100: oklch(94.5% 0.0290 42.0);
+  --ref-coral-200: oklch(89.5% 0.0578 42.0);
+  --ref-coral-300: oklch(82.5% 0.1026 42.0);
+  --ref-coral-400: oklch(74.5% 0.1380 42.0);
+  --ref-coral-500: oklch(64.5% 0.1500 42.0);
+  --ref-coral-600: oklch(54.5% 0.1500 42.0);
+  --ref-coral-700: oklch(47.5% 0.1350 42.0);
+  --ref-coral-800: oklch(40.5% 0.1170 42.0);
+  --ref-coral-900: oklch(33.5% 0.0930 42.0);
+  --ref-coral-950: oklch(23.5% 0.0675 42.0);
+  --ref-sand-50: oklch(97.5% 0.0036 85.0);
+  --ref-sand-100: oklch(94.5% 0.0075 85.0);
+  --ref-sand-200: oklch(89.5% 0.0135 85.0);
+  --ref-sand-300: oklch(82.5% 0.0210 85.0);
+  --ref-sand-400: oklch(74.5% 0.0276 85.0);
+  --ref-sand-500: oklch(64.5% 0.0300 85.0);
+  --ref-sand-600: oklch(54.5% 0.0300 85.0);
+  --ref-sand-700: oklch(47.5% 0.0270 85.0);
+  --ref-sand-800: oklch(40.5% 0.0234 85.0);
+  --ref-sand-900: oklch(33.5% 0.0186 85.0);
+  --ref-sand-950: oklch(23.5% 0.0135 85.0);
+  --ref-neutral-50: oklch(97.5% 0.0011 230.0);
+  --ref-neutral-100: oklch(94.5% 0.0022 230.0);
+  --ref-neutral-200: oklch(89.5% 0.0040 230.0);
+  --ref-neutral-300: oklch(82.5% 0.0063 230.0);
+  --ref-neutral-400: oklch(74.5% 0.0083 230.0);
+  --ref-neutral-500: oklch(64.5% 0.0090 230.0);
+  --ref-neutral-600: oklch(54.5% 0.0090 230.0);
+  --ref-neutral-700: oklch(47.5% 0.0081 230.0);
+  --ref-neutral-800: oklch(40.5% 0.0070 230.0);
+  --ref-neutral-900: oklch(33.5% 0.0056 230.0);
+  --ref-neutral-950: oklch(23.5% 0.0040 230.0);
+  --ref-red-50: oklch(97.5% 0.0122 27.0);
+  --ref-red-100: oklch(94.5% 0.0275 27.0);
+  --ref-red-200: oklch(89.5% 0.0549 27.0);
+  --ref-red-300: oklch(82.5% 0.0977 27.0);
+  --ref-red-400: oklch(74.5% 0.1545 27.0);
+  --ref-red-500: oklch(64.5% 0.1700 27.0);
+  --ref-red-600: oklch(54.5% 0.1700 27.0);
+  --ref-red-700: oklch(47.5% 0.1530 27.0);
+  --ref-red-800: oklch(40.5% 0.1326 27.0);
+  --ref-red-900: oklch(33.5% 0.1054 27.0);
+  --ref-red-950: oklch(23.5% 0.0765 27.0);
+  --ref-green-50: oklch(97.5% 0.0144 155.0);
+  --ref-green-100: oklch(94.5% 0.0300 155.0);
+  --ref-green-200: oklch(89.5% 0.0540 155.0);
+  --ref-green-300: oklch(82.5% 0.0840 155.0);
+  --ref-green-400: oklch(74.5% 0.1104 155.0);
+  --ref-green-500: oklch(64.5% 0.1200 155.0);
+  --ref-green-600: oklch(54.5% 0.1200 155.0);
+  --ref-green-700: oklch(47.5% 0.1080 155.0);
+  --ref-green-800: oklch(40.5% 0.0936 155.0);
+  --ref-green-900: oklch(33.5% 0.0744 155.0);
+  --ref-green-950: oklch(23.5% 0.0540 155.0);
+  --ref-white: oklch(100% 0 0);
+  --bg: light-dark(var(--ref-neutral-50), var(--ref-neutral-950));
+  --surface: light-dark(var(--ref-white), var(--ref-neutral-900));
+  --sunken: light-dark(var(--ref-neutral-100), var(--ref-neutral-950));
+  --line: light-dark(var(--ref-neutral-200), var(--ref-neutral-800));
+  --text: light-dark(var(--ref-neutral-900), var(--ref-neutral-50));
+  --text2: light-dark(var(--ref-neutral-700), var(--ref-neutral-300));
+  --text3: light-dark(var(--ref-neutral-600), var(--ref-neutral-400));
+  --brand: light-dark(var(--ref-sea-700), var(--ref-sea-400));
+  --brand-hover: light-dark(var(--ref-sea-800), var(--ref-sea-300));
+  --on-brand: light-dark(var(--ref-white), var(--ref-neutral-950));
+  --tint: light-dark(var(--ref-sea-100), var(--ref-sea-900));
+  --tint-text: light-dark(var(--ref-sea-800), var(--ref-sea-200));
+  --band: light-dark(var(--ref-sea-900), var(--ref-sea-800));
+  --on-band: light-dark(var(--ref-sea-50), var(--ref-sea-50));
+  --accent: light-dark(var(--ref-coral-500), var(--ref-coral-400));
+  --on-accent: light-dark(var(--ref-neutral-950), var(--ref-neutral-950));
+  --accent-text: light-dark(var(--ref-coral-700), var(--ref-coral-300));
+  --err: light-dark(var(--ref-red-700), var(--ref-red-300));
+  --err-bg: light-dark(var(--ref-red-50), var(--ref-red-950));
+  --ok: light-dark(var(--ref-green-700), var(--ref-green-300));
+  --ok-bg: light-dark(var(--ref-green-50), var(--ref-green-950));
+}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+/* semantic layer on top of reference ramps; hover/tints are derived, not hand-picked */
+:root{
+  --font:'Manrope',system-ui,sans-serif;
+  --brand-hover-d:color-mix(in oklab,var(--brand),var(--text) 14%);
+  --brand-wash:oklch(from var(--brand) l c h / .10);
+  --brand-line:oklch(from var(--brand) l c h / .28);
+  --focus:oklch(from var(--brand) l c h / .45);
+  --shadow:0 18px 40px -22px oklch(from var(--band) l c h / .55);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font:400 16px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.1}
+a{color:var(--brand)}
+.nav{display:flex;align-items:center;gap:28px;padding-top:22px;padding-bottom:22px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;color:var(--text);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
+.logo svg{width:28px;height:28px;color:var(--brand)}
+.nav ul{display:flex;gap:26px;list-style:none;padding:0;font-size:14.5px;font-weight:600}
+.nav ul a{color:var(--text2);text-decoration:none}.nav ul a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px/1 var(--font);padding:15px 24px;border-radius:12px;border:1.5px solid transparent;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.btn.primary{background:var(--brand);color:var(--on-brand)}
+.btn.primary:hover{background:var(--brand-hover-d)}
+.btn.ghost{color:var(--brand);border-color:var(--brand-line);background:transparent}
+.btn.ghost:hover{background:var(--brand-wash);border-color:var(--brand)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.mode{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--text2);display:grid;place-items:center;cursor:pointer}
+.mode:hover{border-color:var(--brand-line);color:var(--brand)}
+.mode svg{width:20px;height:20px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:700 12px/1 var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--tint-text)}
+.eyebrow::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.pricing{text-align:center;padding-top:36px;padding-bottom:84px}
+h1{font-size:clamp(34px,4.4vw,52px);margin:18px auto 16px;max-width:16ch}
+.lead{color:var(--text2);max-width:52ch;margin:0 auto 32px;font-size:17px}
+.tog{display:inline-flex;padding:5px;background:var(--sunken);border:1px solid var(--line);border-radius:14px;margin-bottom:48px}
+.tog button{font:700 14px var(--font);padding:11px 20px;border:0;background:none;color:var(--text2);border-radius:10px;cursor:pointer;display:inline-flex;gap:8px;align-items:center;transition:background .2s,color .2s}
+.tog button.on{background:var(--brand);color:var(--on-brand)}
+.save{font-size:11px;padding:3px 8px;border-radius:99px;background:oklch(from var(--accent) l c h / .35);color:var(--text)}
+.tog .on .save{background:var(--on-brand);color:var(--brand)}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;text-align:left;align-items:stretch}
+.plan{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1.5px solid var(--line);border-radius:24px;padding:34px 30px}
+.plan h2{font-size:24px}
+.for{font-size:14px;color:var(--text3);margin:6px 0 24px}
+.price{display:flex;align-items:baseline;gap:8px}
+.amt{font-size:52px;font-weight:800;letter-spacing:-.04em;line-height:1}
+.per{font-size:14px;color:var(--text3)}
+.bill{font-size:13px;color:var(--text3);margin:10px 0 26px;min-height:20px}
+.plan .btn{width:100%}
+.plan ul{list-style:none;padding:26px 0 0;margin:28px 0 0;border-top:1px solid var(--line);display:grid;gap:13px;font-size:14.5px}
+.plan li{display:flex;gap:12px;align-items:flex-start}
+.plan li svg{width:19px;height:19px;flex:none;color:var(--brand);margin-top:2px}
+.pop{border-color:var(--brand);background:linear-gradient(180deg in oklch,var(--tint),var(--surface) 48%);box-shadow:var(--shadow)}
+.flag{position:absolute;top:-14px;left:30px;background:var(--accent);color:var(--on-accent);font:800 12px var(--font);letter-spacing:.06em;padding:7px 14px;border-radius:99px}
+.fine{margin-top:34px;font-size:13.5px;color:var(--text3)}
+@media(max-width:900px){.plans{grid-template-columns:1fr;max-width:460px;margin:0 auto}.nav ul{display:none}}
+@media(max-width:480px){.nav .btn{display:none}.nav{gap:12px}.plan{padding:28px 22px}.tog button{padding:10px 14px}}
+
+</style>
+</head>
+<body>
+<header class="wrap nav">
+  <a class="logo" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c3-3 6-3 9 0s6 3 9 0"/><path d="M3 15c3-3 6-3 9 0s6 3 9 0"/></svg>Tidewater</a>
+  <ul><li><a href="#features">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Clinics</a></li></ul>
+  <button class="mode" id="theme" type="button" aria-label="Toggle light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+  <a class="btn primary" href="#">Book a demo</a>
+</header>
+<main class="wrap pricing">
+  <p class="eyebrow">Pricing</p>
+  <h1>One calendar, sized to your clinic.</h1>
+  <p class="lead">Every plan includes online booking, SMS reminders and a 30-day free trial. Switch plans whenever your team changes.</p>
+  <div class="tog" role="group" aria-label="Billing period">
+    <button type="button" class="on" data-p="m" aria-pressed="true">Monthly</button>
+    <button type="button" data-p="y" aria-pressed="false">Yearly <span class="save">Save 20%</span></button>
+  </div>
+  <div class="plans">
+    <article class="plan">
+      <h2>Solo</h2><p class="for">One therapist, one practice.</p>
+      <p class="price"><span class="amt" data-m="19" data-y="15">$19</span><span class="per">per month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="$182 billed yearly">Billed monthly</p>
+      <a class="btn ghost" href="#">Start with Solo</a>
+      <ul><li><svg><use href="#ck"/></svg>1 therapist calendar</li><li><svg><use href="#ck"/></svg>Online booking page</li><li><svg><use href="#ck"/></svg>Email and SMS reminders</li><li><svg><use href="#ck"/></svg>Up to 150 patients</li></ul>
+    </article>
+    <article class="plan pop">
+      <span class="flag">Most popular</span>
+      <h2>Clinic</h2><p class="for">Small teams sharing rooms.</p>
+      <p class="price"><span class="amt" data-m="49" data-y="39">$49</span><span class="per">per month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="$470 billed yearly">Billed monthly</p>
+      <a class="btn primary" href="#">Start with Clinic</a>
+      <ul><li><svg><use href="#ck"/></svg>Up to 8 therapists</li><li><svg><use href="#ck"/></svg>Room and equipment booking</li><li><svg><use href="#ck"/></svg>Waitlist that fills cancellations</li><li><svg><use href="#ck"/></svg>Unlimited patients</li><li><svg><use href="#ck"/></svg>Utilisation reports</li></ul>
+    </article>
+    <article class="plan">
+      <h2>Group</h2><p class="for">Multi-site practices.</p>
+      <p class="price"><span class="amt" data-m="129" data-y="103">$129</span><span class="per">per month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="$1,238 billed yearly">Billed monthly</p>
+      <a class="btn ghost" href="#">Talk to us about Group</a>
+      <ul><li><svg><use href="#ck"/></svg>Unlimited therapists and sites</li><li><svg><use href="#ck"/></svg>Cross-site patient records</li><li><svg><use href="#ck"/></svg>Role-based permissions</li><li><svg><use href="#ck"/></svg>Priority support line</li><li><svg><use href="#ck"/></svg>Data export and API access</li></ul>
+    </article>
+  </div>
+  <p class="fine">Prices in US dollars. Yearly billing is 20% below twelve monthly payments.</p>
+</main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
+
+<script>
+(function(){var b=document.getElementById('theme');if(!b)return;b.addEventListener('click',function(){var d=document.documentElement,c=d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.setAttribute('data-theme',c==='dark'?'light':'dark')})})();
+(function(){var btns=document.querySelectorAll('.tog button');
+function setP(p){btns.forEach(function(b){var on=b.dataset.p===p;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+ document.querySelectorAll('[data-m]').forEach(function(el){var v=el.dataset[p];el.textContent=el.classList.contains('amt')?'$'+v:v});}
+btns.forEach(function(b){b.addEventListener('click',function(){setP(b.dataset.p)})});})();
+
+</script>
+</body>
+</html>

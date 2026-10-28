@@ -1,0 +1,31 @@
+{
+  "id": "ui-ux-pro-max",
+  "sets": ["web"],
+  "skillSays": [
+    "Start a new page by generating a design system from a search over its local database: run search.py --design-system with product type and keywords, which returns a landing pattern, a visual style, a palette with semantic tokens, a font pairing, key effects and anti-patterns.",
+    "Supplement with targeted domain searches (ux, style, landing, typography, charts) and stack searches, each query built around one intent with 2-5 terms, retried once if off-topic, never faking a result.",
+    "Rank concerns by priority: accessibility and touch targets first (4.5:1 contrast, visible focus, labels, 44px targets), then performance, style consistency, layout, type and colour, motion, forms, navigation.",
+    "Use semantic colour tokens rather than raw hex, SVG icons not emoji, a 4/8px spacing scale, 150-300ms transitions, and respect prefers-reduced-motion.",
+    "For forms: visible labels, validate on blur, specific cause-plus-fix errors tied by aria-describedby, an error summary with focus management, and a show/hide password toggle.",
+    "Finish by running a pre-delivery checklist (cursor-pointer, hover states, contrast, focus, reduced motion, 375/768/1024/1440 layouts)."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Ran the real search.py --design-system (BM25 over the bundled CSVs, runs fine offline): it returned a Neumorphism style, calm cyan #0891B2 with health-green #059669 CTA, Atkinson Hyperlegible type and a Hero + Features + CTA pattern, and the page follows those tokens exactly.",
+      "Soft dual-shadow raised and pressed surfaces with 14-24px radii (the Neumorphism spec), but with solid 4.5:1 text and a 3px focus ring because the database flags that style as high accessibility risk.",
+      "Uses SVG feature icons (no emoji), a skip link, 48px buttons and a spacing scale from the generated tokens.",
+      "Hero shows a static day-sheet panel instead of animation, following the 'subtle motion' guidance for this style."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Same generated design system reused so the pricing page matches the landing page; the popular plan is marked by a primary outline plus a text badge, not colour alone.",
+      "Billing toggle is a role=radiogroup with arrow-key support, a 48px target and the 'Save 20%' note stated in text; per-plan yearly total and saving are spelled out.",
+      "Prices use tabular numerals, plan descriptions keep equal height, and the layout stacks to a single column below 900px."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Followed the Forms and Feedback rule set: visible labels, required markers, validation on blur, errors that give cause and fix, aria-describedby and role=alert.",
+      "Added a focusable error summary at the top whose items link to each invalid field, and focus moves to it after a failed submit (the error-summary and focus-management rules).",
+      "Password field has an accessible Show/Hide toggle, autocomplete attributes and semantic input types; the submit button shows a loading state.",
+      "Inputs and checkbox are debossed soft-UI wells with a visible red border in the error state so boundaries stay clear."
+    ]}
+  ]
+}

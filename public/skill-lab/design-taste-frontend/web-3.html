@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* Direction: "The sentence is the layout" (seed 1087265469). Type redrawn: Bodoni Moda / Jost (brief allows Google Fonts only).
+   Palette keeps the dealt proportions (dark ground, bone ink, one olive block, one ochre field) with colours taken from the tidal marsh. */
+:root{
+ --bg:#10282E;--surface:#17353D;--surface-2:#1F444E;--ink:#EAE6D4;--muted:#A9BDB9;
+ --accent:#566420;--accent-ink:#EAE6D4;
+ --field-1:#C79A3E;--field-1-ink:#1F1408;--field-2:#566420;--field-2-ink:#EAE6D4;--field-3:#2F6F7E;--field-3-ink:#F4F1E4;
+ --step-small:clamp(.8125rem,.79rem + .1vw,.875rem);--step-body:clamp(1.0625rem,1rem + .25vw,1.1875rem);--step-lead:clamp(1.25rem,1.1rem + .7vw,1.625rem);--step-head:clamp(2rem,1.3rem + 3.2vw,4rem);
+ --ease:cubic-bezier(.16,1,.3,1);--pad:clamp(20px,3vw,40px);--r:10px;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 var(--step-body)/1.5 Jost,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.disp{font-family:"Bodoni Moda",Georgia,serif;font-weight:500;letter-spacing:-.025em;line-height:.95;font-optical-sizing:auto}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--field-1);outline-offset:3px}
+.pad{padding-left:var(--pad);padding-right:var(--pad)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border:0;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);font:500 17px Jost,sans-serif;text-decoration:none;cursor:pointer;transition:transform .2s var(--ease),background .2s}
+.btn:hover{background:#6B7B28}.btn:active{transform:translateY(1px)}
+.btn.sand{background:var(--field-1);color:var(--field-1-ink)}.btn.sand:hover{background:#D8AB4B}
+.mark{font:500 20px/1 "Bodoni Moda",serif;letter-spacing:-.02em;text-decoration:none}
+.navlink{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;font-weight:500;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding-top:20px;padding-bottom:20px}
+.topbar .btn{min-height:44px;padding:0 20px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.page{display:grid;grid-template-columns:repeat(12,1fr);column-gap:20px;padding:clamp(48px,7vw,96px) var(--pad) clamp(72px,9vw,120px);align-items:start}
+.say{grid-column:1/7;position:sticky;top:48px}
+.say h1{font-size:clamp(48px,6vw,96px);max-width:9ch}
+.say p{margin-top:28px;color:var(--muted);max-width:26em;font-size:var(--step-lead);line-height:1.4}
+.formwrap{grid-column:8/13;background:var(--surface);border-radius:var(--r);padding:clamp(24px,3vw,40px)}
+.formwrap h2{font-size:32px;line-height:1.05;margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:28px}
+.f{margin-bottom:22px}
+.f label.t{display:block;font-weight:500;margin-bottom:8px;font-size:17px}
+input[type=text],input[type=email],input[type=password],select{width:100%;height:52px;padding:0 16px;border:0;border-radius:8px;background:var(--surface-2);color:var(--ink);font:400 17px Jost,sans-serif;outline:none;appearance:none;-webkit-appearance:none;transition:background .2s}
+input:focus,select:focus{outline:3px solid var(--field-1);outline-offset:0}
+.f.err input,.f.err select{background:#43361F}
+.msg{display:none;margin-top:10px;gap:10px;color:#F0C467;font-size:17px;font-weight:500;align-items:flex-start}
+.msg::before{content:"!";flex:none;width:22px;height:22px;border-radius:50%;background:#F0C467;color:#2A1D07;display:grid;place-items:center;font-size:14px;font-weight:700;margin-top:2px}
+.f.err .msg{display:flex}.f.err .hint{display:none}
+.hint{margin-top:8px;color:var(--muted);font-size:15px}
+.pw{position:relative}.pw button{position:absolute;right:4px;top:4px;height:44px;padding:0 14px;border:0;border-radius:6px;background:transparent;color:var(--field-1);font:500 16px Jost;cursor:pointer}
+.sel{position:relative}.sel::after{content:"";position:absolute;right:20px;top:19px;width:9px;height:9px;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(45deg);pointer-events:none}
+select option{background:#17353D}
+.chk{display:flex;gap:14px;align-items:flex-start;margin-bottom:26px;cursor:pointer}
+.chk input{appearance:none;-webkit-appearance:none;flex:none;width:28px;height:28px;border-radius:6px;background:var(--surface-2);margin:0;display:grid;place-items:center;cursor:pointer}
+.chk input:focus-visible{outline:3px solid var(--field-1)}
+.chk input:checked{background:var(--field-1)}
+.chk input:checked::after{content:"";width:12px;height:7px;border-left:3px solid var(--field-1-ink);border-bottom:3px solid var(--field-1-ink);transform:rotate(-45deg) translate(1px,-1px)}
+.chk.err input{background:#43361F}
+.chk a{color:var(--ink)}
+.go{width:100%;min-height:56px;font-size:18px;background:var(--field-1);color:var(--field-1-ink)}.go:hover{background:#D8AB4B}
+.alt{margin-top:20px;color:var(--muted)}.alt a{color:var(--ink)}
+.done{display:none}.done.show{display:block}
+@media (prefers-reduced-motion:no-preference){.js .formwrap{animation:rise .9s var(--ease) backwards}.msg{animation:fade .4s var(--ease) backwards}@keyframes rise{from{transform:translateY(32px);opacity:0}}}
+@media (prefers-reduced-motion:no-preference){.js .f,.js .chk,.js .go{animation:rise .8s var(--ease) backwards;animation-delay:calc(.3s + var(--k,0)*80ms)}.f:nth-of-type(1){--k:1}.f:nth-of-type(2){--k:2}.f:nth-of-type(3){--k:3}.f:nth-of-type(4){--k:4}.chk{--k:5}.go{--k:6}}
+@media (max-width:860px){.page{grid-template-columns:1fr;row-gap:32px}.say{position:static;grid-column:1}.say h1{font-size:13vw}.formwrap{grid-column:1}}
+.lines .line{display:block;overflow:hidden;padding:.04em .1em .12em;margin:-.04em -.1em -.12em}.lines [data-line]{display:block}
+@media (prefers-reduced-motion:no-preference){.js .lines [data-line]{transform:translateY(105%);animation:lineup 900ms var(--ease) forwards;animation-delay:calc(var(--i)*110ms + 150ms)}@keyframes lineup{to{transform:none}}}
+</style>
+</head>
+<body>
+<div class="topbar pad"><a class="mark" href="#">Tidewater</a></div>
+<main class="page">
+ <section class="say" aria-label="Welcome"><h1 class="lines"><span class="line"><span data-line style="--i:0">Open your</span></span><span class="line"><span data-line style="--i:1">diary</span></span></h1><p>Set up in ten minutes. Import your patients from a CSV and reminders start going out tonight.</p></section>
+ <section class="formwrap" aria-labelledby="ft">
+  <form id="f" novalidate>
+   <h2 id="ft">Create your account</h2><p class="sub">Free for 30 days. No card needed.</p>
+   <div class="f" data-k="name"><label class="t" for="name">Full name</label><input id="name" type="text" autocomplete="name" aria-describedby="name-e"><div class="msg" id="name-e" role="alert"></div></div>
+   <div class="f" data-k="email"><label class="t" for="email">Work email</label><input id="email" type="email" autocomplete="email" value="jordan@northside" aria-describedby="email-e"><div class="msg" id="email-e" role="alert"></div></div>
+   <div class="f" data-k="pw"><label class="t" for="pw">Password</label><div class="pw"><input id="pw" type="password" autocomplete="new-password" value="tide2" aria-describedby="pw-h pw-e"><button type="button" id="eye" aria-pressed="false">Show</button></div><p class="hint" id="pw-h">At least 10 characters.</p><div class="msg" id="pw-e" role="alert"></div></div>
+   <div class="f" data-k="size"><label class="t" for="size">Clinic size</label><div class="sel"><select id="size" aria-describedby="size-e"><option value="">Choose a size</option><option>Just me</option><option>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 or more therapists</option></select></div><div class="msg" id="size-e" role="alert"></div></div>
+   <label class="chk" id="tw"><input type="checkbox" id="terms"><span>I accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<span class="msg" id="terms-e" role="alert" style="margin-top:6px"></span></span></label>
+   <button class="btn go" type="submit">Create account</button>
+   <p class="alt">Already have an account? <a href="#">Sign in</a></p>
+  </form>
+  <div class="done" id="done" role="status"><h2>Check your inbox</h2><p class="sub">We sent a confirmation link to <strong id="sent"></strong>.</p></div>
+ </section>
+</main>
+<script>
+const $=s=>document.querySelector(s),I={name:$('#name'),email:$('#email'),pw:$('#pw'),size:$('#size')};
+const rule={name:v=>v.trim().length<2?'Enter your full name.':'',
+ email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?'':'This email looks incomplete. Use a full address such as name@clinic.com.',
+ pw:v=>v.length<10?`Too short. Add ${10-v.length} more characters to reach 10.`:'',
+ size:v=>v?'':'Choose your clinic size.'};
+function check(k){const w=document.querySelector(`[data-k=${k}]`),m=rule[k](I[k].value);w.classList.toggle('err',!!m);$(`#${k}-e`).textContent=m;I[k].setAttribute('aria-invalid',!!m);return !m}
+for(const k in I){I[k].addEventListener('blur',()=>check(k));I[k].addEventListener('input',()=>{if(I[k].closest('.f').classList.contains('err'))check(k)})}
+$('#eye').onclick=e=>{const s=I.pw.type==='password';I.pw.type=s?'text':'password';e.target.textContent=s?'Hide':'Show';e.target.setAttribute('aria-pressed',s)};
+$('#terms').onchange=()=>{$('#tw').classList.remove('err');$('#terms-e').style.display='none'};
+$('#f').addEventListener('submit',e=>{e.preventDefault();let ok=true,first;for(const k in I){const r=check(k);if(!r&&!first)first=I[k];ok=r&&ok}
+ const t=$('#terms').checked;$('#tw').classList.toggle('err',!t);$('#terms-e').textContent=t?'':'Accept the terms to continue.';$('#terms-e').style.display=t?'none':'flex';ok=ok&&t;if(!t&&!first)first=$('#terms');
+ if(!ok){first.focus();return}$('#f').style.display='none';$('#sent').textContent=I.email.value;$('#done').classList.add('show')});
+check('email');check('pw');
+</script>
+</body>
+</html>

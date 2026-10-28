@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-2-click.png" alt="browser-2: after clicking 'Book appointment' with the pre-highlighted 10:30 slot -&gt; nothing happens"><figcaption>browser-2: after clicking 'Book appointment' with the pre-highlighted 10:30 slot -&gt; nothing happens</figcaption></figure><figure><img src="browser-2-after-slot.png" alt="browser-2 control: after clicking the 10:30 slot first -&gt; 'Booked 10:30'"><figcaption>browser-2 control: after clicking the 10:30 slot first -&gt; 'Booked 10:30'</figcaption></figure></div>
+<h2>Result</h2><div class="result">browser-2 (Book appointment does nothing)
+Root cause: on #book the 10:30 slot is rendered with the "sel" class (i === 1) so it LOOKS selected, but the JS variable `selected` is only assigned inside the slot click handler, so it is still undefined. The Book button handler does `JSON.stringify({ slot: selected.id })`; that throws "TypeError: Cannot read properties of undefined (reading 'id')" at index.html:51, inside an async listener, before fetch() is ever called. Result: no request, empty #result, no visible message. Evidence: typeof selected === "undefined" while .slot.sel is "10:30"; no /api/ request on click; uncaught TypeError captured. Control: clicking a slot first makes the click work and fires POST /api/book.
+Secondary finding: the handler ignores the response. The local static server answers POST /api/book with 501 but the page still prints "Booked 10:30" (it never checks res.ok), so even the "working" path reports success for a failed booking.
+Fix (not applied, report only): initialise selected = SLOTS[1] to match the rendered default, or render no default highlight; and check res.ok before showing success.
+
+Tool: agent-browser 0.39.1 (npm i agent-browser in scratch, native CLI, drives the system Chrome; no swap needed). Followed the real SKILL.md (a stub that says to run `agent-browser skills get core`) and that core guide: own named session, snapshot -i then @eN refs, semantic `find` locators, wait for text instead of fixed sleeps, `errors`/`network requests` for evidence, close at the end. Server: python3 -m http.server on port 7111, killed afterwards.
+Friction observed: refs are not stable across navigation (open re-numbers them: after re-opening, @e4 -&gt; @e15 -&gt; @e25), so a ref taken from an old snapshot gave "Unknown ref"; I switched to `find label/role ... ` which worked every time. Plain-text `errors` printed an empty "✗" line for the page error; `errors --json` gave the real message and stack (index.html:51:98). `errors --clear` did not drop the earlier TypeError from the buffer in the control run, so that line is stale, not new.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># SKILL.md is a stub; the real workflow is served by the CLI</div><div class="cmd">agent-browser skills get core   # (after reading the SKILL.md stub that points to it)</div><div class="out">---
+name: core
+description: Core agent-browser usage guide...
+# core loop: open -&gt; snapshot -i -&gt; click @eN -&gt; re-snapshot; 'Always use your own session'; 'Waiting (read this)': prefer wait --text/--url/--fn over networkidle or fixed delays</div></div><div class="step"><div class="note"># named session per the skill; local server on 7111</div><div class="cmd">export AGENT_BROWSER_SESSION="$(agent-browser session id --scope worktree --prefix task)"; agent-browser open http://localhost:7111/index.html</div><div class="out">[agent-browser] launched browser
+✓ Tidewater – test app
+  http://localhost:7111/index.html</div></div><div class="step"><div class="note"># browser-2</div><div class="cmd">agent-browser open "http://localhost:7111/index.html#book"; agent-browser snapshot -i</div><div class="out">- heading "Book an appointment" [level=1, ref=e27]
+- generic "09:00" [ref=e28] clickable [cursor:pointer]
+- generic "10:30" [ref=e29] clickable [cursor:pointer]
+- generic "14:00" [ref=e30] clickable [cursor:pointer]
+- button "Book appointment" [ref=e31]</div></div><div class="step"><div class="note"># silent failure: no DOM change, no request</div><div class="cmd">agent-browser find role button click --name "Book appointment"; agent-browser wait 500; agent-browser get text "#result"; agent-browser network requests | grep -v favicon</div><div class="out">✓ Done (x2)
+(empty #result)
+No requests captured</div></div><div class="step"><div class="note"># the plain-text `errors` printed just "✗ "; --json has the message</div><div class="cmd">agent-browser errors --json</div><div class="out">{"success":true,"data":{"errors":[{"column":97,"line":50,"text":"TypeError: Cannot read properties of undefined (reading 'id')\n    at HTMLButtonElement.&lt;anonymous&gt; (http://localhost:7111/index.html:51:98)"}], ...}}</div></div><div class="step"><div class="note"># root cause: the highlight is static markup, the variable is never initialised</div><div class="cmd">echo 'typeof selected + " | highlighted: " + document.querySelector(".slot.sel").dataset.id' | agent-browser eval --stdin</div><div class="out">"undefined | highlighted: s2"</div></div><div class="step"><div class="note"># control: after clicking a slot the request fires; the static server returns 501 yet the page still says Booked</div><div class="cmd">agent-browser open "...#book"; agent-browser find text "10:30" click; agent-browser find role button click --name "Book appointment"; agent-browser wait --text "Booked"; agent-browser get text "#result"; agent-browser network requests | grep -v favicon</div><div class="out">Booked
+result: Booked 10:30
+[82064.5] POST http://localhost:7111/api/book (Fetch) 501</div></div><div class="step"><div class="cmd">agent-browser close; pkill -f 'http.server 7111'</div><div class="out">✓ Browser closed</div></div></div>
+<h2>Files</h2><details open><summary>flow (shell, as run)</summary><pre><span class="k">export</span> AGENT_BROWSER_SESSION=<span <span class="k">class</span>="s">"$(agent-browser session id --scope worktree --prefix task)"</span>
+agent-browser open http://localhost:<span class="n">7111</span>/index.html
+agent-browser find label <span <span class="k">class</span>="s">"Full name"</span> fill <span <span class="k">class</span>="s">"Dana Reyes"</span>
+agent-browser find label <span <span class="k">class</span>="s">"Work email"</span> fill <span <span class="k">class</span>="s">"dana@clinic"</span>
+agent-browser find label <span <span class="k">class</span>="s">"Password"</span> fill <span <span class="k">class</span>="s">"short"</span>
+agent-browser find role button click --name <span <span class="k">class</span>="s">"Create account"</span>
+agent-browser screenshot out/browser-<span class="n">1</span>-invalid.png
+<span class="k">for</span> s <span class="k">in</span> e-name e-email e-pw; do agent-browser get text <span <span class="k">class</span>="s">"#$s"</span>; done
+agent-browser find label <span <span class="k">class</span>="s">"Work email"</span> fill <span <span class="k">class</span>="s">"dana@reyesphysio.com"</span>
+agent-browser find label <span <span class="k">class</span>="s">"Password"</span> fill <span <span class="k">class</span>="s">"correct-horse-<span class="n">9</span>"</span>
+agent-browser find role button click --name <span <span class="k">class</span>="s">"Create account"</span>
+agent-browser wait --text <span <span class="k">class</span>="s">"Account created"</span>
+agent-browser open <span <span class="k">class</span>="s">"http://localhost:<span class="n">7111</span>/index.html#book"</span>
+agent-browser find role button click --name <span <span class="k">class</span>="s">"Book appointment"</span>
+agent-browser errors --json
+echo <span <span class="k">class</span>="s">'typeof selected'</span> | agent-browser eval --stdin
+agent-browser find text <span <span class="k">class</span>="s">"<span class="n">10</span>:<span class="n">30</span>"</span> click
+agent-browser find role button click --name <span <span class="k">class</span>="s">"Book appointment"</span>
+agent-browser network requests
+agent-browser close</pre></details>
+</main>
+
+</body></html>

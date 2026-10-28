@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --prim-brand-50: #eef9fa;
+  --prim-brand-100: #dcf2f4;
+  --prim-brand-200: #c0e6eb;
+  --prim-brand-300: #96d4db;
+  --prim-brand-400: #5bbcc6;
+  --prim-brand-500: #00838e;
+  --prim-brand-600: #006770;
+  --prim-brand-700: #004f56;
+  --prim-brand-800: #003c41;
+  --prim-brand-900: #00292d;
+  --prim-brand-950: #001215;
+  --prim-neutral-50: #f6f7f7;
+  --prim-neutral-100: #ebedee;
+  --prim-neutral-200: #dbdee0;
+  --prim-neutral-300: #c3c8cb;
+  --prim-neutral-400: #a5acb0;
+  --prim-neutral-500: #70777c;
+  --prim-neutral-600: #565d62;
+  --prim-neutral-700: #42484b;
+  --prim-neutral-800: #313639;
+  --prim-neutral-900: #212527;
+  --prim-neutral-950: #0d1011;
+  --prim-red-50: #fff4f3;
+  --prim-red-100: #ffe6e4;
+  --prim-red-200: #ffd1cd;
+  --prim-red-300: #ffb0a8;
+  --prim-red-400: #fc8179;
+  --prim-red-500: #d73e3f;
+  --prim-red-600: #b22027;
+  --prim-red-700: #8f0a17;
+  --prim-red-800: #6e0610;
+  --prim-red-900: #4e0409;
+  --prim-red-950: #290002;
+  --prim-green-50: #f1faf2;
+  --prim-green-100: #e0f3e3;
+  --prim-green-200: #c8e8cd;
+  --prim-green-300: #a4d6ad;
+  --prim-green-400: #74bf85;
+  --prim-green-500: #1e8843;
+  --prim-green-600: #006c2f;
+  --prim-green-700: #005323;
+  --prim-green-800: #003f18;
+  --prim-green-900: #002c0f;
+  --prim-green-950: #001404;
+  --prim-amber-50: #fdf6ed;
+  --prim-amber-100: #f8ebd9;
+  --prim-amber-200: #f2dabb;
+  --prim-amber-300: #e5c18f;
+  --prim-amber-400: #d4a054;
+  --prim-amber-500: #a16c00;
+  --prim-amber-600: #7f5400;
+  --prim-amber-700: #624000;
+  --prim-amber-800: #4a3000;
+  --prim-amber-900: #342000;
+  --prim-amber-950: #190d00;
+  --prim-blue-50: #f2f7ff;
+  --prim-blue-100: #e1eeff;
+  --prim-blue-200: #c9e0ff;
+  --prim-blue-300: #a2caff;
+  --prim-blue-400: #6dadff;
+  --prim-blue-500: #1e76d8;
+  --prim-blue-600: #005bb3;
+  --prim-blue-700: #00468c;
+  --prim-blue-800: #00346b;
+  --prim-blue-900: #00234d;
+  --prim-blue-950: #000f27;
+  --prim-white: #ffffff;
+  --prim-black: #000000;
+  --color-action-primary: var(--prim-brand-600);
+  --color-action-primary-hover: var(--prim-brand-700);
+  --color-action-primary-active: var(--prim-brand-800);
+  --color-action-secondary: transparent;
+  --color-action-secondary-hover: var(--prim-neutral-100);
+  --color-action-secondary-active: var(--prim-neutral-200);
+  --color-action-destructive: var(--prim-red-600);
+  --color-action-destructive-hover: var(--prim-red-700);
+  --color-feedback-error-bg: var(--prim-red-50);
+  --color-feedback-error-text: var(--prim-red-800);
+  --color-feedback-error-border: var(--prim-red-500);
+  --color-feedback-error-icon: var(--prim-red-600);
+  --color-feedback-success-bg: var(--prim-green-50);
+  --color-feedback-success-text: var(--prim-green-800);
+  --color-feedback-success-icon: var(--prim-green-600);
+  --color-feedback-warning-bg: var(--prim-amber-50);
+  --color-feedback-warning-text: var(--prim-amber-800);
+  --color-feedback-info-bg: var(--prim-blue-50);
+  --color-feedback-info-text: var(--prim-blue-800);
+  --color-text-primary: var(--prim-neutral-900);
+  --color-text-secondary: var(--prim-neutral-600);
+  --color-text-tertiary: var(--prim-neutral-500);
+  --color-text-disabled: var(--prim-neutral-400);
+  --color-text-on-action: var(--prim-white);
+  --color-text-on-dark: var(--prim-neutral-50);
+  --color-text-link: var(--prim-brand-700);
+  --color-text-link-hover: var(--prim-brand-800);
+  --color-text-accent: var(--prim-brand-700);
+  --color-surface-page: var(--prim-white);
+  --color-surface-card: var(--prim-white);
+  --color-surface-raised: var(--prim-white);
+  --color-surface-sunken: var(--prim-neutral-50);
+  --color-surface-tint: var(--prim-brand-50);
+  --color-surface-disabled: var(--prim-neutral-100);
+  --color-surface-inverse: var(--prim-neutral-900);
+  --color-border-default: var(--prim-neutral-200);
+  --color-border-strong: var(--prim-neutral-500);
+  --color-border-focus: var(--prim-brand-500);
+  --color-border-error: var(--prim-red-600);
+  --color-border-tint: var(--prim-brand-200);
+  --c-button-primary-bg: var(--color-action-primary);
+  --c-button-primary-bg-hover: var(--color-action-primary-hover);
+  --c-button-primary-bg-active: var(--color-action-primary-active);
+  --c-button-primary-text: var(--color-text-on-action);
+  --c-button-secondary-bg: var(--color-action-secondary);
+  --c-button-secondary-bg-hover: var(--color-action-secondary-hover);
+  --c-button-secondary-text: var(--color-text-primary);
+  --c-button-secondary-border: var(--color-border-strong);
+  --c-button-destructive-bg: var(--color-action-destructive);
+  --c-button-destructive-text: var(--color-text-on-action);
+  --c-input-bg: var(--color-surface-card);
+  --c-input-border: var(--color-border-strong);
+  --c-input-border-focus: var(--color-border-focus);
+  --c-input-border-error: var(--color-border-error);
+  --c-input-text: var(--color-text-primary);
+  --c-card-bg: var(--color-surface-card);
+  --c-card-border: var(--color-border-default);
+  --c-card-featured-border: var(--color-action-primary);
+  --c-badge-primary-bg: var(--color-surface-tint);
+  --c-badge-primary-text: var(--color-text-accent);
+  --c-badge-neutral-bg: var(--color-surface-sunken);
+  --c-badge-neutral-text: var(--color-text-secondary);
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-0_5: 2px;
+  --space-1_5: 6px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+  --text-5xl: 48px;
+  --text-6xl: 60px;
+  --font-family-sans: Inter, system-ui, sans-serif;
+  --font-family-serif: Lora, Georgia, serif;
+  --font-family-mono: "JetBrains Mono", "SF Mono", monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-leading-tight: 1.25;
+  --font-leading-normal: 1.5;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+  --radius-button: var(--radius-md);
+  --radius-input: var(--radius-md);
+  --radius-card: var(--radius-xl);
+  --radius-badge: var(--radius-full);
+  --shadow-sm: 0 1px 2px rgba(16,24,28,.06);
+  --shadow-md: 0 4px 6px -1px rgba(16,24,28,.10), 0 2px 4px -2px rgba(16,24,28,.08);
+  --shadow-lg: 0 10px 15px -3px rgba(16,24,28,.12), 0 4px 6px -4px rgba(16,24,28,.10);
+  --shadow-focus-ring: 0 0 0 2px var(--color-surface-page), 0 0 0 4px var(--color-border-focus);
+  --size-container: 1120px;
+  --size-narrow: 480px;
+  --size-control: 44px;
+  --size-icon: 20px;
+  --motion-duration-fast: 100ms;
+  --motion-duration-base: 200ms;
+  --motion-duration-moderate: 300ms;
+  --motion-easing-ease-out: cubic-bezier(0,0,0.2,1);
+  --motion-easing-ease-in-out: cubic-bezier(0.4,0,0.2,1);
+  color-scheme: light;
+}
+:root[data-theme="dark"]{
+  --color-action-primary: var(--prim-brand-400);
+  --color-action-primary-hover: var(--prim-brand-300);
+  --color-action-primary-active: var(--prim-brand-200);
+  --color-action-secondary-hover: var(--prim-neutral-800);
+  --color-action-secondary-active: var(--prim-neutral-700);
+  --color-action-destructive: var(--prim-red-400);
+  --color-action-destructive-hover: var(--prim-red-300);
+  --color-feedback-error-bg: var(--prim-red-950);
+  --color-feedback-error-text: var(--prim-red-200);
+  --color-feedback-error-border: var(--prim-red-400);
+  --color-feedback-error-icon: var(--prim-red-400);
+  --color-feedback-success-bg: var(--prim-green-950);
+  --color-feedback-success-text: var(--prim-green-200);
+  --color-feedback-success-icon: var(--prim-green-400);
+  --color-feedback-warning-bg: var(--prim-amber-950);
+  --color-feedback-warning-text: var(--prim-amber-200);
+  --color-feedback-info-bg: var(--prim-blue-950);
+  --color-feedback-info-text: var(--prim-blue-200);
+  --color-text-primary: var(--prim-neutral-50);
+  --color-text-secondary: var(--prim-neutral-300);
+  --color-text-tertiary: var(--prim-neutral-400);
+  --color-text-disabled: var(--prim-neutral-600);
+  --color-text-on-action: var(--prim-neutral-950);
+  --color-text-link: var(--prim-brand-300);
+  --color-text-link-hover: var(--prim-brand-200);
+  --color-text-accent: var(--prim-brand-300);
+  --color-surface-page: var(--prim-neutral-950);
+  --color-surface-card: var(--prim-neutral-900);
+  --color-surface-raised: var(--prim-neutral-800);
+  --color-surface-sunken: var(--prim-neutral-950);
+  --color-surface-tint: var(--prim-brand-950);
+  --color-surface-disabled: var(--prim-neutral-800);
+  --color-surface-inverse: var(--prim-neutral-50);
+  --color-border-default: var(--prim-neutral-800);
+  --color-border-strong: var(--prim-neutral-500);
+  --color-border-focus: var(--prim-brand-400);
+  --color-border-error: var(--prim-red-400);
+  --color-border-tint: var(--prim-brand-800);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+  --color-action-primary: var(--prim-brand-400);
+  --color-action-primary-hover: var(--prim-brand-300);
+  --color-action-primary-active: var(--prim-brand-200);
+  --color-action-secondary-hover: var(--prim-neutral-800);
+  --color-action-secondary-active: var(--prim-neutral-700);
+  --color-action-destructive: var(--prim-red-400);
+  --color-action-destructive-hover: var(--prim-red-300);
+  --color-feedback-error-bg: var(--prim-red-950);
+  --color-feedback-error-text: var(--prim-red-200);
+  --color-feedback-error-border: var(--prim-red-400);
+  --color-feedback-error-icon: var(--prim-red-400);
+  --color-feedback-success-bg: var(--prim-green-950);
+  --color-feedback-success-text: var(--prim-green-200);
+  --color-feedback-success-icon: var(--prim-green-400);
+  --color-feedback-warning-bg: var(--prim-amber-950);
+  --color-feedback-warning-text: var(--prim-amber-200);
+  --color-feedback-info-bg: var(--prim-blue-950);
+  --color-feedback-info-text: var(--prim-blue-200);
+  --color-text-primary: var(--prim-neutral-50);
+  --color-text-secondary: var(--prim-neutral-300);
+  --color-text-tertiary: var(--prim-neutral-400);
+  --color-text-disabled: var(--prim-neutral-600);
+  --color-text-on-action: var(--prim-neutral-950);
+  --color-text-link: var(--prim-brand-300);
+  --color-text-link-hover: var(--prim-brand-200);
+  --color-text-accent: var(--prim-brand-300);
+  --color-surface-page: var(--prim-neutral-950);
+  --color-surface-card: var(--prim-neutral-900);
+  --color-surface-raised: var(--prim-neutral-800);
+  --color-surface-sunken: var(--prim-neutral-950);
+  --color-surface-tint: var(--prim-brand-950);
+  --color-surface-disabled: var(--prim-neutral-800);
+  --color-surface-inverse: var(--prim-neutral-50);
+  --color-border-default: var(--prim-neutral-800);
+  --color-border-strong: var(--prim-neutral-500);
+  --color-border-focus: var(--prim-brand-400);
+  --color-border-error: var(--prim-red-400);
+  --color-border-tint: var(--prim-brand-800);
+  color-scheme: dark;
+}
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--color-surface-page);color:var(--color-text-primary);font:var(--font-weight-regular) var(--text-base)/var(--font-leading-normal) var(--font-family-sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3{line-height:var(--font-leading-tight);font-weight:var(--font-weight-semibold)}
+a{color:var(--color-text-link)}a:hover{color:var(--color-text-link-hover)}
+.container{max-width:var(--size-container);margin:0 auto;padding:0 var(--space-6)}
+.prose{max-width:65ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);min-height:var(--size-control);padding:var(--space-2) var(--space-5);font:var(--font-weight-medium) var(--text-sm)/var(--font-leading-tight) var(--font-family-sans);border:1px solid transparent;border-radius:var(--radius-button);cursor:pointer;text-decoration:none;transition:background var(--motion-duration-base) var(--motion-easing-ease-out),box-shadow var(--motion-duration-fast) var(--motion-easing-ease-out)}
+.btn svg{width:var(--size-icon);height:var(--size-icon);flex:none}
+.btn-primary{background:var(--c-button-primary-bg);color:var(--c-button-primary-text)}
+.btn-primary:hover{background:var(--c-button-primary-bg-hover);color:var(--c-button-primary-text)}
+.btn-primary:active{background:var(--c-button-primary-bg-active)}
+.btn-secondary{background:var(--c-button-secondary-bg);color:var(--c-button-secondary-text);border-color:var(--c-button-secondary-border)}
+.btn-secondary:hover{background:var(--color-action-secondary-hover);color:var(--c-button-secondary-text)}
+.btn-secondary:active{background:var(--color-action-secondary-active)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,.seg button:focus-visible{outline:none;box-shadow:var(--shadow-focus-ring)}
+.icon-btn{display:inline-grid;place-items:center;width:var(--size-control);height:var(--size-control);border-radius:var(--radius-button);border:1px solid var(--color-border-default);background:var(--color-surface-card);color:var(--color-text-secondary);cursor:pointer}
+.icon-btn:hover{background:var(--color-action-secondary-hover)}
+.icon-btn:focus-visible{outline:none;box-shadow:var(--shadow-focus-ring)}
+.icon-btn svg{width:var(--size-icon);height:var(--size-icon)}
+.overline{font:var(--font-weight-semibold) var(--text-xs)/var(--font-leading-normal) var(--font-family-sans);letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-accent)}
+.badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:var(--space-0_5) var(--space-3);border-radius:var(--radius-badge);font:var(--font-weight-medium) var(--text-xs)/var(--font-leading-normal) var(--font-family-sans);background:var(--c-badge-primary-bg);color:var(--c-badge-primary-text)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding-top:var(--space-5);padding-bottom:var(--space-5)}
+.logo{display:flex;align-items:center;gap:var(--space-2);font:var(--font-weight-semibold) var(--text-lg)/1 var(--font-family-sans);color:var(--color-text-primary);text-decoration:none}
+.logo svg{width:var(--space-6);height:var(--space-6);color:var(--color-action-primary)}
+.nav-links{display:flex;gap:var(--space-6);list-style:none;padding:0}
+.nav-links a{color:var(--color-text-secondary);text-decoration:none;font-size:var(--text-sm);font-weight:var(--font-weight-medium)}
+.nav-links a:hover{color:var(--color-text-primary)}
+.nav-end{display:flex;gap:var(--space-2);align-items:center}
+@media (prefers-reduced-motion:reduce){*{transition-duration:0ms!important;animation:none!important}}
+.card{background:var(--c-card-bg);border:1px solid var(--c-card-border);border-radius:var(--radius-card);padding:var(--space-6)}
+
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--space-12);align-items:center;padding-top:var(--space-12);padding-bottom:var(--space-20)}
+.display{font-family:var(--font-family-serif);font-size:var(--text-5xl);font-weight:var(--font-weight-semibold);letter-spacing:-.02em;margin:var(--space-5) 0 var(--space-5)}
+.lead{font-size:var(--text-lg);color:var(--color-text-secondary)}
+.actions{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-8)}
+.meta{margin-top:var(--space-4);font-size:var(--text-sm);color:var(--color-text-secondary)}
+.mock{background:var(--color-surface-card);border:1px solid var(--color-border-default);border-radius:var(--radius-card);box-shadow:var(--shadow-lg);padding:var(--space-5)}
+.mock-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)}
+.mock-title{font-weight:var(--font-weight-semibold)}
+.rows{list-style:none;padding:0;display:grid;gap:var(--space-2)}
+.rows li{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-4);align-items:center;padding:var(--space-3) var(--space-4);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);background:var(--color-surface-card)}
+.rows li.gap{border-style:dashed;border-color:var(--color-border-strong);background:var(--color-surface-sunken)}
+.time{font:var(--font-weight-medium) var(--text-sm) var(--font-family-mono);color:var(--color-text-accent)}
+.what{display:grid;font-size:var(--text-sm)}.what small{color:var(--color-text-secondary);font-size:var(--text-xs)}
+.tag{font-size:var(--text-xs);font-weight:var(--font-weight-medium);padding:var(--space-0_5) var(--space-2);border-radius:var(--radius-badge);background:var(--c-badge-neutral-bg);color:var(--c-badge-neutral-text);white-space:nowrap}
+.tag.ok{background:var(--color-feedback-success-bg);color:var(--color-feedback-success-text)}
+.tag.wait{background:var(--color-feedback-info-bg);color:var(--color-feedback-info-text)}
+.features{background:var(--color-surface-sunken);padding:var(--space-20) 0;border-top:1px solid var(--color-border-default)}
+.h2{font-size:var(--text-4xl);font-weight:var(--font-weight-semibold);letter-spacing:-.02em;margin:var(--space-3) 0 var(--space-10);max-width:20ch}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-6)}
+.card h3{font-size:var(--text-xl);margin:var(--space-5) 0 var(--space-2)}
+.card p{color:var(--color-text-secondary);font-size:var(--text-base)}
+.ic{width:var(--space-12);height:var(--space-12);display:grid;place-items:center;border-radius:var(--radius-lg);background:var(--color-surface-tint);color:var(--color-text-accent);border:1px solid var(--color-border-tint)}
+.ic svg{width:var(--space-6);height:var(--space-6)}
+.foot{display:flex;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap;padding-top:var(--space-6);padding-bottom:var(--space-6);font-size:var(--text-sm);color:var(--color-text-secondary)}
+@media (max-width:900px){ /* ds-allow-hardcode */
+ .hero{grid-template-columns:1fr;padding-top:var(--space-4)}.cards{grid-template-columns:1fr}.nav-links{display:none}.display{font-size:var(--text-4xl)}.h2{font-size:var(--text-3xl)}}
+@media (max-width:480px){ /* ds-allow-hardcode */
+ .rows li{grid-template-columns:auto 1fr}.rows .tag{grid-column:2;justify-self:start}.nav .btn-primary{display:none}.actions .btn{width:100%}}
+
+</style>
+</head>
+<body>
+<header class="container nav">
+  <a class="logo" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1"/><path d="M2 18c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1"/><path d="M2 6c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1"/></svg>Tidewater</a>
+  <ul class="nav-links"><li><a href="#features">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Clinics</a></li></ul>
+  <div class="nav-end"><button class="icon-btn" id="theme" type="button" aria-label="Toggle colour theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button><a class="btn btn-primary" href="#">Book a demo</a></div>
+</header>
+<main>
+<section class="container hero">
+  <div>
+    <span class="badge">Built for physiotherapy clinics</span>
+    <h1 class="display">Fill every treatment room without filling your inbox.</h1>
+    <p class="lead prose">Tidewater takes online bookings, checks therapist skills and room equipment, and sends reminders patients actually answer. Small clinics run a full week with one calendar.</p>
+    <div class="actions"><a class="btn btn-primary" href="#">Start free for 30 days</a><a class="btn btn-secondary" href="#features">See how it works</a></div>
+    <p class="meta">No card needed. Set up in an afternoon.</p>
+  </div>
+  <div class="mock" role="img" aria-label="Example day schedule for two therapists">
+    <div class="mock-head"><span class="mock-title">Tuesday 14 October</span><span class="badge">3 rooms</span></div>
+    <ul class="rows">
+      <li><span class="time">08:30</span><span class="what"><b>Knee rehab</b><small>J. Whitlock, Dr. Okafor, Room 2</small></span><span class="tag ok">Confirmed</span></li>
+      <li><span class="time">09:30</span><span class="what"><b>Shoulder mobility</b><small>P. Rao, Dr. Okafor, Room 2</small></span><span class="tag ok">Confirmed</span></li>
+      <li><span class="time">10:30</span><span class="what"><b>New assessment</b><small>M. Lindqvist, T. Brandt, Room 1</small></span><span class="tag wait">Reminder sent</span></li>
+      <li class="gap"><span class="time">11:30</span><span class="what"><b>Open slot</b><small>Waitlist notified, 2 patients</small></span><span class="tag">Open</span></li>
+    </ul>
+  </div>
+</section>
+<section id="features" class="features">
+  <div class="container">
+    <span class="overline">What Tidewater does</span>
+    <h2 class="h2">Three jobs your front desk can hand over.</h2>
+    <div class="cards">
+      <article class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/></svg></div><h3>Booking that respects the room</h3><p>Patients choose a time online. Tidewater checks skills, equipment and treatment length first, so the day fits together.</p></article>
+      <article class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div><h3>Reminders that get answered</h3><p>Text and email go out 48 and 3 hours ahead. One tap confirms, moves or releases the slot to your waitlist.</p></article>
+      <article class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16M7 16l4-4 4 4 5-6"/></svg></div><h3>A week you can see at a glance</h3><p>Utilisation, cancellations and open hours on one screen, so you know on Monday where Thursday needs help.</p></article>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="container foot"><span>2025 Tidewater Scheduling</span><span>For clinics of 2 to 40 therapists</span></footer>
+
+<script>
+(function(){var b=document.getElementById('theme');if(!b)return;
+ b.addEventListener('click',function(){var d=document.documentElement,cur=d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.setAttribute('data-theme',cur==='dark'?'light':'dark');});})();
+
+</script>
+</body>
+</html>

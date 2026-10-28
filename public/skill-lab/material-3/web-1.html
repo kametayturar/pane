@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet">
+
+<style>
+:root{
+  --md-sys-color-primary: #006972;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #9df0fb;
+  --md-sys-color-on-primary-container: #004f56;
+  --md-sys-color-secondary: #4a6366;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #cde7eb;
+  --md-sys-color-on-secondary-container: #324b4e;
+  --md-sys-color-tertiary: #515e7d;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #d9e2ff;
+  --md-sys-color-on-tertiary-container: #394664;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #93000a;
+  --md-sys-color-surface: #f5fafb;
+  --md-sys-color-on-surface: #171d1e;
+  --md-sys-color-on-surface-variant: #3f484a;
+  --md-sys-color-surface-dim: #d5dbdc;
+  --md-sys-color-surface-bright: #f5fafb;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #eff5f5;
+  --md-sys-color-surface-container: #e9eff0;
+  --md-sys-color-surface-container-high: #e3e9ea;
+  --md-sys-color-surface-container-highest: #dee4e4;
+  --md-sys-color-outline: #6f797a;
+  --md-sys-color-outline-variant: #bec8ca;
+  --md-sys-color-inverse-surface: #2b3132;
+  --md-sys-color-inverse-on-surface: #ecf2f3;
+  --md-sys-color-inverse-primary: #81d3de;
+  --md-sys-color-surface-tint: #006972;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+}
+:root[data-theme="dark"]{
+  --md-sys-color-primary: #81d3de;
+  --md-sys-color-on-primary: #00363c;
+  --md-sys-color-primary-container: #004f56;
+  --md-sys-color-on-primary-container: #9df0fb;
+  --md-sys-color-secondary: #b1cbcf;
+  --md-sys-color-on-secondary: #1c3437;
+  --md-sys-color-secondary-container: #324b4e;
+  --md-sys-color-on-secondary-container: #cde7eb;
+  --md-sys-color-tertiary: #b9c6ea;
+  --md-sys-color-on-tertiary: #23304d;
+  --md-sys-color-tertiary-container: #394664;
+  --md-sys-color-on-tertiary-container: #d9e2ff;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-surface: #0e1415;
+  --md-sys-color-on-surface: #dee4e4;
+  --md-sys-color-on-surface-variant: #bec8ca;
+  --md-sys-color-surface-dim: #0e1415;
+  --md-sys-color-surface-bright: #343a3b;
+  --md-sys-color-surface-container-lowest: #090f10;
+  --md-sys-color-surface-container-low: #171d1e;
+  --md-sys-color-surface-container: #1b2122;
+  --md-sys-color-surface-container-high: #252b2c;
+  --md-sys-color-surface-container-highest: #303637;
+  --md-sys-color-outline: #899294;
+  --md-sys-color-outline-variant: #3f484a;
+  --md-sys-color-inverse-surface: #dee4e4;
+  --md-sys-color-inverse-on-surface: #2b3132;
+  --md-sys-color-inverse-primary: #006972;
+  --md-sys-color-surface-tint: #81d3de;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --md-sys-color-primary: #81d3de;
+  --md-sys-color-on-primary: #00363c;
+  --md-sys-color-primary-container: #004f56;
+  --md-sys-color-on-primary-container: #9df0fb;
+  --md-sys-color-secondary: #b1cbcf;
+  --md-sys-color-on-secondary: #1c3437;
+  --md-sys-color-secondary-container: #324b4e;
+  --md-sys-color-on-secondary-container: #cde7eb;
+  --md-sys-color-tertiary: #b9c6ea;
+  --md-sys-color-on-tertiary: #23304d;
+  --md-sys-color-tertiary-container: #394664;
+  --md-sys-color-on-tertiary-container: #d9e2ff;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-surface: #0e1415;
+  --md-sys-color-on-surface: #dee4e4;
+  --md-sys-color-on-surface-variant: #bec8ca;
+  --md-sys-color-surface-dim: #0e1415;
+  --md-sys-color-surface-bright: #343a3b;
+  --md-sys-color-surface-container-lowest: #090f10;
+  --md-sys-color-surface-container-low: #171d1e;
+  --md-sys-color-surface-container: #1b2122;
+  --md-sys-color-surface-container-high: #252b2c;
+  --md-sys-color-surface-container-highest: #303637;
+  --md-sys-color-outline: #899294;
+  --md-sys-color-outline-variant: #3f484a;
+  --md-sys-color-inverse-surface: #dee4e4;
+  --md-sys-color-inverse-on-surface: #2b3132;
+  --md-sys-color-inverse-primary: #006972;
+  --md-sys-color-surface-tint: #81d3de;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+}}
+:root{
+  --md-ref-typeface-brand:'Roboto Flex',Roboto,system-ui,sans-serif;
+  /* shape */
+  --md-sys-shape-corner-none:0px;--md-sys-shape-corner-extra-small:4px;--md-sys-shape-corner-small:8px;--md-sys-shape-corner-medium:12px;--md-sys-shape-corner-large:16px;--md-sys-shape-corner-large-increased:20px;--md-sys-shape-corner-extra-large:28px;--md-sys-shape-corner-extra-large-increased:32px;--md-sys-shape-corner-extra-extra-large:48px;--md-sys-shape-corner-full:9999px;
+  /* motion */
+  --md-sys-motion-easing-emphasized:cubic-bezier(0.2,0,0,1);--md-sys-motion-easing-emphasized-decelerate:cubic-bezier(0.05,0.7,0.1,1);--md-sys-motion-easing-standard:cubic-bezier(0.2,0,0,1);
+  --md-sys-motion-duration-short3:150ms;--md-sys-motion-duration-medium2:300ms;--md-sys-motion-duration-medium4:400ms;
+  /* 8dp spacing */
+  --md-sys-spacing-1:4px;--md-sys-spacing-2:8px;--md-sys-spacing-3:12px;--md-sys-spacing-4:16px;--md-sys-spacing-6:24px;--md-sys-spacing-8:32px;--md-sys-spacing-12:48px;--md-sys-spacing-16:64px;
+  /* typescale (font shorthand: weight size/line-height family) */
+  --md-sys-typescale-display-large:400 57px/64px var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-medium:400 45px/52px var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-small:400 36px/44px var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-large:400 32px/40px var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-medium:400 28px/36px var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-small:400 24px/32px var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-large:400 22px/28px var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-medium:500 16px/24px var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-small:500 14px/20px var(--md-ref-typeface-brand);
+  --md-sys-typescale-body-large:400 16px/24px var(--md-ref-typeface-brand);
+  --md-sys-typescale-body-medium:400 14px/20px var(--md-ref-typeface-brand);
+  --md-sys-typescale-body-small:400 12px/16px var(--md-ref-typeface-brand);
+  --md-sys-typescale-label-large:500 14px/20px var(--md-ref-typeface-brand);
+  --md-sys-typescale-label-medium:500 12px/16px var(--md-ref-typeface-brand);
+  --md-sys-typescale-emphasized-display-medium:600 45px/52px var(--md-ref-typeface-brand);
+  --md-sys-typescale-emphasized-headline-medium:600 28px/36px var(--md-ref-typeface-brand);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--md-sys-color-surface);color:var(--md-sys-color-on-surface);font:var(--md-sys-typescale-body-large);-webkit-font-smoothing:antialiased}
+.ms{font-family:'Material Symbols Outlined';font-weight:400;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;-webkit-font-feature-settings:'liga';font-feature-settings:'liga';-webkit-font-smoothing:antialiased;user-select:none;flex:none;overflow:hidden;width:24px;height:24px}
+.ms.fill{font-variation-settings:'FILL' 1}
+.ms.s18{font-size:18px;width:18px;height:18px}
+/* state layer: any .stateful gets hover/focus/pressed overlay in its content colour */
+.stateful{position:relative;isolation:isolate;overflow:hidden}
+.stateful::before{content:"";position:absolute;inset:0;background:currentColor;opacity:0;z-index:-1;transition:opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);border-radius:inherit}
+.stateful:hover::before{opacity:.08}.stateful:focus-visible::before{opacity:.1}.stateful:active::before{opacity:.1}
+:focus-visible{outline:3px solid var(--md-sys-color-secondary);outline-offset:2px}
+/* buttons */
+.md-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--md-sys-spacing-2);height:40px;padding:0 24px;border:0;border-radius:var(--md-sys-shape-corner-full);font:var(--md-sys-typescale-label-large);letter-spacing:.1px;cursor:pointer;text-decoration:none}
+.md-btn .ms{font-size:18px;width:18px;height:18px;margin-left:-8px}
+.md-btn.filled{background:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary)}
+.md-btn.tonal{background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container)}
+.md-btn.outlined{background:transparent;color:var(--md-sys-color-primary);box-shadow:inset 0 0 0 1px var(--md-sys-color-outline)}
+.md-btn.text{background:transparent;color:var(--md-sys-color-primary);padding:0 12px}
+.md-btn.lg{height:56px;padding:0 32px;font:var(--md-sys-typescale-title-medium)}
+/* app bar */
+.appbar{display:flex;align-items:center;gap:var(--md-sys-spacing-4);height:64px;padding:0 16px;max-width:1120px;margin:0 auto}
+.appbar .brand{display:flex;align-items:center;gap:12px;font:var(--md-sys-typescale-title-large);color:var(--md-sys-color-on-surface);text-decoration:none;margin-right:auto}
+.appbar .brand .ms{color:var(--md-sys-color-primary);font-size:28px;width:28px;height:28px}
+.appbar nav{display:flex;gap:4px}
+.chip{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:var(--md-sys-shape-corner-small);font:var(--md-sys-typescale-label-large);background:transparent;color:var(--md-sys-color-on-surface-variant);box-shadow:inset 0 0 0 1px var(--md-sys-color-outline-variant)}
+.chip.sel{background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container);box-shadow:none}
+.icon-btn{display:inline-grid;place-items:center;width:40px;height:40px;border:0;border-radius:var(--md-sys-shape-corner-full);background:transparent;color:var(--md-sys-color-on-surface-variant);cursor:pointer}
+.page{max-width:1120px;margin:0 auto;padding:0 16px}
+@media (max-width:600px){ .appbar nav{display:none} .md-btn.lg{height:48px;padding:0 24px} }
+@media (prefers-reduced-motion:reduce){*{transition-duration:1ms!important;animation:none!important}}
+
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;padding-top:48px;padding-bottom:72px}
+.copy{display:grid;justify-items:start;gap:24px}
+h1{font:var(--md-sys-typescale-emphasized-display-medium);letter-spacing:-.5px;max-width:14ch;color:var(--md-sys-color-on-surface)}
+.copy>p:not(.label){font:var(--md-sys-typescale-body-large);font-size:18px;line-height:28px;color:var(--md-sys-color-on-surface-variant);max-width:46ch}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.label{font:var(--md-sys-typescale-label-large);color:var(--md-sys-color-on-surface-variant)}
+.stage{position:relative;background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);border-radius:var(--md-sys-shape-corner-extra-extra-large);padding:32px 28px 56px}
+.sheet{background:var(--md-sys-color-surface-container-lowest);color:var(--md-sys-color-on-surface);border-radius:var(--md-sys-shape-corner-extra-large);padding:16px 8px 8px}
+.sh{display:flex;justify-content:space-between;align-items:center;padding:0 16px 8px}
+.title{font:var(--md-sys-typescale-title-large)}
+.list{list-style:none;padding:0}
+.list li{display:flex;align-items:center;gap:16px;min-height:72px;padding:8px 16px;border-radius:var(--md-sys-shape-corner-large)}
+.lead{width:40px;height:40px;border-radius:var(--md-sys-shape-corner-full);background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container);display:grid;place-items:center;flex:none}
+.txt{display:grid;flex:1;min-width:0}.txt b{font:var(--md-sys-typescale-body-large);font-weight:500}.txt small{font:var(--md-sys-typescale-body-medium);color:var(--md-sys-color-on-surface-variant)}
+.time{font:var(--md-sys-typescale-label-medium);color:var(--md-sys-color-on-surface-variant)}
+.list li.open .lead{background:transparent;box-shadow:inset 0 0 0 1px var(--md-sys-color-outline)}
+.list li.open{background:var(--md-sys-color-surface-container-low)}
+.snack{position:absolute;left:28px;right:28px;bottom:-24px;display:flex;justify-content:space-between;align-items:center;min-height:48px;padding:0 16px;border-radius:var(--md-sys-shape-corner-extra-small);background:var(--md-sys-color-inverse-surface);color:var(--md-sys-color-inverse-on-surface);font:var(--md-sys-typescale-body-medium)}
+.snack .act{color:var(--md-sys-color-inverse-primary);font:var(--md-sys-typescale-label-large)}
+.feats{padding-top:24px;padding-bottom:72px}
+.feats h2{font:var(--md-sys-typescale-headline-large);max-width:22ch;margin-bottom:32px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--md-sys-color-surface-container);border-radius:var(--md-sys-shape-corner-extra-large);padding:24px}
+.ico{width:56px;height:56px;border-radius:var(--md-sys-shape-corner-large);background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);display:grid;place-items:center;margin-bottom:24px}
+.card h3{font:var(--md-sys-typescale-title-large);margin-bottom:8px}
+.card p{font:var(--md-sys-typescale-body-large);color:var(--md-sys-color-on-surface-variant)}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:16px;padding-bottom:32px;font:var(--md-sys-typescale-body-medium);color:var(--md-sys-color-on-surface-variant);border-top:1px solid var(--md-sys-color-outline-variant)}
+@media (max-width:840px){.hero{grid-template-columns:1fr;gap:40px}.cards{grid-template-columns:1fr}h1{font:var(--md-sys-typescale-display-small);font-weight:600}.stage{padding:20px 12px 52px}}
+@media (max-width:480px){.actions .md-btn{width:100%}.appbar .md-btn.filled{display:none}}
+
+</style>
+</head>
+<body>
+<header class="appbar">
+  <a class="brand" href="#"><span class="ms" aria-hidden="true">waves</span>Tidewater</a>
+  <nav aria-label="Main"><a class="md-btn text stateful" href="#features">Features</a><a class="md-btn text stateful" href="#">Pricing</a><a class="md-btn text stateful" href="#">Clinics</a></nav>
+  <button class="icon-btn stateful" id="theme" type="button" aria-label="Toggle theme"><span class="ms">dark_mode</span></button>
+  <a class="md-btn filled stateful" href="#">Book a demo</a>
+</header>
+<main>
+<section class="page hero">
+  <div class="copy">
+    <span class="chip sel"><span class="ms s18">healing</span>For physiotherapy clinics</span>
+    <h1>Fill every treatment room without filling your inbox.</h1>
+    <p>Tidewater takes online bookings, checks therapist skills and room equipment, and sends reminders patients answer. Small clinics run a full week from one calendar.</p>
+    <div class="actions"><a class="md-btn filled lg stateful" href="#"><span class="ms">event_available</span>Start free for 30 days</a><a class="md-btn outlined lg stateful" href="#features">See how it works</a></div>
+    <p class="label">No card needed. Set up in an afternoon.</p>
+  </div>
+  <div class="stage" role="img" aria-label="Example schedule">
+    <div class="sheet">
+      <div class="sh"><span class="title">Tuesday 14 October</span><span class="chip sel">3 rooms</span></div>
+      <ul class="list">
+        <li><span class="lead"><span class="ms">sprint</span></span><span class="txt"><b>Knee rehab</b><small>J. Whitlock, Dr. Okafor, Room 2</small></span><span class="time">08:30</span></li>
+        <li><span class="lead"><span class="ms">accessibility_new</span></span><span class="txt"><b>Shoulder mobility</b><small>P. Rao, Dr. Okafor, Room 2</small></span><span class="time">09:30</span></li>
+        <li><span class="lead"><span class="ms">assignment</span></span><span class="txt"><b>New assessment</b><small>M. Lindqvist, T. Brandt, Room 1</small></span><span class="time">10:30</span></li>
+        <li class="open"><span class="lead"><span class="ms">add</span></span><span class="txt"><b>Open slot</b><small>Waitlist notified, 2 patients</small></span><span class="time">11:30</span></li>
+      </ul>
+    </div>
+    <div class="snack"><span>Reminder sent to J. Whitlock</span><span class="act">Undo</span></div>
+  </div>
+</section>
+<section id="features" class="page feats">
+  <h2>Three jobs your front desk can hand over.</h2>
+  <div class="cards">
+    <article class="card"><span class="ico"><span class="ms">calendar_month</span></span><h3>Booking that respects the room</h3><p>Patients choose a time online. Tidewater checks skills, equipment and treatment length first, so the day fits together.</p></article>
+    <article class="card"><span class="ico"><span class="ms">notifications_active</span></span><h3>Reminders that get answered</h3><p>Text and email go out 48 and 3 hours ahead. One tap confirms, moves or releases the slot to your waitlist.</p></article>
+    <article class="card"><span class="ico"><span class="ms">monitoring</span></span><h3>A week you can see at a glance</h3><p>Utilisation, cancellations and open hours on one screen, so you know on Monday where Thursday needs help.</p></article>
+  </div>
+</section>
+</main>
+<footer class="page foot"><span>Tidewater Scheduling</span><span>For clinics of 2 to 40 therapists</span></footer>
+
+<script>
+(function(){var b=document.getElementById('theme');if(!b)return;
+b.addEventListener('click',function(){var d=document.documentElement,c=d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.setAttribute('data-theme',c==='dark'?'light':'dark');b.firstElementChild.textContent=c==='dark'?'dark_mode':'light_mode';});})();
+
+</script>
+</body>
+</html>

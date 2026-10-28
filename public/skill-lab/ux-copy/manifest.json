@@ -1,0 +1,41 @@
+{
+  "id": "ux-copy",
+  "sets": [
+    "copy"
+  ],
+  "skillSays": [
+    "Start from context: which screen, what the user is trying to do, how they feel, what tone and character limits apply.",
+    "Judge every string by five principles: clear, concise, consistent, useful, human.",
+    "Use fixed patterns: error = what happened + why + how to fix; empty state = what this is + why it is empty + how to start; CTAs begin with a verb and name the outcome.",
+    "Match tone to the moment: success is celebratory but not over the top, errors are empathetic and actionable.",
+    "Deliver a set format: recommended copy, three alternatives with tone and best use, a rationale, and localization notes."
+  ],
+  "examples": [
+    {
+      "prompt": "copy-1",
+      "changes": [
+        "Each of the three messages follows its own structure (empty state, error, success) instead of one general voice",
+        "Error names the exact rows and says \"Nothing was imported\", answering the fear of a half-loaded file",
+        "Buttons are verb plus outcome (\"Upload fixed file\", \"Download error report\"), never \"OK\" or \"Submit\"",
+        "Adds alternatives table, rationale and localization notes (plural rules, German button width)"
+      ]
+    },
+    {
+      "prompt": "copy-2",
+      "changes": [
+        "Opens with a stated context block (user state, tone, subject and button limits) before writing",
+        "Delivers subject line and button with three alternatives each, tagged by tone and best use",
+        "Onboarding kept to one concept: three steps and one button that repeats step 1",
+        "Adds localization notes for variables and idiomatic phrases"
+      ]
+    },
+    {
+      "prompt": "copy-3",
+      "changes": [
+        "Blurbs lead with the user outcome (\"Patients book themselves\") rather than the feature name",
+        "CTA is a verb plus what you get (\"Start free trial\"); \"Learn more\" and \"Get started\" are avoided",
+        "Gives three headline options with tone and channel fit, plus rationale and localization notes for \"diary\" and \"no-shows\""
+      ]
+    }
+  ]
+}

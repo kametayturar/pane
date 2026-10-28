@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-1-invalid.png" alt="Invalid email: inline error under Work email, no banner"><figcaption>Invalid email: inline error under Work email, no banner</figcaption></figure><figure><img src="browser-1-valid.png" alt="Valid data: status banner, email error cleared"><figcaption>Valid data: status banner, email error cleared</figcaption></figure></div>
+<h2>Result</h2><div class="result">Signup flow tested with the Playwright skill: scripted, headless Chromium against the fixture served on http://127.0.0.1:7131.
+
+Invalid email (dana@clinic): the form blocks submission and shows "Enter a valid work email" under the email field only; no success banner appears. Valid data (dana@clinic.example, 4–10 therapists): the banner "Account created for dana@clinic.example. Check your inbox." appears (role=status) and the email error clears. A too-short password ("short") shows "Use at least 8 characters".
+
+Two things worth reporting beyond the happy path. (1) The "success" is entirely client-side: the request log captured during the flow is empty, so no account is actually created anywhere. (2) The banner is built with innerHTML from the raw email value; an email such as x@y.zz&lt;img/src/onerror=window.__xss=1&gt; passes the regex, injects an &lt;img&gt; element and its onerror handler really fired (window.__xss === 1) – a reflected-in-page XSS.
+
+Skill notes: detectDevServers() returned http://localhost:5000, which is macOS AirPlay (Server: AirTunes, 403), not the app; I used the known URL instead of the auto-detected one. The skill defaults to a visible browser; I set PW_HEADLESS=true because nobody is watching this run.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Skill setup step, run in a scratch copy of the skill folder.</div><div class="cmd">cd "$SKILL_DIR" &amp;&amp; npm run setup</div><div class="out">(npm install + npx playwright install chromium; Chromium headless shell 151.0.7922.34 downloaded to ~/Library/Caches/ms-playwright)</div></div><div class="step"><div class="note"># Skill workflow step 1. Result is not our app (AirTunes), so the known URL is used.</div><div class="cmd">node -e "require('$SKILL_DIR/lib/helpers').detectDevServers().then(s =&gt; console.log(JSON.stringify(s)))"</div><div class="out">["http://localhost:3000","http://localhost:5000"]</div></div><div class="step"><div class="note"># Static server for the fixture.</div><div class="cmd">python3 -m http.server 7131 --bind 127.0.0.1   # in docs/skill-lab/fixtures/app</div><div class="out">(serving the fixture)</div></div><div class="step"><div class="note"># Script uses getByRole/getByLabel locators as the skill prescribes, then reads the resulting DOM.</div><div class="cmd">PW_HEADLESS=true PW_ARTIFACT_DIR=./art node "$SKILL_DIR/run.js" playwright-test-signup.js</div><div class="out">CASE1 email error text: "Enter a valid work email"
+CASE1 other errors: ["",""]
+CASE1 success banner count: 0
+CASE2 email error text: ""
+CASE2 status banner: "Account created for dana@clinic.example. Check your inbox."
+CASE2 network requests during flow: []
+CASE3 short password error: "Use at least 8 characters" banner: 0</div></div><div class="step"><div class="note"># Inline -e mode; probes the innerHTML banner.</div><div class="cmd">node "$SKILL_DIR/run.js" -e "…email 'x@y.zz&lt;img/src/onerror=window.__xss=1&gt;'…"</div><div class="out">injected img elements in banner: 1 | onerror fired (window.__xss): 1</div></div></div>
+<h2>Files</h2><details open><summary>playwright-test-signup.js</summary><pre><span class="k">const</span> path = require(<span <span class="k">class</span>="s">'node:path'</span>);
+<span class="k">const</span> helpers = require(<span <span class="k">class</span>="s">`${process.env.PW_SKILL_DIR}/lib/helpers`</span>);
+<span class="k">const</span> targetUrl = process.env.TARGET_URL || <span <span class="k">class</span>="s">'http://<span class="n">127.0</span>.<span class="n">0.1</span>:<span class="n">7131</span>'</span>;
+<span class="k">const</span> art = process.env.PW_ARTIFACT_DIR;
+
+(<span class="k">async</span> () =&gt; {
+  <span class="k">const</span> browser = <span class="k">await</span> helpers.launchBrowser(<span <span class="k">class</span>="s">'chromium'</span>);
+  <span class="k">try</span> {
+    <span class="k">const</span> context = <span class="k">await</span> helpers.createContext(browser);
+    <span class="k">const</span> page = <span class="k">await</span> context.newPage();
+    <span class="k">const</span> reqs = [];
+    page.on(<span <span class="k">class</span>="s">'request'</span>, r =&gt; { <span class="k">if</span> (!r.url().endsWith(<span <span class="k">class</span>="s">'.html'</span>) &amp;&amp; r.url() !== targetUrl + <span <span class="k">class</span>="s">'/'</span>) reqs.push(r.method() + <span <span class="k">class</span>="s">' '</span> + r.url()); });
+    page.on(<span <span class="k">class</span>="s">'pageerror'</span>, e =&gt; console.log(<span <span class="k">class</span>="s">'PAGEERROR:'</span>, e.message));
+    <span class="k">await</span> page.goto(targetUrl + <span <span class="k">class</span>="s">'/#signup'</span>);
+    <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'heading'</span>, { name: <span <span class="k">class</span>="s">'Create your clinic account'</span> }).waitFor();
+
+<span class="c">    // Case 1: invalid email</span>
+    <span class="k">await</span> page.getByLabel(<span <span class="k">class</span>="s">'Full name'</span>).fill(<span <span class="k">class</span>="s">'Dana Okafor'</span>);
+    <span class="k">await</span> page.getByLabel(<span <span class="k">class</span>="s">'Work email'</span>).fill(<span <span class="k">class</span>="s">'dana@clinic'</span>);
+    <span class="k">await</span> page.getByLabel(<span <span class="k">class</span>="s">'Password'</span>).fill(<span <span class="k">class</span>="s">'hunter2hunter2'</span>);
+    <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'button'</span>, { name: <span <span class="k">class</span>="s">'Create account'</span> }).click();
+    <span class="k">const</span> emailErr = <span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'#e-email'</span>).textContent();
+    <span class="k">const</span> status1 = <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'status'</span>).count();
+    console.log(<span <span class="k">class</span>="s">'CASE1 email error text:'</span>, JSON.stringify(emailErr));
+    console.log(<span <span class="k">class</span>="s">'CASE1 other errors:'</span>, JSON.stringify([<span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'#e-name'</span>).textContent(), <span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'#e-pw'</span>).textContent()]));
+    console.log(<span <span class="k">class</span>="s">'CASE1 success banner count:'</span>, status1);
+    <span class="k">await</span> page.screenshot({ path: path.join(art, <span <span class="k">class</span>="s">'browser-<span class="n">1</span>-invalid.png'</span>) });
+
+<span class="c">    // Case 2: valid data</span>
+    <span class="k">await</span> page.getByLabel(<span <span class="k">class</span>="s">'Work email'</span>).fill(<span <span class="k">class</span>="s">'dana@clinic.example'</span>);
+    <span class="k">await</span> page.getByLabel(<span <span class="k">class</span>="s">'Clinic size'</span>).selectOption({ label: <span <span class="k">class</span>="s">'<span class="n">4</span>–<span class="n">10</span> therapists'</span> });
+    <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'button'</span>, { name: <span <span class="k">class</span>="s">'Create account'</span> }).click();
+    <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'status'</span>).waitFor();
+    console.log(<span <span class="k">class</span>="s">'CASE2 email error text:'</span>, JSON.stringify(<span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'#e-email'</span>).textContent()));
+    console.log(<span <span class="k">class</span>="s">'CASE2 status banner:'</span>, JSON.stringify(<span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'status'</span>).textContent()));
+    console.log(<span <span class="k">class</span>="s">'CASE2 network requests during flow:'</span>, JSON.stringify(reqs));
+    <span class="k">await</span> page.screenshot({ path: path.join(art, <span <span class="k">class</span>="s">'browser-<span class="n">1</span>-valid.png'</span>) });
+<span class="c">    // extra: empty password short path</span>
+    <span class="k">await</span> page.reload();
+    <span class="k">await</span> page.getByLabel(<span <span class="k">class</span>="s">'Full name'</span>).fill(<span <span class="k">class</span>="s">'A'</span>);
+    <span class="k">await</span> page.getByLabel(<span <span class="k">class</span>="s">'Work email'</span>).fill(<span <span class="k">class</span>="s">'a@b.co'</span>);
+    <span class="k">await</span> page.getByLabel(<span <span class="k">class</span>="s">'Password'</span>).fill(<span <span class="k">class</span>="s">'short'</span>);
+    <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'button'</span>, { name: <span <span class="k">class</span>="s">'Create account'</span> }).click();
+    console.log(<span <span class="k">class</span>="s">'CASE3 short password error:'</span>, JSON.stringify(<span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'#e-pw'</span>).textContent()), <span <span class="k">class</span>="s">'banner:'</span>, <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'status'</span>).count());
+  } finally { <span class="k">await</span> browser.close(); }
+})();
+</pre></details>
+</main>
+
+</body></html>

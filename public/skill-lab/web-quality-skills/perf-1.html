@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="perf-1-before.png" alt="Original, about 2.6 s after the data loaded: the dashboard has unmounted (Chart.js 'Canvas is already in use' from the effect)."><figcaption>Original, about 2.6 s after the data loaded: the dashboard has unmounted (Chart.js 'Canvas is already in use' from the effect).</figcaption></figure><figure><img src="perf-1-after.png" alt="Rewritten component at the same moment: clock ticking, chart drawn once, rows rendered."><figcaption>Rewritten component at the same moment: clock ticking, chart drawn once, rows rendered.</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered a rewritten Dashboard.tsx plus StatsChart.tsx (full files below). It renders the same 1500 rows in the same order and format as the original, without the crash, and with far less main-thread work.
+
+Process: measure first, then fix what the measurements show. A real dashboard trace tool was not available, so I used the fallback the guide allows: Chrome headless with a CDP 4x CPU throttle, a PerformanceObserver for long tasks (&gt;50 ms) and for input-event latency (an INP proxy), a mocked API (150 ms per request, 12 therapists, 1500 appointments) and esbuild bundle sizes.
+
+What the baseline showed:
+- The original does not survive: on the first clock tick after the stats arrive, Chart.js throws 'Canvas is already in use' (the effect has no cleanup and no dependency array), the error is uncaught and React unmounts the whole dashboard (blank page). I measured a control, 'origfix' (original with only the chart effect repaired), to see the true cost of the rest.
+- Requests are a 3-step waterfall (last response at 1618 ms, because a 1500-row render lands between requests).
+- Every second the whole dashboard re-renders: in 4 s of idle the control had 2 long tasks adding up to 1082 ms of blocking time; the slowest keystroke took 544 ms to paint (INP threshold for 'good' is 200 ms) and one cancel click 104 ms.
+- Initial JS is 166 KB gzip (lodash, moment and the whole of Chart.js). That is inside the guide's starting 300 KB budget, so bundle size was a secondary issue; the runtime and the crash mattered more.
+
+Changes: parallel Promise.all with abort; chart code split with React.lazy and only the line-chart modules registered; chart effect cleans up with [data] deps; lodash imported per method (lodash/groupBy) and moment replaced by one Intl.DateTimeFormat; 1-second clock isolated in its own component; React.memo rows keyed by id with a stable callback; search debounced by 150 ms; sort only when data changes; content-visibility:auto on each therapist section so the browser skips off-screen layout and paint.
+
+Result (same conditions, median of 3): last response on screen 1618 ms -&gt; 224 ms; idle long tasks / blocking time 2 / 1082 ms (control) -&gt; 0 / 0 ms; slowest typing event 544 ms -&gt; 56 ms; cancel click 104 ms -&gt; 16 ms; initial JS 166.3 KB -&gt; 53.4 KB gzip (the 50 KB chart chunk loads afterwards).
+
+Caveats: synthetic data and a mocked fetch under a throttled CPU, so use the numbers for relative size, not as absolute user timings; lab only, there is no field data. The guide's performance advice is about loading, bundles and general browser work; the React-specific fixes (isolating the clock, memoised rows, the chart-effect bug) came from what the long-task measurements showed, not from the guide. Debounce means the list updates 150 ms after typing stops. Intl output matches moment for these ISO timestamps but could differ for other locales/formats. Data now appears when all three requests have returned, and there is still no error UI (the original had none).</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Also read web-quality-audit/SKILL.md and performance/references/MEASUREMENT.md: measure first, keep evidence conditions, re-run the same measurement after the fix.</div><div class="cmd">gh api repos/addyosmani/web-quality-skills/contents/skills/performance/SKILL.md --jq .content | base64 -d | grep -nE 'Code splitting|lazy\(|import debounce|Debounce expensive|content-visibility|Virtualize|Minimize JavaScript|JavaScript \(compressed\)'</div><div class="out">32:| JavaScript (compressed) | &lt; 300 KB | Protect parse and execution cost |
+107:**Code splitting patterns:**
+110:const Dashboard = lazy(() =&gt; import('./Dashboard'));
+113:const HeavyChart = lazy(() =&gt; import('./HeavyChart'));
+128:import debounce from 'lodash/debounce';
+285:### Debounce expensive operations
+312:### Virtualize long lists
+317:  content-visibility: auto;</div></div><div class="step"><div class="note"># Scratch project with the fixture's real dependencies; harness mounts the component with a mocked fetch and PerformanceObserver hooks for long tasks and input events.</div><div class="cmd">npm i react@18 react-dom@18 lodash moment chart.js esbuild typescript @types/react @types/react-dom @types/lodash &amp;&amp; npm ls --depth=0</div><div class="out">dash@1.0.0 .
++-- @types/lodash@4.17.27
++-- @types/react-dom@19.3.0
++-- @types/react@19.3.0
++-- chart.js@4.5.1
++-- esbuild@0.28.2
++-- lodash@4.18.1
++-- moment@2.31.0
++-- react-dom@18.3.1
++-- react@18.3.1
+`-- typescript@7.0.2</div></div><div class="step"><div class="note"># Baseline bundle sizes before touching anything. 'origfix' is the original with only the chart effect repaired.</div><div class="cmd">node build.mjs   # esbuild --bundle --minify --splitting</div><div class="out">orig     harness.js             490142 B raw  166329 B gzip (initial)
+origfix  harness.js             490174 B raw  166341 B gzip (initial)
+new      chunk-IFZSNKUF.js        8487 B raw    3175 B gzip (lazy chunk)
+new      chunk-WD3YYTRJ.js      139515 B raw   49832 B gzip (lazy chunk)
+new      harness.js             159920 B raw   53430 B gzip (initial)</div></div><div class="step"><div class="note"># Original as shipped: the dashboard is gone after the first clock tick (dashboardStillMounted false) and the Chart.js error is the cause, so typing and click could not be measured.</div><div class="cmd">node measure.mjs orig 3   # headless Chrome, CDP CPU throttle 4x</div><div class="out">{
+ "variant": "orig",
+ "runs": 3,
+ "throttle": "CPU 4x",
+ "fetchLatency": "150ms x3",
+ "data": "12 therapists / 1500 appointments",
+ "lastFetchDone_ms": 1618,
+ "idle_4s": {
+  "longTasks": 1,
+  "blocking_ms": 553,
+  "dashboardStillMounted": false
+ },
+ "typing_slowest_input_event_ms": 0,
+ "cancel_click_event_ms": 0,
+ "errors": [
+  "Canvas is already in use. Chart with ID '0' must be destroyed before the canvas "
+ ]
+}</div></div><div class="step"><div class="note"># Isolates the cost of the rest of the original: long tasks every second and a half-second keystroke.</div><div class="cmd">node measure.mjs origfix 3   # control: original + chart effect fix only</div><div class="out">{
+ "variant": "origfix",
+ "runs": 3,
+ "throttle": "CPU 4x",
+ "fetchLatency": "150ms x3",
+ "data": "12 therapists / 1500 appointments",
+ "lastFetchDone_ms": 1610,
+ "idle_4s": {
+  "longTasks": 2,
+  "blocking_ms": 1082,
+  "dashboardStillMounted": true
+ },
+ "typing_slowest_input_event_ms": 544,
+ "cancel_click_event_ms": 104,
+ "errors": []
+}</div></div><div class="step"><div class="note"># Rewritten component, same data and throttle.</div><div class="cmd">node measure.mjs new 3</div><div class="out">{
+ "variant": "new",
+ "runs": 3,
+ "throttle": "CPU 4x",
+ "fetchLatency": "150ms x3",
+ "data": "12 therapists / 1500 appointments",
+ "lastFetchDone_ms": 224,
+ "idle_4s": {
+  "longTasks": 0,
+  "blocking_ms": 0,
+  "dashboardStillMounted": true
+ },
+ "typing_slowest_input_event_ms": 56,
+ "cancel_click_event_ms": 16,
+ "errors": []
+}</div></div><div class="step"><div class="note"># Same rows, same order, same times as the control; the original is blank. Screenshots saved as media.</div><div class="cmd">node shots.mjs   # compare DOM of the three variants after load</div><div class="out">orig     h1= null rows= 0 canvases= 0 
+         first: -
+origfix  h1= "Today \u00b7 22:16:35" rows= 1500 canvases= 1 
+         first: 14:00 | Ana Stone 0 | Therapist 1 | Cancel // 14:00 | Ana Stone 600 | Therapist 1 | Cancel
+new      h1= "Today \u00b7 22:16:38" rows= 1500 canvases= 1 
+         first: 14:00 | Ana Stone 0 | Therapist 1 | Cancel // 14:00 | Ana Stone 600 | Therapist 1 | Cancel</div></div><div class="step"><div class="note"># The only message from tsc is that the top-level copy of harness.tsx has no ./Dashboard next to it, which is not part of the deliverable.</div><div class="cmd">npx tsc -p .   # strict; grep for errors in orig/, origfix/, new/</div><div class="out">(no errors in the three variant folders)</div></div></div>
+<h2>Files</h2><details open><summary>Dashboard.tsx</summary><pre><span class="k">import</span> * <span class="k">as</span> React <span class="k">from</span> <span <span class="k">class</span>="s">"react"</span>
+<span class="k">import</span> groupBy <span class="k">from</span> <span <span class="k">class</span>="s">"lodash/groupBy"</span> // per-method <span class="k">import</span>: pulls <span class="k">in</span> only groupBy, not all <span class="k">of</span> lodash
+<span class="k">import</span> <span class="k">type</span> { Stats } <span class="k">from</span> <span <span class="k">class</span>="s">"./StatsChart"</span>
+
+<span class="c">// Component-based code splitting: the chart (and Chart.js) is fetched only when there are stats to draw.</span>
+<span class="k">const</span> StatsChart = React.lazy(() =&gt; <span class="k">import</span>(<span <span class="k">class</span>="s">"./StatsChart"</span>))
+
+<span class="k">type</span> Appointment = { id: string; patient: string; start: string; therapistId: string; status: <span <span class="k">class</span>="s">"booked"</span> | <span <span class="k">class</span>="s">"cancelled"</span> | <span <span class="k">class</span>="s">"done"</span> }
+<span class="k">type</span> Therapist = { id: string; name: string }
+
+<span class="c">// moment (~60 KB gzip-ish of JS for two format() calls) replaced by the built-in Intl formatter, created once.</span>
+<span class="k">const</span> timeFmt = <span class="k">new</span> Intl.DateTimeFormat(<span <span class="k">class</span>="s">"en-GB"</span>, { hour: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, minute: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, hourCycle: <span <span class="k">class</span>="s">"h23"</span> })
+<span class="k">const</span> clockFmt = <span class="k">new</span> Intl.DateTimeFormat(<span <span class="k">class</span>="s">"en-GB"</span>, { hour: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, minute: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, second: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, hourCycle: <span <span class="k">class</span>="s">"h23"</span> })
+
+<span class="c">// Debounce expensive operations: filtering and re-rendering 1500 rows waits until typing pauses.</span>
+<span class="k">function</span> useDebounced&lt;T&gt;(value: T, ms: number): T {
+  <span class="k">const</span> [v, setV] = React.useState(value)
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> id = setTimeout(() =&gt; setV(value), ms)
+    <span class="k">return</span> () =&gt; clearTimeout(id)
+  }, [value, ms])
+  <span class="k">return</span> v
+}
+
+<span class="k">const</span> getJson = &lt;T,&gt;(url: string, signal: AbortSignal): Promise&lt;T&gt; =&gt; fetch(url, { signal }).then((r) =&gt; r.json())
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">function</span> Dashboard({ clinicId }: { clinicId: string }) {
+  <span class="k">const</span> [appointments, setAppointments] = React.useState&lt;Appointment[]&gt;([])
+  <span class="k">const</span> [therapists, setTherapists] = React.useState&lt;Therapist[]&gt;([])
+  <span class="k">const</span> [stats, setStats] = React.useState&lt;Stats | <span class="k">null</span>&gt;(<span class="k">null</span>)
+  <span class="k">const</span> [search, setSearch] = React.useState(<span <span class="k">class</span>="s">""</span>)
+  <span class="k">const</span> query = useDebounced(search, <span class="n">150</span>)
+
+<span class="c">  // The request chart showed three sequential round trips; they are independent, so issue them together.</span>
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> ctrl = <span class="k">new</span> AbortController()
+    <span class="k">const</span> base = <span <span class="k">class</span>="s">`/api/clinics/${clinicId}`</span>
+    Promise.all([
+      getJson&lt;Appointment[]&gt;(<span <span class="k">class</span>="s">`${base}/appointments`</span>, ctrl.signal),
+      getJson&lt;Therapist[]&gt;(<span <span class="k">class</span>="s">`${base}/therapists`</span>, ctrl.signal),
+      getJson&lt;Stats&gt;(<span <span class="k">class</span>="s">`${base}/stats`</span>, ctrl.signal),
+    ])
+      .then(([a, t, s]) =&gt; {
+        setAppointments(a)
+        setTherapists(t)
+        setStats(s)
+      })
+      .<span class="k">catch</span>((e) =&gt; {
+        <span class="k">if</span> (e.name !== <span <span class="k">class</span>="s">"AbortError"</span>) <span class="k">throw</span> e
+      })
+    <span class="k">return</span> () =&gt; ctrl.abort()
+  }, [clinicId])
+
+<span class="c">  // Sort only when the data changes; filter+group only when the data or the debounced query changes.</span>
+  <span class="k">const</span> byTherapist = React.useMemo(() =&gt; {
+    <span class="k">const</span> q = query.toLowerCase()
+    <span class="k">const</span> sorted = appointments
+      .map((a) =&gt; ({ a, ts: Date.parse(a.start) }))
+      .sort((x, y) =&gt; x.ts - y.ts)
+      .map((x) =&gt; x.a)
+    <span class="k">return</span> groupBy(
+      sorted.filter((a) =&gt; a.patient.toLowerCase().includes(q)),
+      <span <span class="k">class</span>="s">"therapistId"</span>,
+    )
+  }, [appointments, query])
+
+  <span class="k">const</span> cancel = React.useCallback((id: string) =&gt; setAppointments((curr) =&gt; curr.filter((x) =&gt; x.id !== id)), [])
+
+  <span class="k">return</span> (
+    &lt;div&gt;
+      &lt;h1&gt;
+        Today · &lt;Clock /&gt;
+      &lt;/h1&gt;
+      &lt;input value={search} onChange={(e) =&gt; setSearch(e.target.value)} placeholder=<span <span class="k">class</span>="s">"Search patients"</span> /&gt;
+      {stats &amp;&amp; (
+        &lt;React.Suspense fallback={<span class="k">null</span>}&gt;
+          &lt;StatsChart data={stats} /&gt;
+        &lt;/React.Suspense&gt;
+      )}
+      {therapists.map((t) =&gt; (
+<span class="c">        // Long list: let the browser skip layout/paint of off-screen therapist sections.</span>
+        &lt;section key={t.id} style={{ contentVisibility: <span <span class="k">class</span>="s">"auto"</span>, containIntrinsicSize: <span <span class="k">class</span>="s">"auto 600px"</span> }}&gt;
+          &lt;h2&gt;{t.name}&lt;/h2&gt;
+          {(byTherapist[t.id] || []).map((a) =&gt; (
+            &lt;Row key={a.id} appointment={a} therapistName={t.name} onCancel={cancel} /&gt;
+          ))}
+        &lt;/section&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}
+
+<span class="c">// The once-a-second tick re-rendered the whole dashboard (long task every second in the trace); isolate it.</span>
+<span class="k">function</span> Clock() {
+  <span class="k">const</span> [now, setNow] = React.useState(() =&gt; Date.now())
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> id = setInterval(() =&gt; setNow(Date.now()), <span class="n">1000</span>)
+    <span class="k">return</span> () =&gt; clearInterval(id)
+  }, [])
+  <span class="k">return</span> &lt;span&gt;{clockFmt.format(now)}&lt;/span&gt;
+}
+
+<span class="k">const</span> Row = React.memo(<span class="k">function</span> Row({ appointment, therapistName, onCancel }: { appointment: Appointment; therapistName: string; onCancel: (id: string) =&gt; void }) {
+  <span class="k">return</span> (
+    &lt;div style={{ display: <span <span class="k">class</span>="s">"flex"</span>, gap: <span class="n">8</span> }}&gt;
+      &lt;span&gt;{timeFmt.format(Date.parse(appointment.start))}&lt;/span&gt;
+      &lt;span&gt;{appointment.patient}&lt;/span&gt;
+      &lt;span&gt;{therapistName}&lt;/span&gt;
+      &lt;button onClick={() =&gt; onCancel(appointment.id)}&gt;Cancel&lt;/button&gt;
+    &lt;/div&gt;
+  )
+})</pre></details><details><summary>StatsChart.tsx</summary><pre><span class="k">import</span> * <span class="k">as</span> React <span class="k">from</span> <span <span class="k">class</span>="s">"react"</span>
+<span class="c">// Tree-shaking: register only what a line chart needs instead of "chart.js/auto" (which pulls in every chart type).</span>
+<span class="k">import</span> { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale } <span class="k">from</span> <span <span class="k">class</span>="s">"chart.js"</span>
+
+Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale)
+
+<span class="k">export</span> <span class="k">type</span> Stats = { labels: string[]; values: number[] }
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">function</span> StatsChart({ data }: { data: Stats }) {
+  <span class="k">const</span> ref = React.useRef&lt;HTMLCanvasElement&gt;(<span class="k">null</span>)
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> chart = <span class="k">new</span> Chart(ref.current!, { <span class="k">type</span>: <span <span class="k">class</span>="s">"line"</span>, data: { labels: data.labels, datasets: [{ data: data.values }] } })
+    <span class="k">return</span> () =&gt; chart.destroy() // the old effect created a <span class="k">new</span> chart on every render and never cleaned up
+  }, [data])
+  <span class="k">return</span> &lt;canvas ref={ref} /&gt;
+}</pre></details>
+</main>
+
+</body></html>

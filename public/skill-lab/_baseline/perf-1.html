@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+
+<h2>Result</h2><div class="result">Delivered an optimized Dashboard.tsx (full file below; original kept as Dashboard.before.tsx in the scratch folder). It type-checks under strict TS, and I benchmarked before vs after with the same harness (jsdom + React Profiler, 2,000 appointments, 10 therapists, mocked 100 ms API, chart.js mocked with a construct counter).
+
+What was slow and what I changed
+1. The 1 s clock lived in the top-level component, so every second re-rendered all 2,000 rows (each calling moment). Moved it into a memoized &lt;Clock/&gt;. 5 ticks: ~1,400-2,260 ms of render work before, ~0.4 ms after.
+2. The interval effect had no dependency array, so it was torn down and re-created after every render (7 intervals registered during the run, now 1).
+3. The filter + sort + group ran on every render, and the sort parsed two moment objects per comparison. Now one useMemo for the sort (ISO-8601 strings compare lexically, no parsing), one for filter+group (a Map), lodash dropped. Search input uses useDeferredValue so typing stays responsive.
+4. Rows: key={i} replaced by key={a.id}; Row is React.memo; onCancel is a stable useCallback taking an id (functional setState), therapist is looked up in a Map instead of therapists.find per row. Cancelling one appointment: ~380-400 ms before, ~6-9 ms after (only the removed row's section list changes; the other 1,998 rows are memo-skipped).
+5. StatsChart created a new chart.js instance after every render and never destroyed it (17 charts constructed during the run, 0 destroyed; a real canvas would throw "Canvas is already in use"). Now created once, updated in place when data changes, destroyed on unmount.
+6. Three awaited fetches in a row (a waterfall) became Promise.all, with AbortController cleanup and an error message. Data ready at ~320 ms before, ~115-125 ms after (3 x 100 ms latency vs 1 x).
+7. moment and lodash removed (Intl.DateTimeFormat and a Map instead), and chart.js is imported dynamically. Initial JS for the component: 345 KB (119 KB gzip) before -&gt; 2.5 KB (1.3 KB gzip) after; the 205 KB chart.js chunk loads only when stats arrive.
+
+Caveats: the first benchmark runs were noisy because the machine was shared with other jobs; numbers quoted are the steadier runs (the full output of all 3 runs is in the steps). Render times are React Profiler actualDuration in a dev build under jsdom, so absolute numbers are not browser numbers; the ratios and commit/instance counts are the reliable part. Typing causes 2 commits per keystroke after (urgent input commit + deferred list commit), which is how useDeferredValue works; total render time is still ~25x lower. Behavior preserved: same markup, same cancel semantics. I did not test against a real chart.js canvas (mocked).</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># scratch project with the fixture's real dependencies plus tooling</div><div class="cmd">cd /tmp/claude-501/lab2/_baseline/perf1 &amp;&amp; npm i react@18 react-dom@18 lodash moment chart.js typescript @types/react@18 @types/react-dom@18 @types/lodash esbuild jsdom</div><div class="out">(installed; only an npm warning about esbuild's postinstall)</div></div><div class="step"><div class="note"># both files type-check</div><div class="cmd">npx tsc -p .   # strict, checks Dashboard.before.tsx and Dashboard.after.tsx</div><div class="out">(no output, exit 0)</div></div><div class="step"><div class="note"># bundle size, React excluded</div><div class="cmd">npx esbuild entry.before.tsx --bundle --minify --splitting --format=esm --outdir=out-before --external:react --external:react-dom   (same for after)</div><div class="out">out-before/entry.before.js  337.2kb
+
+out-after/auto-GQMODUOM.js  200.5kb   (chart.js, lazy)
+out-after/entry.after.js      2.5kb</div></div><div class="step"><div class="note"># initial JS 345 KB -&gt; 2.5 KB; chart.js is deferred</div><div class="cmd">for f in out-before/*.js out-after/*.js; do printf "%s raw=%s gzip=%s\n" $f $(wc -c &lt;$f) $(gzip -c $f | wc -c); done</div><div class="out">out-before/entry.before.js raw=345261 gzip=118764
+out-after/auto-GQMODUOM.js raw=205312 gzip=70659
+out-after/entry.after.js raw=2548 gzip=1280</div></div><div class="step"><div class="note"># harness: jsdom, 2,000 appointments, 100 ms mocked fetch, React Profiler, captured setInterval so ticks are deterministic</div><div class="cmd">npx esbuild bench.before.tsx --bundle --platform=node --alias:chart.js/auto=./mock-chart.ts --define:process.env.NODE_ENV='"development"' --external:jsdom --outfile=bench.before.cjs   (same for after)</div><div class="out">(built both)</div></div><div class="step"><div class="note"># baseline numbers</div><div class="cmd">for i in 1 2 3; do node bench.before.cjs; done   # compact JSON, run 1 was noisy (shared machine)</div><div class="out">run1 {"dataReadyMs":404,"mount":{"commits":2,"renderMs":1897},"fiveClockTicks":{"commits":5,"renderMs":6022.1,"intervalsRegistered":7},"cancelOne":{"renderMs":1784.7},"typing10Keys":{"commits":11,"renderMs":9358,"rowsAfter":111},"chart":{"constructed":17,"destroyed":0}}
+run2 {"dataReadyMs":326,"mount":{"renderMs":646.9},"fiveClockTicks":{"renderMs":2013.1,"intervalsRegistered":7},"cancelOne":{"renderMs":403},"typing10Keys":{"commits":11,"renderMs":4122.4},"chart":{"constructed":17,"destroyed":0}}
+run3 {"dataReadyMs":323,"mount":{"renderMs":578.9},"fiveClockTicks":{"renderMs":2256.3,"intervalsRegistered":7},"cancelOne":{"renderMs":382.1},"typing10Keys":{"commits":11,"renderMs":4430.7},"chart":{"constructed":17,"destroyed":0}}</div></div><div class="step"><div class="note"># same rows (2000 -&gt; 1999 after cancel, 111 after search) so behavior matches; chart constructed once instead of 17x</div><div class="cmd">for i in 1 2 3; do node bench.after.cjs; done</div><div class="out">run1 {"dataReadyMs":125,"mount":{"commits":2,"renderMs":232.1},"fiveClockTicks":{"commits":5,"renderMs":0.5,"intervalsRegistered":1},"cancelOne":{"renderMs":9.1},"typing10Keys":{"commits":21,"renderMs":114.8,"rowsAfter":111},"chart":{"constructed":1,"destroyed":0}}
+run2 {"dataReadyMs":116,"mount":{"renderMs":185.7},"fiveClockTicks":{"renderMs":0.3,"intervalsRegistered":1},"cancelOne":{"renderMs":6.4},"typing10Keys":{"commits":21,"renderMs":111.9},"chart":{"constructed":1,"destroyed":0}}
+run3 {"dataReadyMs":117,"mount":{"renderMs":188.3},"fiveClockTicks":{"renderMs":0.3,"intervalsRegistered":1},"cancelOne":{"renderMs":5.9},"typing10Keys":{"commits":21,"renderMs":83.1},"chart":{"constructed":1,"destroyed":0}}</div></div></div>
+<h2>Files</h2><details open><summary>Dashboard.tsx (optimized)</summary><pre><span class="c">// Tidewater clinic dashboard – optimized.</span>
+<span class="k">import</span> * <span class="k">as</span> React <span class="k">from</span> <span <span class="k">class</span>="s">"react"</span>
+<span class="k">import</span> <span class="k">type</span> { Chart <span class="k">as</span> ChartType } <span class="k">from</span> <span <span class="k">class</span>="s">"chart.js"</span>
+
+<span class="k">type</span> Appointment = { id: string; patient: string; start: string; therapistId: string; status: <span <span class="k">class</span>="s">"booked"</span> | <span <span class="k">class</span>="s">"cancelled"</span> | <span <span class="k">class</span>="s">"done"</span> }
+<span class="k">type</span> Therapist = { id: string; name: string }
+<span class="k">type</span> Stats = { labels: string[]; values: number[] }
+
+<span class="c">// One shared formatter instead of building a moment object per row per render.</span>
+<span class="k">const</span> hhmm = <span class="k">new</span> Intl.DateTimeFormat(<span <span class="k">class</span>="s">"en-GB"</span>, { hour: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, minute: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, hour12: <span class="k">false</span> })
+<span class="k">const</span> hhmmss = <span class="k">new</span> Intl.DateTimeFormat(<span <span class="k">class</span>="s">"en-GB"</span>, { hour: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, minute: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, second: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, hour12: <span class="k">false</span> })
+
+<span class="k">const</span> getJson = &lt;T,&gt;(url: string, signal: AbortSignal): Promise&lt;T&gt; =&gt;
+  fetch(url, { signal }).then((r) =&gt; {
+    <span class="k">if</span> (!r.ok) <span class="k">throw</span> <span class="k">new</span> Error(<span <span class="k">class</span>="s">`${url} -&gt; ${r.status}`</span>)
+    <span class="k">return</span> r.json()
+  })
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">function</span> Dashboard({ clinicId }: { clinicId: string }) {
+  <span class="k">const</span> [appointments, setAppointments] = React.useState&lt;Appointment[]&gt;([])
+  <span class="k">const</span> [therapists, setTherapists] = React.useState&lt;Therapist[]&gt;([])
+  <span class="k">const</span> [stats, setStats] = React.useState&lt;Stats | <span class="k">null</span>&gt;(<span class="k">null</span>)
+  <span class="k">const</span> [error, setError] = React.useState&lt;string | <span class="k">null</span>&gt;(<span class="k">null</span>)
+  <span class="k">const</span> [search, setSearch] = React.useState(<span <span class="k">class</span>="s">""</span>)
+<span class="c">  // Typing stays instant; the heavy filter/group runs on a deferred value.</span>
+  <span class="k">const</span> deferredSearch = React.useDeferredValue(search)
+
+<span class="c">  // The three requests are independent: fetch them in parallel, cancel on unmount / clinic change.</span>
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> ctrl = <span class="k">new</span> AbortController()
+    <span class="k">const</span> base = <span <span class="k">class</span>="s">`/api/clinics/${clinicId}`</span>
+    Promise.all([
+      getJson&lt;Appointment[]&gt;(<span <span class="k">class</span>="s">`${base}/appointments`</span>, ctrl.signal),
+      getJson&lt;Therapist[]&gt;(<span <span class="k">class</span>="s">`${base}/therapists`</span>, ctrl.signal),
+      getJson&lt;Stats&gt;(<span <span class="k">class</span>="s">`${base}/stats`</span>, ctrl.signal),
+    ])
+      .then(([a, t, s]) =&gt; {
+        setAppointments(a)
+        setTherapists(t)
+        setStats(s)
+      })
+      .<span class="k">catch</span>((e) =&gt; {
+        <span class="k">if</span> (e.name !== <span <span class="k">class</span>="s">"AbortError"</span>) setError(String(e.message ?? e))
+      })
+    <span class="k">return</span> () =&gt; ctrl.abort()
+  }, [clinicId])
+
+<span class="c">  // ISO-8601 strings sort correctly as strings: no date parsing in the comparator.</span>
+  <span class="k">const</span> sorted = React.useMemo(() =&gt; [...appointments].sort((a, b) =&gt; (a.start &lt; b.start ? -<span class="n">1</span> : a.start &gt; b.start ? <span class="n">1</span> : <span class="n">0</span>)), [appointments])
+
+  <span class="k">const</span> byTherapist = React.useMemo(() =&gt; {
+    <span class="k">const</span> q = deferredSearch.toLowerCase()
+    <span class="k">const</span> groups = <span class="k">new</span> Map&lt;string, Appointment[]&gt;()
+    <span class="k">for</span> (<span class="k">const</span> a <span class="k">of</span> sorted) {
+      <span class="k">if</span> (q &amp;&amp; !a.patient.toLowerCase().includes(q)) continue
+      <span class="k">const</span> list = groups.get(a.therapistId)
+      <span class="k">if</span> (list) list.push(a)
+      <span class="k">else</span> groups.set(a.therapistId, [a])
+    }
+    <span class="k">return</span> groups
+  }, [sorted, deferredSearch])
+
+  <span class="k">const</span> therapistById = React.useMemo(() =&gt; <span class="k">new</span> Map(therapists.map((t) =&gt; [t.id, t])), [therapists])
+
+<span class="c">  // Stable identity so memoized rows are not re-rendered by unrelated state.</span>
+  <span class="k">const</span> cancel = React.useCallback((id: string) =&gt; setAppointments((prev) =&gt; prev.filter((x) =&gt; x.id !== id)), [])
+
+  <span class="k">return</span> (
+    &lt;div&gt;
+      &lt;Clock /&gt;
+      &lt;input value={search} onChange={(e) =&gt; setSearch(e.target.value)} placeholder=<span <span class="k">class</span>="s">"Search patients"</span> /&gt;
+      {error &amp;&amp; &lt;p role=<span <span class="k">class</span>="s">"alert"</span>&gt;Could not load the dashboard: {error}&lt;/p&gt;}
+      {stats &amp;&amp; &lt;StatsChart data={stats} /&gt;}
+      {therapists.map((t) =&gt; (
+        &lt;section key={t.id}&gt;
+          &lt;h2&gt;{t.name}&lt;/h2&gt;
+          {(byTherapist.get(t.id) ?? []).map((a) =&gt; (
+            &lt;Row key={a.id} appointment={a} therapist={therapistById.get(a.therapistId)!} onCancel={cancel} /&gt;
+          ))}
+        &lt;/section&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}
+
+<span class="c">// The 1s tick lives here, so only this &lt;h1&gt; re-renders every second, not the whole dashboard.</span>
+<span class="k">const</span> Clock = React.memo(<span class="k">function</span> Clock() {
+  <span class="k">const</span> [now, setNow] = React.useState(Date.now)
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> id = setInterval(() =&gt; setNow(Date.now()), <span class="n">1000</span>)
+    <span class="k">return</span> () =&gt; clearInterval(id)
+  }, [])
+  <span class="k">return</span> &lt;h1&gt;Today · {hhmmss.format(now)}&lt;/h1&gt;
+})
+
+<span class="k">const</span> Row = React.memo(<span class="k">function</span> Row({ appointment, therapist, onCancel }: { appointment: Appointment; therapist: Therapist; onCancel: (id: string) =&gt; void }) {
+  <span class="k">return</span> (
+    &lt;div style={rowStyle}&gt;
+      &lt;span&gt;{hhmm.format(<span class="k">new</span> Date(appointment.start))}&lt;/span&gt;
+      &lt;span&gt;{appointment.patient}&lt;/span&gt;
+      &lt;span&gt;{therapist.name}&lt;/span&gt;
+      &lt;button onClick={() =&gt; onCancel(appointment.id)}&gt;Cancel&lt;/button&gt;
+    &lt;/div&gt;
+  )
+})
+<span class="k">const</span> rowStyle = { display: <span <span class="k">class</span>="s">"flex"</span>, gap: <span class="n">8</span> } <span class="k">as</span> <span class="k">const</span>
+
+<span class="k">function</span> StatsChart({ data }: { data: Stats }) {
+  <span class="k">const</span> ref = React.useRef&lt;HTMLCanvasElement&gt;(<span class="k">null</span>)
+  <span class="k">const</span> chart = React.useRef&lt;ChartType | <span class="k">null</span>&gt;(<span class="k">null</span>)
+  <span class="k">const</span> latest = React.useRef(data) // data may change <span class="k">while</span> chart.js is still loading
+  latest.current = data
+
+<span class="c">  // Create once (chart.js is loaded on demand, so it is not in the initial bundle); destroy on unmount.</span>
+  React.useEffect(() =&gt; {
+    <span class="k">let</span> cancelled = <span class="k">false</span>
+    <span class="k">import</span>(<span <span class="k">class</span>="s">"chart.js/auto"</span>).then(({ Chart }) =&gt; {
+      <span class="k">if</span> (cancelled || !ref.current) <span class="k">return</span>
+      chart.current = <span class="k">new</span> Chart(ref.current, { <span class="k">type</span>: <span <span class="k">class</span>="s">"line"</span>, data: { labels: latest.current.labels, datasets: [{ data: latest.current.values }] } })
+    })
+    <span class="k">return</span> () =&gt; {
+      cancelled = <span class="k">true</span>
+      chart.current?.destroy()
+      chart.current = <span class="k">null</span>
+    }
+<span class="c">    // eslint-disable-next-line react-hooks/exhaustive-deps</span>
+  }, [])
+
+<span class="c">  // Later data changes update the existing chart instead of constructing a new one.</span>
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> c = chart.current
+    <span class="k">if</span> (!c) <span class="k">return</span>
+    c.data.labels = data.labels
+    c.data.datasets[<span class="n">0</span>].data = data.values
+    c.update()
+  }, [data])
+
+  <span class="k">return</span> &lt;canvas ref={ref} /&gt;
+}
+</pre></details>
+</main>
+
+</body></html>

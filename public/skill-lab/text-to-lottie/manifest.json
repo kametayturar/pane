@@ -1,0 +1,23 @@
+{
+  "id": "text-to-lottie",
+  "sets": ["code"],
+  "skillSays": [
+    "Route the request through a table: always read player-contract.md, then the matching recipe (loaders/icons, logo, typography, data...) plus motion-taste and design-taste",
+    "Author for the official local Skia Skottie player and verify there; do not hand-roll a viewer or verify only with lottie-web",
+    "Loaders are transparent by default, loop seamlessly over 60-120 frames, use phase offsets instead of lockstep motion, and keep geometry crisp at small sizes",
+    "Expose important values as slots (e.g. accentColor) with a controls.json label, and use real top-level keys (v, fr, ip, op, w, h, nm, assets, layers; op exclusive)",
+    "Derive easing from behaviour-based anchors rather than one uniform ease; verify frame 0, midpoint and op-1, and review the loop seam",
+    "Premium means subtract: zero chrome/container budget, one surface tone, one divider treatment"
+  ],
+  "examples": [
+    {
+      "prompt": "video-3",
+      "changes": [
+        "Installed and ran the official Skottie player (degit + vite) and rendered pinned ?frame=N screenshots there, instead of only trusting the JSON",
+        "Followed the loader recipe: transparent background, 120-frame seamless loop, five dots with 24-frame phase offsets (phase-dots preset) rather than a lockstep spinner",
+        "Exposed the teal accent as slot accentColor plus controls.json, so the player's properties panel shows an editable colour",
+        "Measured the loop seam (frame 0 vs 119 pixel diff ~0.4/255 vs ~8 mid-loop) in Skottie and in an extra lottie-web render"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "design-taste-frontend",
+  "sets": ["web"],
+  "skillSays": [
+    "Treat model-default pages as the enemy: before designing, inventory what belongs only to this client, write the page as claims with proof, then delete any section that has no claim.",
+    "Run scripts/draw.mjs, which deals three of twenty researched art directions; choose the one that can carry a client-specific idea, adopt its full sheet (hero, type, palette, section blueprints) and redraw a slot only for a stated reason.",
+    "Fill in 'on this page, X from the subject becomes Y device' and add one live thing the visitor can do, so the idea reaches every section rather than just the first screen.",
+    "Obey a strict house style the inspector measures in a real browser: headlines of two lines or fewer, no eyebrows, no monospace, no 01/02/03, no hairlines, gradients, resting shadows or icon cards, equal margins and no blank stretches.",
+    "Build still first, then add the motion layer (a masked-line headline reveal, staggered entrances, control feedback), all with reduced-motion fallbacks.",
+    "Gate with lint.mjs and inspect.mjs at 1440, 768 and 390px, then look at the screenshots and critique them before reporting."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Dealt direction 'The sentence is the layout' (hero 'Controls on the sentence'): the two-line headline 'Fewer gaps, calmer days.' is the demo, and three working product chips (booked-today slider, gap slider, text-reminder switch) change its weight, tracking and case.",
+      "Replaced a feature card grid with the dealt 'Sentences with switches': four full-width bands, each one sentence with a working toggle that floods the band with a palette colour and reveals the consequence line.",
+      "Rebuilt the colours from the subject (tidal marsh teal, kelp olive, wet-sand ochre) but kept the dealt proportions, and swapped the dealt Fontshare face for Bodoni Moda + Jost because this brief allows Google Fonts only.",
+      "Added four small interface fragments (waitlist log, text thread, timeline, overlap warning) and a masked headline reveal; lint.mjs is clean and inspect.mjs ends at 0 FAIL on the page, with the picture-floor and footage warnings defended because the brief forbids web images."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Skipped the dealt 'one plan as a sentence' because there are three plans; used --alternatives and took 'Plans that step up': three flat colour tiles whose heights rise like a tide table, with a darker strip as the button.",
+      "No cards with shadows or borders: each plan is a solid field (sand, tide blue, kelp) with the price at display size in Bodoni Moda.",
+      "The heading sits in the space above the shorter tiles and the monthly/yearly switch is a flat two-option control; yearly shows the real annual total.",
+      "inspect.mjs flagged only the page-level picture floor and a text-extent off-centre measure on this single section, which are defended."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Kept the same direction as the landing page: a two-line statement 'Open your diary' on the left with its proof (the form) on the right, instead of a centred card.",
+      "Fields are flat tone steps with no outlines; errors turn the field a warm dark tone and show an icon plus a specific sentence ('Add 5 more characters to reach 10'), never colour alone.",
+      "Staggered field entrances and a masked headline reveal supply the motion layer; focus uses a solid ochre ring.",
+      "Lint passes and inspect.mjs reports only the page-level picture floor (a lone form has no pictures) and an edge-margin measure, both defended."
+    ]}
+  ]
+}

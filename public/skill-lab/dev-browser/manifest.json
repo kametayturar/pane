@@ -1,0 +1,30 @@
+{
+  "id": "dev-browser",
+  "sets": [
+    "code"
+  ],
+  "skillSays": [
+    "Short Puppeteer scripts via heredoc against one warm daemon; named pages persist between runs",
+    "Read `dev-browser --help` before non-trivial work",
+    "Snapshot with refs (`page.snapshot({ interactive: true })`), act by `ref/eN`, then verify with the cheapest check (url < incremental snapshot < screenshot)",
+    "Gotchas: end lines with semicolons, return objects as ({ a, b }), page.click never waits (waitForSelector first), refs reset on navigation, no parallel calls on one named page",
+    "Headless and headed are separate Chromes with separate profiles and page names"
+  ],
+  "examples": [
+    {
+      "prompt": "browser-1",
+      "changes": [
+        "Ran the invalid and valid submissions as two short scripts against the same named page 'signup' with no re-navigation",
+        "Used the incremental snapshot diff plus $$eval to read errors; the diff only shows interactive nodes",
+        "Found that `npm i dev-browser` installs the old 0.2.9 API, so installed the `next` tag to match the skill"
+      ]
+    },
+    {
+      "prompt": "browser-2",
+      "changes": [
+        "The CLI itself printed '[page:book] uncaught: Cannot read properties of undefined (reading id)' after the click, with no logging code needed",
+        "Verified with a request listener (no request) and a control click on a slot"
+      ]
+    }
+  ]
+}

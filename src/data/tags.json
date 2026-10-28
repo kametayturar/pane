@@ -1,0 +1,3875 @@
+{
+  "vocab": [
+    {
+      "tag": "button",
+      "facet": "job",
+      "meaning": "Clickable action trigger, incl. floating action buttons and morphing triggers (Button, Action Morph, Orbit Menu)"
+    },
+    {
+      "tag": "input",
+      "facet": "job",
+      "meaning": "Any control that takes a value: text, code, slider, select, switch, ruler (OTP Input, Combobox, Instrument Form)"
+    },
+    {
+      "tag": "menu",
+      "facet": "job",
+      "meaning": "Popover/dropdown/command list of actions or options (Command Menu, Glass Menu, Profile Menu, Filter Menu)"
+    },
+    {
+      "tag": "navigation",
+      "facet": "job",
+      "meaning": "Moving between places: navbars, tab bars, docks, rails, mega menus (Dock, Morph Nav, Liquid Tab Bar)"
+    },
+    {
+      "tag": "dialog",
+      "facet": "job",
+      "meaning": "Overlay that interrupts or focuses: modal, sheet, popover panel (Sheet Stack, Share Sheet, Permission Request)"
+    },
+    {
+      "tag": "notification",
+      "facet": "job",
+      "meaning": "Transient or stacked system messages: toast, alert, badge (Toaster, Notification Stack)"
+    },
+    {
+      "tag": "table",
+      "facet": "job",
+      "meaning": "Rows and columns of records: grid, spreadsheet, spec table (Data Grid, Spec Table)"
+    },
+    {
+      "tag": "chart",
+      "facet": "job",
+      "meaning": "Quantitative visualisation: bar, line, area, radar, sankey, treemap, funnel, candlestick"
+    },
+    {
+      "tag": "form",
+      "facet": "job",
+      "meaning": "Grouped fields with validation and a save bar (Instrument Form, Email Draft, Prompt Studio variables)"
+    },
+    {
+      "tag": "pricing",
+      "facet": "job",
+      "meaning": "Plans, tiers, quotas and pay-for-usage sections (Instrument Pricing, Usage Meter)"
+    },
+    {
+      "tag": "hero",
+      "facet": "job",
+      "meaning": "Top-of-page headline section with a showpiece visual (Instrument Hero, Ink Fluid, Sand Text)"
+    },
+    {
+      "tag": "loading",
+      "facet": "job",
+      "meaning": "Waiting states: spinner, skeleton, shimmer, working pill (Thinking Loader, Shimmer Loader)"
+    },
+    {
+      "tag": "empty-state",
+      "facet": "job",
+      "meaning": "Nothing-here-yet illustrations and messages (Empty Calendar, Ghosted Chat, Glass Folder)"
+    },
+    {
+      "tag": "onboarding",
+      "facet": "job",
+      "meaning": "First-run guidance, steppers, tips, how-it-works steps (Tips Panel, Step Cards, Pipeline Steps, Team Invite)"
+    },
+    {
+      "tag": "tabs",
+      "facet": "job",
+      "meaning": "Switching between views in place: segmented controls, tab bars (Segmented Control, Glass Segmented)"
+    },
+    {
+      "tag": "card",
+      "facet": "job",
+      "meaning": "Self-contained content tile (Glass Card, Holo Card, Tilt Card, Dither Cards, Wallet Stack)"
+    },
+    {
+      "tag": "picker",
+      "facet": "job",
+      "meaning": "Choosing a date, time, model or option from a set (Date Reel, Time Dial, Model Picker)"
+    },
+    {
+      "tag": "upload",
+      "facet": "job",
+      "meaning": "Bringing files in: drop zone, attachments, progress per file (Dropzone)"
+    },
+    {
+      "tag": "search",
+      "facet": "job",
+      "meaning": "Finding things: command palette, combobox filter, query box"
+    },
+    {
+      "tag": "social-proof",
+      "facet": "job",
+      "meaning": "Trust signals on marketing pages: logos, testimonials, reviews (Logo Marquee, Testimonial Wall, Logo Cluster)"
+    },
+    {
+      "tag": "text-effect",
+      "facet": "job",
+      "meaning": "Animated type: reveal, ticker, slot reels, gradient or sand text (Text Reveal, Slot Text, Number Ticker)"
+    },
+    {
+      "tag": "background",
+      "facet": "job",
+      "meaning": "Ambient layer behind content (Dither Field, Grid Background, Gradient Floor, Ink Fluid)"
+    },
+    {
+      "tag": "diagram",
+      "facet": "job",
+      "meaning": "Explanatory illustration of a system or process, not a data plot (Prompt Cache, Vector Search, Layer Stack)"
+    },
+    {
+      "tag": "media",
+      "facet": "job",
+      "meaning": "Audio, video, image and player UI (Now Playing, Voice Recorder, Cover Flow, Dither Image)"
+    },
+    {
+      "tag": "board",
+      "facet": "job",
+      "meaning": "Kanban or lane layout of items by status or owner (Agent Inbox, Agent Lanes, Task Tracker)"
+    },
+    {
+      "tag": "comment",
+      "facet": "job",
+      "meaning": "Threads, replies, mentions and discussion (Comment Thread, Reaction Bar)"
+    },
+    {
+      "tag": "progress",
+      "facet": "job",
+      "meaning": "How far along something is: bars, rings, steps, ETA (Progress Tracker, Activity Rings, Usage Meter)"
+    },
+    {
+      "tag": "feedback",
+      "facet": "job",
+      "meaning": "User response to output: thumbs, reactions, retry, share (Message Actions, Reaction Bar)"
+    },
+    {
+      "tag": "chat",
+      "facet": "ai",
+      "meaning": "Conversational assistant UI: messages, composer, replies (AI Chat, Chat Composer, AI Answer)"
+    },
+    {
+      "tag": "streaming",
+      "facet": "ai",
+      "meaning": "Output that arrives token by token or as a live feed (AI Answer, Token Scope, Realtime Stream)"
+    },
+    {
+      "tag": "agent",
+      "facet": "ai",
+      "meaning": "Autonomous AI doing multi-step work: plans, runs, steering, tasks"
+    },
+    {
+      "tag": "multi-agent",
+      "facet": "ai",
+      "meaning": "Several agents or sub-agents coordinated: orchestrator, lanes, tree, team (Agent Orchestrator, Agent Tree, Agent Team)"
+    },
+    {
+      "tag": "approval",
+      "facet": "ai",
+      "meaning": "Human-in-the-loop gate: approve, deny, always allow, decisions (Approval Card, Agent Approvals, Decision Inbox)"
+    },
+    {
+      "tag": "sources",
+      "facet": "ai",
+      "meaning": "Citations and provenance tying claims to evidence (Provenance Trail, Research Desk, AI Answer)"
+    },
+    {
+      "tag": "reasoning",
+      "facet": "ai",
+      "meaning": "Visible thinking: thought steps, tree search, working panels (Thinking State, Reasoning Tree)"
+    },
+    {
+      "tag": "tool-call",
+      "facet": "ai",
+      "meaning": "A model invoking a tool or MCP server with args and result (Tool Call Card, MCP Servers)"
+    },
+    {
+      "tag": "memory",
+      "facet": "ai",
+      "meaning": "What an assistant remembers: notes, forget, pause (Memory Panel, Agent Memory)"
+    },
+    {
+      "tag": "context",
+      "facet": "ai",
+      "meaning": "Context window contents, compaction and prompt caching (Context Window, Prompt Cache)"
+    },
+    {
+      "tag": "cost",
+      "facet": "ai",
+      "meaning": "Tokens, credits, spend, budgets and forecasts for AI usage (Usage Forecast, Usage Meter, Model Picker bars)"
+    },
+    {
+      "tag": "evals",
+      "facet": "ai",
+      "meaning": "Testing model or prompt quality: suites, baselines, regressions, arenas (Eval Suite, Eval Lab, Model Arena)"
+    },
+    {
+      "tag": "voice",
+      "facet": "ai",
+      "meaning": "Speech input/output and audio presence (Voice Orb, Voice Recorder, dictation)"
+    },
+    {
+      "tag": "prompt",
+      "facet": "ai",
+      "meaning": "Prompt authoring and composition: composer, templates, variables (Prompt Studio, AI Composer)"
+    },
+    {
+      "tag": "model",
+      "facet": "ai",
+      "meaning": "Choosing or comparing LLMs and their internals (Model Picker, Model Wheel, Mixture of Experts, Speculative Decoding)"
+    },
+    {
+      "tag": "retrieval",
+      "facet": "ai",
+      "meaning": "RAG, embeddings, indexing and extraction from documents (Knowledge Base, Vector Search, Document Extract)"
+    },
+    {
+      "tag": "observability",
+      "facet": "ai",
+      "meaning": "Tracing and inspecting runs: waterfalls, scrubbers, telemetry (Trace Waterfall, Run Scrubber, Telemetry Board)"
+    },
+    {
+      "tag": "drag",
+      "facet": "interaction",
+      "meaning": "Pointer dragging, flinging, throwing, reordering"
+    },
+    {
+      "tag": "hover",
+      "facet": "interaction",
+      "meaning": "Behaviour that responds to pointer hover: lift, reveal, magnify"
+    },
+    {
+      "tag": "scroll",
+      "facet": "interaction",
+      "meaning": "Scroll-driven or auto-scrolling content: marquees, wheels, virtual lists"
+    },
+    {
+      "tag": "keyboard",
+      "facet": "interaction",
+      "meaning": "Shortcuts, key navigation, typing visuals (Command Menu, Keycap Keyboard, Glow Keyboard)"
+    },
+    {
+      "tag": "gesture",
+      "facet": "interaction",
+      "meaning": "Touch and pointer gestures: swipe, flick, pull-down, long-press, peel"
+    },
+    {
+      "tag": "toggle",
+      "facet": "interaction",
+      "meaning": "On/off and mode switches, expandable or foldable states"
+    },
+    {
+      "tag": "morph",
+      "facet": "interaction",
+      "meaning": "One surface or value smoothly becoming another (Action Morph, Morph Nav, Dot Matrix Number, Blur Crossfade)"
+    },
+    {
+      "tag": "pointer-follow",
+      "facet": "interaction",
+      "meaning": "Elements that track or react to the cursor: tilt, gravity, magnify (Tilt Card, Gravity Well, Holo Card)"
+    },
+    {
+      "tag": "scrub",
+      "facet": "interaction",
+      "meaning": "Dragging a playhead or timeline to move through time (Run Scrubber, Race Bar Chart, Cover Flow)"
+    },
+    {
+      "tag": "glass",
+      "facet": "material",
+      "meaning": "Frosted, refractive, liquid-glass surfaces (Glass Menu, Glass Tab Bar, Control Center)"
+    },
+    {
+      "tag": "dither",
+      "facet": "material",
+      "meaning": "Ordered-dither, halftone, ASCII dot art (Dither Field, Dither Image, Dither Cards, Confidence Dither)"
+    },
+    {
+      "tag": "3d",
+      "facet": "material",
+      "meaning": "Real depth and perspective: tilt, covers, wheels, globes, keycaps"
+    },
+    {
+      "tag": "particles",
+      "facet": "material",
+      "meaning": "Many small moving dots or grains: galaxies, sand, stars, sims"
+    },
+    {
+      "tag": "paper",
+      "facet": "material",
+      "meaning": "Paper, stickers, folds, pages and print metaphors (Page Curl, Sticker Peel)"
+    },
+    {
+      "tag": "physics",
+      "facet": "material",
+      "meaning": "Springs, gravity, inertia, collisions and rubber-banding (Dock, Gravity Well, Black Hole)"
+    },
+    {
+      "tag": "gradient",
+      "facet": "material",
+      "meaning": "Colour gradients, aurora and glow washes (Gradient Floor, Gradient Text, aurora backdrops)"
+    },
+    {
+      "tag": "fluid",
+      "facet": "material",
+      "meaning": "Liquid, ink and flowing-sim looks (Ink Fluid, Liquid Tab Bar, Streamgraph)"
+    },
+    {
+      "tag": "glow",
+      "facet": "material",
+      "meaning": "Light emission, bloom, holographic foil and illuminated parts (Glow Cloud, Glow Keyboard, Holo Card)"
+    },
+    {
+      "tag": "landing",
+      "facet": "page",
+      "meaning": "Public product page sections: hero, logos, pricing, features"
+    },
+    {
+      "tag": "dashboard",
+      "facet": "page",
+      "meaning": "Overview pages of KPIs, charts and tables (Dashboard, Mission Control, Finance)"
+    },
+    {
+      "tag": "settings",
+      "facet": "page",
+      "meaning": "Configuration and preferences UI (Control Center, Autonomy Dial, Instrument Form, Profile Menu)"
+    },
+    {
+      "tag": "app-shell",
+      "facet": "page",
+      "meaning": "The frame around an app: rail, header, breadcrumb, search (Instrument Shell, Morph Nav)"
+    },
+    {
+      "tag": "marketing",
+      "facet": "page",
+      "meaning": "Pieces made for selling or showing off: showpieces, hero art, illustrations"
+    },
+    {
+      "tag": "screen",
+      "facet": "page",
+      "meaning": "A whole composed product screen rather than one component (the Screens group)"
+    },
+    {
+      "tag": "kpi",
+      "facet": "data",
+      "meaning": "Headline numbers with deltas and sparklines (Readout Bar, Activity Rings, Number Ticker)"
+    },
+    {
+      "tag": "timeline",
+      "facet": "data",
+      "meaning": "Things over time or on a time axis (Agent Timeline, Trace Waterfall, Race Bar Chart)"
+    },
+    {
+      "tag": "map",
+      "facet": "data",
+      "meaning": "Geographic or spatial layouts: globes, regions, time zones (Revenue Globe, Time Dial)"
+    },
+    {
+      "tag": "graph",
+      "facet": "data",
+      "meaning": "Nodes and edges: networks, trees, agent graphs (Agent Graph, Agent Tree, Reasoning Tree)"
+    },
+    {
+      "tag": "finance",
+      "facet": "data",
+      "meaning": "Money, markets, payments, accounting and revenue (Market Terminal, Accounting, MRR Waterfall, Payment Flow)"
+    },
+    {
+      "tag": "flow",
+      "facet": "data",
+      "meaning": "Quantities or events moving between stages: sankey, funnel, pipeline (Sankey Flow, Journey Flow, Data Flow)"
+    },
+    {
+      "tag": "hierarchy",
+      "facet": "data",
+      "meaning": "Nested part-to-whole structure: treemap, sunburst, tree"
+    },
+    {
+      "tag": "ranking",
+      "facet": "data",
+      "meaning": "Ordered leaderboards and comparisons (Race Bar Chart, Model Arena, Eval Lab)"
+    },
+    {
+      "tag": "forecast",
+      "facet": "data",
+      "meaning": "Projections, bands and what-if scenarios (Usage Forecast, Finance runway)"
+    },
+    {
+      "tag": "realtime",
+      "facet": "data",
+      "meaning": "Live-updating data feeds and counters (Realtime Stream, Token Scope, Market Terminal)"
+    }
+  ],
+  "synonyms": {
+    "modal": [
+      "dialog"
+    ],
+    "popup": [
+      "dialog"
+    ],
+    "popover": [
+      "dialog",
+      "menu"
+    ],
+    "drawer": [
+      "dialog"
+    ],
+    "sheet": [
+      "dialog"
+    ],
+    "lightbox": [
+      "dialog"
+    ],
+    "spinner": [
+      "loading"
+    ],
+    "skeleton": [
+      "loading"
+    ],
+    "shimmer": [
+      "loading"
+    ],
+    "placeholder": [
+      "loading",
+      "empty-state"
+    ],
+    "toast": [
+      "notification"
+    ],
+    "snackbar": [
+      "notification"
+    ],
+    "alert": [
+      "notification"
+    ],
+    "badge": [
+      "notification"
+    ],
+    "banner": [
+      "notification"
+    ],
+    "dropdown": [
+      "menu"
+    ],
+    "select": [
+      "menu",
+      "input"
+    ],
+    "context-menu": [
+      "menu"
+    ],
+    "palette": [
+      "menu",
+      "search"
+    ],
+    "command-palette": [
+      "menu",
+      "search",
+      "keyboard"
+    ],
+    "cmdk": [
+      "menu",
+      "search",
+      "keyboard"
+    ],
+    "spotlight": [
+      "search",
+      "menu"
+    ],
+    "autocomplete": [
+      "input",
+      "search"
+    ],
+    "combobox": [
+      "input",
+      "menu",
+      "search"
+    ],
+    "typeahead": [
+      "input",
+      "search"
+    ],
+    "llm": [
+      "ai",
+      "chat"
+    ],
+    "ai": [
+      "chat",
+      "agent"
+    ],
+    "copilot": [
+      "chat",
+      "agent"
+    ],
+    "assistant": [
+      "chat",
+      "agent"
+    ],
+    "chatbot": [
+      "chat"
+    ],
+    "gpt": [
+      "chat",
+      "model"
+    ],
+    "rag": [
+      "retrieval",
+      "sources"
+    ],
+    "embeddings": [
+      "retrieval"
+    ],
+    "vector": [
+      "retrieval"
+    ],
+    "citations": [
+      "sources"
+    ],
+    "references": [
+      "sources"
+    ],
+    "provenance": [
+      "sources"
+    ],
+    "mcp": [
+      "tool-call"
+    ],
+    "function-calling": [
+      "tool-call"
+    ],
+    "tools": [
+      "tool-call"
+    ],
+    "chain-of-thought": [
+      "reasoning"
+    ],
+    "thinking": [
+      "reasoning",
+      "loading"
+    ],
+    "human-in-the-loop": [
+      "approval"
+    ],
+    "confirm": [
+      "approval",
+      "dialog"
+    ],
+    "consent": [
+      "approval"
+    ],
+    "permission": [
+      "approval",
+      "dialog"
+    ],
+    "hitl": [
+      "approval"
+    ],
+    "tokens": [
+      "cost",
+      "streaming"
+    ],
+    "billing": [
+      "pricing",
+      "cost"
+    ],
+    "credits": [
+      "cost",
+      "pricing",
+      "progress"
+    ],
+    "quota": [
+      "cost",
+      "progress"
+    ],
+    "budget": [
+      "cost",
+      "forecast"
+    ],
+    "benchmark": [
+      "evals",
+      "ranking"
+    ],
+    "leaderboard": [
+      "ranking"
+    ],
+    "tracing": [
+      "observability",
+      "timeline"
+    ],
+    "logs": [
+      "observability"
+    ],
+    "telemetry": [
+      "observability",
+      "realtime"
+    ],
+    "monitoring": [
+      "observability",
+      "dashboard"
+    ],
+    "speech": [
+      "voice"
+    ],
+    "microphone": [
+      "voice",
+      "media"
+    ],
+    "dictation": [
+      "voice",
+      "input"
+    ],
+    "audio": [
+      "media",
+      "voice"
+    ],
+    "player": [
+      "media"
+    ],
+    "workflow": [
+      "agent",
+      "flow"
+    ],
+    "automation": [
+      "agent"
+    ],
+    "orchestrator": [
+      "multi-agent"
+    ],
+    "subagent": [
+      "multi-agent",
+      "agent"
+    ],
+    "swarm": [
+      "multi-agent"
+    ],
+    "kanban": [
+      "board"
+    ],
+    "lanes": [
+      "board",
+      "multi-agent"
+    ],
+    "inbox": [
+      "board",
+      "notification"
+    ],
+    "task-list": [
+      "board",
+      "progress"
+    ],
+    "stepper": [
+      "onboarding",
+      "progress"
+    ],
+    "wizard": [
+      "onboarding",
+      "form"
+    ],
+    "walkthrough": [
+      "onboarding"
+    ],
+    "tour": [
+      "onboarding"
+    ],
+    "getting-started": [
+      "onboarding"
+    ],
+    "progress-bar": [
+      "progress"
+    ],
+    "meter": [
+      "progress",
+      "kpi"
+    ],
+    "gauge": [
+      "progress",
+      "kpi"
+    ],
+    "slider": [
+      "input"
+    ],
+    "switch": [
+      "input",
+      "toggle"
+    ],
+    "checkbox": [
+      "input",
+      "toggle"
+    ],
+    "textarea": [
+      "input"
+    ],
+    "field": [
+      "input",
+      "form"
+    ],
+    "otp": [
+      "input",
+      "form"
+    ],
+    "dropzone": [
+      "upload"
+    ],
+    "file-upload": [
+      "upload"
+    ],
+    "attachment": [
+      "upload"
+    ],
+    "date-picker": [
+      "picker"
+    ],
+    "calendar": [
+      "picker",
+      "timeline"
+    ],
+    "time-picker": [
+      "picker"
+    ],
+    "wheel": [
+      "picker",
+      "3d"
+    ],
+    "segmented": [
+      "tabs",
+      "toggle"
+    ],
+    "tab-bar": [
+      "tabs",
+      "navigation"
+    ],
+    "navbar": [
+      "navigation"
+    ],
+    "header": [
+      "navigation",
+      "app-shell"
+    ],
+    "sidebar": [
+      "navigation",
+      "app-shell"
+    ],
+    "mega-menu": [
+      "navigation",
+      "menu"
+    ],
+    "dock": [
+      "navigation"
+    ],
+    "breadcrumb": [
+      "navigation"
+    ],
+    "layout": [
+      "app-shell"
+    ],
+    "admin": [
+      "dashboard",
+      "app-shell"
+    ],
+    "analytics": [
+      "dashboard",
+      "chart"
+    ],
+    "graph-chart": [
+      "chart"
+    ],
+    "plot": [
+      "chart"
+    ],
+    "sparkline": [
+      "chart",
+      "kpi"
+    ],
+    "metrics": [
+      "kpi",
+      "dashboard"
+    ],
+    "stats": [
+      "kpi"
+    ],
+    "candlestick": [
+      "chart",
+      "finance"
+    ],
+    "sankey": [
+      "chart",
+      "flow"
+    ],
+    "funnel": [
+      "chart",
+      "flow"
+    ],
+    "treemap": [
+      "chart",
+      "hierarchy"
+    ],
+    "heatmap": [
+      "chart"
+    ],
+    "node-graph": [
+      "graph"
+    ],
+    "network": [
+      "graph"
+    ],
+    "tree": [
+      "hierarchy",
+      "graph"
+    ],
+    "globe": [
+      "map",
+      "3d"
+    ],
+    "geo": [
+      "map"
+    ],
+    "spreadsheet": [
+      "table"
+    ],
+    "grid": [
+      "table",
+      "background"
+    ],
+    "datagrid": [
+      "table"
+    ],
+    "payments": [
+      "finance"
+    ],
+    "revenue": [
+      "finance",
+      "kpi"
+    ],
+    "mrr": [
+      "finance",
+      "kpi"
+    ],
+    "trading": [
+      "finance",
+      "realtime"
+    ],
+    "accounting": [
+      "finance",
+      "screen"
+    ],
+    "cta": [
+      "button",
+      "marketing"
+    ],
+    "fab": [
+      "button"
+    ],
+    "testimonials": [
+      "social-proof"
+    ],
+    "logos": [
+      "social-proof"
+    ],
+    "trusted-by": [
+      "social-proof"
+    ],
+    "pricing-table": [
+      "pricing",
+      "table"
+    ],
+    "hero-section": [
+      "hero",
+      "landing"
+    ],
+    "homepage": [
+      "landing",
+      "hero"
+    ],
+    "website": [
+      "landing",
+      "marketing"
+    ],
+    "showcase": [
+      "marketing"
+    ],
+    "zero-state": [
+      "empty-state"
+    ],
+    "no-results": [
+      "empty-state"
+    ],
+    "typography": [
+      "text-effect"
+    ],
+    "typewriter": [
+      "text-effect",
+      "keyboard"
+    ],
+    "odometer": [
+      "text-effect",
+      "kpi"
+    ],
+    "counter": [
+      "text-effect",
+      "kpi"
+    ],
+    "ascii": [
+      "dither"
+    ],
+    "halftone": [
+      "dither"
+    ],
+    "pixel": [
+      "dither"
+    ],
+    "frosted": [
+      "glass"
+    ],
+    "liquid-glass": [
+      "glass",
+      "fluid"
+    ],
+    "blur": [
+      "glass",
+      "morph"
+    ],
+    "aurora": [
+      "gradient",
+      "background"
+    ],
+    "mesh": [
+      "gradient",
+      "background"
+    ],
+    "holographic": [
+      "glow",
+      "pointer-follow"
+    ],
+    "tilt": [
+      "pointer-follow",
+      "3d"
+    ],
+    "parallax": [
+      "pointer-follow",
+      "scroll"
+    ],
+    "spring": [
+      "physics"
+    ],
+    "inertia": [
+      "physics",
+      "gesture"
+    ],
+    "momentum": [
+      "physics",
+      "gesture"
+    ],
+    "gravity": [
+      "physics"
+    ],
+    "canvas": [
+      "particles"
+    ],
+    "webgl": [
+      "3d",
+      "fluid"
+    ],
+    "shader": [
+      "fluid",
+      "gradient"
+    ],
+    "swipe": [
+      "gesture"
+    ],
+    "flick": [
+      "gesture",
+      "drag"
+    ],
+    "drag-and-drop": [
+      "drag",
+      "upload"
+    ],
+    "reorder": [
+      "drag"
+    ],
+    "marquee": [
+      "scroll",
+      "social-proof"
+    ],
+    "carousel": [
+      "scroll",
+      "gesture"
+    ],
+    "infinite-scroll": [
+      "scroll"
+    ],
+    "shortcut": [
+      "keyboard"
+    ],
+    "hotkey": [
+      "keyboard"
+    ],
+    "transition": [
+      "morph"
+    ],
+    "animation": [
+      "morph"
+    ],
+    "thumbs": [
+      "feedback"
+    ],
+    "reactions": [
+      "feedback",
+      "comment"
+    ],
+    "emoji": [
+      "feedback"
+    ],
+    "review": [
+      "feedback",
+      "approval"
+    ],
+    "discussion": [
+      "comment"
+    ],
+    "thread": [
+      "comment",
+      "chat"
+    ],
+    "mentions": [
+      "comment",
+      "input"
+    ],
+    "preferences": [
+      "settings"
+    ],
+    "config": [
+      "settings"
+    ],
+    "profile": [
+      "settings",
+      "menu"
+    ],
+    "account": [
+      "settings",
+      "menu"
+    ],
+    "theme": [
+      "settings"
+    ],
+    "infographic": [
+      "diagram"
+    ],
+    "explainer": [
+      "diagram"
+    ],
+    "mascot": [
+      "empty-state",
+      "glow"
+    ],
+    "playback": [
+      "scrub",
+      "media"
+    ],
+    "replay": [
+      "scrub",
+      "timeline"
+    ],
+    "gantt": [
+      "timeline",
+      "board"
+    ],
+    "history": [
+      "timeline"
+    ],
+    "audit-log": [
+      "timeline",
+      "observability"
+    ],
+    "live": [
+      "realtime"
+    ],
+    "projection": [
+      "forecast"
+    ],
+    "what-if": [
+      "forecast"
+    ]
+  },
+  "entries": {
+    "ai-answer": {
+      "tags": [
+        "card",
+        "chat",
+        "feedback",
+        "retrieval",
+        "sources",
+        "streaming",
+        "text-effect"
+      ],
+      "keywords": [
+        "citations",
+        "assistant reply",
+        "perplexity",
+        "answer engine",
+        "follow-up questions",
+        "copy"
+      ]
+    },
+    "thinking-state": {
+      "tags": [
+        "agent",
+        "loading",
+        "progress",
+        "reasoning",
+        "sources",
+        "timeline"
+      ],
+      "keywords": [
+        "chain of thought",
+        "working panel",
+        "deep research",
+        "steps",
+        "timer",
+        "searching"
+      ]
+    },
+    "thinking-loader": {
+      "tags": [
+        "chat",
+        "loading",
+        "morph",
+        "progress",
+        "reasoning",
+        "text-effect"
+      ],
+      "keywords": [
+        "pill",
+        "spinner",
+        "status",
+        "phases",
+        "checkmark",
+        "working indicator"
+      ]
+    },
+    "chat-composer": {
+      "tags": [
+        "approval",
+        "chat",
+        "input",
+        "menu",
+        "model",
+        "prompt",
+        "voice"
+      ],
+      "keywords": [
+        "prompt box",
+        "textarea",
+        "message input",
+        "connectors",
+        "app connections",
+        "send"
+      ]
+    },
+    "writing-assistant": {
+      "tags": [
+        "chat",
+        "input",
+        "prompt",
+        "streaming",
+        "text-effect",
+        "voice"
+      ],
+      "keywords": [
+        "editor helper",
+        "dictation",
+        "rewrite",
+        "suggestions",
+        "copilot",
+        "autocomplete"
+      ]
+    },
+    "model-picker": {
+      "tags": [
+        "chat",
+        "cost",
+        "menu",
+        "model",
+        "picker",
+        "reasoning",
+        "toggle"
+      ],
+      "keywords": [
+        "dropdown",
+        "model selector",
+        "speed",
+        "quality",
+        "effort",
+        "extended thinking",
+        "llm"
+      ]
+    },
+    "message-actions": {
+      "tags": [
+        "button",
+        "chat",
+        "feedback",
+        "hover",
+        "toggle"
+      ],
+      "keywords": [
+        "copy",
+        "retry",
+        "thumbs up",
+        "thumbs down",
+        "share",
+        "regenerate",
+        "action row",
+        "toolbar"
+      ]
+    },
+    "tool-call-card": {
+      "tags": [
+        "agent",
+        "card",
+        "chat",
+        "loading",
+        "progress",
+        "tool-call"
+      ],
+      "keywords": [
+        "function call",
+        "arguments",
+        "json",
+        "result",
+        "mcp",
+        "status",
+        "tool use"
+      ]
+    },
+    "approval-card": {
+      "tags": [
+        "agent",
+        "approval",
+        "button",
+        "card",
+        "chat",
+        "feedback"
+      ],
+      "keywords": [
+        "human in the loop",
+        "confirm action",
+        "allow deny",
+        "permission",
+        "guardrail",
+        "review step"
+      ]
+    },
+    "permission-request": {
+      "tags": [
+        "agent",
+        "approval",
+        "button",
+        "card",
+        "dialog",
+        "toggle"
+      ],
+      "keywords": [
+        "scopes",
+        "oauth",
+        "grant access",
+        "allow once",
+        "always allow",
+        "deny",
+        "consent"
+      ]
+    },
+    "reaction-bar": {
+      "tags": [
+        "button",
+        "chat",
+        "feedback",
+        "hover",
+        "social-proof",
+        "toggle"
+      ],
+      "keywords": [
+        "emoji",
+        "reactions",
+        "likes",
+        "counter",
+        "popover",
+        "pop animation"
+      ]
+    },
+    "email-draft": {
+      "tags": [
+        "agent",
+        "card",
+        "chat",
+        "form",
+        "input",
+        "prompt"
+      ],
+      "keywords": [
+        "ai drafted email",
+        "compose",
+        "send mail",
+        "review draft",
+        "subject line",
+        "tweak tone"
+      ]
+    },
+    "comment-thread": {
+      "tags": [
+        "card",
+        "chat",
+        "comment",
+        "hover",
+        "input",
+        "social-proof"
+      ],
+      "keywords": [
+        "replies",
+        "mentions",
+        "resolve",
+        "discussion",
+        "threaded",
+        "collaboration"
+      ]
+    },
+    "agent-plan": {
+      "tags": [
+        "agent",
+        "card",
+        "dashboard",
+        "progress",
+        "reasoning",
+        "timeline"
+      ],
+      "keywords": [
+        "checklist",
+        "task list",
+        "todo",
+        "steps",
+        "plan view"
+      ]
+    },
+    "decision-inbox": {
+      "tags": [
+        "agent",
+        "approval",
+        "button",
+        "card",
+        "feedback",
+        "notification"
+      ],
+      "keywords": [
+        "human in the loop",
+        "review queue",
+        "approve reject",
+        "choices",
+        "confirmations"
+      ]
+    },
+    "change-summary": {
+      "tags": [
+        "agent",
+        "approval",
+        "card",
+        "feedback",
+        "table",
+        "tool-call"
+      ],
+      "keywords": [
+        "diff",
+        "changelog",
+        "edits",
+        "file changes",
+        "review"
+      ]
+    },
+    "progress-tracker": {
+      "tags": [
+        "agent",
+        "card",
+        "loading",
+        "progress",
+        "realtime",
+        "timeline"
+      ],
+      "keywords": [
+        "eta",
+        "stepper",
+        "long running task",
+        "status",
+        "countdown"
+      ]
+    },
+    "smart-recommendation": {
+      "tags": [
+        "agent",
+        "button",
+        "card",
+        "chat",
+        "feedback",
+        "reasoning"
+      ],
+      "keywords": [
+        "suggestion",
+        "one-click apply",
+        "copilot",
+        "next best action",
+        "hint"
+      ]
+    },
+    "tips-panel": {
+      "tags": [
+        "agent",
+        "button",
+        "card",
+        "feedback",
+        "notification",
+        "onboarding"
+      ],
+      "keywords": [
+        "how-to",
+        "carousel",
+        "dismissible",
+        "help",
+        "hints"
+      ]
+    },
+    "memory-panel": {
+      "tags": [
+        "agent",
+        "card",
+        "context",
+        "memory",
+        "search",
+        "settings",
+        "toggle"
+      ],
+      "keywords": [
+        "remembered facts",
+        "personalization",
+        "undo",
+        "edit memories",
+        "pause memory"
+      ]
+    },
+    "mcp-servers": {
+      "tags": [
+        "agent",
+        "context",
+        "menu",
+        "settings",
+        "toggle",
+        "tool-call"
+      ],
+      "keywords": [
+        "MCP",
+        "connectors",
+        "integrations",
+        "tool list",
+        "token cost",
+        "server status"
+      ]
+    },
+    "eval-suite": {
+      "tags": [
+        "agent",
+        "dashboard",
+        "evals",
+        "feedback",
+        "progress",
+        "streaming",
+        "table"
+      ],
+      "keywords": [
+        "regression",
+        "baseline",
+        "test cases",
+        "benchmark",
+        "pass fail",
+        "LLM judge"
+      ]
+    },
+    "usage-forecast": {
+      "tags": [
+        "chart",
+        "cost",
+        "dashboard",
+        "drag",
+        "finance",
+        "forecast"
+      ],
+      "keywords": [
+        "budget",
+        "billing",
+        "spend",
+        "projection",
+        "forecast cone",
+        "token spend"
+      ]
+    },
+    "agent-orchestrator": {
+      "tags": [
+        "agent",
+        "dashboard",
+        "diagram",
+        "flow",
+        "multi-agent",
+        "progress",
+        "streaming"
+      ],
+      "keywords": [
+        "planner",
+        "parallel lanes",
+        "subtasks",
+        "fan-out",
+        "lead agent",
+        "swarm"
+      ]
+    },
+    "ai-composer": {
+      "tags": [
+        "chat",
+        "input",
+        "keyboard",
+        "menu",
+        "model",
+        "progress",
+        "prompt"
+      ],
+      "keywords": [
+        "prompt box",
+        "chat input",
+        "attachments",
+        "mentions",
+        "slash commands",
+        "send button"
+      ]
+    },
+    "model-arena": {
+      "tags": [
+        "card",
+        "chat",
+        "evals",
+        "feedback",
+        "model",
+        "ranking",
+        "streaming"
+      ],
+      "keywords": [
+        "blind test",
+        "side by side",
+        "leaderboard",
+        "vote",
+        "LLM comparison",
+        "head to head"
+      ]
+    },
+    "agent-tasks": {
+      "tags": [
+        "agent",
+        "app-shell",
+        "approval",
+        "board",
+        "dashboard",
+        "progress",
+        "streaming"
+      ],
+      "keywords": [
+        "background agents",
+        "coding agent",
+        "pull request",
+        "task list",
+        "async tasks",
+        "code review"
+      ]
+    },
+    "ai-chat": {
+      "tags": [
+        "chat",
+        "menu",
+        "model",
+        "reasoning",
+        "sources",
+        "streaming",
+        "tool-call"
+      ],
+      "keywords": [
+        "assistant",
+        "markdown",
+        "citations",
+        "thinking",
+        "message edit",
+        "retry",
+        "versions"
+      ]
+    },
+    "agent-approvals": {
+      "tags": [
+        "agent",
+        "approval",
+        "button",
+        "card",
+        "dialog",
+        "feedback",
+        "tool-call"
+      ],
+      "keywords": [
+        "human in the loop",
+        "permission",
+        "allow deny",
+        "confirm action",
+        "guardrail",
+        "tool arguments"
+      ]
+    },
+    "document-extract": {
+      "tags": [
+        "card",
+        "feedback",
+        "form",
+        "hover",
+        "media",
+        "retrieval",
+        "streaming",
+        "upload"
+      ],
+      "keywords": [
+        "OCR",
+        "structured output",
+        "invoice parsing",
+        "confidence",
+        "field extraction",
+        "PDF reader"
+      ]
+    },
+    "agent-routines": {
+      "tags": [
+        "agent",
+        "button",
+        "card",
+        "progress",
+        "settings",
+        "timeline",
+        "toggle"
+      ],
+      "keywords": [
+        "cron",
+        "scheduled agents",
+        "automation",
+        "run history",
+        "countdown",
+        "recurring tasks"
+      ]
+    },
+    "ai-side-panel": {
+      "tags": [
+        "agent",
+        "app-shell",
+        "approval",
+        "chat",
+        "context",
+        "feedback",
+        "streaming"
+      ],
+      "keywords": [
+        "copilot",
+        "docked assistant",
+        "word diff",
+        "inline edit",
+        "undo",
+        "page assistant",
+        "selection"
+      ]
+    },
+    "knowledge-base": {
+      "tags": [
+        "dashboard",
+        "progress",
+        "retrieval",
+        "search",
+        "settings",
+        "sources",
+        "upload"
+      ],
+      "keywords": [
+        "RAG",
+        "embeddings",
+        "chunking",
+        "vector index",
+        "rerank",
+        "document ingestion"
+      ]
+    },
+    "agent-memory": {
+      "tags": [
+        "agent",
+        "card",
+        "form",
+        "memory",
+        "search",
+        "settings",
+        "toggle"
+      ],
+      "keywords": [
+        "long-term memory",
+        "saved notes",
+        "forget",
+        "capacity meter",
+        "personalization",
+        "remember"
+      ]
+    },
+    "prompt-studio": {
+      "tags": [
+        "app-shell",
+        "evals",
+        "form",
+        "model",
+        "prompt",
+        "settings",
+        "streaming"
+      ],
+      "keywords": [
+        "prompt template",
+        "variables",
+        "versioning",
+        "playground",
+        "promote",
+        "test run",
+        "prompt editor"
+      ]
+    },
+    "command-menu": {
+      "tags": [
+        "app-shell",
+        "dialog",
+        "keyboard",
+        "menu",
+        "navigation",
+        "search"
+      ],
+      "keywords": [
+        "command palette",
+        "cmdk",
+        "spotlight",
+        "quick actions",
+        "shortcuts"
+      ]
+    },
+    "combobox": {
+      "tags": [
+        "form",
+        "input",
+        "keyboard",
+        "menu",
+        "picker",
+        "search"
+      ],
+      "keywords": [
+        "select",
+        "autocomplete",
+        "dropdown",
+        "multi-select",
+        "typeahead"
+      ]
+    },
+    "segmented-control": {
+      "tags": [
+        "button",
+        "gesture",
+        "hover",
+        "picker",
+        "tabs",
+        "toggle"
+      ],
+      "keywords": [
+        "switcher",
+        "pill tabs",
+        "radio group",
+        "sliding thumb"
+      ]
+    },
+    "otp-input": {
+      "tags": [
+        "feedback",
+        "form",
+        "input",
+        "keyboard",
+        "progress"
+      ],
+      "keywords": [
+        "verification code",
+        "2fa",
+        "passcode",
+        "pin",
+        "sign in"
+      ]
+    },
+    "dot-matrix-number": {
+      "tags": [
+        "dashboard",
+        "glass",
+        "hero",
+        "kpi",
+        "morph",
+        "text-effect"
+      ],
+      "keywords": [
+        "led display",
+        "dot numbers",
+        "vitals",
+        "counter",
+        "stat"
+      ]
+    },
+    "toaster": {
+      "tags": [
+        "feedback",
+        "gesture",
+        "hover",
+        "loading",
+        "notification",
+        "progress"
+      ],
+      "keywords": [
+        "toast",
+        "snackbar",
+        "alert",
+        "promise toast",
+        "swipe to dismiss"
+      ]
+    },
+    "notification-stack": {
+      "tags": [
+        "app-shell",
+        "card",
+        "dashboard",
+        "gesture",
+        "hover",
+        "notification"
+      ],
+      "keywords": [
+        "inbox",
+        "alerts",
+        "grouped notifications",
+        "clear all",
+        "fan out"
+      ]
+    },
+    "dropzone": {
+      "tags": [
+        "drag",
+        "feedback",
+        "form",
+        "progress",
+        "upload"
+      ],
+      "keywords": [
+        "file upload",
+        "drag and drop",
+        "attachments",
+        "file picker",
+        "dropbox"
+      ]
+    },
+    "usage-meter": {
+      "tags": [
+        "card",
+        "cost",
+        "dashboard",
+        "kpi",
+        "progress",
+        "settings"
+      ],
+      "keywords": [
+        "credits",
+        "quota",
+        "limits",
+        "billing",
+        "plan usage",
+        "reset date"
+      ]
+    },
+    "button": {
+      "tags": [
+        "button",
+        "feedback",
+        "form",
+        "loading",
+        "marketing"
+      ],
+      "keywords": [
+        "cta",
+        "variants",
+        "sizes",
+        "icon button",
+        "spinner"
+      ]
+    },
+    "filter-menu": {
+      "tags": [
+        "dashboard",
+        "form",
+        "menu",
+        "picker",
+        "search",
+        "table"
+      ],
+      "keywords": [
+        "filters",
+        "query builder",
+        "add filter",
+        "clear all",
+        "facets"
+      ]
+    },
+    "profile-menu": {
+      "tags": [
+        "app-shell",
+        "menu",
+        "navigation",
+        "picker",
+        "settings",
+        "toggle"
+      ],
+      "keywords": [
+        "account menu",
+        "avatar dropdown",
+        "workspace switcher",
+        "sign out",
+        "theme switcher"
+      ]
+    },
+    "logo-marquee": {
+      "tags": [
+        "hover",
+        "landing",
+        "marketing",
+        "scroll",
+        "scrub",
+        "social-proof"
+      ],
+      "keywords": [
+        "trusted by",
+        "logo cloud",
+        "customers strip",
+        "ticker",
+        "carousel"
+      ]
+    },
+    "dither-cards": {
+      "tags": [
+        "card",
+        "dither",
+        "gesture",
+        "kpi",
+        "landing",
+        "marketing",
+        "scroll"
+      ],
+      "keywords": [
+        "editorial cards",
+        "ascii art",
+        "carousel",
+        "slider",
+        "task bar",
+        "deltas"
+      ]
+    },
+    "testimonial-wall": {
+      "tags": [
+        "card",
+        "hover",
+        "landing",
+        "marketing",
+        "scroll",
+        "social-proof"
+      ],
+      "keywords": [
+        "reviews",
+        "quotes",
+        "customer love",
+        "wall of love",
+        "parallax columns"
+      ]
+    },
+    "market-terminal": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "finance",
+        "form",
+        "keyboard",
+        "realtime",
+        "table"
+      ],
+      "keywords": [
+        "candlestick",
+        "trading",
+        "watchlist",
+        "order ticket",
+        "stocks",
+        "moving average"
+      ]
+    },
+    "journey-flow": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "diagram",
+        "flow",
+        "hover",
+        "kpi",
+        "morph"
+      ],
+      "keywords": [
+        "sankey",
+        "funnel",
+        "conversion",
+        "channels",
+        "attribution",
+        "paths"
+      ]
+    },
+    "mrr-waterfall": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "finance",
+        "hover",
+        "kpi",
+        "morph",
+        "table"
+      ],
+      "keywords": [
+        "bridge",
+        "mrr",
+        "revenue",
+        "churn",
+        "expansion",
+        "saas metrics"
+      ]
+    },
+    "cohort-retention": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "hover",
+        "kpi",
+        "morph",
+        "table",
+        "timeline"
+      ],
+      "keywords": [
+        "retention triangle",
+        "heatmap",
+        "curves",
+        "segments",
+        "churn",
+        "cohorts"
+      ]
+    },
+    "dock": {
+      "tags": [
+        "app-shell",
+        "hover",
+        "landing",
+        "menu",
+        "navigation",
+        "pointer-follow"
+      ],
+      "keywords": [
+        "macOS dock",
+        "launcher",
+        "app switcher",
+        "magnify"
+      ]
+    },
+    "morph-nav": {
+      "tags": [
+        "hover",
+        "landing",
+        "marketing",
+        "menu",
+        "morph",
+        "navigation",
+        "search"
+      ],
+      "keywords": [
+        "header",
+        "navbar",
+        "dropdown",
+        "site nav"
+      ]
+    },
+    "orbit-menu": {
+      "tags": [
+        "app-shell",
+        "button",
+        "drag",
+        "gesture",
+        "menu",
+        "morph"
+      ],
+      "keywords": [
+        "radial menu",
+        "fab",
+        "speed dial",
+        "pie menu"
+      ]
+    },
+    "holo-card": {
+      "tags": [
+        "3d",
+        "card",
+        "glow",
+        "hover",
+        "landing",
+        "pointer-follow"
+      ],
+      "keywords": [
+        "membership card",
+        "foil",
+        "flip card",
+        "tilt",
+        "glitter"
+      ]
+    },
+    "glass-menu": {
+      "tags": [
+        "app-shell",
+        "glass",
+        "hover",
+        "keyboard",
+        "menu",
+        "morph"
+      ],
+      "keywords": [
+        "dropdown",
+        "context menu",
+        "popover",
+        "submenu",
+        "frosted"
+      ]
+    },
+    "glass-tabbar": {
+      "tags": [
+        "app-shell",
+        "drag",
+        "glass",
+        "navigation",
+        "scroll",
+        "search",
+        "tabs"
+      ],
+      "keywords": [
+        "refraction",
+        "bottom bar",
+        "floating bar",
+        "iOS tab bar"
+      ]
+    },
+    "glass-card": {
+      "tags": [
+        "3d",
+        "card",
+        "glass",
+        "media",
+        "morph",
+        "pointer-follow"
+      ],
+      "keywords": [
+        "photo card",
+        "detail sheet",
+        "tilt",
+        "rim light"
+      ]
+    },
+    "glass-segmented": {
+      "tags": [
+        "drag",
+        "gesture",
+        "glass",
+        "morph",
+        "settings",
+        "tabs",
+        "toggle"
+      ],
+      "keywords": [
+        "segmented control",
+        "switch",
+        "liquid drop",
+        "filter"
+      ]
+    },
+    "control-center": {
+      "tags": [
+        "app-shell",
+        "dashboard",
+        "drag",
+        "glass",
+        "morph",
+        "settings",
+        "toggle"
+      ],
+      "keywords": [
+        "quick settings",
+        "dial",
+        "slider",
+        "meters",
+        "panel"
+      ]
+    },
+    "action-morph": {
+      "tags": [
+        "app-shell",
+        "button",
+        "form",
+        "input",
+        "menu",
+        "morph"
+      ],
+      "keywords": [
+        "fab",
+        "floating button",
+        "composer",
+        "quick actions",
+        "check"
+      ]
+    },
+    "share-sheet": {
+      "tags": [
+        "app-shell",
+        "button",
+        "dialog",
+        "form",
+        "menu",
+        "morph"
+      ],
+      "keywords": [
+        "share",
+        "copy link",
+        "permissions",
+        "invite",
+        "popover"
+      ]
+    },
+    "sheet-stack": {
+      "tags": [
+        "app-shell",
+        "dialog",
+        "drag",
+        "gesture",
+        "screen"
+      ],
+      "keywords": [
+        "bottom sheet",
+        "modal",
+        "drawer",
+        "nested sheets",
+        "dismiss"
+      ]
+    },
+    "time-dial": {
+      "tags": [
+        "dashboard",
+        "drag",
+        "gesture",
+        "map",
+        "picker",
+        "settings",
+        "timeline"
+      ],
+      "keywords": [
+        "time zones",
+        "world clock",
+        "rotary",
+        "knob",
+        "working hours"
+      ]
+    },
+    "date-reel": {
+      "tags": [
+        "3d",
+        "drag",
+        "form",
+        "gesture",
+        "glass",
+        "picker",
+        "scroll"
+      ],
+      "keywords": [
+        "wheel picker",
+        "date picker",
+        "time picker",
+        "drum",
+        "iOS"
+      ]
+    },
+    "activity-rings": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "finance",
+        "kpi",
+        "progress",
+        "scrub"
+      ],
+      "keywords": [
+        "fitness rings",
+        "goals",
+        "apple watch",
+        "week picker",
+        "tick ring"
+      ]
+    },
+    "slot-text": {
+      "tags": [
+        "dashboard",
+        "kpi",
+        "marketing",
+        "morph",
+        "text-effect"
+      ],
+      "keywords": [
+        "slot machine",
+        "odometer",
+        "number ticker",
+        "reels",
+        "counter"
+      ]
+    },
+    "now-playing": {
+      "tags": [
+        "app-shell",
+        "drag",
+        "gesture",
+        "media",
+        "morph",
+        "scrub"
+      ],
+      "keywords": [
+        "music player",
+        "audio player",
+        "mini player",
+        "waveform",
+        "album art"
+      ]
+    },
+    "voice-recorder": {
+      "tags": [
+        "chat",
+        "gesture",
+        "media",
+        "morph",
+        "scrub",
+        "upload",
+        "voice"
+      ],
+      "keywords": [
+        "audio message",
+        "voice note",
+        "waveform",
+        "microphone",
+        "record"
+      ]
+    },
+    "mega-menu-morph": {
+      "tags": [
+        "hover",
+        "landing",
+        "marketing",
+        "menu",
+        "morph",
+        "navigation"
+      ],
+      "keywords": [
+        "header",
+        "navbar",
+        "dropdown",
+        "safe triangle",
+        "accordion",
+        "mobile nav"
+      ]
+    },
+    "sunburst": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "diagram",
+        "hierarchy",
+        "hover",
+        "morph"
+      ],
+      "keywords": [
+        "radial",
+        "donut",
+        "drilldown",
+        "ring chart",
+        "breadcrumb",
+        "zoomable"
+      ]
+    },
+    "sankey-flow": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "diagram",
+        "flow",
+        "graph",
+        "hover",
+        "particles"
+      ],
+      "keywords": [
+        "sankey",
+        "ribbons",
+        "user journey",
+        "funnel flow",
+        "alluvial",
+        "pipeline"
+      ]
+    },
+    "streamgraph": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "gradient",
+        "hover",
+        "morph",
+        "timeline"
+      ],
+      "keywords": [
+        "stacked area",
+        "wiggle baseline",
+        "time series",
+        "layers",
+        "themeriver"
+      ]
+    },
+    "radar-chart": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "evals",
+        "hover",
+        "morph",
+        "scrub"
+      ],
+      "keywords": [
+        "spider chart",
+        "web chart",
+        "skills profile",
+        "comparison",
+        "polar",
+        "model comparison"
+      ]
+    },
+    "funnel-chart": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "flow",
+        "kpi",
+        "marketing",
+        "particles"
+      ],
+      "keywords": [
+        "conversion",
+        "drop-off",
+        "sales funnel",
+        "analytics",
+        "device split",
+        "tapered band"
+      ]
+    },
+    "realtime-stream": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "hover",
+        "observability",
+        "realtime",
+        "timeline"
+      ],
+      "keywords": [
+        "latency",
+        "canvas",
+        "live feed",
+        "anomaly",
+        "monitoring",
+        "scrolling line"
+      ]
+    },
+    "treemap": {
+      "tags": [
+        "chart",
+        "cost",
+        "dashboard",
+        "diagram",
+        "hierarchy",
+        "hover",
+        "morph"
+      ],
+      "keywords": [
+        "squarified",
+        "zoom",
+        "breadcrumb",
+        "drilldown",
+        "tiles",
+        "disk usage"
+      ]
+    },
+    "ridgeline": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "evals",
+        "gradient",
+        "hover",
+        "morph"
+      ],
+      "keywords": [
+        "joyplot",
+        "distributions",
+        "quartiles",
+        "density",
+        "ridges",
+        "histogram"
+      ]
+    },
+    "race-bar-chart": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "morph",
+        "physics",
+        "ranking",
+        "scrub",
+        "timeline"
+      ],
+      "keywords": [
+        "bar chart race",
+        "leaderboard",
+        "overtake",
+        "springs",
+        "count up",
+        "playback"
+      ]
+    },
+    "data-grid": {
+      "tags": [
+        "app-shell",
+        "chart",
+        "dashboard",
+        "drag",
+        "keyboard",
+        "scroll",
+        "table"
+      ],
+      "keywords": [
+        "spreadsheet",
+        "virtualised",
+        "sortable",
+        "resize columns",
+        "sparkline",
+        "range select"
+      ]
+    },
+    "data-flow": {
+      "tags": [
+        "diagram",
+        "flow",
+        "graph",
+        "landing",
+        "marketing",
+        "particles"
+      ],
+      "keywords": [
+        "pipeline",
+        "ETL",
+        "sources and destinations",
+        "data processing",
+        "fan out"
+      ]
+    },
+    "payment-flow": {
+      "tags": [
+        "diagram",
+        "finance",
+        "flow",
+        "landing",
+        "marketing",
+        "timeline"
+      ],
+      "keywords": [
+        "card tap",
+        "checkout",
+        "settlement",
+        "bank",
+        "network",
+        "payments"
+      ]
+    },
+    "prompt-cache": {
+      "tags": [
+        "context",
+        "cost",
+        "diagram",
+        "flow",
+        "prompt",
+        "timeline"
+      ],
+      "keywords": [
+        "caching",
+        "prefix cache",
+        "token savings",
+        "latency",
+        "cache hit"
+      ]
+    },
+    "vector-search": {
+      "tags": [
+        "diagram",
+        "graph",
+        "map",
+        "model",
+        "retrieval",
+        "search"
+      ],
+      "keywords": [
+        "embeddings",
+        "RAG",
+        "nearest neighbour",
+        "semantic search",
+        "vector database",
+        "index"
+      ]
+    },
+    "multi-region-failover": {
+      "tags": [
+        "diagram",
+        "flow",
+        "landing",
+        "map",
+        "observability",
+        "realtime"
+      ],
+      "keywords": [
+        "load balancer",
+        "high availability",
+        "resilience",
+        "infrastructure",
+        "traffic shift",
+        "uptime"
+      ]
+    },
+    "agent-loop": {
+      "tags": [
+        "agent",
+        "context",
+        "diagram",
+        "flow",
+        "reasoning",
+        "tool-call"
+      ],
+      "keywords": [
+        "gather act verify",
+        "agentic loop",
+        "ReAct",
+        "verification",
+        "orchestration"
+      ]
+    },
+    "mixture-of-experts": {
+      "tags": [
+        "diagram",
+        "flow",
+        "graph",
+        "model",
+        "ranking"
+      ],
+      "keywords": [
+        "MoE",
+        "router",
+        "gating",
+        "top-k experts",
+        "tokens",
+        "sparse model"
+      ]
+    },
+    "speculative-decoding": {
+      "tags": [
+        "diagram",
+        "flow",
+        "model",
+        "streaming",
+        "timeline"
+      ],
+      "keywords": [
+        "draft model",
+        "inference speedup",
+        "token verification",
+        "LLM inference",
+        "decoding"
+      ]
+    },
+    "reasoning-tree": {
+      "tags": [
+        "agent",
+        "diagram",
+        "graph",
+        "hierarchy",
+        "reasoning"
+      ],
+      "keywords": [
+        "tree of thoughts",
+        "search",
+        "pruning",
+        "scoring",
+        "chain of thought",
+        "best path"
+      ]
+    },
+    "agent-timeline": {
+      "tags": [
+        "agent",
+        "cost",
+        "diagram",
+        "multi-agent",
+        "observability",
+        "timeline"
+      ],
+      "keywords": [
+        "orchestrator",
+        "handoffs",
+        "trace",
+        "token counter",
+        "run log",
+        "gantt"
+      ]
+    },
+    "neural-panels": {
+      "tags": [
+        "3d",
+        "agent",
+        "card",
+        "dither",
+        "landing",
+        "particles",
+        "streaming"
+      ],
+      "keywords": [
+        "brain",
+        "terrain",
+        "editorial",
+        "typing log",
+        "hero art"
+      ]
+    },
+    "telemetry-board": {
+      "tags": [
+        "card",
+        "dashboard",
+        "dither",
+        "glass",
+        "kpi",
+        "observability",
+        "realtime"
+      ],
+      "keywords": [
+        "telemetry",
+        "vitals",
+        "metrics",
+        "editorial panels"
+      ]
+    },
+    "integration-beam": {
+      "tags": [
+        "diagram",
+        "flow",
+        "glow",
+        "landing",
+        "marketing"
+      ],
+      "keywords": [
+        "integrations",
+        "connect tools",
+        "light pulse",
+        "curved beams"
+      ]
+    },
+    "pipeline-steps": {
+      "tags": [
+        "diagram",
+        "flow",
+        "landing",
+        "marketing",
+        "progress",
+        "timeline"
+      ],
+      "keywords": [
+        "how it works",
+        "steps",
+        "pipeline",
+        "stepper"
+      ]
+    },
+    "step-cards": {
+      "tags": [
+        "agent",
+        "approval",
+        "card",
+        "landing",
+        "marketing",
+        "onboarding",
+        "timeline"
+      ],
+      "keywords": [
+        "how it works",
+        "sequence",
+        "AI draft",
+        "review",
+        "scenes"
+      ]
+    },
+    "voice-orb": {
+      "tags": [
+        "3d",
+        "agent",
+        "hero",
+        "loading",
+        "particles",
+        "streaming",
+        "voice"
+      ],
+      "keywords": [
+        "listening",
+        "speaking",
+        "assistant",
+        "dots sphere",
+        "siri"
+      ]
+    },
+    "agent-team": {
+      "tags": [
+        "agent",
+        "diagram",
+        "hierarchy",
+        "landing",
+        "multi-agent",
+        "prompt",
+        "streaming"
+      ],
+      "keywords": [
+        "orchestrator",
+        "branching",
+        "typing prompt",
+        "subagents",
+        "team"
+      ]
+    },
+    "logo-cluster": {
+      "tags": [
+        "diagram",
+        "hero",
+        "landing",
+        "marketing",
+        "physics",
+        "social-proof"
+      ],
+      "keywords": [
+        "logos",
+        "integrations",
+        "bounce",
+        "brand mark",
+        "partners"
+      ]
+    },
+    "lead-sourcing": {
+      "tags": [
+        "agent",
+        "diagram",
+        "flow",
+        "glow",
+        "landing",
+        "marketing"
+      ],
+      "keywords": [
+        "leads",
+        "connection shine",
+        "AI tile",
+        "integration",
+        "sales"
+      ]
+    },
+    "integration-grid": {
+      "tags": [
+        "background",
+        "glow",
+        "graph",
+        "hover",
+        "landing",
+        "marketing",
+        "social-proof"
+      ],
+      "keywords": [
+        "honeycomb",
+        "app tiles",
+        "ripple",
+        "integrations wall",
+        "hex grid"
+      ]
+    },
+    "project-flow": {
+      "tags": [
+        "agent",
+        "board",
+        "diagram",
+        "flow",
+        "hierarchy",
+        "marketing"
+      ],
+      "keywords": [
+        "subtasks",
+        "client task",
+        "notes",
+        "roles",
+        "tree"
+      ]
+    },
+    "team-invite": {
+      "tags": [
+        "card",
+        "drag",
+        "marketing",
+        "onboarding",
+        "pointer-follow",
+        "settings"
+      ],
+      "keywords": [
+        "invite",
+        "teammate",
+        "presence",
+        "online",
+        "cursor",
+        "collaboration"
+      ]
+    },
+    "glow-keyboard": {
+      "tags": [
+        "chat",
+        "glass",
+        "glow",
+        "hero",
+        "input",
+        "keyboard",
+        "landing"
+      ],
+      "keywords": [
+        "typing",
+        "chat input",
+        "floor",
+        "prompt box",
+        "keys"
+      ]
+    },
+    "glow-cloud": {
+      "tags": [
+        "empty-state",
+        "feedback",
+        "glow",
+        "hero",
+        "morph",
+        "pointer-follow"
+      ],
+      "keywords": [
+        "mascot",
+        "character",
+        "cloud",
+        "blink",
+        "wink",
+        "eyes"
+      ]
+    },
+    "empty-calendar": {
+      "tags": [
+        "card",
+        "empty-state",
+        "hover",
+        "morph",
+        "timeline"
+      ],
+      "keywords": [
+        "calendar",
+        "no events",
+        "fan out",
+        "no meetings"
+      ]
+    },
+    "ghosted-chat": {
+      "tags": [
+        "card",
+        "chat",
+        "comment",
+        "empty-state",
+        "feedback"
+      ],
+      "keywords": [
+        "unanswered",
+        "read receipts",
+        "messages",
+        "inbox zero",
+        "ghosted"
+      ]
+    },
+    "tab-overload": {
+      "tags": [
+        "card",
+        "hover",
+        "marketing",
+        "navigation",
+        "pointer-follow",
+        "tabs"
+      ],
+      "keywords": [
+        "browser windows",
+        "overlapping",
+        "tab highlight",
+        "many tabs",
+        "clutter"
+      ]
+    },
+    "dither-field": {
+      "tags": [
+        "background",
+        "dither",
+        "gradient",
+        "hero",
+        "landing",
+        "particles"
+      ],
+      "keywords": [
+        "noise",
+        "halftone",
+        "dots",
+        "ambient",
+        "backdrop"
+      ]
+    },
+    "text-reveal": {
+      "tags": [
+        "hero",
+        "landing",
+        "marketing",
+        "scroll",
+        "streaming",
+        "text-effect"
+      ],
+      "keywords": [
+        "word by word",
+        "fade in",
+        "blur in",
+        "typewriter",
+        "headline"
+      ]
+    },
+    "blur-crossfade": {
+      "tags": [
+        "card",
+        "feedback",
+        "morph",
+        "tabs",
+        "text-effect"
+      ],
+      "keywords": [
+        "transition",
+        "swap",
+        "resize",
+        "content switch",
+        "crossfade"
+      ]
+    },
+    "number-ticker": {
+      "tags": [
+        "dashboard",
+        "finance",
+        "kpi",
+        "pricing",
+        "realtime",
+        "text-effect"
+      ],
+      "keywords": [
+        "odometer",
+        "counter",
+        "rolling digits",
+        "stat",
+        "animated number"
+      ]
+    },
+    "dither-image": {
+      "tags": [
+        "dither",
+        "hero",
+        "landing",
+        "media",
+        "paper",
+        "particles"
+      ],
+      "keywords": [
+        "halftone",
+        "image filter",
+        "dot art",
+        "stipple",
+        "retro"
+      ]
+    },
+    "gradient-text": {
+      "tags": [
+        "fluid",
+        "gradient",
+        "hero",
+        "landing",
+        "marketing",
+        "text-effect"
+      ],
+      "keywords": [
+        "headline",
+        "liquid",
+        "shimmer text",
+        "colourful",
+        "title"
+      ]
+    },
+    "shimmer-loader": {
+      "tags": [
+        "card",
+        "chat",
+        "dashboard",
+        "loading",
+        "progress",
+        "streaming"
+      ],
+      "keywords": [
+        "skeleton",
+        "placeholder",
+        "sweep",
+        "shimmer",
+        "content loading"
+      ]
+    },
+    "grid-background": {
+      "tags": [
+        "app-shell",
+        "background",
+        "hero",
+        "landing",
+        "marketing",
+        "scroll"
+      ],
+      "keywords": [
+        "lines",
+        "graph paper",
+        "blueprint",
+        "backdrop",
+        "pattern"
+      ]
+    },
+    "gradient-floor": {
+      "tags": [
+        "background",
+        "fluid",
+        "glow",
+        "gradient",
+        "hero",
+        "landing"
+      ],
+      "keywords": [
+        "aurora",
+        "horizon",
+        "blurred glow",
+        "backdrop",
+        "sunrise"
+      ]
+    },
+    "agent-run": {
+      "tags": [
+        "agent",
+        "app-shell",
+        "approval",
+        "reasoning",
+        "screen",
+        "timeline",
+        "tool-call"
+      ],
+      "keywords": [
+        "autonomous run",
+        "plan",
+        "diff",
+        "draft review",
+        "human in the loop",
+        "agent trace"
+      ]
+    },
+    "agent-chat": {
+      "tags": [
+        "agent",
+        "app-shell",
+        "chat",
+        "context",
+        "form",
+        "multi-agent",
+        "screen"
+      ],
+      "keywords": [
+        "orchestrator",
+        "brief",
+        "sidebar chat",
+        "assistant workspace",
+        "copilot"
+      ]
+    },
+    "mission-control": {
+      "tags": [
+        "app-shell",
+        "approval",
+        "dashboard",
+        "kpi",
+        "multi-agent",
+        "observability",
+        "realtime",
+        "screen"
+      ],
+      "keywords": [
+        "ops",
+        "agent lanes",
+        "throughput",
+        "run log",
+        "human queue",
+        "command center"
+      ]
+    },
+    "research-desk": {
+      "tags": [
+        "agent",
+        "app-shell",
+        "hover",
+        "reasoning",
+        "retrieval",
+        "screen",
+        "sources"
+      ],
+      "keywords": [
+        "citations",
+        "brief writer",
+        "provenance",
+        "claims",
+        "deep research",
+        "report"
+      ]
+    },
+    "agent-workbench": {
+      "tags": [
+        "agent",
+        "app-shell",
+        "approval",
+        "comment",
+        "keyboard",
+        "screen",
+        "scrub",
+        "timeline"
+      ],
+      "keywords": [
+        "co-editing",
+        "tracked changes",
+        "suggestions",
+        "margin notes",
+        "cursor",
+        "document editor",
+        "tape"
+      ]
+    },
+    "eval-lab": {
+      "tags": [
+        "app-shell",
+        "chart",
+        "cost",
+        "dashboard",
+        "evals",
+        "model",
+        "screen",
+        "table"
+      ],
+      "keywords": [
+        "benchmark",
+        "regressions",
+        "compare models",
+        "candidate release",
+        "latency",
+        "test suite"
+      ]
+    },
+    "task-tracker": {
+      "tags": [
+        "agent",
+        "app-shell",
+        "board",
+        "drag",
+        "screen",
+        "table",
+        "timeline"
+      ],
+      "keywords": [
+        "kanban",
+        "project management",
+        "issues",
+        "list view",
+        "gantt",
+        "tickets"
+      ]
+    },
+    "ops-dashboard": {
+      "tags": [
+        "app-shell",
+        "chart",
+        "dashboard",
+        "forecast",
+        "kpi",
+        "marketing",
+        "screen",
+        "table"
+      ],
+      "keywords": [
+        "business overview",
+        "revenue",
+        "funnel",
+        "channels",
+        "regions",
+        "analytics",
+        "metrics"
+      ]
+    },
+    "accounting": {
+      "tags": [
+        "agent",
+        "app-shell",
+        "finance",
+        "form",
+        "screen",
+        "table",
+        "tabs"
+      ],
+      "keywords": [
+        "month-end close",
+        "reconciliation",
+        "invoices",
+        "ledger",
+        "P&L",
+        "bookkeeping",
+        "journal"
+      ]
+    },
+    "finance": {
+      "tags": [
+        "app-shell",
+        "chart",
+        "dashboard",
+        "finance",
+        "forecast",
+        "kpi",
+        "screen",
+        "table"
+      ],
+      "keywords": [
+        "cash runway",
+        "budget vs actual",
+        "scenarios",
+        "subscriptions",
+        "spend",
+        "burn rate"
+      ]
+    },
+    "provenance-trail": {
+      "tags": [
+        "card",
+        "chat",
+        "hover",
+        "observability",
+        "reasoning",
+        "sources"
+      ],
+      "keywords": [
+        "citations",
+        "claims",
+        "attribution",
+        "grounded answer",
+        "fact check",
+        "footnotes"
+      ]
+    },
+    "confidence-dither": {
+      "tags": [
+        "chart",
+        "dither",
+        "evals",
+        "hover",
+        "model",
+        "observability"
+      ],
+      "keywords": [
+        "uncertainty",
+        "logprobs",
+        "token probability",
+        "distribution",
+        "halftone"
+      ]
+    },
+    "run-scrubber": {
+      "tags": [
+        "agent",
+        "drag",
+        "keyboard",
+        "observability",
+        "progress",
+        "scrub",
+        "timeline"
+      ],
+      "keywords": [
+        "playback",
+        "replay",
+        "trace",
+        "tape",
+        "run history",
+        "debugger"
+      ]
+    },
+    "token-scope": {
+      "tags": [
+        "chart",
+        "cost",
+        "model",
+        "observability",
+        "realtime",
+        "streaming",
+        "tool-call"
+      ],
+      "keywords": [
+        "oscilloscope",
+        "latency",
+        "tokens per second",
+        "throughput",
+        "stalls",
+        "telemetry"
+      ]
+    },
+    "readout-bar": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "kpi",
+        "observability",
+        "progress",
+        "realtime"
+      ],
+      "keywords": [
+        "metrics strip",
+        "stats row",
+        "deltas",
+        "sparklines",
+        "tolerances",
+        "gauge"
+      ]
+    },
+    "spec-table": {
+      "tags": [
+        "dashboard",
+        "dither",
+        "evals",
+        "keyboard",
+        "ranking",
+        "table"
+      ],
+      "keywords": [
+        "data grid",
+        "sortable",
+        "sticky header",
+        "score bars",
+        "row selection",
+        "spreadsheet"
+      ]
+    },
+    "instrument-form": {
+      "tags": [
+        "drag",
+        "form",
+        "input",
+        "keyboard",
+        "picker",
+        "settings",
+        "toggle"
+      ],
+      "keywords": [
+        "fields",
+        "select",
+        "slider",
+        "stepper",
+        "save bar",
+        "preferences"
+      ]
+    },
+    "instrument-shell": {
+      "tags": [
+        "app-shell",
+        "dashboard",
+        "keyboard",
+        "menu",
+        "navigation",
+        "search"
+      ],
+      "keywords": [
+        "sidebar",
+        "rail",
+        "command palette",
+        "layout",
+        "frame",
+        "cmd-k",
+        "breadcrumb"
+      ]
+    },
+    "instrument-hero": {
+      "tags": [
+        "chart",
+        "hero",
+        "landing",
+        "marketing",
+        "social-proof",
+        "text-effect"
+      ],
+      "keywords": [
+        "editorial",
+        "headline",
+        "specimen plot",
+        "proof numbers",
+        "above the fold"
+      ]
+    },
+    "instrument-pricing": {
+      "tags": [
+        "cost",
+        "drag",
+        "landing",
+        "marketing",
+        "picker",
+        "pricing",
+        "table"
+      ],
+      "keywords": [
+        "plans",
+        "usage slider",
+        "calculator",
+        "comparison table",
+        "tiers",
+        "billing"
+      ]
+    },
+    "condensation": {
+      "tags": [
+        "card",
+        "drag",
+        "fluid",
+        "gesture",
+        "glass",
+        "hover",
+        "memory"
+      ],
+      "keywords": [
+        "fog",
+        "frosted glass",
+        "wipe to reveal",
+        "hide secrets",
+        "api keys",
+        "privacy blur",
+        "reveal on hover",
+        "scratch to reveal",
+        "steamed window",
+        "peek",
+        "stage",
+        "film",
+        "original"
+      ]
+    },
+    "agent-pebble": {
+      "tags": [
+        "agent",
+        "approval",
+        "drag",
+        "glass",
+        "morph",
+        "notification"
+      ],
+      "keywords": [
+        "floating status",
+        "dynamic island",
+        "background agent",
+        "agent status",
+        "glass pill",
+        "liquid glass",
+        "approval prompt",
+        "dockable widget",
+        "original"
+      ]
+    },
+    "scroll-edge": {
+      "tags": [
+        "app-shell",
+        "chat",
+        "glass",
+        "navigation",
+        "scroll"
+      ],
+      "keywords": [
+        "scroll edge",
+        "progressive blur",
+        "collapsing header",
+        "large title",
+        "glass navbar",
+        "liquid glass",
+        "frosted glass",
+        "chat thread",
+        "sticky header",
+        "floating composer",
+        "soft edge",
+        "ios scroll",
+        "original"
+      ]
+    },
+    "seal": {
+      "tags": [
+        "agent",
+        "approval",
+        "button",
+        "dither",
+        "paper",
+        "physics"
+      ],
+      "keywords": [
+        "approve button",
+        "confirm action",
+        "sign off",
+        "wax seal",
+        "stamp",
+        "publish approval",
+        "undo window",
+        "human in the loop",
+        "original"
+      ]
+    },
+    "run-receipt": {
+      "tags": [
+        "agent",
+        "card",
+        "cost",
+        "drag",
+        "observability",
+        "paper"
+      ],
+      "keywords": [
+        "receipt",
+        "invoice",
+        "cost breakdown",
+        "usage",
+        "billing",
+        "token cost",
+        "tear off",
+        "thermal printer",
+        "original"
+      ]
+    },
+    "tracing-paper": {
+      "tags": [
+        "comment",
+        "drag",
+        "feedback",
+        "paper",
+        "scrub"
+      ],
+      "keywords": [
+        "before after slider",
+        "diff viewer",
+        "compare versions",
+        "review ai edit",
+        "image compare",
+        "version history",
+        "redline",
+        "overlay compare",
+        "original"
+      ]
+    },
+    "patchbay": {
+      "tags": [
+        "agent",
+        "drag",
+        "graph",
+        "physics",
+        "settings",
+        "tool-call"
+      ],
+      "keywords": [
+        "patch cable",
+        "integrations",
+        "permissions",
+        "connect tools",
+        "agent access",
+        "wiring",
+        "mcp setup",
+        "scopes",
+        "original"
+      ]
+    },
+    "loop-select": {
+      "tags": [
+        "agent",
+        "drag",
+        "gesture",
+        "media",
+        "pointer-follow",
+        "prompt"
+      ],
+      "keywords": [
+        "lasso select",
+        "loop to ask",
+        "freehand selection",
+        "multi select files",
+        "draw to select",
+        "marquee",
+        "bulk actions",
+        "select with pen",
+        "original"
+      ]
+    },
+    "folio": {
+      "tags": [
+        "3d",
+        "card",
+        "model",
+        "morph",
+        "picker",
+        "pricing"
+      ],
+      "keywords": [
+        "pricing",
+        "plans",
+        "compare",
+        "comparison table",
+        "model picker",
+        "tiers",
+        "accordion",
+        "fold",
+        "original"
+      ]
+    },
+    "bead-stepper": {
+      "tags": [
+        "3d",
+        "agent",
+        "approval",
+        "onboarding",
+        "progress",
+        "timeline"
+      ],
+      "keywords": [
+        "stepper",
+        "progress",
+        "abacus",
+        "onboarding",
+        "checklist",
+        "agent run",
+        "wizard",
+        "timeline",
+        "original"
+      ]
+    },
+    "faderbank": {
+      "tags": [
+        "drag",
+        "form",
+        "input",
+        "model",
+        "realtime",
+        "toggle"
+      ],
+      "keywords": [
+        "faders",
+        "mixing desk",
+        "model parameters",
+        "temperature",
+        "top-p",
+        "max tokens",
+        "sliders",
+        "A/B test",
+        "playground",
+        "autoplay",
+        "original"
+      ]
+    },
+    "resonance-search": {
+      "tags": [
+        "input",
+        "physics",
+        "ranking",
+        "retrieval",
+        "search"
+      ],
+      "keywords": [
+        "search",
+        "semantic search",
+        "knowledge base",
+        "help center",
+        "relevance",
+        "ranking",
+        "rag sources",
+        "results list",
+        "command search",
+        "original"
+      ]
+    },
+    "marker-pass": {
+      "tags": [
+        "dither",
+        "reasoning",
+        "retrieval",
+        "sources",
+        "text-effect"
+      ],
+      "keywords": [
+        "citations",
+        "source highlighting",
+        "document Q&A",
+        "RAG grounding",
+        "highlighter",
+        "footnotes",
+        "answer sources",
+        "attribution",
+        "document viewer",
+        "original"
+      ]
+    },
+    "assembler": {
+      "tags": [
+        "agent",
+        "card",
+        "chart",
+        "loading",
+        "morph",
+        "streaming"
+      ],
+      "keywords": [
+        "generative ui",
+        "streaming ui",
+        "json render",
+        "a2ui",
+        "skeleton loader",
+        "agent card",
+        "dynamic layout",
+        "flip animation",
+        "original"
+      ]
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "hue",
+  "sets": ["web"],
+  "skillSays": [
+    "Hue is a generator of design languages: it works from a brand, URL, screenshot or description and produces a written design system (philosophy, tokens, components, anti-patterns) that later pages are built from.",
+    "Everything is recorded first in one design-model.yaml (primitives, semantic colours for light and dark, spacing, radii, type, elevation, motion, hero stage, icon kit); every page value must trace back to it.",
+    "It pushes against AI-default choices: a banned list of display fonts (Space Grotesk, Playfair, Fraunces, Inter as a headline) and genre palettes (navy and teal fintech, violet on dark, sage and cream wellness) unless the real brand uses them.",
+    "It requires a composed hero stage (background field plus a hero subject and how they relate), one icon kit chosen on stated criteria, 8px spacing, one elevation strategy and one motion personality, each stated as a number.",
+    "Output is validated: contrast on core pairs, no undefined tokens, no placeholder text, and both light and dark modes are checked by screenshot."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Wrote design-model.yaml for Tidewater first, a flat tide-table language: Bricolage Grotesque headlines, Hanken Grotesk body and IBM Plex Mono for every time, count and price, all from the skill's non-default font pool.",
+      "Rejected the obvious navy-and-teal 'sea' palette as a banned genre default and used cool ink and paper with a single buoy-orange signal colour; primary buttons are ink, and orange appears only on the open slot, the underline and the index numbers.",
+      "Built a defined hero stage: a faint wave-line pattern field, a schedule window as the hero subject and a single contact shadow as the relation, with hairline rules instead of boxes for the three features.",
+      "Chose Material Symbols Rounded as the icon kit with written reasoning (rounded terminals, regular stroke, loads from Google Fonts) and added a matching dark mode."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Followed the model's flat elevation rule: plans are ruled columns separated by hairlines, and the recommended plan is the one inverted ink column rather than a shadowed, glowing card.",
+      "Prices and billing notes use the mono metric style (mono_for_metrics is true in the model), and the saving badge is the only filled orange chip.",
+      "Segmented toggle uses ink fill for the active state, the same action colour as every primary button."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Inputs use the model's component spec (1.5px visible border, 8px radius, 2px orange focus outline with offset), and the error state adds a tinted fill from the error_bg token plus an icon and message.",
+      "The three setup steps are a ruled numbered list in mono, echoing the tide-table language rather than a card stack.",
+      "Every colour on the page resolves to a token from the model's light or dark map, with text3 set to neutral 600 after checking that the first choice failed 4.5:1 on the paper background."
+    ]}
+  ]
+}

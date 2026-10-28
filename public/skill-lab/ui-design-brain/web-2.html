@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf9f5;--surface:#fff;--ink:#14161a;--ink-2:#565b63;--ink-3:#8a8f97;--line:#e7e4db;--accent:#0b5cd5;--accent-soft:#eef3fd;--ok:#17794a;--ok-bg:#e3f4ea;--s2:16px;--s3:24px;--s4:32px;--s5:48px;--s6:64px}
+*{box-sizing:border-box;margin:0}
+body{font:400 16px/1.6 "Instrument Sans",system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;padding:var(--s5) var(--s4)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1120px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s4);margin-bottom:var(--s4);flex-wrap:wrap}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:var(--s2)}
+h1{font:800 clamp(36px,4.6vw,58px)/1 "Bricolage Grotesque";letter-spacing:-.04em;max-width:16em}
+.seg{position:relative;display:inline-grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#efede5;border-radius:12px;padding:4px;min-width:300px;isolation:isolate}
+.seg button{all:unset;cursor:pointer;position:relative;z-index:1;min-height:44px;display:flex;justify-content:center;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--ink-2);border-radius:9px;transition:color .2s ease-out}
+.seg button[aria-checked=true]{color:var(--ink)}
+.seg button:focus-visible{outline:2px solid var(--accent)}
+.seg .ind{position:absolute;z-index:0;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:var(--surface);border-radius:9px;box-shadow:0 1px 3px #14161a2e;transition:transform .22s ease-out}
+.seg[data-y=true] .ind{transform:translateX(100%)}
+.pill{font-size:12px;font-weight:700;background:var(--ok-bg);color:var(--ok);padding:2px 8px;border-radius:999px}
+/* one shared surface, three lanes */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--surface);border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.plan{padding:var(--s4);display:flex;flex-direction:column;position:relative}
+.plan+.plan{border-left:1px solid var(--line)}
+.plan.pop{background:var(--accent-soft)}
+.name{display:flex;align-items:center;justify-content:space-between;min-height:32px;margin-bottom:var(--s2)}
+.name h2{font:700 24px "Bricolage Grotesque";letter-spacing:-.02em}
+.badge{background:var(--accent);color:#fff;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px}
+.for{color:var(--ink-2);font-size:15px;min-height:48px;margin-bottom:var(--s3)}
+.price{display:flex;align-items:baseline;gap:6px;height:64px}
+.cur{font:700 24px "Bricolage Grotesque";align-self:flex-start;margin-top:6px}
+.amt{font:800 60px/1 "Bricolage Grotesque";letter-spacing:-.05em;font-variant-numeric:tabular-nums;display:inline-block}
+.amt.flip{animation:flip .22s ease-out}
+@keyframes flip{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.per{color:var(--ink-3);font-size:15px}
+.billed{font-size:14px;color:var(--ink-2);min-height:24px;margin:4px 0 var(--s3)}
+.btn{display:flex;align-items:center;justify-content:center;height:48px;border-radius:12px;font:600 15px "Instrument Sans";text-decoration:none;transition:background .18s ease-out}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#094eb4}
+.btn-secondary{border:1px solid #cfcbc0;color:var(--ink);background:transparent}.btn-secondary:hover{background:#f3f1ea}
+.lead{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase;margin:var(--s4) 0 12px}
+ul{list-style:none;padding:0;display:grid;gap:12px}
+li{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:15px;line-height:1.45}
+li svg{width:20px;height:20px;color:var(--accent);margin-top:1px}
+li.off{color:var(--ink-3)}li.off svg{color:#c4c0b4}
+.foot{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;margin-top:var(--s3);color:var(--ink-2);font-size:14px}
+.foot a{color:var(--accent);font-weight:600;text-underline-offset:4px}
+@media(max-width:900px){.plans{grid-template-columns:1fr}.plan+.plan{border-left:0;border-top:1px solid var(--line)}.for{min-height:0}}
+@media(max-width:600px){body{padding:var(--s4) var(--s2)}.seg{width:100%}.plan{padding:var(--s3)}.amt{font-size:52px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ok" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="currentColor" opacity=".13"/><path d="m6 10.2 2.6 2.6L14 7.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="no" viewBox="0 0 20 20" fill="none"><path d="M6.5 10h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol></defs></svg>
+<div class="wrap">
+<div class="top">
+  <div><div class="eyebrow">Pricing</div><h1>Pay for the clinic you run today.</h1></div>
+  <div class="seg" id="seg" role="radiogroup" aria-label="Billing period" data-y="false"><span class="ind"></span>
+    <button role="radio" aria-checked="true" data-y="false">Monthly</button>
+    <button role="radio" aria-checked="false" data-y="true">Yearly <span class="pill">Save 20%</span></button></div>
+</div>
+<div class="plans">
+  <section class="plan" aria-labelledby="p1">
+    <div class="name"><h2 id="p1">Solo</h2></div>
+    <p class="for">One therapist, one room. Everything you need to run your own calendar.</p>
+    <div class="price"><span class="cur">$</span><span class="amt" data-m="19">19</span><span class="per">/ month</span></div>
+    <p class="billed" data-m="19">Billed monthly</p>
+    <a class="btn btn-secondary" href="#">Start Solo free</a>
+    <p class="lead">Includes</p>
+    <ul><li><svg><use href="#ok"/></svg>1 therapist and 1 room</li><li><svg><use href="#ok"/></svg>Online patient booking</li><li><svg><use href="#ok"/></svg>Email reminders</li><li><svg><use href="#ok"/></svg>Google and Outlook calendar sync</li><li class="off"><svg><use href="#no"/></svg>SMS reminders</li><li class="off"><svg><use href="#no"/></svg>Reports</li></ul>
+  </section>
+  <section class="plan pop" aria-labelledby="p2">
+    <div class="name"><h2 id="p2">Clinic</h2><span class="badge">Most popular</span></div>
+    <p class="for">A growing team sharing rooms, equipment and a front desk.</p>
+    <div class="price"><span class="cur">$</span><span class="amt" data-m="49">49</span><span class="per">/ month</span></div>
+    <p class="billed" data-m="49">Billed monthly</p>
+    <a class="btn btn-primary" href="#">Start Clinic free</a>
+    <p class="lead">Everything in Solo, plus</p>
+    <ul><li><svg><use href="#ok"/></svg>Up to 8 therapists, 10 rooms</li><li><svg><use href="#ok"/></svg>SMS reminders, one-tap confirm</li><li><svg><use href="#ok"/></svg>Room and equipment conflict checks</li><li><svg><use href="#ok"/></svg>No-show and utilisation reports</li><li><svg><use href="#ok"/></svg>Shared waitlist</li><li class="off"><svg><use href="#no"/></svg>Multi-site management</li></ul>
+  </section>
+  <section class="plan" aria-labelledby="p3">
+    <div class="name"><h2 id="p3">Group</h2></div>
+    <p class="for">Several sites, one view, with the controls a larger practice needs.</p>
+    <div class="price"><span class="cur">$</span><span class="amt" data-m="129">129</span><span class="per">/ month</span></div>
+    <p class="billed" data-m="129">Billed monthly</p>
+    <a class="btn btn-secondary" href="#">Start Group free</a>
+    <p class="lead">Everything in Clinic, plus</p>
+    <ul><li><svg><use href="#ok"/></svg>Unlimited therapists and sites</li><li><svg><use href="#ok"/></svg>Roles, permissions and audit log</li><li><svg><use href="#ok"/></svg>API access and billing exports</li><li><svg><use href="#ok"/></svg>Single sign-on</li><li><svg><use href="#ok"/></svg>Priority support, 1-hour reply</li><li><svg><use href="#ok"/></svg>Dedicated onboarding</li></ul>
+  </section>
+</div>
+<div class="foot"><span>All plans include a 14-day free trial. Prices in USD per clinic.</span><a href="#">Compare all features</a></div>
+</div>
+<script>
+const seg=document.getElementById('seg'),btns=[...seg.querySelectorAll('button')];
+function set(y){seg.dataset.y=y;
+  btns.forEach(b=>{const on=(b.dataset.y==='true')===y;b.setAttribute('aria-checked',on);b.tabIndex=on?0:-1});
+  document.querySelectorAll('.amt').forEach(el=>{const m=+el.dataset.m;el.textContent=y?(m*.8).toFixed(2).replace(/\.00$/,''):m;el.classList.remove('flip');void el.offsetWidth;el.classList.add('flip')});
+  document.querySelectorAll('.billed').forEach(el=>{const m=+el.dataset.m;el.textContent=y?`Billed $${(m*.8*12).toFixed(2)} yearly (save $${(m*.2*12).toFixed(2)})`:'Billed monthly'})}
+btns.forEach(b=>b.addEventListener('click',()=>set(b.dataset.y==='true')));
+seg.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){set(seg.dataset.y!=='true');seg.querySelector('[aria-checked=true]').focus()}});
+set(false);
+</script></body></html>

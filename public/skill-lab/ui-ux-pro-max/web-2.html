@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Design system (ui-ux-pro-max --design-system): Neumorphism, calm cyan + health green, Atkinson Hyperlegible */
+:root{
+ --color-primary:#0891B2;--color-on-primary:#000;--color-secondary:#22D3EE;--color-accent:#059669;--color-on-accent:#000;
+ --color-background:#ECFEFF;--color-foreground:#164E63;--color-card:#fff;--color-muted:#E8F1F6;--color-muted-foreground:#475569;
+ --color-border:#A5F3FC;--color-destructive:#B91C1C;--color-ring:#0E7490;
+ --radius:14px;--shadow-out:-6px -6px 14px rgba(255,255,255,.95),6px 6px 14px rgba(22,78,99,.16);
+ --shadow-in:inset -4px -4px 9px rgba(255,255,255,.95),inset 4px 4px 9px rgba(22,78,99,.14);
+ --shadow-sm:-3px -3px 8px rgba(255,255,255,.95),3px 3px 8px rgba(22,78,99,.14);
+ --space-1:4px;--space-2:8px;--space-3:16px;--space-4:24px;--space-5:32px;--space-6:48px;--space-7:64px;--space-8:96px;
+ --dur:200ms;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.5 "Atkinson Hyperlegible",system-ui,sans-serif;color:var(--color-foreground);background:var(--color-background);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--color-ring);outline-offset:3px;border-radius:8px}
+a{color:inherit}
+button,a.btn,select,input[type=checkbox]{cursor:pointer}
+.skip{position:absolute;left:-999px;top:8px;background:var(--color-foreground);color:#fff;padding:8px 14px;border-radius:8px;z-index:9}.skip:focus{left:8px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 var(--space-4)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 var(--space-4);border:0;border-radius:var(--radius);font:700 16px "Atkinson Hyperlegible";text-decoration:none;background:var(--color-primary);color:var(--color-on-primary);box-shadow:var(--shadow-sm);transition:box-shadow var(--dur) ease-out,transform var(--dur) ease-out}
+.btn:hover{box-shadow:-2px -2px 6px rgba(255,255,255,.95),2px 2px 6px rgba(22,78,99,.18)}
+.btn:active{box-shadow:var(--shadow-in);transform:scale(.985)}
+.btn.cta{background:var(--color-accent)}
+.btn.soft{background:var(--color-background);color:var(--color-foreground)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+header.h{text-align:center;padding:var(--space-7) 0 var(--space-5)}
+h1{font:700 clamp(32px,4.4vw,48px)/1.12 "Atkinson Hyperlegible";margin-bottom:var(--space-2)}
+.sub{color:var(--color-muted-foreground);font-size:18px}
+.tog{display:flex;width:max-content;margin:var(--space-5) auto var(--space-6);padding:6px;border-radius:18px;box-shadow:var(--shadow-in);gap:6px;position:relative}
+.tog button{position:relative;min-height:48px;padding:0 var(--space-4);border:0;border-radius:14px;background:transparent;font:700 16px "Atkinson Hyperlegible";color:var(--color-muted-foreground);transition:all var(--dur) ease-out;display:flex;align-items:center;gap:10px}
+.tog button[aria-checked="true"]{background:var(--color-background);color:var(--color-foreground);box-shadow:var(--shadow-sm)}
+.tog em{font-style:normal;font-size:14px;background:#D1FAE5;color:#065F46;padding:2px 10px;border-radius:99px}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-5);align-items:stretch;padding-bottom:var(--space-6)}
+.plan{background:var(--color-background);border-radius:24px;box-shadow:var(--shadow-out);padding:var(--space-5);display:flex;flex-direction:column}
+.plan.pop{outline:2px solid var(--color-primary);outline-offset:-2px}
+.badge{align-self:flex-start;font-size:14px;font-weight:700;padding:4px 14px;border-radius:99px;background:var(--color-primary);color:var(--color-on-primary);margin-bottom:var(--space-3)}
+.badge.ghost{background:transparent;visibility:hidden}
+.plan h2{font:700 24px "Atkinson Hyperlegible"}
+.d{color:var(--color-muted-foreground);margin:var(--space-1) 0 var(--space-4);min-height:48px}
+.price{display:flex;align-items:baseline;gap:8px}
+.amt{font:700 48px/1.1 "Atkinson Hyperlegible";font-variant-numeric:tabular-nums}
+.per{color:var(--color-muted-foreground)}
+.bill{font-size:15px;color:var(--color-muted-foreground);min-height:24px;margin:var(--space-1) 0 var(--space-4)}
+.plan .btn{width:100%}
+.plan ul{list-style:none;padding:0;margin-top:var(--space-5);display:grid;gap:14px}
+.plan li{display:flex;gap:12px;align-items:flex-start}
+.plan li svg{flex:none;margin-top:3px;color:var(--color-accent)}
+.foot{text-align:center;color:var(--color-muted-foreground);font-size:15px;padding-bottom:var(--space-7)}
+@media (max-width:900px){.plans{grid-template-columns:1fr}.d{min-height:0}header.h{padding-top:var(--space-6)}.badge.ghost{display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#plans">Skip to plans</a>
+<div class="wrap">
+<header class="h"><h1>Plans for every clinic size</h1><p class="sub">Start free for 30 days. Switch to yearly and save 20%.</p>
+ <div class="tog" role="radiogroup" aria-label="Billing period">
+  <button role="radio" aria-checked="true" data-p="m">Monthly</button>
+  <button role="radio" aria-checked="false" data-p="y">Yearly <em>Save 20%</em></button>
+ </div>
+</header>
+<main id="plans"><div class="plans">
+<article class="plan" data-m="19" aria-labelledby="p-Solo">
+ <p class="badge ghost" aria-hidden="true">&nbsp;</p>
+ <h2 id="p-Solo">Solo</h2><p class="d">For an independent therapist with one room.</p>
+ <p class="price"><span class="amt" aria-live="polite"></span><span class="per">/ month</span></p>
+ <p class="bill"></p>
+ <a class="btn soft" href="#">Choose Solo<span class="sr"> plan</span></a>
+ <ul><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>1 therapist, 1 room</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Online booking page</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Automatic text reminders</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Up to 150 active patients</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Email support</span></li></ul></article>
+<article class="plan pop" data-m="49" aria-labelledby="p-Clinic">
+ <p class="badge">Most popular</p>
+ <h2 id="p-Clinic">Clinic</h2><p class="d">For clinics with a small team sharing rooms.</p>
+ <p class="price"><span class="amt" aria-live="polite"></span><span class="per">/ month</span></p>
+ <p class="bill"></p>
+ <a class="btn cta" href="#">Choose Clinic<span class="sr"> plan</span></a>
+ <ul><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Everything in Solo</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Up to 8 therapists and 6 rooms</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Waitlist that refills cancellations</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Unlimited patients and CSV import</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Priority chat support</span></li></ul></article>
+<article class="plan" data-m="129" aria-labelledby="p-Group">
+ <p class="badge ghost" aria-hidden="true">&nbsp;</p>
+ <h2 id="p-Group">Group</h2><p class="d">For multi-site practices that need one overview.</p>
+ <p class="price"><span class="amt" aria-live="polite"></span><span class="per">/ month</span></p>
+ <p class="bill"></p>
+ <a class="btn soft" href="#">Choose Group<span class="sr"> plan</span></a>
+ <ul><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Everything in Clinic</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Unlimited therapists and sites</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Cross-site reporting</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Role-based access per site</span></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Single sign-on and onboarding contact</span></li></ul></article>
+</div></main>
+<p class="foot" id="foot">Prices in US dollars, billed monthly. Cancel any time.</p>
+</div>
+<script>
+const plans=[...document.querySelectorAll('.plan')],btns=[...document.querySelectorAll('.tog button')],foot=document.getElementById('foot');
+const money=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).replace(/\.00$/,'');
+let mode='m';
+function render(){plans.forEach(p=>{const m=+p.dataset.m,v=mode==='y'?m*.8:m;
+ p.querySelector('.amt').textContent='$'+money(v);
+ p.querySelector('.bill').textContent=mode==='y'?`$${money(m*.8*12)} billed yearly (save $${money(m*.2*12)})`:'Billed monthly';});
+ foot.textContent=mode==='y'?'Prices in US dollars per month, billed once a year. Cancel any time.':'Prices in US dollars, billed monthly. Cancel any time.'}
+btns.forEach((b,i)=>{b.addEventListener('click',()=>{mode=b.dataset.p;btns.forEach(x=>x.setAttribute('aria-checked',x===b));render()});
+ b.addEventListener('keydown',e=>{if(e.key.startsWith('Arrow')){const o=btns[1-i];o.focus();o.click()}})});
+render();
+</script>
+</body>
+</html>

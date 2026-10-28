@@ -1,0 +1,41 @@
+{
+  "id": "emil-design-eng",
+  "sets": ["motion"],
+  "skillSays": [
+    "Before animating anything, ask how often the user sees it: keyboard-triggered and 100+/day actions get no animation, occasional ones (toasts, menus) get standard motion, rare ones can delight.",
+    "Every animation needs a stated purpose (spatial consistency, state change, feedback); 'looks cool' on something seen often is not one.",
+    "Replace built-in easings with strong custom curves (cubic-bezier(0.23,1,0.32,1) for enter/exit, cubic-bezier(0.77,0,0.175,1) for on-screen movement) and never use ease-in on UI.",
+    "Keep UI motion under 300ms, make exits faster than enters, never animate from scale(0) (use ~0.95 plus opacity), and give popovers a transform-origin at their trigger.",
+    "Use CSS transitions (or @starting-style) instead of keyframes for anything that can be re-triggered, animate only transform and opacity, and add scale(0.97) on :active for pressable things.",
+    "Finish with accessibility and polish: prefers-reduced-motion keeps fades and drops travel, hover motion is gated behind (hover:hover) and (pointer:fine), groups stagger 30-80ms, a 2px blur can hide an ugly crossfade."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "Toast enters in 280ms and leaves in 180ms, both on cubic-bezier(0.23,1,0.32,1): the exit is the system responding, so it snaps. Implemented with one transition whose duration is overridden on [data-state=open], not two symmetric timings.",
+        "Slides with translateY(calc(100% + 20px)), a percentage of the toast's own height, from the same edge it leaves toward (spatial consistency), using @starting-style and CSS transitions instead of @keyframes so a Replay mid-exit retargets rather than restarts.",
+        "The 'Open slot' / 'Maya Chen' swap inside the schedule row is a crossfade of two overlapping labels, so each layer gets filter: blur(2px) with a 200ms opacity fade to read as one change instead of two ghosted texts.",
+        "Book, Undo and dismiss all get transform: scale(0.97) on :active over 160ms; hover colour on Undo is wrapped in @media (hover:hover) and (pointer:fine); under prefers-reduced-motion the toast only fades (150ms), no travel."
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Menu opens from opacity 0 + scale(0.95) (never scale(0)) in 180ms and closes in 120ms, both cubic-bezier(0.23,1,0.32,1); no ease-in anywhere.",
+        "transform-origin is computed from the trigger's centre (the --transform-origin idea from Base UI), so the menu grows out of the three-dot button at top right, not out of its own centre.",
+        "Items stagger in 35ms apart over 200ms (translateY(-4px) to 0 plus fade), total under 300ms; the stagger is decorative so it never blocks clicking.",
+        "Opening with Enter, Space or ArrowDown sets data-instant: zero duration, no stagger, because keyboard-initiated actions must not animate. Row hover is a 100ms background-colour change only, and item :active uses scale(0.97)."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "A new task enters with opacity 0 + translateY(8px) over 220ms, but a removed task leaves in only 150ms (opacity + translateX(12px)): enter slower than exit.",
+        "Removing a row used to be the place a height animation sneaks in; here the remaining rows close the gap with a FLIP via the Web Animations API: translateY(dy) to none over 220ms on cubic-bezier(0.77,0,0.175,1) (ease-in-out, because it is movement already on screen), transform only.",
+        "Checking a task animates a clip-path: inset(0 100% 0 0) to inset(0) tick reveal in 160ms and a strikethrough drawn as a scaleX(0) to scaleX(1) pseudo-element with transform-origin: left over 200ms, instead of toggling text-decoration instantly.",
+        "Transitions list exact properties (no transition: all) and everything uses transitions rather than keyframes so rapid add/check/remove can interrupt each other; reduced motion drops the FLIP and the slides."
+      ]
+    }
+  ]
+}

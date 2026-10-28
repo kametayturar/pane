@@ -1,0 +1,33 @@
+{
+  "id": "threejs-skills",
+  "sets": [
+    "3d"
+  ],
+  "skillSays": [
+    "Load three.js as ES modules through an import map; no script-tag builds.",
+    "Set up the renderer deliberately: capped pixel ratio, tone mapping, PCFShadowMap (the soft variant is deprecated), resize with updateProjectionMatrix.",
+    "Drive the loop with renderer.setAnimationLoop and a Timer (Clock is deprecated), and ease with frame-rate independent MathUtils.damp.",
+    "Use InstancedMesh for repeated objects and merge static geometry; keep draw calls low.",
+    "Procedural motion for simple scenes; AnimationMixer clips only for authored animation.",
+    "Dispose geometry, materials and textures, and release the renderer, when the scene goes away."
+  ],
+  "examples": [
+    {
+      "prompt": "3d-1",
+      "changes": [
+        "The 24 appointment slots are one InstancedMesh (one draw call) with per-instance color, instead of 24 separate meshes",
+        "All easing (slots filling, pointer parallax) uses MathUtils.damp on a Timer delta, so it feels the same at 30 and 120 fps; the Timer also pauses while the tab is hidden",
+        "Physical materials get an image-based light built once from a tiny PMREM studio scene, then disposed; pagehide frees geometry, materials, environment and renderer; reduced motion draws one settled frame"
+      ]
+    },
+    {
+      "prompt": "3d-2",
+      "changes": [
+        "Particles are a single Points object whose dynamic position buffer is updated per frame; settle progress is damped toward a target that time and scroll both push",
+        "Pixel ratio is capped at 2, fog fades the distant cloud, and the sprite texture is a CanvasTexture created once and disposed on pagehide",
+        "Camera framing is computed from aspect and field of view so the grid fits at any width; reduced motion jumps straight to the settled grid"
+      ]
+    }
+  ],
+  "notes": "Pinned to three@0.170.0 per the brief: Timer comes from three/addons/misc/Timer.js (core Timer arrived later) and its connect() is optional-chained."
+}

@@ -1,0 +1,35 @@
+<!-- Tidewater landing page – fixture for the skill lab. Looks fine, has performance, accessibility and SEO problems. -->
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=block" rel="stylesheet">
+<style>
+body{font-family:Poppins,sans-serif;margin:0;color:#999;background:#fff}
+.hero{height:100vh;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero h1{font-size:64px;font-weight:200}
+.btn{background:#22d3ee;color:#fff;padding:14px 28px;border-radius:30px;cursor:pointer}
+.features{display:flex;gap:20px;padding:60px}
+.card{flex:1;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.banner{position:fixed;bottom:0;left:0;right:0;padding:16px;background:#111;color:#666}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="h1">✨ Welcome to Tidewater ✨</div>
+  <h1>The future of clinic scheduling</h1>
+  <div class="btn" onclick="location.href='/signup'">Get started 🚀</div>
+</div>
+<div class="features">
+  <div class="card"><h3>📅 Smart calendar</h3><p>Our AI-powered calendar revolutionizes how you schedule.</p></div>
+  <div class="card"><h3>💬 Reminders</h3><p>Seamlessly reduce no-shows with cutting-edge reminders.</p></div>
+  <div class="card"><h3>📊 Insights</h3><p>Unlock the power of your data with robust analytics.</p></div>
+</div>
+<div id="testimonials"></div>
+<script>
+$(function(){ setTimeout(function(){ $("#testimonials").html('<div style="height:400px;padding:60px"><h2>Loved by clinics</h2><p>"Tidewater changed everything." – A clinic</p></div>') }, 1500) })
+for (let i = 0; i < 3e7; i++) {}
+</script>
+<div class="banner">We use cookies. <span onclick="this.parentNode.remove()">OK</span></div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – Scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f2ea;--paper:#fffdf8;--ink:#12302e;--muted:#5a6e6b;--line:#e2dccd;--teal:#0f766e;--teal-d:#0a5852;--teal-l:#d7ece8;--sand:#ece5d3;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;
+  /* fluid type scale: clamp(min, preferred, max) */
+  --text-sm:clamp(.875rem,.8rem + .375vw,1rem);
+  --text-base:clamp(1rem,.9rem + .5vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + .625vw,1.25rem);
+  --text-2xl:clamp(1.5rem,1.25rem + 1.25vw,2rem);
+  --text-3xl:clamp(1.875rem,1.5rem + 1.875vw,2.5rem);
+  --text-4xl:clamp(2.5rem,1.6rem + 4vw,4.5rem);
+  /* fluid space scale */
+  --space-xs:clamp(.25rem,.2rem + .25vw,.5rem);
+  --space-sm:clamp(.5rem,.4rem + .5vw,.75rem);
+  --space-md:clamp(1rem,.8rem + 1vw,1.5rem);
+  --space-lg:clamp(1.5rem,1.2rem + 1.5vw,2.5rem);
+  --space-xl:clamp(2rem,1.5rem + 2.5vw,4rem);
+  --gutter:clamp(1.125rem,.5rem + 2.5vw,2rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);font-size:var(--text-base);line-height:1.6;background:var(--bg);color:var(--ink);overflow-x:clip;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-inline-size:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #f0b34a;outline-offset:3px}
+.wrap{inline-size:min(100% - 2*var(--gutter),70rem);margin-inline:auto}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;line-height:1.08}
+
+/* header: mobile first, nav collapses behind a button */
+.site-head{position:relative;display:flex;align-items:center;justify-content:space-between;padding-block:var(--space-md)}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--serif);font-weight:600;font-size:1.4rem;letter-spacing:-.01em}
+.brand i{inline-size:1.7rem;block-size:1.7rem;border-radius:.5rem;background:var(--teal);position:relative;overflow:hidden}
+.brand i::after{content:"";position:absolute;inset-inline:-.25rem;inset-block-end:.3rem;block-size:.55rem;border-radius:50%;background:var(--teal-l)}
+.menu-btn{inline-size:44px;block-size:44px;display:grid;place-items:center;border:1px solid var(--line);border-radius:12px;background:var(--paper);cursor:pointer}
+.menu-btn span,.menu-btn span::before,.menu-btn span::after{display:block;inline-size:18px;block-size:2px;background:var(--ink);border-radius:2px;position:relative;transition:transform .2s,opacity .2s}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;inset-inline-start:0}
+.menu-btn span::before{inset-block-start:-6px}.menu-btn span::after{inset-block-start:6px}
+.menu-btn[aria-expanded=true] span{background:transparent}
+.menu-btn[aria-expanded=true] span::before{transform:translateY(6px) rotate(45deg)}
+.menu-btn[aria-expanded=true] span::after{transform:translateY(-6px) rotate(-45deg)}
+.nav{position:absolute;inset-inline:0;inset-block-start:100%;z-index:10;display:none;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:.5rem;box-shadow:0 20px 40px -20px rgba(18,48,46,.3)}
+.nav.open{display:flex}
+.nav a{display:flex;align-items:center;min-block-size:44px;padding-inline:1rem;border-radius:10px;color:var(--muted);font-size:var(--text-sm)}
+.nav a:hover{background:var(--sand);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-block-size:48px;padding-inline:1.5rem;border-radius:999px;font-weight:600;font-size:var(--text-sm);border:1px solid transparent;transition:background .2s}
+.btn-pri{background:var(--teal);color:#fff}.btn-pri:hover{background:var(--teal-d)}
+.btn-sec{border-color:var(--line)}.btn-sec:hover{border-color:var(--ink)}
+.nav .btn{margin-block:.25rem;color:#fff}
+
+/* hero: one column, then two from 64em; height uses dvh so mobile browser bars don't clip it */
+.hero{display:grid;gap:var(--space-xl);align-content:center;min-block-size:min(calc(100dvh - 6.5rem),46rem);padding-block:var(--space-lg) var(--space-xl)}
+.eyebrow{font-size:.8125rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:.5rem}
+.eyebrow::before{content:"";inline-size:1.1rem;block-size:2px;background:currentColor}
+.hero h1{font-size:var(--text-4xl);margin-block:var(--space-md)}
+.hero h1 em{color:var(--teal)}
+.lead{font-size:var(--text-lg);color:var(--muted);max-inline-size:32ch}
+.cta{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-block-start:var(--space-lg)}
+.cta .btn{flex:1 1 12rem}
+.visual{container:visual / inline-size}
+.board{background:var(--paper);border:1px solid var(--line);border-radius:1.5rem;padding:var(--space-md);box-shadow:0 30px 60px -34px rgba(18,48,46,.3)}
+.board-h{display:flex;justify-content:space-between;align-items:baseline;margin-block-end:var(--space-sm)}
+.board-h b{font-family:var(--serif);font-weight:500;font-size:var(--text-lg)}
+.board-h span{font-size:.8125rem;color:var(--muted)}
+.slots{list-style:none;padding:0;display:grid;gap:.5rem}
+.slot{display:grid;grid-template-columns:3.5rem 1fr;gap:.25rem .75rem;align-items:center;background:#fff;border:1px solid var(--line);border-radius:.8rem;padding:.7rem .9rem}
+.slot.on{background:var(--teal-l);border-color:var(--teal)}
+.slot time{font-weight:600;font-size:.875rem;font-variant-numeric:tabular-nums}
+.slot b{font-weight:500;font-size:.9375rem}
+.slot small{grid-column:2;color:var(--muted);font-size:.8125rem}
+.slot .chip{display:none;grid-column:3;grid-row:1/3;font-size:.75rem;background:var(--sand);padding:.2rem .6rem;border-radius:99px}
+/* the board reacts to ITS width, not the viewport */
+@container visual (min-width:26rem){
+  .slot{grid-template-columns:3.5rem 1fr auto}
+  .slot .chip{display:block;align-self:center}
+}
+
+/* features: intrinsic grid, no breakpoints needed; each card is its own container */
+.features{padding-block:var(--space-xl)}
+.sec-h{max-inline-size:34rem;margin-block-end:var(--space-lg)}
+.sec-h h2{font-size:var(--text-3xl);margin-block-start:var(--space-sm)}
+.sec-h p{color:var(--muted);margin-block-start:var(--space-sm)}
+.grid{list-style:none;padding:0;display:grid;gap:var(--space-md);grid-template-columns:repeat(auto-fit,minmax(min(17.5rem,100%),1fr))}
+.card-wrap{container:feat / inline-size}
+.card{block-size:100%;display:flex;flex-direction:column;gap:var(--space-sm);background:var(--paper);border:1px solid var(--line);border-radius:1rem;padding:var(--space-md)}
+.ic{flex:none;inline-size:2.9rem;block-size:2.9rem;border-radius:.8rem;background:var(--teal-l);color:var(--teal);display:grid;place-items:center}
+.ic svg{inline-size:1.5rem;block-size:1.5rem;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:clamp(1.25rem,5cqi + .6rem,1.6rem)}
+.card h3{margin-block-end:.4rem}.card p{color:var(--muted);font-size:var(--text-sm)}
+@container feat (min-width:26rem){.card{flex-direction:row;align-items:flex-start;gap:var(--space-md)}}
+.site-foot{border-block-start:1px solid var(--line);padding-block:var(--space-md);color:var(--muted);font-size:.875rem;margin-block-start:var(--space-lg)}
+
+@media (min-width:48em){
+  .cta .btn{flex:0 0 auto}
+}
+@media (min-width:64em){
+  .menu-btn{display:none}
+  .nav{position:static;display:flex;flex-direction:row;align-items:center;background:transparent;border:0;box-shadow:none;padding:0;gap:.25rem}
+  .nav a:hover{background:transparent}
+  .hero{grid-template-columns:1.05fr 1fr;align-items:center}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-head">
+    <a class="brand" href="#"><i></i>Tidewater</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Toggle navigation"><span></span></button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#clinics">For clinics</a>
+      <a class="btn btn-pri" href="#start">Start free</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Scheduling for physiotherapy</span>
+        <h1>A calmer day, <em>booked</em> by lunchtime.</h1>
+        <p class="lead">Tidewater keeps every therapist, room and follow-up in one quiet timetable, so your clinic spends its hours on patients, not on the phone.</p>
+        <div class="cta"><a class="btn btn-pri" href="#start">Start 30 days free</a><a class="btn btn-sec" href="#tour">Watch a 2-min tour</a></div>
+      </div>
+      <div class="visual">
+        <div class="board">
+          <div class="board-h"><b>Tuesday</b><span>4 of 6 slots filled</span></div>
+          <ul class="slots">
+            <li class="slot"><time>9:00</time><b>Maya Reyes</b><small>Knee rehab · 45 min</small><span class="chip">Room 1</span></li>
+            <li class="slot on"><time>10:30</time><b>Jonas Keller</b><small>Shoulder mobility · 30 min</small><span class="chip">Reminder sent</span></li>
+            <li class="slot"><time>11:30</time><b>Aisha Samad</b><small>Lower back · 45 min</small><span class="chip">Room 2</span></li>
+            <li class="slot"><time>14:00</time><b>Tom Brandt</b><small>Post-op review · 30 min</small><span class="chip">Room 1</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="sec-h"><span class="eyebrow">What changes</span><h2>Three things small clinics stop doing by hand</h2><p>Built with physiotherapists who ran their own front desks.</p></div>
+      <ul class="grid">
+        <li class="card-wrap"><article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><div><h3>Reminders that get answered</h3><p>Patients confirm or reschedule from a text in two taps, so your front desk stops playing phone tag.</p></div></article></li>
+        <li class="card-wrap"><article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0"/></svg></div><div><h3>A waitlist that fills itself</h3><p>When someone cancels, the next matching patient is offered the slot automatically. Empty chairs get rare.</p></div></article></li>
+        <li class="card-wrap"><article class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg></div><div><h3>Rooms and therapists, in sync</h3><p>Tidewater knows which therapist, room and equipment each treatment needs, and never double-books any of them.</p></div></article></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="site-foot">© 2026 Tidewater · Scheduling for small physiotherapy clinics</footer>
+</div>
+<script>
+  const btn=document.querySelector('.menu-btn'),nav=document.getElementById('nav');
+  btn.addEventListener('click',()=>{const o=btn.getAttribute('aria-expanded')!=='true';btn.setAttribute('aria-expanded',o);nav.classList.toggle('open',o)});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('open')){btn.click();btn.focus()}});
+</script>
+</body>
+</html>

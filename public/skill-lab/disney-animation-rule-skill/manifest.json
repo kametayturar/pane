@@ -1,0 +1,43 @@
+{
+  "id": "disney-animation-rule-skill",
+  "sets": [
+    "motion"
+  ],
+  "skillSays": [
+    "Treat interpolation as input, not the answer: state the action in a sentence, name primary vs secondary action, then block event poses (anticipation, launch, contact, overshoot, settle) before picking easing.",
+    "Choose only the few of the 12 principles that fix the problem; do not force all twelve or add generic bounce.",
+    "Write one deterministic function of time that returns all state; render is a projection of it, with no frame-to-frame accumulation.",
+    "Derive follow-through, squash/stretch and secondary motion from the primary motion (delayed samples, velocity) rather than separate loops.",
+    "Concentrate squash and stretch around contact and acceleration, keep contact points anchored, and match velocities at phase boundaries.",
+    "Primary motion must read without blur, trails or particles; remove effects that hide weak timing."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "One pure function of loop time (6.4s) with a named phase table: press 0.42s, arrive 0.62s, travel 0.30s, hold to 4.40s, anticipation 0.18s, launch 0.34s.",
+        "Arrival: easeOutQuart slide with an 18px arc, overshoots 8px past rest, then a closed-form damped spring (w=26, z=0.5) settles it; squash (scaleX down 3%) only in the 120ms at contact.",
+        "Follow-through is derived from the primary: the text samples the card position 55ms late (trails), the icon pops with its own spring 50ms after contact, and the tick draws after that.",
+        "Dismissal reads its intent first: a 10px pull-back (anticipation, 180ms) opposite the exit, then an ease-in launch with velocity-driven stretch (up to +10% scaleX)."
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Primary action is the panel unfurling from the trigger: spring w=34, z=0.7 (about 4% overshoot) drives a clip reveal plus a 0.9 to 1 scale; the trigger squashes to 0.92 then springs back first (anticipation).",
+        "Items are overlapping action: each item samples the same spring 45ms later than the one above, and on close the lowest item leaves first (20ms apart).",
+        "The highlight is a single bar that springs between targets (w=34, z=0.8), so it trails the pointer by a beat; it squashes 8% on the click.",
+        "Close has its own anticipation (a 2% inhale for 120ms) before the 260ms ease-in collapse."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Everything derives from one clock; rows are absolutely positioned by a slot function, so adding, checking and removing are just timestamps (add 1.3s/2.5s/3.7s, check 5.0s/6.2s, remove 7.4s/8.6s/9.8s).",
+        "New rows drop with gravity (ease-in over 260ms), stretch slightly in the fall, then squash on contact anchored at the bottom with a decaying wobble (exp(-12t)*cos(26t)).",
+        "Check box: 100ms squash to 0.84 (anticipation), then a damped pop past 1 and settle; the tick and strike-through trail by 120-160ms (secondary).",
+        "Removal: 8px pull-away anticipation (140ms), accelerating exit with 12% stretch (320ms); rows below follow through with a spring (w=26, z=0.7) delayed 50ms per row."
+      ]
+    }
+  ]
+}

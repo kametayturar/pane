@@ -1,0 +1,2651 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "pane",
+  "homepage": "https://pane.vercel.app",
+  "items": [
+    {
+      "name": "ai-answer",
+      "type": "registry:ui",
+      "title": "AI Answer",
+      "description": "Streamed answer with source cards, citation chips that preview their source, copy, regenerate, stop, feedback and follow-ups. Words are released at a steady pace and fade in out of a light blur.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/ai-answer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/ai-answer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "thinking-state",
+      "type": "registry:ui",
+      "title": "Thinking State",
+      "description": "AI working panel with a live timer, searched sources and thinking steps that appear one by one.",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/thinking-state.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/thinking-state.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:block",
+      "title": "App Shell",
+      "description": "Sidebar app frame shared by the agent screens: workspace switcher, nav groups, changelog card, onboarding progress and account.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/screens/app-shell.tsx",
+          "type": "registry:component",
+          "target": "components/screens/app-shell.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-run",
+      "type": "registry:block",
+      "title": "Agent Run",
+      "description": "One autonomous agent run: a plan ticking through its steps, tool calls, an approval it waits on and the draft it wrote as an inline diff.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/screens/app-shell.tsx",
+          "type": "registry:component",
+          "target": "components/screens/app-shell.tsx"
+        },
+        {
+          "path": "src/components/screens/agent-run.tsx",
+          "type": "registry:component",
+          "target": "components/screens/agent-run.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-chat",
+      "type": "registry:block",
+      "title": "Agent Chat",
+      "description": "Chat with an orchestrating agent, the agents at work, and a brief to fill in beside it.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/screens/app-shell.tsx",
+          "type": "registry:component",
+          "target": "components/screens/app-shell.tsx"
+        },
+        {
+          "path": "src/components/screens/agent-chat.tsx",
+          "type": "registry:component",
+          "target": "components/screens/agent-chat.tsx"
+        }
+      ]
+    },
+    {
+      "name": "thinking-loader",
+      "type": "registry:ui",
+      "title": "Thinking Loader",
+      "description": "A small working pill that rolls through phases and settles on a check.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/thinking-loader.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/thinking-loader.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chat-composer",
+      "type": "registry:ui",
+      "title": "Chat Composer",
+      "description": "Prompt composer with a model menu, voice input, app connections and an approval request.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/chat-composer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/chat-composer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "writing-assistant",
+      "type": "registry:ui",
+      "title": "Writing Assistant",
+      "description": "A small AI writing helper with suggestions, streamed replies and voice dictation.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/writing-assistant.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/writing-assistant.tsx"
+        }
+      ]
+    },
+    {
+      "name": "model-picker",
+      "type": "registry:ui",
+      "title": "Model Picker",
+      "description": "Model menu with speed, quality and cost bars, extended thinking and effort.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/model-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/model-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "memory-panel",
+      "type": "registry:ui",
+      "title": "Memory Panel",
+      "description": "What the assistant remembers – grouped, searchable, editable, with pause and undo.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/memory-panel.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/memory-panel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-plan",
+      "type": "registry:ui",
+      "title": "Agent Plan",
+      "description": "The agent's plan as steps that tick through, with sub-steps and edits.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/agent-plan.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/agent-plan.tsx"
+        }
+      ]
+    },
+    {
+      "name": "approval-card",
+      "type": "registry:ui",
+      "title": "Approval Card",
+      "description": "An action the agent wants to take, waiting for you to approve or deny.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/approval-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/approval-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Variants, sizes, icons and a loading state.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "change-summary",
+      "type": "registry:ui",
+      "title": "Change Summary",
+      "description": "What an agent changed, summarised with counts and details.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/change-summary.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/change-summary.tsx"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable select with keyboard navigation and multi-select.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/combobox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/combobox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "command-menu",
+      "type": "registry:ui",
+      "title": "Command Menu",
+      "description": "⌘K palette with groups, search, shortcuts and nested pages.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/command-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/command-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "comment-thread",
+      "type": "registry:ui",
+      "title": "Comment Thread",
+      "description": "A threaded discussion with replies, mentions and resolve.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/comment-thread.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/comment-thread.tsx"
+        }
+      ]
+    },
+    {
+      "name": "decision-inbox",
+      "type": "registry:ui",
+      "title": "Decision Inbox",
+      "description": "Decisions the agents need from you, one at a time.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/decision-inbox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/decision-inbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dropzone",
+      "type": "registry:ui",
+      "title": "Dropzone",
+      "description": "Drag-and-drop upload with per-file progress, errors and remove.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dropzone.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/dropzone.tsx"
+        }
+      ]
+    },
+    {
+      "name": "email-draft",
+      "type": "registry:ui",
+      "title": "Email Draft",
+      "description": "An AI-drafted email you can review, tweak and send.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/email-draft.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/email-draft.tsx"
+        }
+      ]
+    },
+    {
+      "name": "filter-menu",
+      "type": "registry:ui",
+      "title": "Filter Menu",
+      "description": "Add, edit and clear filters from one menu.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/filter-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/filter-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:ui",
+      "title": "Message Actions",
+      "description": "Copy, retry, feedback and share under an assistant message.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/message-actions.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/message-actions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "notification-stack",
+      "type": "registry:ui",
+      "title": "Notification Stack",
+      "description": "A stack of notifications that fans out, groups and clears.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/notification-stack.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/notification-stack.tsx"
+        }
+      ]
+    },
+    {
+      "name": "otp-input",
+      "type": "registry:ui",
+      "title": "OTP Input",
+      "description": "One-time code boxes with paste, auto-advance and a verify state.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/otp-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/otp-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "permission-request",
+      "type": "registry:ui",
+      "title": "Permission Request",
+      "description": "An app asks for access – scopes, once or always, and a clear deny.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/permission-request.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/permission-request.tsx"
+        }
+      ]
+    },
+    {
+      "name": "profile-menu",
+      "type": "registry:ui",
+      "title": "Profile Menu",
+      "description": "Account menu with workspace switcher, theme and sign out.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/profile-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/profile-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "progress-tracker",
+      "type": "registry:ui",
+      "title": "Progress Tracker",
+      "description": "A long task's progress with steps, ETA and live updates.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/progress-tracker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/progress-tracker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "reaction-bar",
+      "type": "registry:ui",
+      "title": "Reaction Bar",
+      "description": "Emoji reactions that pop, count up and show who reacted.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/reaction-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/reaction-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "title": "Segmented Control",
+      "description": "Options in a row with a thumb that glides to the selection.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/segmented-control.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/segmented-control.tsx"
+        }
+      ]
+    },
+    {
+      "name": "smart-recommendation",
+      "type": "registry:ui",
+      "title": "Smart Recommendation",
+      "description": "A suggestion from the assistant with its reason and one-click apply.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/smart-recommendation.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/smart-recommendation.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tips-panel",
+      "type": "registry:ui",
+      "title": "Tips Panel",
+      "description": "Rotating tips and how-tos in a small dismissible panel.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tips-panel.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tips-panel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toaster",
+      "type": "registry:ui",
+      "title": "Toaster",
+      "description": "Stacked toasts that expand on hover, swipe away and track promises.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toaster.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/toaster.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tool-call-card",
+      "type": "registry:ui",
+      "title": "Tool Call Card",
+      "description": "One tool call with its arguments, a live status and the result folded in.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tool-call-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tool-call-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "usage-meter",
+      "type": "registry:ui",
+      "title": "Usage Meter",
+      "description": "Credits and limits as meters that fill, with a reset date.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/usage-meter.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/usage-meter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "logo-marquee",
+      "type": "registry:block",
+      "title": "Logo Marquee",
+      "description": "The endless 'Trusted by' strip that eases to a stop on hover and scrubs with inertia.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/logo-marquee.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/logo-marquee.tsx"
+        }
+      ]
+    },
+    {
+      "name": "testimonial-wall",
+      "type": "registry:block",
+      "title": "Testimonial Wall",
+      "description": "Columns of testimonials scrolling at different speeds.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/testimonial-wall.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/testimonial-wall.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-team",
+      "type": "registry:ui",
+      "title": "Agent Team",
+      "description": "A prompt types itself and branches out into a team of agents.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/agent-team.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/agent-team.tsx"
+        }
+      ]
+    },
+    {
+      "name": "empty-calendar",
+      "type": "registry:ui",
+      "title": "Empty Calendar",
+      "description": "Calendar cards marked empty that fan out – an empty state.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/empty-calendar.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/empty-calendar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ghosted-chat",
+      "type": "registry:ui",
+      "title": "Ghosted Chat",
+      "description": "Unanswered messages marked as read – an empty state.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/ghosted-chat.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/ghosted-chat.tsx"
+        }
+      ]
+    },
+    {
+      "name": "glow-cloud",
+      "type": "registry:ui",
+      "title": "Glow Cloud",
+      "description": "A cloud mascot that floats, looks around, blinks and winks when clicked.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/glow-cloud.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/glow-cloud.tsx"
+        }
+      ]
+    },
+    {
+      "name": "glow-keyboard",
+      "type": "registry:ui",
+      "title": "Glow Keyboard",
+      "description": "A chat input types itself over a glass keyboard on a glowing floor.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/glow-keyboard.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/glow-keyboard.tsx"
+        }
+      ]
+    },
+    {
+      "name": "integration-beam",
+      "type": "registry:ui",
+      "title": "Integration Beam",
+      "description": "Your product between the tools it connects, with light pulses along curved beams.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/integration-beam.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/integration-beam.tsx"
+        }
+      ]
+    },
+    {
+      "name": "integration-grid",
+      "type": "registry:ui",
+      "title": "Integration Grid",
+      "description": "A honeycomb wall of app tiles that light up in ripples.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/integration-grid.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/integration-grid.tsx"
+        }
+      ]
+    },
+    {
+      "name": "lead-sourcing",
+      "type": "registry:ui",
+      "title": "Lead Sourcing",
+      "description": "An AI tile linked to two tools with a shine running along the connection.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/lead-sourcing.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/lead-sourcing.tsx"
+        }
+      ]
+    },
+    {
+      "name": "logo-cluster",
+      "type": "registry:ui",
+      "title": "Logo Cluster",
+      "description": "Your mark in the middle; logos bounce out of it and settle around it.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/logo-cluster.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/logo-cluster.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pipeline-steps",
+      "type": "registry:ui",
+      "title": "Pipeline Steps",
+      "description": "A how-it-works pipeline that lights up step by step.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/illustrations/pipeline-steps.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/pipeline-steps.tsx"
+        }
+      ]
+    },
+    {
+      "name": "project-flow",
+      "type": "registry:ui",
+      "title": "Project Flow",
+      "description": "A client task branching into subtasks, notes and roles.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/project-flow.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/project-flow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "step-cards",
+      "type": "registry:ui",
+      "title": "Step Cards",
+      "description": "Three scene cards that play in sequence: event, AI draft, review.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/illustrations/step-cards.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/step-cards.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tab-overload",
+      "type": "registry:ui",
+      "title": "Tab Overload",
+      "description": "Overlapping browser windows where the highlight follows the tab.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/tab-overload.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/tab-overload.tsx"
+        }
+      ]
+    },
+    {
+      "name": "team-invite",
+      "type": "registry:ui",
+      "title": "Team Invite",
+      "description": "A cursor drags a new teammate into the empty slot and they go online.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/team-invite.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/team-invite.tsx"
+        }
+      ]
+    },
+    {
+      "name": "voice-orb",
+      "type": "registry:ui",
+      "title": "Voice Orb",
+      "description": "A sphere of dots that breathes, listens, thinks and speaks.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/voice-orb.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/voice-orb.tsx"
+        }
+      ]
+    },
+    {
+      "name": "backdrop",
+      "type": "registry:ui",
+      "title": "Backdrop",
+      "description": "The stage an illustration sits on: plain, dots, halftone, grid, drift, floor or aurora, with accent, speed and pause.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/backdrop.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/backdrop.tsx"
+        }
+      ]
+    },
+    {
+      "name": "blur-crossfade",
+      "type": "registry:ui",
+      "title": "Blur Crossfade",
+      "description": "Swap content through a soft blur while the box glides to its new size.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/blur-crossfade.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/blur-crossfade.tsx"
+        }
+      ]
+    },
+    {
+      "name": "gradient-floor",
+      "type": "registry:ui",
+      "title": "Gradient Floor",
+      "description": "A blurred colour gradient that glows up from the bottom.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/gradient-floor.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/gradient-floor.tsx"
+        }
+      ]
+    },
+    {
+      "name": "gradient-text",
+      "type": "registry:ui",
+      "title": "Gradient Text",
+      "description": "Letters cut from a liquid, ever-flowing gradient.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/gradient-text.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/gradient-text.tsx"
+        }
+      ]
+    },
+    {
+      "name": "grid-background",
+      "type": "registry:ui",
+      "title": "Grid Background",
+      "description": "A fine line grid that drifts slowly behind your content.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/grid-background.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/grid-background.tsx"
+        }
+      ]
+    },
+    {
+      "name": "number-ticker",
+      "type": "registry:ui",
+      "title": "Number Ticker",
+      "description": "Odometer numbers – every digit rolls to its new value.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/number-ticker.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/number-ticker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "shimmer-loader",
+      "type": "registry:ui",
+      "title": "Shimmer Loader",
+      "description": "Skeleton blocks sharing one soft light sweep, then the content.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/shimmer-loader.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/shimmer-loader.tsx"
+        }
+      ]
+    },
+    {
+      "name": "text-reveal",
+      "type": "registry:ui",
+      "title": "Text Reveal",
+      "description": "Text that arrives word by word, each fading out of a soft blur.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/text-reveal.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/text-reveal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dot-matrix-number",
+      "type": "registry:ui",
+      "title": "Dot Matrix Number",
+      "description": "Numbers drawn in dots that morph between values, with a glass vitals card.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/dot-matrix-number.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/dot-matrix-number.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dither-cards",
+      "type": "registry:block",
+      "title": "Dither Cards",
+      "description": "Editorial cards with dithered ASCII art, task bars and live deltas, gliding sideways.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/dither-cards.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dither-cards.tsx"
+        }
+      ]
+    },
+    {
+      "name": "neural-panels",
+      "type": "registry:ui",
+      "title": "Neural Panels",
+      "description": "Dithered terrain and a particle brain in calm editorial cards, with a typing log.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/neural-panels.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/neural-panels.tsx"
+        }
+      ]
+    },
+    {
+      "name": "telemetry-board",
+      "type": "registry:ui",
+      "title": "Telemetry Board",
+      "description": "Dithered art bleeding past editorial panels, ticking telemetry and a glass vitals card.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/telemetry-board.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/telemetry-board.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dither-field",
+      "type": "registry:ui",
+      "title": "Dither Field",
+      "description": "A flowing noise field drawn as ordered-dither dots – a living background.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/dither-field.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/dither-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dither-image",
+      "type": "registry:ui",
+      "title": "Dither Image",
+      "description": "Turn any image into ordered-dither dot art that assembles and drifts.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/dither-image.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/dither-image.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-approvals",
+      "type": "registry:block",
+      "title": "Agent Approvals",
+      "description": "One approval card: the waiting tool call, its reason and arguments, and approve, deny or always allow.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/agent-approvals.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/agent-approvals.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-memory",
+      "type": "registry:block",
+      "title": "Agent Memory",
+      "description": "A full memory card: capacity meter, switches, filters, search, captured notes, inline edit and forget with undo.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/agent-memory.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/agent-memory.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-orchestrator",
+      "type": "registry:block",
+      "title": "Agent Orchestrator",
+      "description": "A lead agent splits a goal into a plan, fans subtasks out to parallel lanes and merges the results.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/agent-orchestrator.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/agent-orchestrator.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-routines",
+      "type": "registry:block",
+      "title": "Agent Routines",
+      "description": "Scheduled agents in one card: schedule, next run countdown, run history, run now and edit in place.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/agent-routines.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/agent-routines.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-tasks",
+      "type": "registry:block",
+      "title": "Agent Tasks",
+      "description": "A home for background coding agents: start a task, watch it run, review and open a pull request.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/agent-tasks.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/agent-tasks.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ai-chat",
+      "type": "registry:block",
+      "title": "AI Chat",
+      "description": "Full chat card: streamed markdown, folding reasoning, tool chips, cited sources, chat and model menus, edit and retry into versions.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/ai-chat.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/ai-chat.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ai-composer",
+      "type": "registry:block",
+      "title": "AI Composer",
+      "description": "Prompt box with attachments, @ mentions and / commands, a model and effort menu, and a send button ringed by the reply's progress.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/ai-composer.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/ai-composer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ai-side-panel",
+      "type": "registry:block",
+      "title": "AI Side Panel",
+      "description": "An assistant docked beside a page: ask about the page or a selection, review each edit as a word diff, apply it with a tint sweep and undo it.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/ai-side-panel.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/ai-side-panel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "document-extract",
+      "type": "registry:block",
+      "title": "Document Extract",
+      "description": "A model reads a document into typed fields: values fill in, hovering one lights its source on the page, low-confidence ones wait for review.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/document-extract.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/document-extract.tsx"
+        }
+      ]
+    },
+    {
+      "name": "eval-suite",
+      "type": "registry:block",
+      "title": "Eval Suite",
+      "description": "Run a suite on a new version against its baseline: cases stream in, regressions and fixes are called out with the cases behind them.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/eval-suite.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/eval-suite.tsx"
+        }
+      ]
+    },
+    {
+      "name": "knowledge-base",
+      "type": "registry:block",
+      "title": "Knowledge Base",
+      "description": "Sources moving through parse, chunk, embed and index, then a retrieval test that shows which chunks come back, with rerank and settings.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/knowledge-base.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/knowledge-base.tsx"
+        }
+      ]
+    },
+    {
+      "name": "market-terminal",
+      "type": "registry:block",
+      "title": "Market Terminal",
+      "description": "Candlestick chart with moving averages and zoom, a live watchlist and an order ticket – plug in real market data.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/market-terminal.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/market-terminal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mcp-servers",
+      "type": "registry:block",
+      "title": "MCP Servers",
+      "description": "The MCP servers behind an agent: what the enabled tools cost in context, connect or pause a server, switch single tools.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/mcp-servers.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/mcp-servers.tsx"
+        }
+      ]
+    },
+    {
+      "name": "model-arena",
+      "type": "registry:block",
+      "title": "Model Arena",
+      "description": "Blind side-by-side model comparison: one prompt, two streaming answers, a vote, then the reveal and a leaderboard.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/model-arena.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/model-arena.tsx"
+        }
+      ]
+    },
+    {
+      "name": "prompt-studio",
+      "type": "registry:block",
+      "title": "Prompt Studio",
+      "description": "Edit, test and ship a prompt template: variable chips with sample values, a test run on the chosen model, and versions to compare and promote.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/prompt-studio.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/prompt-studio.tsx"
+        }
+      ]
+    },
+    {
+      "name": "usage-forecast",
+      "type": "registry:block",
+      "title": "Usage Forecast",
+      "description": "A billing period usage chart with a forecast cone and a draggable budget that dates the crossing.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/usage-forecast.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/usage-forecast.tsx"
+        }
+      ]
+    },
+    {
+      "name": "action-morph",
+      "type": "registry:ui",
+      "title": "Action Morph",
+      "description": "A floating button that springs into a quick-action menu, then an inline composer, and folds back with a check.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/action-morph.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/action-morph.tsx"
+        }
+      ]
+    },
+    {
+      "name": "activity-rings",
+      "type": "registry:ui",
+      "title": "Activity Rings",
+      "description": "Daily goals as tick rings that sweep, count up and trace a second lap past 100%, with a week picker.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/activity-rings.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/activity-rings.tsx"
+        }
+      ]
+    },
+    {
+      "name": "control-center",
+      "type": "registry:ui",
+      "title": "Control Center",
+      "description": "Quick-settings glass panel: tiles that morph into detail, a duration dial and rubber-banded meters.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/control-center.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/control-center.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-grid",
+      "type": "registry:ui",
+      "title": "Data Grid",
+      "description": "A virtualised grid for thousands of rows: sort, resize columns, select ranges and read trends in inline sparkline cells.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/data-grid.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid.tsx"
+        }
+      ]
+    },
+    {
+      "name": "date-reel",
+      "type": "registry:ui",
+      "title": "Date Reel",
+      "description": "iOS-style 3D wheel picker for day and time: curved drums, momentum, rubber-band ends, a glass lens and quick picks.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/date-reel.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/date-reel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dock",
+      "type": "registry:ui",
+      "title": "Dock",
+      "description": "Magnifying dock: tiles swell with pointer distance on springs, a gliding label, running dots, badges, launch bounce and keyboard.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dock.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/dock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "funnel-chart",
+      "type": "registry:ui",
+      "title": "Funnel Chart",
+      "description": "A conversion funnel as one smooth tapered band with drop-off at every step, a device split and dots streaming through.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/funnel-chart.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/funnel-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "glass-card",
+      "type": "registry:ui",
+      "title": "Glass Card",
+      "description": "Photo card with a glass info panel: pointer-following rim highlight, tilt, and a tap that morphs the panel into a detail sheet.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/glass-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/glass-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "glass-menu",
+      "type": "registry:ui",
+      "title": "Glass Menu",
+      "description": "Frosted action menu: the trigger morphs into the panel on a spring, a highlight pill glides between rows, one in-place submenu.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/glass-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/glass-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "glass-segmented",
+      "type": "registry:ui",
+      "title": "Glass Segmented",
+      "description": "Glass segmented control with a liquid drop that stretches between segments and can be dragged and flung.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/glass-segmented.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/glass-segmented.tsx"
+        }
+      ]
+    },
+    {
+      "name": "glass-tabbar",
+      "type": "registry:ui",
+      "title": "Glass Tab Bar",
+      "description": "Floating liquid-glass tab bar that refracts the feed behind it, with a draggable lens, a search bubble and a compact state on scroll.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/glass-tabbar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/glass-tabbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "holo-card",
+      "type": "registry:ui",
+      "title": "Holo Card",
+      "description": "A member card that leans toward the pointer with holographic foil, glitter and glare, and flips to its back.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/holo-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/holo-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mega-menu-morph",
+      "type": "registry:ui",
+      "title": "Mega Menu Morph",
+      "description": "A site header whose menus share one floating panel that morphs between them, with hover intent, a safe triangle and an accordion sheet when narrow.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/mega-menu-morph.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/mega-menu-morph.tsx"
+        }
+      ]
+    },
+    {
+      "name": "morph-nav",
+      "type": "registry:ui",
+      "title": "Morph Nav",
+      "description": "Site navigation that morphs one surface into rich dropdown panels, search and a compact state, with a gliding highlight.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/morph-nav.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/morph-nav.tsx"
+        }
+      ]
+    },
+    {
+      "name": "now-playing",
+      "type": "registry:ui",
+      "title": "Now Playing",
+      "description": "A mini player that grows into the full player in one continuous morph, with generated artwork, a waveform scrubber and pull-down to close.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/now-playing.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/now-playing.tsx"
+        }
+      ]
+    },
+    {
+      "name": "orbit-menu",
+      "type": "registry:ui",
+      "title": "Orbit Menu",
+      "description": "Press a round button and its actions swirl out in an arc; drag to an action and release, or tap to keep it open.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/orbit-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/orbit-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "race-bar-chart",
+      "type": "registry:ui",
+      "title": "Race Bar Chart",
+      "description": "A ranking over time: bars overtake on springs, values count up, and a timeline you can play or scrub.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/race-bar-chart.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/race-bar-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "radar-chart",
+      "type": "registry:ui",
+      "title": "Radar Chart",
+      "description": "Two or three profiles on one web: shapes morph when you swap a profile, and a sweep across the axes compares values in place.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/radar-chart.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/radar-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "realtime-stream",
+      "type": "registry:ui",
+      "title": "Realtime Stream",
+      "description": "A live latency feed on a canvas: it scrolls at the display rate, holds still on hover to read, and pops a marker on every anomaly.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/realtime-stream.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/realtime-stream.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ridgeline",
+      "type": "registry:ui",
+      "title": "Ridgeline",
+      "description": "Overlapping distributions, one ridge per group: hover lifts a ridge and reads its quartiles, switching datasets morphs every curve.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/ridgeline.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/ridgeline.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sankey-flow",
+      "type": "registry:ui",
+      "title": "Sankey Flow",
+      "description": "Flows between stages as ribbons with drifting particles; hover any node or ribbon to pour its share through the whole journey.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sankey-flow.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/sankey-flow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "share-sheet",
+      "type": "registry:ui",
+      "title": "Share Sheet",
+      "description": "A Share button that springs open into a panel with copy link, access level, channels and people to send to.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/share-sheet.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/share-sheet.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sheet-stack",
+      "type": "registry:ui",
+      "title": "Sheet Stack",
+      "description": "Nested sheets that stack with depth, drag to dismiss, and become stacked dialogs on wide screens.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sheet-stack.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/sheet-stack.tsx"
+        }
+      ]
+    },
+    {
+      "name": "slot-text",
+      "type": "registry:ui",
+      "title": "Slot Text",
+      "description": "Text and numbers that spin into their new value on staggered slot-machine reels.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/slot-text.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/slot-text.tsx"
+        }
+      ]
+    },
+    {
+      "name": "streamgraph",
+      "type": "registry:ui",
+      "title": "Streamgraph",
+      "description": "Layered streams on a wiggle baseline that morph between ranges, with a layer you can isolate and read week by week.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/streamgraph.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/streamgraph.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sunburst",
+      "type": "registry:ui",
+      "title": "Sunburst",
+      "description": "A hierarchy in rings: click a segment and every arc swings around it as the new centre, with a breadcrumb back and a rolling total.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sunburst.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/sunburst.tsx"
+        }
+      ]
+    },
+    {
+      "name": "time-dial",
+      "type": "registry:ui",
+      "title": "Time Dial",
+      "description": "A 24-hour rotary dial: spin one knob and every office rides its own ring at its local time, with working hours shaded and a rolling readout.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/time-dial.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/time-dial.tsx"
+        }
+      ]
+    },
+    {
+      "name": "treemap",
+      "type": "registry:ui",
+      "title": "Treemap",
+      "description": "A squarified treemap: click a tile and the view zooms into it, with a breadcrumb back and a measure switch that morphs every tile.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/treemap.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/treemap.tsx"
+        }
+      ]
+    },
+    {
+      "name": "voice-recorder",
+      "type": "registry:ui",
+      "title": "Voice Recorder",
+      "description": "Voice notes: tap the mic into a live scrolling waveform, review and scrub, then send the take into the thread. Simulated by default, real microphone on request.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/voice-recorder.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/voice-recorder.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cohort-retention",
+      "type": "registry:block",
+      "title": "Cohort Retention",
+      "description": "A cohort retention triangle that morphs into retention curves and rewashes by segment.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/cohort-retention.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cohort-retention.tsx"
+        }
+      ]
+    },
+    {
+      "name": "journey-flow",
+      "type": "registry:block",
+      "title": "Journey Flow",
+      "description": "A Sankey of paths from first visit to paid: ribbons morph by channel and trace a step's cohort on hover.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/journey-flow.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/journey-flow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mrr-waterfall",
+      "type": "registry:block",
+      "title": "MRR Waterfall",
+      "description": "An MRR bridge of floating bars that morph by period and open the accounts behind each move.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/mrr-waterfall.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/mrr-waterfall.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-loop",
+      "type": "registry:ui",
+      "title": "Agent Loop",
+      "description": "A head circles gather, act and verify while tool calls and checks land and the context grows.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/agent-loop.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/agent-loop.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-timeline",
+      "type": "registry:ui",
+      "title": "Agent Timeline",
+      "description": "One orchestrated run on a shared time axis, with handoffs and a live token and cost counter.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/agent-timeline.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/agent-timeline.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-flow",
+      "type": "registry:ui",
+      "title": "Data Flow",
+      "description": "Sources feed a processing core with a live count: hollow dots turn into solid squares and fan out to destinations.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/data-flow.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/data-flow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mixture-of-experts",
+      "type": "registry:ui",
+      "title": "Mixture of Experts",
+      "description": "A router scores each token, sends it to its top experts and merges their outputs.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/mixture-of-experts.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/mixture-of-experts.tsx"
+        }
+      ]
+    },
+    {
+      "name": "multi-region-failover",
+      "type": "registry:ui",
+      "title": "Multi-Region Failover",
+      "description": "Requests stream through a load balancer to two regions; one fails, traffic shifts, it recovers and rebalances.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/multi-region-failover.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/multi-region-failover.tsx"
+        }
+      ]
+    },
+    {
+      "name": "payment-flow",
+      "type": "registry:ui",
+      "title": "Payment Flow",
+      "description": "A card tap travels processor, network and bank and back approved, then settlement runs a second rail and the balance counts up.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/payment-flow.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/payment-flow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "prompt-cache",
+      "type": "registry:ui",
+      "title": "Prompt Cache",
+      "description": "Requests share a prefix: it is written once, read back on later requests, and the cost and time saved add up.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/prompt-cache.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/prompt-cache.tsx"
+        }
+      ]
+    },
+    {
+      "name": "reasoning-tree",
+      "type": "registry:ui",
+      "title": "Reasoning Tree",
+      "description": "Tree search over thoughts: score, prune, expand, then draw the best path to the answer.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/reasoning-tree.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/reasoning-tree.tsx"
+        }
+      ]
+    },
+    {
+      "name": "speculative-decoding",
+      "type": "registry:ui",
+      "title": "Speculative Decoding",
+      "description": "A small draft model guesses ahead, the large model checks the guesses in one pass.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/speculative-decoding.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/speculative-decoding.tsx"
+        }
+      ]
+    },
+    {
+      "name": "vector-search",
+      "type": "registry:ui",
+      "title": "Vector Search",
+      "description": "Documents fold into points on an embedding plane, a query lands, a signal hops the index and a ring lights the nearest matches.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/vector-search.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/vector-search.tsx"
+        }
+      ]
+    },
+    {
+      "name": "confidence-dither",
+      "type": "registry:ui",
+      "title": "Confidence Dither",
+      "description": "Model uncertainty drawn as dither density: bars, option distributions and per-token confidence.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/confidence-dither.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/confidence-dither.tsx"
+        }
+      ]
+    },
+    {
+      "name": "instrument-form",
+      "type": "registry:ui",
+      "title": "Instrument Form",
+      "description": "Form kit – fields, select, toggles, a ruler slider, stepper, sections and a save bar.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/instrument-form.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/instrument-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "provenance-trail",
+      "type": "registry:ui",
+      "title": "Provenance Trail",
+      "description": "An AI answer where every claim traces to its source, and unsupported ones say so.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/provenance-trail.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/provenance-trail.tsx"
+        }
+      ]
+    },
+    {
+      "name": "readout-bar",
+      "type": "registry:ui",
+      "title": "Readout Bar",
+      "description": "A strip of key numbers that settle when they change, with deltas, tolerances and sparklines.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/readout-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/readout-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "run-scrubber",
+      "type": "registry:ui",
+      "title": "Run Scrubber",
+      "description": "Scrub back and forth through an agent run like a tape, with its state at every moment.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/run-scrubber.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/run-scrubber.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spec-table",
+      "type": "registry:ui",
+      "title": "Spec Table",
+      "description": "A precise data table: sorting, selection, dither score bars, sticky headers and a readout footer.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/spec-table.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/spec-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "token-scope",
+      "type": "registry:ui",
+      "title": "Token Scope",
+      "description": "An oscilloscope for a live model stream: tokens per second, latency, stalls and tool calls.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/token-scope.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/token-scope.tsx"
+        }
+      ]
+    },
+    {
+      "name": "instrument-hero",
+      "type": "registry:block",
+      "title": "Instrument Hero",
+      "description": "An editorial landing hero with a live specimen plot and proof numbers.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/instrument-hero.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/instrument-hero.tsx"
+        }
+      ]
+    },
+    {
+      "name": "instrument-pricing",
+      "type": "registry:block",
+      "title": "Instrument Pricing",
+      "description": "Plans priced live from a usage ruler, with a comparison table that folds on mobile.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/instrument-pricing.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/instrument-pricing.tsx"
+        }
+      ]
+    },
+    {
+      "name": "instrument-shell",
+      "type": "registry:block",
+      "title": "Instrument Shell",
+      "description": "The app frame: a rail with a ruler nav, ⌘K search, breadcrumb and a gridded content area.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/instrument-shell.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/instrument-shell.tsx"
+        }
+      ]
+    },
+    {
+      "name": "accounting",
+      "type": "registry:block",
+      "title": "Accounting",
+      "description": "Instrument · Month-end close: reconcile with agent matches, invoices, a balanced ledger and the P&L.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/screens/accounting.tsx",
+          "type": "registry:block",
+          "target": "components/screens/accounting.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-workbench",
+      "type": "registry:block",
+      "title": "Agent Workbench",
+      "description": "Instrument · Co-edit a doc with an agent: its cursor, tracked suggestions, margin notes and a tape to scrub.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/screens/agent-workbench.tsx",
+          "type": "registry:block",
+          "target": "components/screens/agent-workbench.tsx"
+        }
+      ]
+    },
+    {
+      "name": "eval-lab",
+      "type": "registry:block",
+      "title": "Eval Lab",
+      "description": "Instrument · Compare models on an eval suite, inspect regressions, then ship the candidate.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/screens/eval-lab.tsx",
+          "type": "registry:block",
+          "target": "components/screens/eval-lab.tsx"
+        }
+      ]
+    },
+    {
+      "name": "finance",
+      "type": "registry:block",
+      "title": "Finance",
+      "description": "Instrument · Cash runway with live scenarios, budget vs actual, flagged spend and subscriptions.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/screens/finance.tsx",
+          "type": "registry:block",
+          "target": "components/screens/finance.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mission-control",
+      "type": "registry:block",
+      "title": "Mission Control",
+      "description": "Instrument · Multi-agent ops: live throughput, agent lanes, a queue that needs a human, and the run log.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/screens/mission-control.tsx",
+          "type": "registry:block",
+          "target": "components/screens/mission-control.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ops-dashboard",
+      "type": "registry:block",
+      "title": "Dashboard",
+      "description": "Instrument · Business overview: KPIs, revenue with a forecast band, channels, products, regions and a funnel.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/screens/ops-dashboard.tsx",
+          "type": "registry:block",
+          "target": "components/screens/ops-dashboard.tsx"
+        }
+      ]
+    },
+    {
+      "name": "research-desk",
+      "type": "registry:block",
+      "title": "Research Desk",
+      "description": "Instrument · An agent writes a brief and every claim traces to its source.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/screens/research-desk.tsx",
+          "type": "registry:block",
+          "target": "components/screens/research-desk.tsx"
+        }
+      ]
+    },
+    {
+      "name": "task-tracker",
+      "type": "registry:block",
+      "title": "Task Tracker",
+      "description": "Instrument · Board, list and timeline for a project where some assignees are agents.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/screens/task-tracker.tsx",
+          "type": "registry:block",
+          "target": "components/screens/task-tracker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-pebble",
+      "type": "registry:ui",
+      "title": "Agent Pebble",
+      "description": "A floating glass pebble for background agents – idle, working, needs you, done – that you drag to dock.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/agent-pebble.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/agent-pebble.tsx"
+        }
+      ]
+    },
+    {
+      "name": "assembler",
+      "type": "registry:ui",
+      "title": "Assembler",
+      "description": "A generative-UI card that builds itself as an agent streams parts: skeletons settle, actions unlock.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/assembler.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/assembler.tsx"
+        }
+      ]
+    },
+    {
+      "name": "bead-stepper",
+      "type": "registry:ui",
+      "title": "Bead Stepper",
+      "description": "Run progress as beads on an abacus rod; an amber bead says why a step waits for you.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/bead-stepper.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/bead-stepper.tsx"
+        }
+      ]
+    },
+    {
+      "name": "condensation",
+      "type": "registry:ui",
+      "title": "Condensation",
+      "description": "Secrets and agent memory behind steamed glass: wipe a clear trail and the fog creeps back.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/condensation.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/condensation.tsx"
+        }
+      ]
+    },
+    {
+      "name": "faderbank",
+      "type": "registry:ui",
+      "title": "Faderbank",
+      "description": "A graphite mixing desk for model parameters: faders, LED meters, A/B models, mute and solo, and a live readout.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/faderbank.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/faderbank.tsx"
+        }
+      ]
+    },
+    {
+      "name": "folio",
+      "type": "registry:ui",
+      "title": "Folio",
+      "description": "Compare models or plans as hinged panels: pick one and its neighbours swing open into a shared grid.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/folio.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/folio.tsx"
+        }
+      ]
+    },
+    {
+      "name": "loop-select",
+      "type": "registry:ui",
+      "title": "Loop Select",
+      "description": "Circle files with a grease-pencil loop, then ask an agent about exactly what is inside.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/loop-select.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/loop-select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "marker-pass",
+      "type": "registry:ui",
+      "title": "Marker Pass",
+      "description": "A cited answer beside its source: halftone marker strokes sweep the passages in the order the model read them.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/marker-pass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/marker-pass.tsx"
+        }
+      ]
+    },
+    {
+      "name": "patchbay",
+      "type": "registry:ui",
+      "title": "Patchbay",
+      "description": "Drag sagging patch cables from tools to agents; each cable shows the permission it grants.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/patchbay.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/patchbay.tsx"
+        }
+      ]
+    },
+    {
+      "name": "resonance-search",
+      "type": "registry:ui",
+      "title": "Resonance Search",
+      "description": "Search where each result is a vibrating string: relevance sets amplitude and the best match locks into one clean arch.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/resonance-search.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/resonance-search.tsx"
+        }
+      ]
+    },
+    {
+      "name": "run-receipt",
+      "type": "registry:ui",
+      "title": "Run Receipt",
+      "description": "An agent run's cost printed as a thermal receipt that feeds out of a slot and tears off with a pull.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/run-receipt.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/run-receipt.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-edge",
+      "type": "registry:ui",
+      "title": "Scroll Edge",
+      "description": "A scroll frame where the large title folds into a glass bar and content slides under a progressive blur.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/scroll-edge.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/scroll-edge.tsx"
+        }
+      ]
+    },
+    {
+      "name": "seal",
+      "type": "registry:ui",
+      "title": "Seal",
+      "description": "Approve with a wax-seal press: a dithered stamp leaves a timed impression, the slab flips and an undo window follows.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/seal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/seal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tracing-paper",
+      "type": "registry:ui",
+      "title": "Tracing Paper",
+      "description": "Review an AI edit by dragging a curled sheet of tracing paper over the old version, changes edged in colour.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/tracing-paper.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tracing-paper.tsx"
+        }
+      ]
+    }
+  ]
+}

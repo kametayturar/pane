@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Design plan
+   Ground #E4ECEE | Ink #0B2230 | Deep #123F55 | Foam #F7FBFB | Buoy #F2C230 | Alert #B3261E on foam
+   Type: Bricolage Grotesque (display) + Instrument Sans (body)
+   Layout: a deep half-screen headline, a foam form half; errors are a full-width ink-on-buoy strip under the field so they never rely on colour alone. */
+:root{--ground:#E4ECEE;--ink:#0B2230;--deep:#123F55;--foam:#F7FBFB;--buoy:#F2C230;--mute:#4A6270;--alert:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{background:var(--foam);color:var(--ink);font:17px/1.5 "Instrument Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--deep);outline-offset:2px}
+.page{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);min-height:100vh}
+.side{background:var(--deep);color:var(--foam);padding:40px 48px;display:flex;flex-direction:column;justify-content:space-between;gap:48px}
+.mark{font:800 26px/1 "Bricolage Grotesque";font-stretch:80%;letter-spacing:-.02em;color:inherit;text-decoration:none}
+.side h1{font:800 clamp(56px,6.6vw,104px)/.88 "Bricolage Grotesque";font-stretch:75%;letter-spacing:-.022em}
+.side p{margin-top:24px;color:#CFE1E8;font-size:19px;max-width:20em}
+.tide{width:100%;height:auto;display:block;margin-top:8px}
+.main{padding:56px 48px;display:flex;align-items:center}
+form,.done{width:100%;max-width:480px}
+form>h2,.done h2{font:700 32px/1.05 "Bricolage Grotesque";font-stretch:80%;letter-spacing:-.015em;margin-bottom:6px}
+.sub{color:var(--mute);margin-bottom:28px}
+.f{margin-bottom:20px}
+label.t{display:block;font-weight:600;font-size:16px;margin-bottom:7px}
+input[type=text],input[type=email],input[type=password],select{width:100%;height:52px;padding:0 14px;font:500 17px "Instrument Sans";color:var(--ink);background:var(--foam);border:2px solid var(--ink);border-radius:4px;outline:none;appearance:none;-webkit-appearance:none}
+input:focus,select:focus{box-shadow:0 0 0 4px var(--buoy)}
+.f.err input{border-color:var(--alert);background:#FDF3F2}
+.msg{display:none;margin-top:8px;padding:8px 12px;background:var(--buoy);color:var(--ink);font-weight:600;font-size:15px;border-radius:3px;align-items:flex-start;gap:10px}
+.msg::before{content:"!";flex:none;width:20px;height:20px;border-radius:50%;background:var(--ink);color:var(--buoy);display:grid;place-items:center;font-size:13px;margin-top:1px}
+.f.err .msg{display:flex}
+.pw{position:relative}.pw button{position:absolute;right:6px;top:6px;height:40px;padding:0 12px;border:0;background:none;font:600 15px "Instrument Sans";cursor:pointer;color:var(--deep);text-decoration:underline;text-underline-offset:3px}
+.hint{font-size:15px;color:var(--mute);margin-top:6px}
+.f.err .hint{display:none}
+.sel{position:relative}.sel::after{content:"";position:absolute;right:18px;top:19px;width:9px;height:9px;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(45deg);pointer-events:none}
+.chk{display:flex;gap:12px;align-items:flex-start;margin:8px 0 24px;font-size:16px;cursor:pointer}
+.chk input{appearance:none;-webkit-appearance:none;flex:none;width:24px;height:24px;border:2px solid var(--ink);border-radius:3px;margin-top:1px;display:grid;place-items:center;cursor:pointer;background:var(--foam)}
+.chk input:checked{background:var(--ink)}
+.chk input:checked::after{content:"";width:11px;height:6px;border-left:3px solid var(--buoy);border-bottom:3px solid var(--buoy);transform:rotate(-45deg) translate(1px,-1px)}
+.chk.err span{color:var(--alert);font-weight:600}
+.chk a{color:inherit;text-underline-offset:3px}
+.go{width:100%;height:56px;border:0;border-radius:4px;background:var(--ink);color:var(--foam);font:600 17px "Instrument Sans";cursor:pointer;transition:background .2s,transform .15s}
+.go:hover{background:var(--deep)}.go:active{transform:translateY(1px)}
+.alt{margin-top:18px;color:var(--mute);font-size:16px}.alt a{color:var(--ink);font-weight:600}
+.done{display:none}.done.show{display:block}
+@media (max-width:900px){
+ .page{grid-template-columns:1fr}.side{padding:24px 20px 32px;gap:24px}.side h1{font-size:60px}.side p{font-size:17px;margin-top:14px}.tide{display:none}
+ .main{padding:32px 20px 56px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+ <aside class="side">
+  <a class="mark" href="#">Tidewater</a>
+  <div><h1>Open your clinic's diary</h1><p>Ten minutes to set up. Import your patients from a CSV and reminders start going out tonight.</p></div>
+  <svg class="tide" viewBox="0 0 600 70" aria-hidden="true"><path d="M0 40 C60 8 120 8 180 40 S300 72 360 40 S480 8 540 40 S600 56 600 40" fill="none" stroke="#F2C230" stroke-width="3"/><path d="M0 56 C60 24 120 24 180 56 S300 88 360 56 S480 24 540 56 S600 72 600 56" fill="none" stroke="#2A6682" stroke-width="2"/></svg>
+ </aside>
+ <main class="main">
+  <form id="f" novalidate>
+   <h2>Create your account</h2>
+   <p class="sub">Free for 30 days. No card needed.</p>
+   <div class="f" data-k="name"><label class="t" for="name">Full name</label><input id="name" type="text" autocomplete="name" aria-describedby="name-e"><div class="msg" id="name-e" role="alert"></div></div>
+   <div class="f" data-k="email"><label class="t" for="email">Work email</label><input id="email" type="email" autocomplete="email" value="jordan@northside" aria-describedby="email-e"><div class="msg" id="email-e" role="alert"></div></div>
+   <div class="f" data-k="pw"><label class="t" for="pw">Password</label><div class="pw"><input id="pw" type="password" autocomplete="new-password" value="tide2" aria-describedby="pw-h pw-e"><button type="button" id="eye" aria-pressed="false">Show</button></div><p class="hint" id="pw-h">At least 10 characters.</p><div class="msg" id="pw-e" role="alert"></div></div>
+   <div class="f" data-k="size"><label class="t" for="size">Clinic size</label><div class="sel"><select id="size" aria-describedby="size-e"><option value="">Choose a size</option><option>Just me</option><option>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 or more therapists</option></select></div><div class="msg" id="size-e" role="alert"></div></div>
+   <label class="chk" id="tw"><input type="checkbox" id="terms"><span>I accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label>
+   <button class="go" type="submit">Create account</button>
+   <p class="alt">Already have an account? <a href="#">Sign in</a></p>
+  </form>
+  <div class="done" id="done" role="status"><h2>Check your inbox</h2><p class="sub">We sent a confirmation link to <strong id="sent"></strong>.</p></div>
+ </main>
+</div>
+<script>
+const $=s=>document.querySelector(s),I={name:$('#name'),email:$('#email'),pw:$('#pw'),size:$('#size')};
+const rule={
+ name:v=>v.trim().length<2?'Enter your full name.':'',
+ email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?'':'Enter a valid email, such as name@clinic.com.',
+ pw:v=>v.length<10?`Password is too short. Use at least 10 characters (you have ${v.length}).`:'',
+ size:v=>v?'':'Choose your clinic size.'
+};
+function check(k){const w=document.querySelector(`[data-k=${k}]`),m=rule[k](I[k].value);w.classList.toggle('err',!!m);$(`#${k==='pw'?'pw':k}-e`).textContent=m;I[k].setAttribute('aria-invalid',!!m);return !m}
+for(const k in I){I[k].addEventListener('blur',()=>check(k));I[k].addEventListener('input',()=>{if(I[k].closest('.f').classList.contains('err'))check(k)})}
+$('#eye').onclick=e=>{const s=I.pw.type==='password';I.pw.type=s?'text':'password';e.target.textContent=s?'Hide':'Show';e.target.setAttribute('aria-pressed',s)};
+$('#terms').onchange=()=>$('#tw').classList.remove('err');
+$('#f').addEventListener('submit',e=>{e.preventDefault();let ok=true,first;for(const k in I){const r=check(k);if(!r&&!first)first=I[k];ok&&=r}
+ if(!$('#terms').checked){$('#tw').classList.add('err');ok=false;first||=$('#terms')}
+ if(!ok){first.focus();return}$('#f').style.display='none';$('#sent').textContent=I.email.value;$('#done').classList.add('show')});
+check('email');check('pw');
+</script>
+</body>
+</html>

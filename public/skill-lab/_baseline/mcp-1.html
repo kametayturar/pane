@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+
+<h2>Result</h2><div class="result">Built an MCP server for the Tidewater appointments API (file server.mjs below, ~120 lines, @modelcontextprotocol/sdk 1.32.1 + zod, stdio transport) from fixtures/mcp/openapi.json, with the API mocked in memory (2 therapists, 3 patients, 2 seed appointments). It exposes one tool per OpenAPI operation:
+list_appointments, book_appointment, cancel_appointment, list_therapists, search_patients, get_availability.
+
+Decisions: tool names are snake_case verbs (not raw HTTP paths); zod schemas mirror the OpenAPI parameters (enum for status, datetime for start, default 45 for durationMin and true for notifyPatient); tool annotations are set (reads are readOnlyHint, cancel is destructiveHint); business errors (unknown ids, double booking, cancelling twice) come back as isError results with an actionable message that names the next tool to call, while malformed input is rejected by schema validation (JSON-RPC -32602); logging goes to stderr only because stdout is the protocol channel. The mock enforces basic rules so the calls mean something: no overlapping bookings per therapist, availability derived from the bookings (hourly 09:00-17:00 UTC slots), phone search by digits.
+
+Verified by running it for real: client.mjs spawns the server over stdio with the SDK client, lists the tools, and makes 7 calls (search, availability, a booking, a conflicting booking that returns isError, list, cancel, an invalid-input call). I also sent raw JSON-RPC (initialize + tools/call) through a pipe to confirm it works without the SDK client. Not done: HTTP transport, auth, pagination, wiring to Claude Desktop config, and the real API at api.tidewater.example (mocked as asked). Not generated automatically from the OpenAPI file; the OpenAPI has no response schemas, so outputSchema is a loose wrapper object.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># scratch project</div><div class="cmd">mkdir mcp &amp;&amp; cd mcp &amp;&amp; npm init -y &amp;&amp; npm pkg set type=module &amp;&amp; npm i @modelcontextprotocol/sdk zod</div><div class="out">found 0 vulnerabilities
+@modelcontextprotocol/sdk 1.32.1, zod 4.6.7</div></div><div class="step"><div class="note"># tool list as returned by the running server (stderr line is the server's startup log)</div><div class="cmd">node client.mjs   # spawns `node server.mjs` over stdio, calls tools/list</div><div class="out">tidewater-appointments MCP server running on stdio
+# tools/list (6)
+- list_appointments(date?, therapistId?, status?) -- List appointments, optionally filtered by date, therapist or status.
+- book_appointment(patientId, therapistId, start, durationMin?) -- Book an appointment for a patient with a therapist. Fails if the therapist is already booked in that window.
+- cancel_appointment(id, reason?, notifyPatient?) -- Cancel a booked appointment by id, optionally with a reason. Irreversible.
+- list_therapists() -- List all therapists.
+- search_patients(q) -- Search patients by name or phone number.
+- get_availability(therapistId, date) -- Open hourly slots for a therapist on a given day.
+</div></div><div class="step"><div class="note"># real calls against the in-memory API; the booking takes 11:00 with t1</div><div class="cmd">(same run) tools/call search_patients, get_availability, book_appointment</div><div class="out"># tools/call search_patients {"q":"ada"}
+ok
+[
+  {
+    "id": "p1",
+    "name": "Ada Lovelace",
+    "phone": "+44 20 7946 0001"
+  }
+]
+
+# tools/call get_availability {"therapistId":"t1","date":"2026-10-27"}
+ok
+{
+  "therapistId": "t1",
+  "date": "2026-10-27",
+  "openSlots": [
+    "2026-10-27T10:00:00.000Z",
+    "2026-10-27T11:00:00.000Z",
+    "2026-10-27T12:00:00.000Z",
+    "2026-10-27T13:00:00.000Z",
+    "2026-10-27T14:00:00.000Z",
+    "2026-10-27T15:00:00.000Z",
+    "2026-10-27T16:00:00.000Z"
+  ]
+}
+
+# tools/call book_appointment {"patientId":"p3","therapistId":"t1","start":"2026-10-27T11:00:00Z"}
+ok
+{
+  "id": "a3",
+  "patientId": "p3",
+  "therapistId": "t1",
+  "start": "2026-10-27T11:00:00.000Z",
+  "durationMin": 45,
+  "status": "booked"
+}</div></div><div class="step"><div class="note"># conflict -&gt; isError with guidance; state changes are visible in list_appointments; bad datetime rejected by the schema</div><div class="cmd">(same run) conflicting booking, list, cancel, invalid input</div><div class="out"># tools/call book_appointment {"patientId":"p3","therapistId":"t1","start":"2026-10-27T09:30:00Z"}
+isError: true
+t1 is already booked at that time (appointment a1). Use get_availability for free slots.
+
+# tools/call list_appointments {"therapistId":"t1","status":"booked"}
+ok
+[
+  {
+    "id": "a1",
+    "patientId": "p1",
+    "therapistId": "t1",
+    "start": "2026-10-27T09:00:00.000Z",
+    "durationMin": 45,
+    "status": "booked"
+  },
+  {
+    "id": "a3",
+    "patientId": "p3",
+    "therapistId": "t1",
+    "start": "2026-10-27T11:00:00.000Z",
+    "durationMin": 45,
+    "status": "booked"
+  }
+]
+
+# tools/call cancel_appointment {"id":"a3","reason":"patient asked to move"}
+ok
+{
+  "id": "a3",
+  "patientId": "p3",
+  "therapistId": "t1",
+  "start": "2026-10-27T11:00:00.000Z",
+  "durationMin": 45,
+  "status": "cancelled",
+  "cancelReason": "patient asked to move",
+  "patientNotified": true
+}
+
+# invalid input -&gt; true MCP error -32602: Input validation error: Invalid arguments for tool book_appointment: Invalid ISO datetime at start</div></div><div class="step"><div class="note"># protocol-level check with raw JSON-RPC, no SDK client</div><div class="cmd">printf '&lt;initialize&gt;\n&lt;initialized&gt;\n&lt;tools/call list_therapists&gt;' | node server.mjs 2&gt;/dev/null | head -c 1500</div><div class="out">{"result":{"protocolVersion":"2025-06-18","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"tidewater-appointments","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+{"result":{"content":[{"type":"text","text":"[\n  {\n    \"id\": \"t1\",\n    \"name\": \"Dr. Okafor\",\n    \"speciality\": \"sports injury\"\n  },\n  {\n    \"id\": \"t2\",\n    \"name\": \"Dr. Lindqvist\",\n    \"speciality\": \"neurological rehab\"\n  }\n]"}],"structuredContent":{"result":[{"id":"t1","name":"Dr. Okafor","spe ...</div></div></div>
+<h2>Files</h2><details open><summary>server.mjs</summary><pre><span class="c">// Tidewater Appointments MCP server (stdio). Mirrors openapi.json; the API is mocked in memory.</span>
+<span class="k">import</span> { McpServer } <span class="k">from</span> <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk/<span class="k">server</span>/mcp.js"</span>
+<span class="k">import</span> { StdioServerTransport } <span class="k">from</span> <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk/<span class="k">server</span>/stdio.js"</span>
+<span class="k">import</span> { z } <span class="k">from</span> <span <span class="k">class</span>="s">"zod"</span>
+
+<span class="c">// ---- in-memory "API" -------------------------------------------------------------</span>
+<span class="k">const</span> therapists = [
+  { id: <span <span class="k">class</span>="s">"t1"</span>, name: <span <span class="k">class</span>="s">"Dr. Okafor"</span>, speciality: <span <span class="k">class</span>="s">"sports injury"</span> },
+  { id: <span <span class="k">class</span>="s">"t2"</span>, name: <span <span class="k">class</span>="s">"Dr. Lindqvist"</span>, speciality: <span <span class="k">class</span>="s">"neurological rehab"</span> },
+]
+<span class="k">const</span> patients = [
+  { id: <span <span class="k">class</span>="s">"p1"</span>, name: <span <span class="k">class</span>="s">"Ada Lovelace"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">44</span> <span class="n">20</span> <span class="n">7946</span> <span class="n">0001</span>"</span> },
+  { id: <span <span class="k">class</span>="s">"p2"</span>, name: <span <span class="k">class</span>="s">"Grace Hopper"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">1</span> <span class="n">202</span> <span class="n">555</span> <span class="n">0143</span>"</span> },
+  { id: <span <span class="k">class</span>="s">"p3"</span>, name: <span <span class="k">class</span>="s">"Alan Turing"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">44</span> <span class="n">20</span> <span class="n">7946</span> <span class="n">0999</span>"</span> },
+]
+<span class="k">let</span> nextId = <span class="n">2</span>
+<span class="k">const</span> appointments = [
+  { id: <span <span class="k">class</span>="s">"a1"</span>, patientId: <span <span class="k">class</span>="s">"p1"</span>, therapistId: <span <span class="k">class</span>="s">"t1"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-27T09:<span class="n">00</span>:<span class="n">00</span>.000Z"</span>, durationMin: <span class="n">45</span>, status: <span <span class="k">class</span>="s">"booked"</span> },
+  { id: <span <span class="k">class</span>="s">"a2"</span>, patientId: <span <span class="k">class</span>="s">"p2"</span>, therapistId: <span <span class="k">class</span>="s">"t2"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-27T10:<span class="n">00</span>:<span class="n">00</span>.000Z"</span>, durationMin: <span class="n">45</span>, status: <span <span class="k">class</span>="s">"booked"</span> },
+]
+<span class="k">const</span> MIN = 60_000
+<span class="k">const</span> overlaps = (a, startMs, durMin) =&gt; {
+  <span class="k">const</span> s = Date.parse(a.start)
+  <span class="k">return</span> a.status === <span <span class="k">class</span>="s">"booked"</span> &amp;&amp; startMs &lt; s + a.durationMin * MIN &amp;&amp; s &lt; startMs + durMin * MIN
+}
+<span class="k">class</span> ApiError <span class="k">extends</span> Error {}
+
+<span class="k">const</span> api = {
+  listAppointments: ({ date, therapistId, status }) =&gt;
+    appointments.filter((a) =&gt; (!date || a.start.startsWith(date)) &amp;&amp; (!therapistId || a.therapistId === therapistId) &amp;&amp; (!status || a.status === status)),
+  bookAppointment: ({ patientId, therapistId, start, durationMin = <span class="n">45</span> }) =&gt; {
+    <span class="k">if</span> (!patients.some((p) =&gt; p.id === patientId)) <span class="k">throw</span> <span class="k">new</span> ApiError(<span <span class="k">class</span>="s">`Unknown patientId "${patientId}". Use search_patients to find one.`</span>)
+    <span class="k">if</span> (!therapists.some((t) =&gt; t.id === therapistId)) <span class="k">throw</span> <span class="k">new</span> ApiError(<span <span class="k">class</span>="s">`Unknown therapistId "${therapistId}". Use list_therapists to see valid ids.`</span>)
+    <span class="k">const</span> ms = Date.parse(start)
+    <span class="k">if</span> (Number.isNaN(ms)) <span class="k">throw</span> <span class="k">new</span> ApiError(<span <span class="k">class</span>="s">`"${start}" is not an ISO date-time.`</span>)
+    <span class="k">const</span> clash = appointments.find((a) =&gt; a.therapistId === therapistId &amp;&amp; overlaps(a, ms, durationMin))
+    <span class="k">if</span> (clash) <span class="k">throw</span> <span class="k">new</span> ApiError(<span <span class="k">class</span>="s">`${therapistId} is already booked at that time (appointment ${clash.id}). Use get_availability <span class="k">for</span> free slots.`</span>)
+    <span class="k">const</span> appt = { id: <span <span class="k">class</span>="s">"a"</span> + ++nextId, patientId, therapistId, start: <span class="k">new</span> Date(ms).toISOString(), durationMin, status: <span <span class="k">class</span>="s">"booked"</span> }
+    appointments.push(appt)
+    <span class="k">return</span> appt
+  },
+  cancelAppointment: ({ id, reason, notifyPatient = <span class="k">true</span> }) =&gt; {
+    <span class="k">const</span> a = appointments.find((x) =&gt; x.id === id)
+    <span class="k">if</span> (!a) <span class="k">throw</span> <span class="k">new</span> ApiError(<span <span class="k">class</span>="s">`No appointment <span class="k">with</span> id "${id}".`</span>)
+    <span class="k">if</span> (a.status !== <span <span class="k">class</span>="s">"booked"</span>) <span class="k">throw</span> <span class="k">new</span> ApiError(<span <span class="k">class</span>="s">`Appointment ${id} is already ${a.status}.`</span>)
+    a.status = <span <span class="k">class</span>="s">"cancelled"</span>
+    <span class="k">return</span> { ...a, cancelReason: reason ?? <span class="k">null</span>, patientNotified: notifyPatient }
+  },
+  listTherapists: () =&gt; therapists,
+  searchPatients: ({ q }) =&gt; {
+    <span class="k">const</span> n = q.toLowerCase(), digits = q.replace(/\D/g, <span <span class="k">class</span>="s">""</span>)
+    <span class="k">return</span> patients.filter((p) =&gt; p.name.toLowerCase().includes(n) || (digits.length &gt;= <span class="n">3</span> &amp;&amp; p.phone.replace(/\D/g, <span <span class="k">class</span>="s">""</span>).includes(digits)))
+  },
+  getAvailability: ({ therapistId, date }) =&gt; {
+    <span class="k">if</span> (!therapists.some((t) =&gt; t.id === therapistId)) <span class="k">throw</span> <span class="k">new</span> ApiError(<span <span class="k">class</span>="s">`Unknown therapistId "${therapistId}".`</span>)
+    <span class="k">const</span> slots = []
+    <span class="k">for</span> (<span class="k">let</span> h = <span class="n">9</span>; h &lt; <span class="n">17</span>; h++) {
+      <span class="k">const</span> start = <span <span class="k">class</span>="s">`${date}T${String(h).padStart(<span class="n">2</span>, "<span class="n">0</span>")}:<span class="n">00</span>:<span class="n">00</span>.000Z`</span>
+      <span class="k">if</span> (!appointments.some((a) =&gt; a.therapistId === therapistId &amp;&amp; overlaps(a, Date.parse(start), <span class="n">45</span>))) slots.push(start)
+    }
+    <span class="k">return</span> { therapistId, date, openSlots: slots }
+  },
+}
+
+<span class="c">// ---- MCP server --------------------------------------------------------------------</span>
+<span class="k">const</span> <span class="k">server</span> = <span class="k">new</span> McpServer({ name: <span <span class="k">class</span>="s">"tidewater-appointments"</span>, version: <span <span class="k">class</span>="s">"<span class="n">1.0</span>.<span class="n">0</span>"</span> })
+<span class="k">const</span> run = (fn) =&gt; <span class="k">async</span> (args) =&gt; {
+  <span class="k">try</span> {
+    <span class="k">const</span> data = fn(args)
+    <span class="k">return</span> { content: [{ <span class="k">type</span>: <span <span class="k">class</span>="s">"text"</span>, text: JSON.stringify(data, <span class="k">null</span>, <span class="n">2</span>) }], structuredContent: { result: data } }
+  } <span class="k">catch</span> (e) {
+    <span class="k">if</span> (e instanceof ApiError) <span class="k">return</span> { isError: <span class="k">true</span>, content: [{ <span class="k">type</span>: <span <span class="k">class</span>="s">"text"</span>, text: e.message }] }
+    <span class="k">throw</span> e
+  }
+}
+<span class="k">const</span> date = z.string().regex(/^\d{<span class="n">4</span>}-\d{<span class="n">2</span>}-\d{<span class="n">2</span>}$/, <span <span class="k">class</span>="s">"YYYY-MM-DD"</span>)
+<span class="k">const</span> out = { result: z.any() }
+<span class="k">const</span> RO = { readOnlyHint: <span class="k">true</span>, openWorldHint: <span class="k">false</span> }
+
+<span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"list_appointments"</span>, {
+  description: <span <span class="k">class</span>="s">"List appointments, optionally filtered by date, therapist or status."</span>,
+  inputSchema: { date: date.optional().describe(<span <span class="k">class</span>="s">"Only appointments on this day"</span>), therapistId: z.string().optional(), status: z.enum([<span <span class="k">class</span>="s">"booked"</span>, <span <span class="k">class</span>="s">"cancelled"</span>, <span <span class="k">class</span>="s">"done"</span>]).optional() },
+  outputSchema: out, annotations: { title: <span <span class="k">class</span>="s">"List appointments"</span>, ...RO },
+}, run(api.listAppointments))
+
+<span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"book_appointment"</span>, {
+  description: <span <span class="k">class</span>="s">"Book an appointment <span class="k">for</span> a patient <span class="k">with</span> a therapist. Fails <span class="k">if</span> the therapist is already booked <span class="k">in</span> that window."</span>,
+  inputSchema: { patientId: z.string(), therapistId: z.string(), start: z.string().datetime().describe(<span <span class="k">class</span>="s">"ISO <span class="n">8601</span> date-time, e.g. <span class="n">2026</span>-<span class="n">10</span>-28T09:<span class="n">00</span>:00Z"</span>), durationMin: z.number().int().positive().<span class="k">default</span>(<span class="n">45</span>).optional() },
+  outputSchema: out, annotations: { title: <span <span class="k">class</span>="s">"Book appointment"</span>, readOnlyHint: <span class="k">false</span>, destructiveHint: <span class="k">false</span>, idempotentHint: <span class="k">false</span>, openWorldHint: <span class="k">false</span> },
+}, run(api.bookAppointment))
+
+<span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"cancel_appointment"</span>, {
+  description: <span <span class="k">class</span>="s">"Cancel a booked appointment by id, optionally <span class="k">with</span> a reason. Irreversible."</span>,
+  inputSchema: { id: z.string(), reason: z.string().optional(), notifyPatient: z.boolean().<span class="k">default</span>(<span class="k">true</span>).optional() },
+  outputSchema: out, annotations: { title: <span <span class="k">class</span>="s">"Cancel appointment"</span>, readOnlyHint: <span class="k">false</span>, destructiveHint: <span class="k">true</span>, idempotentHint: <span class="k">true</span>, openWorldHint: <span class="k">false</span> },
+}, run(api.cancelAppointment))
+
+<span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"list_therapists"</span>, { description: <span <span class="k">class</span>="s">"List all therapists."</span>, inputSchema: {}, outputSchema: out, annotations: { title: <span <span class="k">class</span>="s">"List therapists"</span>, ...RO } }, run(api.listTherapists))
+
+<span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"search_patients"</span>, {
+  description: <span <span class="k">class</span>="s">"Search patients by name or phone number."</span>,
+  inputSchema: { q: z.string().min(<span class="n">1</span>).describe(<span <span class="k">class</span>="s">"Name fragment or phone digits"</span>) },
+  outputSchema: out, annotations: { title: <span <span class="k">class</span>="s">"Search patients"</span>, ...RO },
+}, run(api.searchPatients))
+
+<span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"get_availability"</span>, {
+  description: <span <span class="k">class</span>="s">"Open hourly slots <span class="k">for</span> a therapist on a given day."</span>,
+  inputSchema: { therapistId: z.string(), date },
+  outputSchema: out, annotations: { title: <span <span class="k">class</span>="s">"Get availability"</span>, ...RO },
+}, run(api.getAvailability))
+
+<span class="k">await</span> <span class="k">server</span>.connect(<span class="k">new</span> StdioServerTransport())
+console.error(<span <span class="k">class</span>="s">"tidewater-appointments MCP <span class="k">server</span> running on stdio"</span>) // stderr only: stdout is the protocol channel
+</pre></details><details><summary>client.mjs</summary><pre><span class="k">import</span> { Client } <span class="k">from</span> <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk/client/index.js"</span>
+<span class="k">import</span> { StdioClientTransport } <span class="k">from</span> <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk/client/stdio.js"</span>
+<span class="k">const</span> client = <span class="k">new</span> Client({ name: <span <span class="k">class</span>="s">"demo-client"</span>, version: <span <span class="k">class</span>="s">"<span class="n">1.0</span>.<span class="n">0</span>"</span> })
+<span class="k">await</span> client.connect(<span class="k">new</span> StdioClientTransport({ command: <span <span class="k">class</span>="s">"node"</span>, args: [<span <span class="k">class</span>="s">"<span class="k">server</span>.mjs"</span>] }))
+<span class="k">const</span> { tools } = <span class="k">await</span> client.listTools()
+console.log(<span <span class="k">class</span>="s">`# tools/list (${tools.length})`</span>)
+<span class="k">for</span> (<span class="k">const</span> t <span class="k">of</span> tools) console.log(<span <span class="k">class</span>="s">`- ${t.name}(${Object.entries(t.inputSchema.properties ?? {}).map(([k]) =&gt; k + (t.inputSchema.required?.includes(k) ? "" : "?")).join(", ")}) -- ${t.description}`</span>)
+<span class="k">const</span> call = <span class="k">async</span> (name, args) =&gt; {
+  console.log(<span <span class="k">class</span>="s">`\n# tools/call ${name} ${JSON.stringify(args)}`</span>)
+  <span class="k">const</span> r = <span class="k">await</span> client.callTool({ name, arguments: args })
+  console.log(r.isError ? <span <span class="k">class</span>="s">"isError: <span class="k">true</span>"</span> : <span <span class="k">class</span>="s">"ok"</span>); console.log(r.content[<span class="n">0</span>].text)
+}
+<span class="k">await</span> call(<span <span class="k">class</span>="s">"search_patients"</span>, { q: <span <span class="k">class</span>="s">"ada"</span> })
+<span class="k">await</span> call(<span <span class="k">class</span>="s">"get_availability"</span>, { therapistId: <span <span class="k">class</span>="s">"t1"</span>, date: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-<span class="n">27</span>"</span> })
+<span class="k">await</span> call(<span <span class="k">class</span>="s">"book_appointment"</span>, { patientId: <span <span class="k">class</span>="s">"p3"</span>, therapistId: <span <span class="k">class</span>="s">"t1"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-27T11:<span class="n">00</span>:00Z"</span> })
+<span class="k">await</span> call(<span <span class="k">class</span>="s">"book_appointment"</span>, { patientId: <span <span class="k">class</span>="s">"p3"</span>, therapistId: <span <span class="k">class</span>="s">"t1"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-27T09:<span class="n">30</span>:00Z"</span> })   // clashes <span class="k">with</span> a1
+<span class="k">await</span> call(<span <span class="k">class</span>="s">"list_appointments"</span>, { therapistId: <span <span class="k">class</span>="s">"t1"</span>, status: <span <span class="k">class</span>="s">"booked"</span> })
+<span class="k">await</span> call(<span <span class="k">class</span>="s">"cancel_appointment"</span>, { id: <span <span class="k">class</span>="s">"a3"</span>, reason: <span <span class="k">class</span>="s">"patient asked to move"</span> })
+<span class="k">await</span> client.callTool({ name: <span <span class="k">class</span>="s">"book_appointment"</span>, arguments: { patientId: <span <span class="k">class</span>="s">"p3"</span>, therapistId: <span <span class="k">class</span>="s">"t1"</span>, start: <span <span class="k">class</span>="s">"not-a-date"</span> } }).then((r) =&gt; console.log(<span <span class="k">class</span>="s">"\n# invalid input -&gt;"</span>, r.isError, r.content[<span class="n">0</span>].text.slice(<span class="n">0</span>, <span class="n">160</span>))).<span class="k">catch</span>((e) =&gt; console.log(<span <span class="k">class</span>="s">"\n# invalid input rejected by schema:"</span>, e.message.slice(<span class="n">0</span>, <span class="n">160</span>)))
+<span class="k">await</span> client.close()
+</pre></details>
+</main>
+
+</body></html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10302e;--ink2:#58716e;--paper:#eef4f2;--card:#fff;--line:rgba(16,48,46,.09);--teal:#0f766e;--teal2:#14b8a6;--tint:#e0f1ed;--danger:#b4361f;
+--shadow:0 1px 2px rgba(16,48,46,.06),0 10px 28px -10px rgba(16,48,46,.16)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:20px 32px}
+.brand{display:flex;gap:10px;align-items:center;font-weight:650;font-size:17px;letter-spacing:-.01em}
+.brand svg{width:26px;height:26px}
+.replay{font:inherit;font-size:13.5px;font-weight:550;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 14px 7px 11px;cursor:pointer;display:inline-flex;gap:7px;align-items:center;box-shadow:0 1px 2px rgba(16,48,46,.05)}
+.replay svg{width:14px;height:14px}
+main{flex:1;display:grid;place-items:center;padding:8px 16px 64px}
+.app{width:min(720px,100%);background:var(--card);border-radius:20px;box-shadow:var(--shadow);position:relative}
+.app-h{display:flex;justify-content:space-between;align-items:center;padding:22px 26px 12px;gap:12px}
+.app-h h1{font-size:19px;letter-spacing:-.015em;font-weight:620}
+.pill{font-size:12.5px;font-weight:550;color:var(--teal);background:var(--tint);padding:5px 11px;border-radius:99px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.slots{list-style:none;padding:4px 14px 18px}
+.slots li{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:12px;padding:15px 12px;border-radius:12px;min-height:68px}
+.slots li+li{border-top:1px solid var(--line)}
+time{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:14px}
+.who b{display:block;font-weight:600;font-size:15px}
+.who span{font-size:13px;color:var(--ink2)}
+.who.open b{color:var(--ink2);font-weight:550}
+.btn{font:inherit;font-weight:600;font-size:14px;background:var(--teal);color:#fff;border:0;border-radius:10px;padding:9px 18px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);padding:8px;border-radius:10px;display:grid;place-items:center}
+.btn.ghost svg{width:20px;height:20px}
+/* toast */
+.toast{position:fixed;right:28px;bottom:28px;z-index:20;display:flex;align-items:center;gap:12px;background:#10302e;color:#fff;padding:14px 12px 14px 14px;border-radius:14px;font-size:14.5px;font-weight:500;max-width:calc(100vw - 32px)}
+.toast .ico{width:24px;height:24px;flex:none}
+.toast .ico svg{width:24px;height:24px;display:block;overflow:visible}
+.ring{fill:#14b8a6}.tick{fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.toast .txt{display:block}
+.toast .x{font:inherit;background:transparent;border:0;color:rgba(255,255,255,.55);width:26px;height:26px;border-radius:8px;font-size:18px;line-height:1;cursor:pointer;flex:none}
+@media (max-width:480px){.toast{left:16px;right:16px;bottom:16px}header.top{padding:16px}}
+/* dropdown */
+.appts{list-style:none;padding:4px 14px 18px}
+.appts>li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:16px 12px;position:relative;border-radius:12px}
+.appts>li+li{border-top:1px solid var(--line)}
+.av{width:44px;height:44px;border-radius:50%;background:var(--tint);color:var(--teal);display:grid;place-items:center;font-weight:650;font-size:14px}
+.menu-wrap{position:relative}
+.menu{position:absolute;right:0;top:calc(100% + 6px);width:224px;background:#fff;border-radius:14px;padding:6px;z-index:10}
+.menu button{display:block;width:100%;text-align:left;font:inherit;font-size:14.5px;padding:10px 12px;border:0;background:transparent;border-radius:9px;color:var(--ink);cursor:pointer;position:relative}
+.menu hr{border:0;height:1px;background:var(--line);margin:5px 4px}
+.menu .danger{color:var(--danger)}
+/* tasks */
+.add{display:flex;gap:10px;margin:0 26px 8px}
+.inp{flex:1;border:1px solid var(--line);border-radius:10px;padding:0 14px;min-height:40px;display:flex;align-items:center;font-size:14.5px;min-width:0;white-space:nowrap;overflow:hidden}
+.inp:empty::before{content:attr(data-ph);color:#8aa09d}
+.tasks{list-style:none;padding:6px 14px 8px;position:relative}
+.task{display:flex;align-items:center;gap:12px;padding:0 12px;min-height:54px;border-radius:12px;font-size:15px;background:#fff}
+.chk{width:22px;height:22px;border-radius:7px;border:1.6px solid #b3c5c2;background:#fff;display:grid;place-items:center;flex:none;cursor:pointer;padding:0}
+.chk svg{width:14px;height:14px;overflow:visible}
+.chk path{fill:none;stroke:#fff;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.lbl{position:relative;min-width:0}
+.del{margin-left:auto;font:inherit;background:transparent;border:0;color:var(--ink2);font-size:20px;line-height:1;width:28px;height:28px;border-radius:8px;cursor:pointer;flex:none}
+.tasks{min-height:190px}
+.empty{margin-top:-190px;height:190px;display:grid;place-items:center;text-align:center;color:var(--ink2);font-size:14px;pointer-events:none;position:relative}
+.empty[hidden]{display:none}
+.foot{display:flex;justify-content:space-between;padding:10px 26px 22px;font-size:13px;color:var(--ink2)}
+:root{--ease:cubic-bezier(0.2,0,0,1);--ease-in:cubic-bezier(0.3,0,1,1);--ease-io:cubic-bezier(0.4,0,0.2,1);--quick:140ms;--std:250ms;--slow:400ms}
+.btn{transition:transform 100ms var(--ease)}
+.btn:active,.btn.press{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.btn.ghost{transition:background-color 80ms var(--ease),transform 100ms var(--ease)}.btn.ghost:hover{background:var(--tint)}}
+/* primary: slide 28px from the right + opacity, 250ms. Exit = 72% of enter (180ms), ease-in */
+.toast{opacity:0;transform:translateX(28px);pointer-events:none;transition:opacity 180ms var(--ease-in),transform 180ms var(--ease-in)}
+.toast::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:0 14px 30px -8px rgba(16,48,46,.45);opacity:0;z-index:-1;transition:opacity 180ms var(--ease-in)}
+.toast.in{opacity:1;transform:none;pointer-events:auto;transition:opacity var(--std) var(--ease),transform var(--std) var(--ease)}
+/* secondary: shadow lands 50ms after the card, icon 50ms delay/100ms, tick draws, text trails by 80ms */
+.toast.in::after{opacity:1;transition:opacity var(--std) var(--ease) 50ms}
+.toast .ico{transform:scale(.6);opacity:0;transition:transform 100ms var(--ease-in),opacity 100ms var(--ease-in)}
+.toast.in .ico{transform:none;opacity:1;transition:transform 100ms var(--ease) 50ms,opacity 100ms var(--ease) 50ms}
+.tick{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 80ms linear}
+.toast.in .tick{stroke-dashoffset:0;transition:stroke-dashoffset 160ms var(--ease) 130ms}
+.toast .txt{opacity:0;transform:translateX(6px);transition:opacity 120ms var(--ease-in),transform 120ms var(--ease-in)}
+.toast.in .txt{opacity:1;transform:none;transition:opacity 170ms var(--ease) 80ms,transform 170ms var(--ease) 80ms}
+/* ambient: countdown bar (linear is correct for progress) + staging: other rows dim, booked row washes in */
+.bar{position:absolute;left:14px;right:14px;bottom:5px;height:2px;border-radius:2px;background:rgba(255,255,255,.28);transform:scaleX(1);transform-origin:left;opacity:0}
+.toast.in .bar{opacity:1;transform:scaleX(0);transition:transform 3600ms linear 300ms,opacity var(--std) var(--ease)}
+.row{transition:opacity 180ms var(--ease-in),background-color 180ms var(--ease-in)}
+.dim .row:not(#slot){opacity:.85;transition:opacity var(--std) var(--ease)}
+.dim #slot{background:var(--tint);transition:background-color var(--std) var(--ease)}@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-property:opacity,background-color,color,border-color!important;transition-duration:120ms!important;transition-delay:0s!important;animation:none!important;transform:none!important}}</style></head><body>
+<header class="top"><div class="brand"><svg viewBox="0 0 26 26"><rect width="26" height="26" rx="8" fill="#0f766e"/><path d="M4.5 15c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3 2.2 3 4.3 3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M4.5 19.5c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3 2.2 3 4.3 3" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/></svg>Tidewater</div><button class="replay" id="replay" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1"/><path d="M2.3 2.2v3h3"/></svg>Replay</button></header>
+<main><div class="app" id="app"><div class="app-h"><h1>Tuesday schedule</h1><span class="pill">Harbour Physio</span></div>
+<ul class="slots" id="slots">
+<li class="row"><time>09:00</time><div class="who"><b>Marta Ilves</b><span>Knee rehab · 45 min</span></div><span class="pill">Confirmed</span></li>
+<li class="row" id="slot"><time>10:30</time><div class="who open" id="slotWho"><b id="slotName">Open slot</b><span id="slotSub">Dr. Okafor · 45 min</span></div><button class="btn" id="book" type="button">Book</button></li>
+<li class="row"><time>11:15</time><div class="who"><b>Jonas Pärn</b><span>Lower back · 30 min</span></div><span class="pill">Confirmed</span></li>
+<li class="row"><time>13:00</time><div class="who"><b>Priya Nair</b><span>Post-op ankle · 45 min</span></div><span class="pill">Confirmed</span></li>
+</ul></div>
+<div class="toast" id="toast" role="status"><span class="ico"><svg viewBox="0 0 24 24"><circle class="ring" cx="12" cy="12" r="11"/><path class="tick" pathLength="1" d="M7 12.4l3.3 3.3 6.7-7.4"/></svg></span><span class="txt">Appointment booked for Tue 10:30</span><button class="x" type="button" aria-label="Dismiss">×</button></div></main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const raf=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let RUN=0;class Cancel extends Error{}
+function guard(id){return async ms=>{await wait(ms);if(id!==RUN)throw new Cancel()}}
+async function typeInto(el,text,w,per=26){for(let i=1;i<=text.length;i++){el.textContent=text.slice(0,i);await w(per)}}
+function start(setup,seq){const go=async()=>{const id=++RUN;const w=guard(id);try{while(id===RUN){await setup();await seq(w,id)}}catch(e){if(!(e instanceof Cancel))throw e}};$('#replay').onclick=go;go()}
+
+const TT=['Confirm 9:00 with Marta','Call insurer about J. Pärn','Restock treatment tables'];
+async function taskScenario(w,h){
+ await w(700);
+ for(let i=0;i<3;i++){await typeInto($('#inp'),TT[i],w,22);await w(120);await h.pressAdd();$('#inp').textContent='';await h.add(TT[i],i);await w(i<2?420:700)}
+ await w(500);await h.check(0);await w(800);await h.check(1);await w(1000);await h.remove(0);await w(700);await h.remove(1);await w(800);await h.remove(2);await w(1500)}
+async function toastScenario(w,h){await w(900);await h.press();fillSlot(true);await h.show();await w(h.hold);await h.hide();await w(1500)}
+async function menuScenario(w,h){await w(800);await h.press();await h.open();await w(700);for(const i of [0,1,2]){h.hl(i);await w(i<2?480:600)}await h.choose(2);await h.close();await w(1600)}
+function setCount(done,total){$('#count').textContent=done+' of '+total+' done'}
+function fillSlot(on){$('#slotName').textContent=on?'Anna Kask':'Open slot';$('#slotSub').textContent=on?'Shoulder mobility · Dr. Okafor':'Dr. Okafor · 45 min';$('#slotWho').classList.toggle('open',!on);const b=$('#book');b.textContent=on?'Booked':'Book';b.style.opacity=on?.5:1}
+const toast=$('#toast'),slots=$('#slots');const bar=document.createElement('i');bar.className='bar';toast.appendChild(bar);
+start(()=>{toast.className='toast';slots.classList.remove('dim');fillSlot(false);bar.style.transition='none';bar.offsetHeight;bar.style.transition=''},w=>toastScenario(w,{hold:4000,
+ press:async()=>{const b=$('#book');b.classList.add('press');await wait(100);b.classList.remove('press')},
+ show:async()=>{toast.classList.add('in');slots.classList.add('dim')},
+ hide:async()=>{toast.classList.remove('in');slots.classList.remove('dim');await wait(200)}}));</script>
+</body></html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – appointment menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#eef4f4;--card:#fff;--ink:#0f2a2e;--muted:#5b7276;--line:#d9e5e6;--teal:#0e7c86;--teal-d:#0a5b63;--teal-l:#d7eeee;--red:#b3392f}
+  *{box-sizing:border-box;margin:0}
+  body{font-family:"DM Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:grid;place-items:center;padding:24px;overflow:hidden}
+  .stage{width:min(680px,100%);position:relative}
+  .replay{position:absolute;top:-44px;right:0;border:1px solid var(--line);background:#fff;color:var(--ink);font:600 14px "DM Sans",sans-serif;padding:8px 14px;border-radius:10px;cursor:pointer}
+  .replay:focus-visible{outline:3px solid #7fd0d4;outline-offset:2px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px 28px 24px;box-shadow:0 20px 40px -24px rgba(15,42,46,.25);position:relative}
+  .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .tag{display:inline-block;font-size:12px;font-weight:600;background:var(--teal-l);color:var(--teal-d);padding:4px 9px;border-radius:99px;margin-bottom:10px}
+  h1{font-size:22px;letter-spacing:-.01em}
+  .meta{color:var(--muted);font-size:14px;margin-top:4px;line-height:1.5}
+  .kebab{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;position:relative}
+  .kebab svg{width:20px;height:20px;fill:var(--ink)}
+  .kebab:focus-visible{outline:3px solid #7fd0d4;outline-offset:2px}
+  .menu-pos{position:relative}
+  .menu{position:absolute;top:48px;right:0;width:232px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 22px 44px -14px rgba(15,42,46,.35),0 2px 6px rgba(15,42,46,.08);transform-origin:100% 0;visibility:hidden;z-index:5}
+  .hl{position:absolute;left:6px;right:6px;top:6px;height:40px;border-radius:9px;background:var(--teal-l);pointer-events:none}
+  .hl.danger{background:#f7dedb}
+  .item{position:relative;display:flex;align-items:center;gap:10px;height:40px;padding:0 10px;border-radius:9px;font-size:14.5px;font-weight:500;color:var(--ink);cursor:pointer;background:none;border:0;width:100%;text-align:left;font-family:inherit}
+  .item svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;color:var(--muted)}
+  .item.danger{color:var(--red)} .item.danger svg{color:var(--red)}
+  .sep{height:1px;background:var(--line);margin:5px 6px}
+  .item:focus-visible{outline:2px solid var(--teal)}
+  .cursor{position:absolute;left:0;top:0;width:22px;height:22px;z-index:9;pointer-events:none;visibility:hidden;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+  .ripple{position:absolute;width:40px;height:40px;border-radius:50%;border:2px solid var(--teal);pointer-events:none;visibility:hidden}
+  .below{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .box{background:#f6fafa;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--muted)}
+  .box b{display:block;color:var(--ink);font-size:14px;margin-top:2px}
+  @media (max-width:480px){.menu{width:210px}.below{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <button class="replay" id="replay" type="button">Replay</button>
+  <div class="card">
+    <div class="row">
+      <div>
+        <span class="tag">Confirmed</span>
+        <h1>Priya Raman · Intake</h1>
+        <p class="meta">Tue 10:30 – 11:15 · Dr. Okafor<br>Harbour Physio, Room 2</p>
+      </div>
+      <div class="menu-pos">
+        <button class="kebab" id="kebab" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Appointment actions">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
+        </button>
+        <div class="menu" id="menu" role="menu">
+          <div class="hl" id="hl"></div>
+          <button class="item" role="menuitem"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>Reschedule</button>
+          <button class="item" role="menuitem"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></svg>Duplicate</button>
+          <button class="item" role="menuitem"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg>Send reminder</button>
+          <div class="sep"></div>
+          <button class="item danger" role="menuitem"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9 9l6 6M15 9l-6 6"/></svg>Cancel appointment</button>
+        </div>
+      </div>
+    </div>
+    <div class="below"><div class="box">Reminder<b>SMS, 24 h before</b></div><div class="box">Insurance<b>Cover pending</b></div></div>
+    <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.6L9.4 19z" fill="#0f2a2e" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    <div class="ripple" id="ripple"></div>
+  </div>
+</div>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+  const TL = {
+    duration: 6.2, rest: 2.0,
+    segments: [
+      { id: "cursor-in", start: 0.00, end: 0.80, curve: "inOut" },
+      { id: "press",     start: 0.90, end: 1.10, curve: "linear" },
+      { id: "open",      start: 1.00, end: 1.35, curve: "outBack" },
+      { id: "stagger",   start: 1.05, end: 1.75, curve: "outCubic" },
+      { id: "to-item-1", start: 1.40, end: 1.90, curve: "inOut" },
+      { id: "to-item-2", start: 2.40, end: 2.70, curve: "inOut" },
+      { id: "to-item-3", start: 2.95, end: 3.25, curve: "inOut" },
+      { id: "to-item-4", start: 3.50, end: 3.80, curve: "inOut" },
+      { id: "close",     start: 5.00, end: 5.25, curve: "inCubic" },
+      { id: "cursor-out",start: 5.00, end: 5.25, curve: "linear" }
+    ]
+  };
+
+  // ---- one timeline manifest = the only place timing lives (the page reads it, never re-states it) ----
+  const clamp01 = (x) => Math.min(1, Math.max(0, x));
+  const ease = {
+    linear: (x) => x,
+    outCubic: (x) => 1 - Math.pow(1 - x, 3),
+    inCubic: (x) => x * x * x,
+    inOut: (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2),
+    outBack: (x) => { const c1 = 1.55, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  };
+  const seg = (id) => TL.segments.find((s) => s.id === id);
+  // progress of a segment at time t (0..1), shaped by its curve
+  const prog = (id, t) => { const s = seg(id); return ease[s.curve || "linear"](clamp01((t - s.start) / (s.end - s.start))); };
+
+  // ---- autonomous controller: time advances by itself, render(t) is a pure function of t ----
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  let t0 = performance.now(), raf;
+  const tick = (now) => { render(((now - t0) / 1000) % TL.duration); raf = requestAnimationFrame(tick); };
+  const play = () => { cancelAnimationFrame(raf); t0 = performance.now(); raf = requestAnimationFrame(tick); };
+  const start = () => { if (reduce.matches) { cancelAnimationFrame(raf); render(TL.rest); document.getElementById("replay").hidden = true; } else { document.getElementById("replay").hidden = false; play(); } };
+  reduce.addEventListener("change", start);
+  document.getElementById("replay").addEventListener("click", play);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && !reduce.matches) play(); });
+
+  const items = [...document.querySelectorAll(".item")], menu = $("#menu"), hl = $("#hl"), cur = $("#cursor"), kebab = $("#kebab"), rip = $("#ripple"), card = $(".card");
+  const centre = (el) => { const c = card.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: r.left - c.left + r.width / 2, y: r.top - c.top + r.height / 2 }; };
+  const rowY = (i) => 6 + (i < 3 ? i * 40 : 3 * 40 + 11);
+  const lerp = (a, b, x) => a + (b - a) * x;
+
+  function render(t) {
+    const o = prog("open", t) * (1 - prog("close", t));          // menu openness
+    const st = prog("stagger", t), cl = prog("close", t);
+    menu.style.opacity = clamp01(o * 2.5);
+    menu.style.visibility = o > 0.001 ? "visible" : "hidden";
+    menu.style.transform = "translateY(" + (-8 * (1 - o)) + "px) scale(" + (0.92 + 0.08 * o) + ")";
+    items.forEach((it, i) => {
+      const k = clamp01(st * 1.5 - i * 0.15) * (1 - cl);
+      it.style.opacity = k; it.style.transform = "translateY(" + (-6 * (1 - k)) + "px)";
+    });
+    kebab.setAttribute("aria-expanded", o > 0.5 ? "true" : "false");
+    kebab.style.transform = "scale(" + (1 - 0.08 * Math.sin(Math.PI * prog("press", t))) + ")";
+    // pointer: starts away from the button, presses it, then travels the list
+    const k = centre(kebab);
+    let x = lerp(k.x + 90, k.x + 6, prog("cursor-in", t)), y = lerp(k.y + 120, k.y + 6, prog("cursor-in", t));
+    const i1 = prog("to-item-1", t);
+    if (i1 > 0) { const c = centre(items[0]); x = lerp(k.x + 6, c.x - 30, i1); y = lerp(k.y + 6, c.y + 4, i1); }
+    for (let n = 2; n <= 4; n++) { const p = prog("to-item-" + n, t); if (p > 0) y = lerp(centre(items[n - 2]).y + 4, centre(items[n - 1]).y + 4, p); }
+    cur.style.transform = "translate(" + x + "px," + y + "px)";
+    cur.style.opacity = clamp01(prog("cursor-in", t) * 4) * (1 - prog("cursor-out", t));
+    cur.style.visibility = cur.style.opacity > 0 ? "visible" : "hidden";
+    // ripple on press
+    const pr = prog("press", t);
+    rip.style.visibility = pr > 0 && pr < 1 ? "visible" : "hidden";
+    rip.style.transform = "translate(" + (k.x - 26) + "px," + (k.y - 26) + "px) scale(" + (0.5 + pr) + ")"; rip.style.opacity = 0.9 * (1 - pr);
+    // highlight rides the list
+    let hy = 0;
+    for (let n = 1; n <= 3; n++) hy += prog("to-item-" + (n + 1), t) * (rowY(n) - rowY(n - 1));
+    hl.style.transform = "translateY(" + (rowY(0) + hy - 6) + "px)";
+    hl.style.opacity = i1 * (1 - cl);
+    hl.classList.toggle("danger", prog("to-item-4", t) > 0.6);
+  }
+  start();
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (reduce.matches) render(TL.rest); }, 150); });
+</script>
+</body>
+</html>

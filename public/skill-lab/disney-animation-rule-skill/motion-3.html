@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10302e;--ink2:#58716e;--paper:#eef4f2;--card:#fff;--line:rgba(16,48,46,.09);--teal:#0f766e;--teal2:#14b8a6;--tint:#e0f1ed;--danger:#b4361f;
+--shadow:0 1px 2px rgba(16,48,46,.06),0 10px 28px -10px rgba(16,48,46,.16)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:20px 32px}
+.brand{display:flex;gap:10px;align-items:center;font-weight:650;font-size:17px;letter-spacing:-.01em}
+.brand svg{width:26px;height:26px}
+.replay{font:inherit;font-size:13.5px;font-weight:550;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 14px 7px 11px;cursor:pointer;display:inline-flex;gap:7px;align-items:center;box-shadow:0 1px 2px rgba(16,48,46,.05)}
+.replay svg{width:14px;height:14px}
+main{flex:1;display:grid;place-items:center;padding:8px 16px 64px}
+.app{width:min(720px,100%);background:var(--card);border-radius:20px;box-shadow:var(--shadow);position:relative}
+.app-h{display:flex;justify-content:space-between;align-items:center;padding:22px 26px 12px;gap:12px}
+.app-h h1{font-size:19px;letter-spacing:-.015em;font-weight:620}
+.pill{font-size:12.5px;font-weight:550;color:var(--teal);background:var(--tint);padding:5px 11px;border-radius:99px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.slots{list-style:none;padding:4px 14px 18px}
+.slots li{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:12px;padding:15px 12px;border-radius:12px;min-height:68px}
+.slots li+li{border-top:1px solid var(--line)}
+time{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:14px}
+.who b{display:block;font-weight:600;font-size:15px}
+.who span{font-size:13px;color:var(--ink2)}
+.who.open b{color:var(--ink2);font-weight:550}
+.btn{font:inherit;font-weight:600;font-size:14px;background:var(--teal);color:#fff;border:0;border-radius:10px;padding:9px 18px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);padding:8px;border-radius:10px;display:grid;place-items:center}
+.btn.ghost svg{width:20px;height:20px}
+/* toast */
+.toast{position:fixed;right:28px;bottom:28px;z-index:20;display:flex;align-items:center;gap:12px;background:#10302e;color:#fff;padding:14px 12px 14px 14px;border-radius:14px;font-size:14.5px;font-weight:500;max-width:calc(100vw - 32px)}
+.toast .ico{width:24px;height:24px;flex:none}
+.toast .ico svg{width:24px;height:24px;display:block;overflow:visible}
+.ring{fill:#14b8a6}.tick{fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.toast .txt{display:block}
+.toast .x{font:inherit;background:transparent;border:0;color:rgba(255,255,255,.55);width:26px;height:26px;border-radius:8px;font-size:18px;line-height:1;cursor:pointer;flex:none}
+@media (max-width:480px){.toast{left:16px;right:16px;bottom:16px}header.top{padding:16px}}
+/* dropdown */
+.appts{list-style:none;padding:4px 14px 18px}
+.appts>li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:16px 12px;position:relative;border-radius:12px}
+.appts>li+li{border-top:1px solid var(--line)}
+.av{width:44px;height:44px;border-radius:50%;background:var(--tint);color:var(--teal);display:grid;place-items:center;font-weight:650;font-size:14px}
+.menu-wrap{position:relative}
+.menu{position:absolute;right:0;top:calc(100% + 6px);width:224px;background:#fff;border-radius:14px;padding:6px;z-index:10}
+.menu button{display:block;width:100%;text-align:left;font:inherit;font-size:14.5px;padding:10px 12px;border:0;background:transparent;border-radius:9px;color:var(--ink);cursor:pointer;position:relative}
+.menu hr{border:0;height:1px;background:var(--line);margin:5px 4px}
+.menu .danger{color:var(--danger)}
+/* tasks */
+.add{display:flex;gap:10px;margin:0 26px 8px}
+.inp{flex:1;border:1px solid var(--line);border-radius:10px;padding:0 14px;min-height:40px;display:flex;align-items:center;font-size:14.5px;min-width:0;white-space:nowrap;overflow:hidden}
+.inp:empty::before{content:attr(data-ph);color:#8aa09d}
+.tasks{list-style:none;padding:6px 14px 8px;position:relative}
+.task{display:flex;align-items:center;gap:12px;padding:0 12px;min-height:54px;border-radius:12px;font-size:15px;background:#fff}
+.chk{width:22px;height:22px;border-radius:7px;border:1.6px solid #b3c5c2;background:#fff;display:grid;place-items:center;flex:none;cursor:pointer;padding:0}
+.chk svg{width:14px;height:14px;overflow:visible}
+.chk path{fill:none;stroke:#fff;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.lbl{position:relative;min-width:0}
+.del{margin-left:auto;font:inherit;background:transparent;border:0;color:var(--ink2);font-size:20px;line-height:1;width:28px;height:28px;border-radius:8px;cursor:pointer;flex:none}
+.tasks{min-height:190px}
+.empty{margin-top:-190px;height:190px;display:grid;place-items:center;text-align:center;color:var(--ink2);font-size:14px;pointer-events:none;position:relative}
+.empty[hidden]{display:none}
+.foot{display:flex;justify-content:space-between;padding:10px 26px 22px;font-size:13px;color:var(--ink2)}
+.tasks{position:relative}
+.task{position:absolute;left:14px;right:14px;top:6px;height:54px;transform-origin:50% 100%;will-change:transform;opacity:0}
+.chk{will-change:transform}.chk path{stroke-dasharray:1;stroke-dashoffset:1}
+.lbl::after{content:'';position:absolute;left:0;right:0;top:55%;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:left}
+.del{opacity:.55}#addBtn{will-change:transform}</style></head><body>
+<header class="top"><div class="brand"><svg viewBox="0 0 26 26"><rect width="26" height="26" rx="8" fill="#0f766e"/><path d="M4.5 15c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3 2.2 3 4.3 3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M4.5 19.5c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3 2.2 3 4.3 3" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/></svg>Tidewater</div><button class="replay" id="replay" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1"/><path d="M2.3 2.2v3h3"/></svg>Replay</button></header>
+<main><div class="app" id="app"><div class="app-h"><h1>Front desk · Tuesday</h1><span class="pill" id="count">0 of 0 done</span></div>
+<div class="add"><div class="inp" id="inp" data-ph="Add a task…"></div><button class="btn" id="addBtn" type="button">Add</button></div>
+<ul class="tasks" id="list"></ul><p class="empty" id="empty">No tasks yet. Add the first one above.</p>
+<div class="foot"><span>Shared with 3 teammates</span><span>Resets at midnight</span></div></div></main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const raf=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let RUN=0;class Cancel extends Error{}
+function guard(id){return async ms=>{await wait(ms);if(id!==RUN)throw new Cancel()}}
+async function typeInto(el,text,w,per=26){for(let i=1;i<=text.length;i++){el.textContent=text.slice(0,i);await w(per)}}
+function start(setup,seq){const go=async()=>{const id=++RUN;const w=guard(id);try{while(id===RUN){await setup();await seq(w,id)}}catch(e){if(!(e instanceof Cancel))throw e}};$('#replay').onclick=go;go()}
+
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,t0,d)=>clamp((t-t0)/d);
+const eOut3=t=>1-Math.pow(1-t,3), eOut4=t=>1-Math.pow(1-t,4), eIn3=t=>t*t*t, eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const AMP=REDUCED?0:1;
+// closed-form damped spring step response 0->1 (overshoots when z<1): follow-through without stateful simulation
+function spring(t,w=30,z=.6){if(t<=0)return 0;z=Math.min(z,.999);const wd=w*Math.sqrt(1-z*z);return 1-Math.exp(-z*w*t)*(Math.cos(wd*t)+(z*w/wd)*Math.sin(wd*t))}
+function btnScale(t,t0,depth=.06){if(t<t0)return 1;if(t<t0+.08)return 1-depth*eOut3(prog(t,t0,.08));return 1-depth*(1-spring(t-t0-.08,34,.45))}
+let T0=performance.now();
+function loop(LOOP,render){const m=location.hash.match(/t=([0-9.]+)/);if(m){render(+m[1]);return}$('#replay').onclick=()=>{T0=performance.now()};const f=now=>{render(((now-T0)/1000)%LOOP);requestAnimationFrame(f)};requestAnimationFrame(f)}
+
+const TXT=["Confirm 9:00 with Marta","Call insurer about J. Pärn","Restock treatment tables"];
+const setCount=(d,n)=>{$('#count').textContent=d+' of '+n+' done'};
+const TK=[{add:1.3,chk:5.0,rem:7.4},{add:2.5,chk:6.2,rem:8.6},{add:3.7,chk:null,rem:9.8}];
+const LOOP=11.6,ROW=56,TICK='<svg viewBox="0 0 16 16"><path pathLength="1" d="M3.5 8.4l3 3 6-6.8"/></svg>';
+const list=$('#list'),empty=$('#empty'),inp=$('#inp'),add=$('#addBtn');
+const rows=TK.map((k,i)=>{const li=document.createElement('li');li.className='task';li.innerHTML='<button class="chk" type="button" aria-label="Mark done">'+TICK+'</button><span class="lbl"></span><button class="del" type="button" aria-label="Remove task">×</button>';li.querySelector('.lbl').textContent=TXT[i];list.appendChild(li);
+ return{li,chk:li.querySelector('.chk'),tick:li.querySelector('path'),lbl:li.querySelector('.lbl'),strike:null}});
+const DROP=.26,EXIT_ANT=.14,EXIT_GO=.32;
+const mix=(a,b,t)=>a.map((v,i)=>Math.round(lerp(v,b[i],t)));
+function slotOf(i,t){let s=i;for(let j=0;j<i;j++){s-=spring(t-(TK[j].rem+EXIT_ANT+EXIT_GO)-.05*(i-j),26,AMP?.7:1)}return s}
+function render(t){
+ let done=0,total=0;
+ TK.forEach((k,i)=>{const r=rows[i],li=r.li;
+  const alive=t>=k.add&&t<k.rem+EXIT_ANT+EXIT_GO+.02;
+  li.style.visibility=alive?'visible':'hidden';
+  if(!alive)return;total++;
+  let x=0,y=slotOf(i,t)*ROW,sx=1,sy=1,op=1;
+  // enter: drop with gravity (ease-in), squash on contact (anchored at the bottom), decaying wobble
+  const a=t-k.add;
+  if(a<DROP){const p=prog(a,0,DROP);y+=-16*AMP*(1-eIn3(p));sy=1+.06*AMP*eIn3(p);sx=1-.02*AMP*eIn3(p);op=clamp(a/.09)}
+  else{const u=a-DROP;const w=Math.exp(-12*u)*Math.cos(26*u);sy=1-.09*AMP*w;sx=1+.035*AMP*w}
+  // exit: anticipation (pull away from the exit side), then commit with stretch
+  if(t>=k.rem){const u=t-k.rem;if(u<EXIT_ANT){x=-8*AMP*eOut3(u/EXIT_ANT)}else{const p=prog(u,EXIT_ANT,EXIT_GO);const W=li.offsetWidth+40;x=lerp(-8*AMP,REDUCED?0:W,eIn3(p));sx=1+.12*AMP*eIn3(p);sy=1-.04*AMP*eIn3(p);op=1-clamp((p-.55)/.45)}}
+  li.style.opacity=op;li.style.transform='translate('+x.toFixed(2)+'px,'+y.toFixed(2)+'px) scale('+sx.toFixed(4)+','+sy.toFixed(4)+')';
+  // check-off: squash (anticipation) -> pop with overshoot -> settle, tick draws, label strike follows
+  if(k.chk!=null){const c=t-k.chk;let cs=1,fill=0;
+   if(c>=0&&c<.1)cs=1-.16*AMP*eOut3(c/.1);else if(c>=.1){const u=c-.1;cs=1-.16*AMP*Math.exp(-6*u)*Math.cos(26*u)}
+   if(c>=0)fill=prog(c,.08,.12);
+   r.chk.style.transform='scale('+cs.toFixed(4)+')';
+   const bg=mix([255,255,255],[15,118,110],fill),bd=mix([179,197,194],[15,118,110],fill);
+   r.chk.style.background='rgb('+bg+')';r.chk.style.borderColor='rgb('+bd+')';
+   r.tick.style.strokeDashoffset=1-eOut3(prog(c,.12,.18));
+   const sk=eIO(prog(c,.16,.22));r.lbl.style.setProperty('--k',sk);r.lbl.style.color='rgb('+mix([16,48,46],[138,160,157],sk)+')';
+   if(c>=0&&t<k.rem)done++;
+  }
+ });
+ setCount(done,total);
+ // typing + add-press, derived from the same clock
+ let typed='';TK.forEach((k,i)=>{const s=k.add-.8;if(t>=s&&t<k.add)typed=TXT[i].slice(0,Math.floor((t-s)*34))});
+ if(inp.textContent!==typed)inp.textContent=typed;
+ let ab=1;TK.forEach(k=>{ab=Math.min(ab,btnScale(t,k.add-.14))});add.style.transform='scale('+ab.toFixed(4)+')';
+ empty.style.opacity=t<1.15?1-prog(t,1.0,.15):t>10.3?prog(t,10.4,.5):0;empty.hidden=false;
+}
+// strike line: driven by the --k custom property each frame (transform, not width)
+const st=document.createElement('style');st.textContent='.lbl::after{transform:scaleX(var(--k,0))}';document.head.appendChild(st);
+loop(LOOP,render);</script>
+</body></html>

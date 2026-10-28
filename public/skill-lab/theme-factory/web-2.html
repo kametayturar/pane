@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater pricing</title>
+
+<style>
+:root{
+  /* Ocean Depths (theme-factory) */
+  --navy:#1a2332; --teal:#2d8b8b; --seafoam:#a8dadc; --cream:#f1faee;
+  --navy-2:color-mix(in srgb,var(--cream) 7%,var(--navy));
+  --navy-3:color-mix(in srgb,var(--cream) 12%,var(--navy));
+  --line:color-mix(in srgb,var(--seafoam) 22%,transparent);
+  --cream-2:color-mix(in srgb,var(--seafoam) 28%,var(--cream));
+  --head:'DejaVu Sans',Verdana,'Bitstream Vera Sans',sans-serif;
+  --body:'DejaVu Sans',Verdana,'Bitstream Vera Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--cream);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--head);font-weight:700;letter-spacing:-.01em;line-height:1.15}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 28px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;text-decoration:none}
+.logo svg{width:30px;height:30px}
+.nav ul{display:flex;gap:30px;list-style:none;padding:0;font-size:14px}
+.nav ul a{text-decoration:none;color:var(--seafoam)}
+.nav ul a:hover{color:var(--cream)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px/1 var(--head);padding:15px 24px;border-radius:10px;border:2px solid var(--seafoam);background:var(--seafoam);color:var(--navy);text-decoration:none;cursor:pointer;transition:background .2s,color .2s,transform .2s}
+.btn:hover{background:var(--cream);border-color:var(--cream)}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--cream);outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--cream);border-color:var(--teal)}
+.btn.ghost:hover{background:var(--teal);border-color:var(--teal);color:var(--cream)}
+.eyebrow{font:700 12px/1 var(--head);letter-spacing:.16em;text-transform:uppercase;color:var(--seafoam);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--teal)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.pricing{padding:40px 28px 80px;text-align:center}
+.pricing .eyebrow{justify-content:center}
+h1{font-size:clamp(32px,4.2vw,48px);margin:16px auto 14px;max-width:18ch}
+.lead{color:color-mix(in srgb,var(--cream) 82%,var(--navy));max-width:54ch;margin:0 auto 30px}
+.toggle{display:inline-flex;padding:5px;border-radius:14px;background:var(--navy-2);border:1px solid var(--line);margin-bottom:44px}
+.toggle button{font:700 14px var(--head);color:var(--seafoam);background:none;border:0;padding:12px 22px;border-radius:10px;cursor:pointer;transition:background .2s,color .2s}
+.toggle button.on{background:var(--seafoam);color:var(--navy)}
+.toggle button:focus-visible{outline:3px solid var(--cream);outline-offset:2px}
+.save{font-size:11px;margin-left:6px;padding:3px 8px;border-radius:99px;background:var(--navy);color:var(--seafoam);border:1px solid var(--teal)}
+.on .save{background:var(--navy);color:var(--cream)}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;text-align:left}
+.plan{position:relative;display:flex;flex-direction:column;background:var(--navy-2);border:1px solid var(--line);border-radius:20px;padding:32px 28px}
+.plan h2{font-size:22px}
+.who{font-size:14px;color:var(--seafoam);margin:4px 0 22px}
+.price{display:flex;align-items:baseline;gap:8px}
+.amt{font:700 46px/1 var(--head);letter-spacing:-.02em}
+.per{font-size:14px;color:var(--seafoam)}
+.bill{font-size:12.5px;color:var(--seafoam);margin:8px 0 24px;min-height:20px}
+.plan .btn{width:100%}
+.plan ul{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:13px;font-size:14.5px;border-top:1px solid var(--line);padding-top:26px}
+.plan li{display:flex;gap:11px;align-items:flex-start}
+.plan li svg{width:20px;height:20px;flex:none;color:var(--seafoam);margin-top:1px}
+.pop{background:var(--cream);color:var(--navy);border:2px solid var(--teal);transform:translateY(-12px);box-shadow:0 30px 60px -30px #000}
+.pop .who,.pop .per,.pop .bill{color:color-mix(in srgb,var(--navy) 85%,var(--cream))}
+.pop ul{border-color:color-mix(in srgb,var(--navy) 20%,var(--cream))}
+.pop li svg{color:var(--teal)}
+.pop .btn{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.pop .btn:hover{background:var(--teal);border-color:var(--teal)}
+.badge{position:absolute;top:-15px;left:28px;background:var(--teal);color:var(--cream);font:700 12px var(--head);letter-spacing:.06em;padding:7px 14px;border-radius:99px;border:2px solid var(--navy)}
+.fine{margin-top:34px;font-size:13px;color:var(--seafoam)}
+.amt{transition:opacity .2s}
+@media(max-width:900px){.plans{grid-template-columns:1fr;max-width:460px;margin:0 auto}.pop{transform:none}.nav ul{display:none}}
+
+</style>
+</head>
+<body>
+<header class="wrap nav">
+  <a class="logo" href="#"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="16" cy="16" r="13" stroke="var(--teal)"/><path d="M6 17c3-4 6-4 10 0s7 4 10 0" stroke="var(--seafoam)"/></svg>Tidewater</a>
+  <ul><li><a href="#">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#">Clinics</a></li></ul>
+  <a class="btn" href="#">Book a demo</a>
+</header>
+<main>
+<section id="pricing" class="wrap pricing">
+  <p class="eyebrow">Pricing</p>
+  <h1>One calendar, sized to your clinic.</h1>
+  <p class="lead">Every plan includes online booking, SMS reminders and a 30-day free trial. Change plans whenever your team changes.</p>
+  <div class="toggle" role="group" aria-label="Billing period">
+    <button type="button" class="on" data-p="m" aria-pressed="true">Monthly</button>
+    <button type="button" data-p="y" aria-pressed="false">Yearly <span class="save">save 20%</span></button>
+  </div>
+  <div class="plans">
+    <article class="plan">
+      <h2>Solo</h2><p class="who">One therapist, one practice.</p>
+      <p class="price"><span class="amt" data-m="19" data-y="15">$19</span><span class="per">/ month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="Billed $182 per year">Billed monthly</p>
+      <a class="btn ghost" href="#">Start with Solo</a>
+      <ul>
+        <li><svg><use href="#ck"/></svg>1 therapist calendar</li>
+        <li><svg><use href="#ck"/></svg>Online booking page</li>
+        <li><svg><use href="#ck"/></svg>Email and SMS reminders</li>
+        <li><svg><use href="#ck"/></svg>Up to 150 patients</li>
+      </ul>
+    </article>
+    <article class="plan pop">
+      <span class="badge">Most popular</span>
+      <h2>Clinic</h2><p class="who">Small teams sharing rooms.</p>
+      <p class="price"><span class="amt" data-m="49" data-y="39">$49</span><span class="per">/ month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="Billed $470 per year">Billed monthly</p>
+      <a class="btn" href="#">Start with Clinic</a>
+      <ul>
+        <li><svg><use href="#ck"/></svg>Up to 8 therapists</li>
+        <li><svg><use href="#ck"/></svg>Room and equipment booking</li>
+        <li><svg><use href="#ck"/></svg>Waitlist that fills cancellations</li>
+        <li><svg><use href="#ck"/></svg>Unlimited patients</li>
+        <li><svg><use href="#ck"/></svg>Utilisation reports</li>
+      </ul>
+    </article>
+    <article class="plan">
+      <h2>Group</h2><p class="who">Multi-site practices.</p>
+      <p class="price"><span class="amt" data-m="129" data-y="103">$129</span><span class="per">/ month</span></p>
+      <p class="bill" data-m="Billed monthly" data-y="Billed $1,238 per year">Billed monthly</p>
+      <a class="btn ghost" href="#">Talk to us about Group</a>
+      <ul>
+        <li><svg><use href="#ck"/></svg>Unlimited therapists and sites</li>
+        <li><svg><use href="#ck"/></svg>Cross-site patient records</li>
+        <li><svg><use href="#ck"/></svg>Role-based permissions</li>
+        <li><svg><use href="#ck"/></svg>Priority support line</li>
+        <li><svg><use href="#ck"/></svg>Data export and API access</li>
+      </ul>
+    </article>
+  </div>
+  <p class="fine">Prices in US dollars. Yearly plans are billed once, 20% below twelve monthly payments.</p>
+</section>
+</main>
+<svg width="0" height="0" style="position:absolute"><symbol id="ck" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="currentColor" opacity=".2"/><path d="M6 10.4l2.7 2.7L14 7.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
+
+<script>
+const btns=document.querySelectorAll('.toggle button');
+function setP(p){
+  btns.forEach(b=>{const on=b.dataset.p===p;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  document.querySelectorAll('[data-m]').forEach(el=>{
+    const v=el.dataset[p];
+    el.textContent=el.classList.contains('amt')?'$'+v:v;
+  });
+}
+btns.forEach(b=>b.addEventListener('click',()=>setP(b.dataset.p)));
+
+</script>
+</body>
+</html>

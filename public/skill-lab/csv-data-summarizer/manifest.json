@@ -1,0 +1,39 @@
+{
+  "id": "csv-data-summarizer",
+  "sets": [
+    "data"
+  ],
+  "skillSays": [
+    "Never ask the user what they want. Run a full analysis immediately and present everything in one reply.",
+    "Load the CSV, identify column types and what kind of data it is, then choose the analyses that fit that data.",
+    "Always report data overview (rows, columns, types), summary statistics, and missing-data analysis.",
+    "Only draw charts that make sense: time series when a time column exists, a correlation heatmap when several numeric columns exist, histograms for distributions.",
+    "Finish with actionable insights taken from this dataset, not generic advice."
+  ],
+  "examples": [
+    {
+      "prompt": "data-1",
+      "changes": [
+        "Full report with no questions: overview table, describe() statistics, missing-data check, then charts",
+        "Time-series chart of the three plans, correlation heatmap across all six numeric columns, one histogram per plan",
+        "Insights from the data: growth rates, plan mix shift, near-perfect correlation of trending columns"
+      ]
+    },
+    {
+      "prompt": "data-2",
+      "changes": [
+        "Compressed into one screen: key numbers, churn bars with Q3 marked, scatter with fit line, heatmap, then statistics and insights",
+        "Insights cite correlations (0.99 response vs churn) and warn that correlation is not cause",
+        "Same overview and describe() block the skill always produces"
+      ]
+    },
+    {
+      "prompt": "data-3",
+      "changes": [
+        "Per-metric time series, histograms and a correlation matrix for tickets, response and churn",
+        "Outlier check (1.5 x IQR) reports only the one value that qualifies (response in Sep)",
+        "Insights are specific to the data: Jul to Sep load spike, December back inside the Jan to Jun range"
+      ]
+    }
+  ]
+}

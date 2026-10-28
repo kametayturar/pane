@@ -1,0 +1,34 @@
+{
+  "id": "playwright-skill",
+  "sets": [
+    "code"
+  ],
+  "skillSays": [
+    "Write focused, reusable Playwright scripts and run them through the skill's run.js executor (or inline with -e), instead of ad-hoc one-liners",
+    "Detect running dev servers first with helpers.detectDevServers(); use the only result automatically, ask when there are several or none",
+    "Prefer user-facing locators in order: getByRole with a name, getByLabel, getByText, getByTestId; rely on auto-waiting, not sleeps or networkidle",
+    "Report actions, failures and artifact paths, and never claim success without checking the resulting page",
+    "Visible browser by default, headless only when asked or when there is no display; PW_* env vars control headless, channel, artifact and script dirs",
+    "Run `npm run setup` once to install Playwright and Chromium"
+  ],
+  "examples": [
+    {
+      "prompt": "browser-1",
+      "changes": [
+        "Wrote one script with getByLabel/getByRole locators that reads the resulting DOM after each submit, so the report states what the page actually showed for the invalid and valid cases",
+        "Listened to page requests during the flow and found the 'account created' success never hits a server",
+        "Used the inline -e mode for a quick probe and confirmed the email is injected with innerHTML (an <img onerror> payload really executed)",
+        "Flagged that detectDevServers() returned the macOS AirPlay listener on :5000 instead of the app, and used the known URL"
+      ]
+    },
+    {
+      "prompt": "browser-2",
+      "changes": [
+        "Attached console, pageerror, request and response listeners before the first click, so the TypeError was captured at the moment it happened",
+        "Compared clicking Book with and without selecting a slot first, which isolates the cause (selected is undefined until a slot click)",
+        "Confirmed the server side saw exactly one POST, only in the second scenario",
+        "Noticed the success banner appears even when the response is a 501 (res.ok is never checked)"
+      ]
+    }
+  ]
+}

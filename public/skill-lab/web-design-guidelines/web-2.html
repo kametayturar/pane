@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – Pricing</title>
+<meta name="description" content="Simple monthly or yearly pricing for Tidewater, the scheduling app for small physiotherapy clinics.">
+<meta name="theme-color" content="#FBF8F3">
+<meta name="color-scheme" content="light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#FBF8F3;--surface:#FFFFFF;--ink:#1B2A2F;--muted:#4A5A60;--line:#E4DED3;--ctl:#837E73;--accent:#0E6E6B;--accent-hover:#0A5754;--accent-ink:#FFFFFF;--soft:#E3F0EC;--soft-ink:#0A4F4C;--err:#B3261E;--err-soft:#FCEDEA;--ph:#6A665C;--radius:14px;--font-head:'Fraunces', Georgia, serif;--font-body:'Inter', system-ui, sans-serif;}
+*{box-sizing:border-box}
+html{color-scheme:light;-webkit-text-size-adjust:100%;scroll-padding-top:24px;}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--font-body);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:rgba(14,110,107,.15);}
+h1,h2,h3{font-family:var(--font-head);line-height:1.1;margin:0;letter-spacing:-.02em;text-wrap:balance;}
+h1{font-size:clamp(2.2rem,5.4vw,3.9rem);font-weight:600}
+h2{font-size:clamp(1.6rem,3.2vw,2.3rem);font-weight:600}
+h3{font-size:1.2rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+:root[data-theme="dark"] :focus-visible{outline-color:var(--accent)}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-80px;z-index:100;background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:8px;font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+header.site{}
+.bar{display:flex;align-items:center;gap:20px;padding-top:16px;padding-bottom:16px;min-height:72px}
+.brand{display:inline-flex;align-items:center;gap:10px;font:700 1.2rem var(--font-head);text-decoration:none;letter-spacing:-.02em;min-height:44px}
+.brand svg{width:30px;height:30px;color:var(--accent)}
+nav.primary{margin-left:auto}
+nav.primary ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;align-items:center}
+nav.primary a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;text-decoration:none;font-weight:600;font-size:.95rem;transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease;}
+nav.primary a:hover{background:var(--soft);color:var(--soft-ink)}
+nav.primary a[aria-current="page"]{background:var(--soft);color:var(--soft-ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;font:700 1rem var(--font-body);text-decoration:none;cursor:pointer;border:2px solid transparent;touch-action:manipulation;transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease;}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{background:var(--accent-hover);}
+.btn-ghost{background:transparent;border-color:var(--ctl);color:var(--ink)}
+.btn-ghost:hover{background:var(--soft);border-color:var(--accent);color:var(--soft-ink)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{cursor:progress;opacity:1}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--soft-ink);background:var(--soft);padding:6px 14px;border-radius:999px}
+.muted{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--radius) + 6px);box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px -16px rgba(0,0,0,.18)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.78rem;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--soft-ink);white-space:nowrap}
+.chip.warn{background:var(--err-soft);color:var(--err)}
+.icon{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+footer.site{padding:36px 0 48px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;margin-top:72px}
+footer.site .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+
+@media (forced-colors:active){.btn{border-color:ButtonText}.chip{border:1px solid CanvasText}}
+@media (max-width:720px){nav.primary li:not(:last-child){display:none}.bar{gap:10px}}
+
+.pricing{padding-top:56px}
+.pricing .intro{max-width:640px}
+.pricing .intro p{color:var(--muted);margin-top:14px;font-size:1.1rem}
+.toggle{border:0;margin:32px 0 0;padding:0;display:inline-block}
+.toggle legend{font-weight:700;font-size:.9rem;margin-bottom:8px;padding:0;color:var(--muted)}
+.seg{display:inline-flex;background:var(--surface);border:2px solid var(--ctl);border-radius:999px;padding:4px;gap:4px}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg label{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:999px;font-weight:700;cursor:pointer;touch-action:manipulation;transition:background-color .18s ease,color .18s ease}
+.seg label:hover{background:var(--soft);color:var(--soft-ink)}
+.seg input:checked+label{background:var(--accent);color:var(--accent-ink)}
+.seg input:checked+label:hover{background:var(--accent-hover)}
+.seg input:focus-visible+label{outline:3px solid var(--ink);outline-offset:3px}
+.seg .save{white-space:nowrap;font-size:.78rem;background:var(--soft);color:var(--soft-ink);padding:2px 8px;border-radius:999px}
+.seg input:checked+label .save{background:rgba(255,255,255,.22);color:var(--accent-ink);outline:1px solid rgba(255,255,255,.5);}
+.plans{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.plan{padding:28px;display:flex;flex-direction:column;gap:20px;position:relative}
+.plan.pop{border:2px solid var(--accent);box-shadow:0 20px 44px -22px rgba(0,0,0,.35)}
+.plan .badge{position:absolute;top:-14px;left:24px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:.8rem;padding:4px 14px;border-radius:999px}
+.plan h3{font-size:1.4rem}
+.plan .tag{color:var(--muted)}
+.price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.price .amt{font:800 clamp(2.6rem,4vw,3.4rem)/1 var(--font-head);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.price .per{color:var(--muted);font-weight:600}
+.billed{color:var(--muted);font-size:.9rem;min-height:1.4em;font-variant-numeric:tabular-nums}
+.plan ul{list-style:none;margin:0;padding:20px 0 0;border-top:1px solid var(--line);display:grid;gap:12px;flex:1;align-content:start}
+.plan li{display:flex;gap:10px;align-items:flex-start}
+.plan li svg{color:var(--accent);margin-top:2px;width:20px;height:20px;stroke-width:2.4}
+.plan .btn{width:100%}
+.fine{margin-top:28px;color:var(--muted);font-size:.9rem}
+@media (max-width:900px){.plans{grid-template-columns:1fr;max-width:520px}.plan.pop{margin-top:10px}}
+@media (max-width:480px){.seg{display:flex;width:100%}.seg label{flex:1;justify-content:center;padding:0 8px;gap:6px;font-size:.92rem}}
+@media (forced-colors:active){.seg input:checked+label{outline:2px solid Highlight;forced-color-adjust:none;background:Highlight;color:HighlightText}}
+</style>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site"><div class="wrap bar">
+<a class="brand" href="#top" aria-label="Tidewater home"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" width="30" height="30"><circle cx="16" cy="16" r="15" fill="currentColor" opacity=".14"/><path d="M4 18c3.2 0 3.2-3 6.4-3s3.2 3 6.4 3 3.2-3 6.4-3 3.2 3 4.8 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M4 23c3.2 0 3.2-3 6.4-3s3.2 3 6.4 3 3.2-3 6.4-3 3.2 3 4.8 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".5"/></svg><span translate="no">Tidewater</span></a>
+<nav class="primary" aria-label="Primary"><ul><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#start">Sign In</a></li></ul></nav>
+</div></header>
+<main id="main" tabindex="-1">
+<section class="pricing wrap" id="pricing" aria-labelledby="pricing-title">
+<div class="intro"><p class="eyebrow">Pricing</p><h2 id="pricing-title" style="margin-top:18px">Simple Plans That Grow With Your Clinic</h2><p>Every plan includes a 30-day free trial. Switch plans or cancel whenever you like.</p></div>
+<fieldset class="toggle"><legend>Billing period</legend>
+<div class="seg">
+<input type="radio" name="billing" id="bill-monthly" value="monthly" checked><label for="bill-monthly">Monthly</label>
+<input type="radio" name="billing" id="bill-yearly" value="yearly"><label for="bill-yearly">Yearly <span class="save">Save 20%</span></label>
+</div></fieldset>
+<p id="billing-status" class="sr-only" role="status" aria-live="polite"></p>
+<ul class="plans">
+<li class="card plan" aria-labelledby="plan-0">
+
+<div><h3 id="plan-0">Solo</h3><p class="tag">For one practitioner</p></div>
+<div><p class="price"><span class="amt" data-month="19">$19</span><span class="per">per month</span></p><p class="billed" data-billed="19">Billed monthly</p></div>
+<ul aria-label="Solo plan features"><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>One practitioner calendar</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Online booking page</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>SMS and email reminders (100 per month)</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Patient notes and recalls</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Email support</span></li></ul>
+<a class="btn btn-ghost" href="#start-solo">Start With Solo</a>
+</li>
+<li class="card plan pop" aria-labelledby="plan-1">
+<span class="badge">Most Popular</span>
+<div><h3 id="plan-1">Clinic</h3><p class="tag">For growing clinics</p></div>
+<div><p class="price"><span class="amt" data-month="49">$49</span><span class="per">per month</span></p><p class="billed" data-billed="49">Billed monthly</p></div>
+<ul aria-label="Clinic plan features"><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Up to 5 practitioners</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Waitlist gap filling</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Unlimited reminders</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Treatment-plan scheduling</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Room and equipment booking</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Priority email support</span></li></ul>
+<a class="btn btn-primary" href="#start-clinic">Start With Clinic</a>
+</li>
+<li class="card plan" aria-labelledby="plan-2">
+
+<div><h3 id="plan-2">Group</h3><p class="tag">For multi-site groups</p></div>
+<div><p class="price"><span class="amt" data-month="129">$129</span><span class="per">per month</span></p><p class="billed" data-billed="129">Billed monthly</p></div>
+<ul aria-label="Group plan features"><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Unlimited practitioners</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Multiple locations</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Roles and permissions</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Reporting and CSV exports</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Dedicated onboarding</span></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Phone support</span></li></ul>
+<a class="btn btn-ghost" href="#start-group">Start With Group</a>
+</li>
+</ul>
+<p class="fine">Prices in US dollars. Yearly plans are billed once a year at the discounted rate.</p>
+</section>
+</main>
+<footer class="site"><div class="wrap"><span>© 2026 <span translate="no">Tidewater</span> Scheduling Ltd.</span><span>Questions? hello@tidewater.example</span></div></footer>
+<script>
+(() => {
+  const fmt = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 }).format(n);
+  const radios = document.querySelectorAll('input[name="billing"]');
+  const status = document.getElementById('billing-status');
+  function apply(mode, announce) {
+    const yearly = mode === 'yearly';
+    document.querySelectorAll('.amt').forEach((el) => { const m = +el.dataset.month; el.textContent = fmt(yearly ? m * 0.8 : m); });
+    document.querySelectorAll('.billed').forEach((el) => { const m = +el.dataset.billed; el.textContent = yearly ? 'Billed ' + fmt(m * 0.8 * 12) + ' yearly' : 'Billed monthly'; });
+    try { history.replaceState(null, '', yearly ? '#yearly' : location.pathname + location.search); } catch (e) {}
+    if (announce) status.textContent = yearly ? 'Showing yearly prices. You save 20% on every plan.' : 'Showing monthly prices.';
+  }
+  radios.forEach((r) => r.addEventListener('change', () => apply(r.value, true)));
+  if (location.hash === '#yearly') { document.getElementById('bill-yearly').checked = true; apply('yearly', false); }
+})();</script>
+</body>
+</html>

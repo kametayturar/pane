@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="perf-1-before.png" alt="Original, about 2.6 s after the data loaded: the whole dashboard has unmounted (Chart.js 'Canvas is already in use' thrown from the effect)."><figcaption>Original, about 2.6 s after the data loaded: the whole dashboard has unmounted (Chart.js 'Canvas is already in use' thrown from the effect).</figcaption></figure><figure><img src="perf-1-after.png" alt="Rewritten component at the same moment: clock ticking, chart drawn once, 1500 rows rendered."><figcaption>Rewritten component at the same moment: clock ticking, chart drawn once, 1500 rows rendered.</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered a rewritten Dashboard.tsx (plus a split-out StatsChart.tsx) that renders the same output as the original - same 1500 rows in the same order with the same HH:mm times - but fixes a crash and removes most of the work.
+
+What was wrong and what changed (each item was checked in a real browser, see the steps):
+1. The chart effect had no dependency array and never destroyed the Chart. On the first clock tick after stats arrived, Chart.js threw "Canvas is already in use" and, with no error boundary, React unmounted the whole dashboard (the page went blank). Fix: effect depends on [data] and returns chart.destroy().
+2. The three fetches ran one after another (a waterfall). Now Promise.all with an AbortController: one round trip instead of three, and a stale clinicId response can no longer overwrite a newer one.
+3. The 1-second clock lived in the top-level component, so every second re-rendered 1500 rows plus a re-sort and a regroup. The clock is now its own &lt;Clock&gt; component; the dashboard no longer re-renders on ticks. Its interval effect also had no dependency array (re-created every render); now [].
+4. Filtering, sorting and grouping ran on every render. The sort now runs once per data change (dates parsed once, not twice per comparison), and filter+group is a single pass into a Map that depends only on the data and a deferred search value, so typing stays responsive.
+5. Row is React.memo, keyed by id instead of array index, with a stable onCancel(id) callback (functional setState). The per-row therapists.find() was dropped because the row already sits inside its therapist's section.
+6. Bundle: lodash (groupBy) and moment (formatting, sorting) are gone, replaced by native Map and Intl.DateTimeFormat; chart.js/auto is replaced by importing only the line-chart pieces, and the chart is loaded with React.lazy only once stats exist.
+
+Measured (headless Chrome, CPU throttled 4x, 150 ms mocked latency per request, 12 therapists / 1500 appointments, median of 3 runs):
+- Initial JS, gzip: 168615 B -&gt; 47209 B (about 3.6x smaller; the new initial bundle is roughly React + ReactDOM alone, the 50 KB chart chunk loads afterwards).
+- Data on screen: last response at 1624 ms -&gt; 247 ms (parallel fetches, and no 1500-row render between requests).
+- Re-render cost with the chart bug neutralised (control "origfix", otherwise the original is dead after one tick): about 1477.1 ms of React render time in 4 s of idle clock ticks -&gt; 2.2 ms; typing four characters 949.6 ms -&gt; 23.6 ms; cancelling one appointment 858.5 ms -&gt; 7.7 ms.
+
+Caveats: the benchmark data and fetch are mocked and synthetic; the numbers are under a 4x CPU throttle and vary run to run (the original's last-fetch time was 1.6 to 2.4 s across invocations), so read them as orders of magnitude. The sort now parses ISO dates with Date.parse and the times use Intl with en-GB 24-hour format; for the ISO strings used here output is identical to moment, but locale-dependent or non-ISO date strings could differ. Data now appears when all three requests are back rather than progressively. There is still no error UI for failed requests (the original had none either). The TypeScript check passes for the dashboard files; the only errors are missing type declarations for react-dom/profiling in my test harness.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Rules from the guide that match what is in the fixture; each rules/&lt;name&gt;.md was read for its incorrect/correct example.</div><div class="cmd">gh api repos/vercel-labs/agent-skills/contents/skills/react-best-practices/SKILL.md --jq .content | base64 -d | grep -E '^- `(async-parallel|bundle-barrel|bundle-dynamic|bundle-conditional|rerender-|js-index|js-combine)'</div><div class="out">- `async-parallel` - Use Promise.all() for independent operations
+- `bundle-barrel-imports` - Import directly, avoid barrel files
+- `bundle-dynamic-imports` - Use next/dynamic for heavy components
+- `bundle-conditional` - Load modules only when feature is activated
+- `rerender-memo` - Extract expensive work into memoized components
+- `rerender-dependencies` - Use primitive dependencies in effects
+- `rerender-functional-setstate` - Use functional setState for stable callbacks
+- `rerender-use-deferred-value` - Defer expensive renders to keep input responsive
+- `js-index-maps` - Build Map for repeated lookups
+- `js-combine-iterations` - Combine multiple filter/map into one loop</div></div><div class="step"><div class="note"># Scratch project with the fixture's real dependencies. A harness mounts the component under React's profiling build with mocked fetch (150 ms latency, 12 therapists, 1500 appointments).</div><div class="cmd">npm i react@18 react-dom@18 lodash moment chart.js esbuild typescript @types/react @types/react-dom @types/lodash &amp;&amp; npm ls --depth=0</div><div class="out">react-best-practices@1.0.0 .
++-- @types/lodash@4.17.27
++-- @types/react-dom@19.3.0
++-- @types/react@19.3.0
++-- chart.js@4.5.1
++-- esbuild@0.28.2
++-- lodash@4.18.1
++-- moment@2.31.0
++-- react-dom@18.3.1
++-- react@18.3.1
+`-- typescript@7.0.2</div></div><div class="step"><div class="note"># Same bundler settings for all three. 'initial entry' is what loads before the app can start.</div><div class="cmd">node build.mjs   # esbuild --bundle --minify --splitting, original vs. original+chart-fix vs. rewritten</div><div class="out">orig  harness.js               499188 B raw   168615 B gzip (initial entry)
+origfix harness.js               499220 B raw   168627 B gzip (initial entry)
+new   chunk-IFZSNKUF.js          8487 B raw     3175 B gzip (lazy chunk)
+new   chunk-WD3YYTRJ.js        139515 B raw    49832 B gzip (lazy chunk)
+new   harness.js               147012 B raw    47209 B gzip (initial entry)</div></div><div class="step"><div class="note"># Original as shipped. Note dashboardStillMounted:false and the Chart.js error: it crashes on the first clock tick after stats load, so typing and cancel could not be measured.</div><div class="cmd">node measure.mjs orig 3   # puppeteer + Chrome headless, CDP CPU throttle 4x</div><div class="out">{
+ "variant": "orig",
+ "runs": 3,
+ "throttle": "CPU 4x",
+ "fetchLatency": "150ms each",
+ "data": "12 therapists, 1500 appointments",
+ "lastFetchDone_ms": 1624,
+ "rowsRendered": 1500,
+ "idle_4s": {
+  "commits": 1,
+  "reactRenderMs": 593.3,
+  "scriptMs": 661,
+  "dashboardStillMounted": false
+ },
+ "typing_4_chars": {
+  "commits": 0,
+  "reactRenderMs": 0
+ },
+ "cancel_click": {
+  "commits": 0,
+  "reactRenderMs": 0
+ },
+ "errors": [
+  "Error: Canvas is already in use. Chart with ID '0' must be destroyed before the canvas wit",
+  "Canvas is already in use. Chart with ID '0' must be destroyed before the canvas with ID ''"
+ ]
+}</div></div><div class="step"><div class="note"># Isolates the re-render cost of the original structure.</div><div class="cmd">node measure.mjs origfix 3   # control: original with ONLY the chart effect fixed ([data] + destroy)</div><div class="out">{
+ "variant": "origfix",
+ "runs": 3,
+ "throttle": "CPU 4x",
+ "fetchLatency": "150ms each",
+ "data": "12 therapists, 1500 appointments",
+ "lastFetchDone_ms": 2348,
+ "rowsRendered": 1500,
+ "idle_4s": {
+  "commits": 2,
+  "reactRenderMs": 1477.1,
+  "scriptMs": 1554.2,
+  "dashboardStillMounted": true
+ },
+ "typing_4_chars": {
+  "commits": 4,
+  "reactRenderMs": 949.6
+ },
+ "cancel_click": {
+  "commits": 1,
+  "reactRenderMs": 858.5
+ },
+ "errors": []
+}</div></div><div class="step"><div class="note"># Rewritten component. Idle commits are only the &lt;Clock&gt; span; typing adds a deferred second commit per key but both are cheap.</div><div class="cmd">node measure.mjs new 3</div><div class="out">{
+ "variant": "new",
+ "runs": 3,
+ "throttle": "CPU 4x",
+ "fetchLatency": "150ms each",
+ "data": "12 therapists, 1500 appointments",
+ "lastFetchDone_ms": 247,
+ "rowsRendered": 1500,
+ "idle_4s": {
+  "commits": 4,
+  "reactRenderMs": 2.2,
+  "scriptMs": 62.7,
+  "dashboardStillMounted": true
+ },
+ "typing_4_chars": {
+  "commits": 6,
+  "reactRenderMs": 23.6
+ },
+ "cancel_click": {
+  "commits": 2,
+  "reactRenderMs": 7.7
+ },
+ "errors": []
+}</div></div><div class="step"><div class="note"># The rewrite renders the same rows in the same order and format as the original (with the crash removed). Screenshots saved as media.</div><div class="cmd">node shots.mjs   # same page, 3 variants, compare DOM after the data has loaded</div><div class="out">orig     h1=null rows=0 canvases=0
+         first rows: undefined
+origfix  h1="Today · 22:06:29" rows=1500 canvases=1
+         first rows: 14:00 | Ana Stone 0 | Therapist 1 | Cancel // 14:00 | Ana Stone 600 | Therapist 1 | Cancel
+new      h1="Today · 22:06:31" rows=1500 canvases=1
+         first rows: 14:00 | Ana Stone 0 | Therapist 1 | Cancel // 14:00 | Ana Stone 600 | Therapist 1 | Cancel</div></div><div class="step"><div class="note"># No type errors in Dashboard.tsx or StatsChart.tsx; the only errors are the missing .d.ts for react-dom/profiling in the benchmark harness.</div><div class="cmd">npx tsc -p .   # strict mode; output filtered to the three variant folders</div><div class="out">new/harness.tsx(2,28): error TS7016: Could not find a declaration file for module 'react-dom/profiling'. '/private/tmp/claude-501/lab2/react-best-practices/node_modules/react-dom/profiling.js' implicitly has an 'any' type.
+orig/harness.tsx(2,28): error TS7016: Could not find a declaration file for module 'react-dom/profiling'. '/private/tmp/claude-501/lab2/react-best-practices/node_modules/react-dom/profiling.js' implicitly has an 'any' type.
+origfix/harness.tsx(2,28): error TS7016: Could not find a declaration file for module 'react-dom/profiling'. '/private/tmp/claude-501/lab2/react-best-practices/node_modules/react-dom/profiling.js' implicitly has an 'any' type.</div></div></div>
+<h2>Files</h2><details open><summary>Dashboard.tsx</summary><pre><span class="k">import</span> * <span class="k">as</span> React <span class="k">from</span> <span <span class="k">class</span>="s">"react"</span>
+<span class="k">import</span> <span class="k">type</span> { Stats } <span class="k">from</span> <span <span class="k">class</span>="s">"./StatsChart"</span>
+
+<span class="c">// Heavy chart code is only fetched once there are stats to draw (bundle-dynamic-imports / bundle-conditional).</span>
+<span class="k">const</span> StatsChart = React.lazy(() =&gt; <span class="k">import</span>(<span <span class="k">class</span>="s">"./StatsChart"</span>))
+
+<span class="k">type</span> Appointment = { id: string; patient: string; start: string; therapistId: string; status: <span <span class="k">class</span>="s">"booked"</span> | <span <span class="k">class</span>="s">"cancelled"</span> | <span <span class="k">class</span>="s">"done"</span> }
+<span class="k">type</span> Therapist = { id: string; name: string }
+
+<span class="c">// Hoisted: Intl formatters are expensive to construct, cheap to reuse (replaces moment).</span>
+<span class="k">const</span> timeFmt = <span class="k">new</span> Intl.DateTimeFormat(<span <span class="k">class</span>="s">"en-GB"</span>, { hour: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, minute: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, hourCycle: <span <span class="k">class</span>="s">"h23"</span> })
+<span class="k">const</span> clockFmt = <span class="k">new</span> Intl.DateTimeFormat(<span <span class="k">class</span>="s">"en-GB"</span>, { hour: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, minute: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, second: <span <span class="k">class</span>="s">"<span class="n">2</span>-digit"</span>, hourCycle: <span <span class="k">class</span>="s">"h23"</span> })
+
+<span class="k">const</span> getJson = &lt;T,&gt;(url: string, signal: AbortSignal): Promise&lt;T&gt; =&gt; fetch(url, { signal }).then((r) =&gt; r.json())
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">function</span> Dashboard({ clinicId }: { clinicId: string }) {
+  <span class="k">const</span> [appointments, setAppointments] = React.useState&lt;Appointment[]&gt;([])
+  <span class="k">const</span> [therapists, setTherapists] = React.useState&lt;Therapist[]&gt;([])
+  <span class="k">const</span> [stats, setStats] = React.useState&lt;Stats | <span class="k">null</span>&gt;(<span class="k">null</span>)
+  <span class="k">const</span> [search, setSearch] = React.useState(<span <span class="k">class</span>="s">""</span>)
+  <span class="k">const</span> deferredSearch = React.useDeferredValue(search)
+
+<span class="c">  // The three requests are independent: run them in parallel (1 round trip instead of 3) and</span>
+<span class="c">  // abort them if clinicId changes or the component unmounts.</span>
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> ctrl = <span class="k">new</span> AbortController()
+    <span class="k">const</span> base = <span <span class="k">class</span>="s">`/api/clinics/${clinicId}`</span>
+    Promise.all([
+      getJson&lt;Appointment[]&gt;(<span <span class="k">class</span>="s">`${base}/appointments`</span>, ctrl.signal),
+      getJson&lt;Therapist[]&gt;(<span <span class="k">class</span>="s">`${base}/therapists`</span>, ctrl.signal),
+      getJson&lt;Stats&gt;(<span <span class="k">class</span>="s">`${base}/stats`</span>, ctrl.signal),
+    ])
+      .then(([a, t, s]) =&gt; {
+        setAppointments(a)
+        setTherapists(t)
+        setStats(s)
+      })
+      .<span class="k">catch</span>((e) =&gt; {
+        <span class="k">if</span> (e.name !== <span <span class="k">class</span>="s">"AbortError"</span>) <span class="k">throw</span> e
+      })
+    <span class="k">return</span> () =&gt; ctrl.abort()
+  }, [clinicId])
+
+<span class="c">  // Sort once per data change (parse each date once), not on every keystroke or clock tick.</span>
+  <span class="k">const</span> sorted = React.useMemo(
+    () =&gt;
+      appointments
+        .map((a) =&gt; ({ a, ts: Date.parse(a.start) }))
+        .sort((x, y) =&gt; x.ts - y.ts)
+        .map((x) =&gt; x.a),
+    [appointments],
+  )
+
+<span class="c">  // One pass: filter + group (replaces filter + sort + lodash groupBy).</span>
+  <span class="k">const</span> byTherapist = React.useMemo(() =&gt; {
+    <span class="k">const</span> q = deferredSearch.toLowerCase()
+    <span class="k">const</span> groups = <span class="k">new</span> Map&lt;string, Appointment[]&gt;()
+    <span class="k">for</span> (<span class="k">const</span> a <span class="k">of</span> sorted) {
+      <span class="k">if</span> (!a.patient.toLowerCase().includes(q)) continue
+      <span class="k">const</span> list = groups.get(a.therapistId)
+      <span class="k">if</span> (list) list.push(a)
+      <span class="k">else</span> groups.set(a.therapistId, [a])
+    }
+    <span class="k">return</span> groups
+  }, [sorted, deferredSearch])
+
+<span class="c">  // Stable callback: functional setState means it never needs `appointments` as a dependency.</span>
+  <span class="k">const</span> cancel = React.useCallback((id: string) =&gt; setAppointments((curr) =&gt; curr.filter((x) =&gt; x.id !== id)), [])
+
+  <span class="k">return</span> (
+    &lt;div&gt;
+      &lt;h1&gt;
+        Today · &lt;Clock /&gt;
+      &lt;/h1&gt;
+      &lt;input value={search} onChange={(e) =&gt; setSearch(e.target.value)} placeholder=<span <span class="k">class</span>="s">"Search patients"</span> /&gt;
+      {stats &amp;&amp; (
+        &lt;React.Suspense fallback={<span class="k">null</span>}&gt;
+          &lt;StatsChart data={stats} /&gt;
+        &lt;/React.Suspense&gt;
+      )}
+      {therapists.map((t) =&gt; (
+        &lt;section key={t.id}&gt;
+          &lt;h2&gt;{t.name}&lt;/h2&gt;
+          {(byTherapist.get(t.id) ?? []).map((a) =&gt; (
+            &lt;Row key={a.id} appointment={a} therapistName={t.name} onCancel={cancel} /&gt;
+          ))}
+        &lt;/section&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}
+
+<span class="c">// The 1-second tick lives here, so only this &lt;span&gt; re-renders each second, not the whole dashboard.</span>
+<span class="k">function</span> Clock() {
+  <span class="k">const</span> [now, setNow] = React.useState(() =&gt; Date.now())
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> id = setInterval(() =&gt; setNow(Date.now()), <span class="n">1000</span>)
+    <span class="k">return</span> () =&gt; clearInterval(id)
+  }, [])
+  <span class="k">return</span> &lt;span&gt;{clockFmt.format(now)}&lt;/span&gt;
+}
+
+<span class="k">const</span> Row = React.memo(<span class="k">function</span> Row({
+  appointment,
+  therapistName,
+  onCancel,
+}: {
+  appointment: Appointment
+  therapistName: string
+  onCancel: (id: string) =&gt; void
+}) {
+  <span class="k">return</span> (
+    &lt;div style={rowStyle}&gt;
+      &lt;span&gt;{timeFmt.format(Date.parse(appointment.start))}&lt;/span&gt;
+      &lt;span&gt;{appointment.patient}&lt;/span&gt;
+      &lt;span&gt;{therapistName}&lt;/span&gt;
+      &lt;button onClick={() =&gt; onCancel(appointment.id)}&gt;Cancel&lt;/button&gt;
+    &lt;/div&gt;
+  )
+})
+
+<span class="k">const</span> rowStyle = { display: <span <span class="k">class</span>="s">"flex"</span>, gap: <span class="n">8</span> } <span class="k">as</span> <span class="k">const</span></pre></details><details><summary>StatsChart.tsx</summary><pre><span class="k">import</span> * <span class="k">as</span> React <span class="k">from</span> <span <span class="k">class</span>="s">"react"</span>
+<span class="c">// Import only the Chart.js pieces a line chart needs instead of "chart.js/auto" (which registers every chart type).</span>
+<span class="k">import</span> { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale } <span class="k">from</span> <span <span class="k">class</span>="s">"chart.js"</span>
+
+Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale)
+
+<span class="k">export</span> <span class="k">type</span> Stats = { labels: string[]; values: number[] }
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">function</span> StatsChart({ data }: { data: Stats }) {
+  <span class="k">const</span> ref = React.useRef&lt;HTMLCanvasElement&gt;(<span class="k">null</span>)
+
+<span class="c">  // Create the chart when the data changes, and destroy it on cleanup (the old code leaked one per render).</span>
+  React.useEffect(() =&gt; {
+    <span class="k">const</span> chart = <span class="k">new</span> Chart(ref.current!, {
+      <span class="k">type</span>: <span <span class="k">class</span>="s">"line"</span>,
+      data: { labels: data.labels, datasets: [{ data: data.values }] },
+    })
+    <span class="k">return</span> () =&gt; chart.destroy()
+  }, [data])
+
+  <span class="k">return</span> &lt;canvas ref={ref} /&gt;
+}</pre></details>
+</main>
+
+</body></html>

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper: oklch(96.5% 0.016 188);
+  --paper-2: oklch(92.4% 0.026 192);
+  --rule: oklch(81% 0.032 195);
+  --ink: oklch(24% 0.055 238);
+  --ink-2: oklch(40% 0.05 232);
+  --tide: oklch(45% 0.095 218);
+  --buoy: oklch(69% 0.185 48);
+  --buoy-deep: oklch(56% 0.17 44);
+  --deep: oklch(25% 0.06 238);
+  --deep-2: oklch(86% 0.03 205);
+  --ease: cubic-bezier(.16,1,.3,1);
+  --serif: "Young Serif", Georgia, serif;
+  --sans: "Hanken Grotesk", system-ui, sans-serif;
+  --mono: "Martian Mono", ui-monospace, monospace;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font:400 1.0625rem/1.55 var(--sans);caret-color:var(--buoy);overflow-x:hidden}
+::selection{background:var(--buoy);color:var(--deep)}
+a{color:inherit;text-underline-offset:.22em}
+:focus-visible{outline:3px solid var(--buoy);outline-offset:3px;border-radius:2px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:80rem;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem)}
+header.top{display:flex;align-items:center;justify-content:space-between;padding-block:1.5rem}
+.mark{font:400 1.5rem/1 var(--serif);text-decoration:none;display:flex;align-items:center;gap:.6rem}
+.mark i{display:block;width:1.6rem;height:1.1rem;background:linear-gradient(var(--ink),var(--ink)) 0 100%/100% 2px no-repeat,repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px) 0 0/100% 70% no-repeat}
+nav.top{display:flex;gap:clamp(1rem,3vw,2.25rem);font-weight:500;align-items:center}
+nav.top a{text-decoration:none}
+nav.top a:hover{text-decoration:underline}
+nav.top a[aria-current]{text-decoration:underline;text-decoration-thickness:2px;text-decoration-color:var(--buoy)}
+.btn{display:flex;align-items:center;justify-content:center;font:600 1rem/1 var(--sans);padding:1rem 1.4rem;border-radius:3px;border:1.5px solid var(--ink);text-decoration:none;cursor:pointer;transition:background-color .2s var(--ease),color .2s var(--ease),transform .2s var(--ease)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--buoy);color:var(--deep);border-color:var(--buoy)}
+.btn-primary:hover{background:oklch(73% 0.18 52)}
+.btn-line:hover{background:var(--ink);color:var(--paper)}
+
+.intro{padding-block:clamp(2rem,6vw,4.5rem) clamp(2rem,4vw,3rem);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem 3rem;align-items:end}
+h1{font:400 clamp(2.5rem,5.6vw,4.75rem)/1 var(--serif);letter-spacing:-.02em;max-width:14ch;text-wrap:balance}
+.intro p{margin-top:1.25rem;color:var(--ink-2);max-width:46ch;font-size:1.15rem}
+
+/* the toggle: a tide gauge with two marks */
+.switch{display:inline-grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--ink);border-radius:3px;padding:3px;background:transparent;position:relative}
+.switch button{font:600 .95rem/1 var(--sans);background:none;border:0;color:var(--ink);padding:.8rem 1.1rem;cursor:pointer;position:relative;z-index:1;border-radius:2px;transition:color .25s var(--ease);display:flex;gap:.55rem;align-items:center;justify-content:center;white-space:nowrap}
+.switch .thumb{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);background:var(--ink);border-radius:2px;transition:transform .35s var(--ease)}
+.switch[data-mode="yearly"] .thumb{transform:translateX(100%)}
+.switch button[aria-pressed="true"]{color:var(--paper)}
+.switch .save{font:500 .72rem/1 var(--mono);background:var(--buoy);color:var(--deep);padding:.28rem .4rem;border-radius:2px}
+
+/* rate board */
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink);margin-bottom:clamp(3rem,7vw,6rem)}
+.plan{padding:clamp(1.5rem,2.6vw,2.25rem);display:flex;flex-direction:column;border-bottom:1px solid var(--rule)}
+.plan + .plan{border-left:1px solid var(--rule)}
+.plan.hot{background:var(--deep);color:var(--paper);border-left-color:var(--deep);border-top:0;margin-top:-2px;padding-top:calc(clamp(1.5rem,2.6vw,2.25rem) + 2px)}
+.plan h2{font:400 1.75rem/1.1 var(--serif)}
+.plan .for{color:var(--ink-2);font-size:.98rem;margin-top:.4rem;min-height:3em}
+.hot .for{color:var(--deep-2)}
+.price{display:flex;align-items:baseline;gap:.5rem;margin-top:1.75rem;line-height:1}
+.price .amt{font:400 clamp(3rem,4.4vw,4.1rem)/1 var(--serif);letter-spacing:-.02em;display:inline-block}
+.price .amt .cur{font-size:.5em;vertical-align:.7em;margin-right:.08em}
+.price .per{font-size:.98rem;color:var(--ink-2)}
+.hot .price .per{color:var(--deep-2)}
+.billed{font-size:.86rem;color:var(--ink-2);margin-top:.55rem;min-height:1.4em}
+.hot .billed{color:var(--deep-2)}
+.plan .btn{margin-top:1.5rem}
+.hot .btn-primary{border-color:var(--buoy)}
+.plan ul{list-style:none;padding:0;margin:1.75rem 0 0;display:grid;gap:.7rem;border-top:1px solid var(--rule);padding-top:1.5rem;font-size:.98rem}
+.hot ul{border-top-color:oklch(40% 0.05 235)}
+.plan li{display:grid;grid-template-columns:1.1rem 1fr;gap:.65rem;align-items:start}
+.plan li::before{content:"";width:.5rem;height:.85rem;border:solid var(--tide);border-width:0 2px 2px 0;transform:rotate(40deg);margin:.1rem 0 0 .25rem}
+.hot li::before{border-color:var(--buoy)}
+.plan li b{font-weight:600}
+.amt.swap{animation:swap .5s var(--ease)}
+@keyframes swap{from{opacity:0;filter:blur(6px);transform:translateY(.25em)}to{opacity:1;filter:blur(0);transform:none}}
+@media (prefers-reduced-motion:reduce){.amt.swap{animation:none}.switch .thumb{transition:none}}
+
+.fine{padding-bottom:3.5rem;color:var(--ink-2);font-size:.95rem;display:flex;flex-wrap:wrap;gap:.5rem 2.5rem}
+.fine span::before{content:"";display:inline-block;width:.35rem;height:.35rem;background:var(--tide);margin-right:.6rem;vertical-align:.15em}
+@media (max-width:900px){
+  .intro{grid-template-columns:1fr}
+  .board{grid-template-columns:1fr;border-top:0}
+  .plan + .plan{border-left:0}
+  .plan{border-top:2px solid var(--ink)}
+  .plan.hot{margin-top:0;border-top:2px solid var(--deep)}
+  .plan .for{min-height:0}
+}
+@media (max-width:520px){nav.top a:not(.btn){display:none}.switch{width:100%}.switch button{flex:1;justify-content:center;padding-inline:.5rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#"><i aria-hidden="true"></i>Tidewater</a>
+    <nav class="top" aria-label="Primary"><a href="#">Day sheet</a><a href="#" aria-current="page">Pricing</a><a class="btn btn-line" style="padding:.7rem 1.1rem;font-size:.95rem" href="#">Sign in</a></nav>
+  </header>
+
+  <main>
+    <div class="intro">
+      <div>
+        <h1>A rate card you can read in one pass.</h1>
+        <p>Every plan includes the day sheet, text reminders and the waiting list. You choose by how many therapists share the diary.</p>
+      </div>
+      <div class="switch" data-mode="monthly" role="group" aria-label="Billing period">
+        <span class="thumb" aria-hidden="true"></span>
+        <button type="button" data-mode="monthly" aria-pressed="true">Monthly</button>
+        <button type="button" data-mode="yearly" aria-pressed="false">Yearly <span class="save">save 20%</span></button>
+      </div>
+    </div>
+
+    <section class="board" aria-label="Plans">
+      <article class="plan" data-base="19">
+        <h2>Solo</h2>
+        <p class="for">One therapist running their own diary.</p>
+        <div class="price"><span class="amt num-fig" aria-live="polite"><span class="cur">$</span><span class="v">19</span></span><span class="per">per month</span></div>
+        <p class="billed"></p>
+        <a class="btn btn-line" href="#">Start with Solo</a>
+        <ul>
+          <li><span><b>1 therapist</b> and 1 location</span></li>
+          <li><span>Day sheet with drag-to-move</span></li>
+          <li><span>Text reminders, up to 150 a month</span></li>
+          <li><span>Waiting list with auto-offer</span></li>
+          <li><span>CSV import of your current diary</span></li>
+        </ul>
+      </article>
+
+      <article class="plan hot" data-base="49">
+        <h2>Clinic</h2>
+        <p class="for">Two to six therapists sharing rooms and a front desk.</p>
+        <div class="price"><span class="amt num-fig" aria-live="polite"><span class="cur">$</span><span class="v">49</span></span><span class="per">per month</span></div>
+        <p class="billed"></p>
+        <a class="btn btn-primary" href="#">Start with Clinic</a>
+        <ul>
+          <li><span><b>Up to 6 therapists</b>, 1 location</span></li>
+          <li><span>Everything in Solo</span></li>
+          <li><span>Rooms, plinths and the hydro pool as bookable resources</span></li>
+          <li><span>Unlimited text reminders</span></li>
+          <li><span>Front-desk and therapist logins</span></li>
+          <li><span>Waiting list matched by treatment length</span></li>
+        </ul>
+      </article>
+
+      <article class="plan" data-base="129">
+        <h2>Group</h2>
+        <p class="for">Several sites under one owner, one set of reports.</p>
+        <div class="price"><span class="amt num-fig" aria-live="polite"><span class="cur">$</span><span class="v">129</span></span><span class="per">per month</span></div>
+        <p class="billed"></p>
+        <a class="btn btn-line" href="#">Start with Group</a>
+        <ul>
+          <li><span><b>Unlimited therapists</b>, up to 10 locations</span></li>
+          <li><span>Everything in Clinic</span></li>
+          <li><span>Move a patient between sites in one tap</span></li>
+          <li><span>Utilisation reports per site and therapist</span></li>
+          <li><span>Named onboarding contact</span></li>
+        </ul>
+      </article>
+    </section>
+    <p class="fine"><span>30-day trial on every plan</span><span>Cancel from the settings page</span><span>Prices in US dollars, tax not included</span></p>
+  </main>
+</div>
+<script>
+(function(){
+  var sw=document.querySelector('.switch'), plans=document.querySelectorAll('.plan');
+  function fmt(n){return Number.isInteger(n)?String(n):n.toFixed(2)}
+  function render(mode,animate){
+    sw.dataset.mode=mode;
+    sw.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mode===mode))});
+    plans.forEach(function(p){
+      var base=+p.dataset.base, yearly=mode==='yearly';
+      var m=yearly?base*0.8:base;
+      var amt=p.querySelector('.amt');
+      amt.querySelector('.v').textContent=fmt(m);
+      p.querySelector('.per').textContent='per month';
+      p.querySelector('.billed').textContent=yearly?'Billed $'+(m*12).toFixed(2)+' a year, saving $'+(base*12*0.2).toFixed(2):'Billed monthly, change plan any time';
+      if(animate){amt.classList.remove('swap');void amt.offsetWidth;amt.classList.add('swap')}
+    });
+  }
+  sw.addEventListener('click',function(e){var b=e.target.closest('button');if(b)render(b.dataset.mode,true)});
+  render('monthly',false);
+})();
+</script>
+</body>
+</html>

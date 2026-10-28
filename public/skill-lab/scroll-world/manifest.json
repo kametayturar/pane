@@ -1,0 +1,32 @@
+{
+  "id": "scroll-world",
+  "sets": [
+    "3d"
+  ],
+  "skillSays": [
+    "Interview for subject, brand kit, art direction (default: soft clay isometric diorama), camera style, an ordered list of scenes and a budget.",
+    "Generate one still per scene, then dive clips and connector clips with an image-to-video model so the camera flies through one continuous world with no cuts.",
+    "Seams must be frame-identical: each clip starts on the actual last frame of the previous one.",
+    "A scrub engine maps scroll to video time with smoothing, pins eyebrow, headline, body and tags per scene, and adds a route rail.",
+    "Pacing knobs (scroll length, linger) let the camera settle while the copy peaks; reduced motion falls back to stills.",
+    "Always asks about a native 9:16 mobile chain and estimates cost before spending anything."
+  ],
+  "examples": [
+    {
+      "prompt": "3d-1",
+      "changes": [
+        "The skill needs Higgsfield or Monid video credits and an interactive login, which this run could not use. The same idea was rebuilt as a real-time three.js camera flight: scroll scrubs a camera along one spline",
+        "Hero is the first scene of the world (a floating clay diorama island: calendar tiles, hopping pearl, clock) and scrolling dives the camera inside it with a lingering hold",
+        "Pinned copy follows the skill's structure (eyebrow, headline, body, tag pills) and a route rail plus progress bar show where you are; reduced motion renders a still"
+      ]
+    },
+    {
+      "prompt": "3d-2",
+      "changes": [
+        "Built as the full chain: four connected clay islands (booking, reminders, treatment room with a roof that lifts, recovery steps) and a wide finale, flown in one continuous Catmull-Rom path with no cuts",
+        "The headline sits on the opening scene; the camera dives into each island, then climbs out and crosses to the next (the skill's dive plus connector shape), with a held waypoint per island as the linger",
+        "The skill's drifting-particle layer became ambient motes rising behind the world; fewer on touch screens, a wider lens in portrait, and a static frame under reduced motion"
+      ]
+    }
+  ]
+}

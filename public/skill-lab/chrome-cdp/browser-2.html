@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-2-nothing.png" alt="First click: nothing happens although 10:30 looks selected"><figcaption>First click: nothing happens although 10:30 looks selected</figcaption></figure><figure><img src="browser-2-after-select.png" alt="After selecting the slot: request sent, banner shown (response was 501)"><figcaption>After selecting the slot: request sent, banner shown (response was 501)</figcaption></figure></div>
+<h2>Result</h2><div class="result">Cause: the Book page handler does fetch("/api/book", { body: JSON.stringify({ slot: selected.id }) }), but `selected` is a module variable assigned only inside the slot click listener. The 10:30 slot is drawn with class "sel" (i === 1) so it looks chosen, yet typeof selected is "undefined". The first click on "Book appointment" throws TypeError: Cannot read properties of undefined (reading 'id') in the async handler (an unhandled promise rejection), before any request – so the button visibly does nothing.
+
+Evidence from the live page via cdp eval: hooks installed on unhandledrejection/error and window.fetch; after the first click the log holds only "unhandledrejection: TypeError: Cannot read properties of undefined (reading 'id')" and #result is empty. After clicking the 10:30 slot (selected becomes {id:"s2",time:"10:30"}) the same button fires fetch /api/book {"slot":"s2"} and the page shows "Booked 10:30".
+
+Fix: initialise selected = SLOTS[1] when rendering (or remove the default highlight). Secondary bug: the handler ignores res.ok – my static server has no API, the response was 501 and the page still said "Booked 10:30".
+
+Skill limits: chrome-cdp has no console/network-event command, so I injected listeners with eval before the click; that works because the page stays alive between commands (the daemon keeps the session).</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Hooks first, then the failing click, so the evidence is captured at the moment of failure.</div><div class="cmd">nav #book, snap --compact, eval (install hooks, report typeof selected), click #book, eval (read log), shot</div><div class="out">$ cdp nav 8ABD7225 http://127.0.0.1:7131/#book
+Navigated to http://127.0.0.1:7131/#book
+
+$ cdp snap 8ABD7225 --compact
+[RootWebArea] Tidewater – test app
+        [link] Sign up
+          [StaticText] Sign up
+        [link] Book
+          [StaticText] Book
+        [heading] Book an appointment
+          [StaticText] Book an appointment
+          [StaticText] Dr. Okafor · Tuesday
+            [StaticText] 09:00
+            [StaticText] 10:30
+            [StaticText] 14:00
+        [button] Book appointment
+          [StaticText] Book appointment
+
+$ cdp eval 8ABD7225 window.__log=[];addEventListener("unhandledrejection",e=&gt;__log.push("unhandledrejection: "+e.reason));addEventListener("error",e=&gt;__log.push("error: "+e.message));const f=fetch;window.fetch=(...a)=&gt;{__log.push("fetch "+a[0]+" "+(a[1]&amp;&amp;a[1].body));return f(...a).then(r=&gt;{__log.push("response "+r.status);return r})};"hooks installed; selected is "+typeof selected+", visually selected: "+document.querySelector(".slot.sel").textContent
+hooks installed; selected is undefined, visually selected: 10:30
+
+$ cdp click 8ABD7225 #book
+Clicked &lt;BUTTON&gt; "Book appointment"
+
+$ cdp eval 8ABD7225 JSON.stringify({log:__log,result:document.getElementById("result").innerHTML,selectedVar:typeof selected})
+{"log":["unhandledrejection: TypeError: Cannot read properties of undefined (reading 'id')"],"result":"","selectedVar":"undefined"}
+
+$ cdp shot 8ABD7225 /Users/kametayturar/agentic-ui/ai-answer/public/skill-lab/chrome-cdp/browser-2-nothing.png
+/Users/kametayturar/agentic-ui/ai-answer/public/skill-lab/chrome-cdp/browser-2-nothing.png
+Screenshot saved (DPR 2).
+
+$ cdp click 8ABD7225 .slot[data-id=s2]
+Clicked &lt;DIV&gt; "10:30"
+
+$ cdp click 8ABD7225 #book
+Clicked &lt;BUTTON&gt; "Book appointment"
+
+$ cdp eval 8ABD7225 JSON.stringify({log:__log,result:document.getElementById("result").innerHTML,selectedVar:JSON.stringify(selected)})</div></div><div class="step"><div class="note"># Control experiment: selecting a slot first makes the same button work.</div><div class="cmd">click .slot[data-id=s2]; click #book; eval (read log); shot</div><div class="out">{"log":["unhandledrejection: TypeError: Cannot read properties of undefined (reading 'id')","fetch /api/book {\"slot\":\"s2\"}","response 501"],"result":"&lt;div class=\"ok\"&gt;Booked 10:30&lt;/div&gt;","selectedVar":"{\"id\":\"s2\",\"time\":\"10:30\"}"}
+
+$ cdp shot 8ABD7225 /Users/kametayturar/agentic-ui/ai-answer/public/skill-lab/chrome-cdp/browser-2-after-select.png
+/Users/kametayturar/agentic-ui/ai-answer/public/skill-lab/chrome-cdp/browser-2-after-select.png
+Screenshot saved (DPR 2).</div></div></div>
+
+</main>
+
+</body></html>

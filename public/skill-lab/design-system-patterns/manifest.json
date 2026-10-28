@@ -1,0 +1,29 @@
+{
+  "id": "design-system-patterns",
+  "sets": ["web"],
+  "skillSays": [
+    "Build UI on a three-layer token hierarchy: primitive values (raw colors, sizes), semantic tokens named by purpose (text-primary, surface-elevated), then component tokens (button-bg, card-radius).",
+    "Name tokens by purpose, never by look, and never hardcode raw values in components.",
+    "Make theming a first-class concern: CSS custom properties, light/dark that follows prefers-color-scheme, a persisted manual switch, plus reduced-motion and high-contrast handling.",
+    "Give components a consistent variant and size system (primary/secondary, default/lg) driven by those tokens.",
+    "Test every theme against every component, and avoid token sprawl and circular references."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Defined primitive teal/gray scales, semantic tokens (--text-primary, --surface-elevated, --interactive-primary) and component tokens (--button-bg, --card-radius) before writing any markup; every rule uses var(--token) with no raw hex.",
+      "Added a Light/Dark/Auto switch that persists and follows prefers-color-scheme; the dark theme only remaps semantic tokens.",
+      "Built buttons and cards as variant/size classes (btn, btn--secondary, btn--lg) that read component tokens.",
+      "Added reduced-motion and high-contrast overrides at the token level."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "Pricing-specific component tokens (--plan-bg, --plan-featured-border, --toggle-thumb-bg, --check-color) layered on top of the shared semantic tokens.",
+      "The featured plan and the billing toggle are restyled in dark mode purely by semantic remapping, with no extra dark-mode rules.",
+      "Same Light/Dark/Auto theme switch as the other pages, so all three pages share one token system."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Form tokens (--input-border, --input-border-error, --error-text, --check-bg-on) derive from semantic feedback and interactive tokens, so error and focus states switch themes automatically.",
+      "Inputs, select and checkbox share one token-driven control style with size and state tokens (--input-height).",
+      "Error colour comes from a semantic --feedback-danger token with a lighter dark-mode value, so contrast holds in both themes."
+    ]}
+  ]
+}

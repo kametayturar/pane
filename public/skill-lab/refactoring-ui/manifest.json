@@ -1,0 +1,40 @@
+{
+  "id": "refactoring-ui",
+  "sets": [
+    "web"
+  ],
+  "skillSays": [
+    "Design from fixed scales and never invent a value: a 4-8-12-16-24-32-48-64-96 spacing scale, a 12-72px type scale in px/rem, two font weights, five shadow elevations.",
+    "Build hierarchy with weight and colour instead of size: three text greys at most, one solid primary action, secondary as outline, tertiary as a link.",
+    "Use 8-10 grey shades and 5-10 shades per colour written in HSL, defined up front and never generated at runtime; flip contrast (dark text on a tint) instead of grey-on-colour.",
+    "Always put more space around a group than within it, shrink large elements faster than small ones on mobile, and give every functional border 3:1 contrast.",
+    "Never rely on colour alone: pair status colours with an icon or text, and put large icons inside coloured circles instead of scaling them up."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Started from the skill's tokens.css and retuned the grey and primary ramps to a teal hue instead of picking colours ad hoc",
+        "Three-level button hierarchy in the hero: solid primary, outline secondary, underlined tertiary link",
+        "Feature icons sit in 48px tinted circles, and status chips pair colour with a check or clock icon",
+        "Real depth from a layered two-part shadow on the appointment card, with weight and grey shades doing the hierarchy rather than larger type"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Clinic is emphasised by de-emphasising the others: outline buttons on Solo and Group, a solid primary and a stronger elevation on Clinic",
+        "Prices are large and bold while '/month' and 'Billed monthly' drop to tertiary grey, following 'emphasise by de-emphasising'",
+        "The toggle is a real switch with label text that changes weight, and the savings chip pairs green with text"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Inputs are 44px with a 3:1 functional border (--border-strong) and a visible focus ring, separate from the decorative divider token",
+        "Errors use a red tint with dark red text and a circled icon, so colour is never the only signal, and help text is hidden while an error is shown",
+        "Spacing follows the scale throughout, with more space between fields than between a label and its input"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harbour City Marathon</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #222; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .poster {
+    --w: min(calc(100vw - 32px), calc((100vh - 32px) * 0.72));
+    width: var(--w); aspect-ratio: 18/25; position: relative; overflow: hidden; background: #ff5a1f; color: #fff; font-family: 'Inter', sans-serif; container-type: inline-size;
+  }
+  .sun { position: absolute; top: -20cqw; right: -20cqw; width: 80cqw; height: 80cqw; border-radius: 50%; background: #ffb703; }
+  .title { position: absolute; top: 7cqw; left: 6cqw; font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: .88; z-index: 2; }
+  .title .s { font-size: 6cqw; letter-spacing: .15em; display: block; margin-bottom: 1.5cqw; font-family: 'Inter', sans-serif; font-weight: 700; }
+  .title .big { font-size: 20cqw; display: block; color: #fff; }
+  .title .mid { font-size: 28cqw; display: block; color: #111; }
+  .runner { position: absolute; left: 0; right: 0; bottom: 22cqw; width: 100%; height: 40%; }
+  .road { position: absolute; left: 0; right: 0; bottom: 0; height: 24cqw; background: #111; }
+  .road::before { content: ''; position: absolute; left: 0; right: 0; top: 16%; border-top: 1cqw dashed #fff; opacity: .8; }
+  .info { position: absolute; left: 6cqw; right: 6cqw; bottom: 3cqw; display: flex; justify-content: space-between; align-items: flex-end; z-index: 3; }
+  .info .when { font-family: 'Anton', sans-serif; font-size: 7.5cqw; text-transform: uppercase; line-height: 1; }
+  .info .when small { display: block; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 2.6cqw; letter-spacing: .1em; margin-top: 1cqw; color: #ffb703; }
+  .info .reg { text-align: right; font-size: 2.6cqw; font-weight: 600; }
+  .info .reg b { display: block; font-size: 3.4cqw; color: #ffb703; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="sun"></div>
+  <div class="title"><span class="s">HARBOUR CITY</span><span class="big">Marathon</span><span class="mid">2026</span></div>
+  <svg class="runner" viewBox="0 0 400 200" preserveAspectRatio="xMidYMax meet">
+    <g fill="#111">
+      <circle cx="240" cy="40" r="14"/>
+      <path d="M225 58 l30 -4 l14 38 l-18 8 l-10 -24 l-12 22 l24 30 l-4 30 l-20 -2 l2 -22 l-22 -22 l-14 30 l-24 2 l16 -44 l16 -22z"/>
+      <path d="M262 62 l26 14 l-6 12 l-28 -12z"/>
+      <path d="M222 66 l-28 12 l6 12 l30 -10z"/>
+    </g>
+    <g stroke="#fff" stroke-width="3" opacity=".7"><line x1="60" y1="70" x2="130" y2="70"/><line x1="40" y1="95" x2="120" y2="95"/><line x1="80" y1="120" x2="140" y2="120"/></g>
+  </svg>
+  <div class="road"></div>
+  <div class="info">
+    <div class="when">Sunday 19 April<small>START 8:00 AM · CITY HALL SQUARE</small></div>
+    <div class="reg"><b>Register now</b>harbourcitymarathon.example</div>
+  </div>
+</div>
+</body>
+</html>

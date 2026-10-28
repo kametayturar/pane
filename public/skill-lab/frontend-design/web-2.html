@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Design plan
+   Ground #E4ECEE | Ink #0B2230 | Deep #123F55 | Foam #F7FBFB | Buoy #F2C230
+   Type: Bricolage Grotesque (narrow, heavy numerals) + Instrument Sans
+   Layout: plans are rows of a printed fare table, not three cards; the plan we recommend is the one filled row. */
+:root{--ground:#E4ECEE;--ink:#0B2230;--deep:#123F55;--foam:#F7FBFB;--buoy:#F2C230;--mute:#4A6270;--rule:#B9CBD1}
+*{box-sizing:border-box;margin:0}
+body{background:var(--ground);color:var(--ink);font:17px/1.55 "Instrument Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--deep);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+header{display:flex;justify-content:space-between;align-items:center;height:84px}
+.mark{font:800 26px/1 "Bricolage Grotesque";font-stretch:80%;letter-spacing:-.02em;text-decoration:none;color:inherit}
+header a.l{font-weight:500;text-decoration:none;color:inherit}
+h1{font:800 clamp(52px,8vw,112px)/.88 "Bricolage Grotesque";font-stretch:75%;letter-spacing:-.022em;margin-top:40px;max-width:12ch;text-wrap:balance}
+.top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:end;margin-bottom:56px}
+.top p{font-size:20px;color:var(--deep);max-width:30em;margin-top:24px}
+/* toggle */
+.tog{display:flex;background:var(--foam);padding:5px;border-radius:6px;gap:4px;width:max-content}
+.tog button{border:0;background:none;font:600 16px "Instrument Sans";padding:0 22px;height:48px;border-radius:3px;cursor:pointer;color:var(--ink);transition:background .2s,color .2s;display:flex;align-items:center;gap:10px}
+.tog button[aria-checked="true"]{background:var(--ink);color:var(--foam)}
+.tog em{font-style:normal;font-size:14px;font-weight:700;background:var(--buoy);color:var(--ink);padding:1px 8px;border-radius:99px}
+/* fare table */
+.plan{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,5fr) minmax(0,3fr);gap:48px;align-items:start;padding:44px 40px;margin:0 -40px}
+.plan+.plan{border-top:2px solid var(--ink)}
+.plan.pick{background:var(--deep);color:var(--foam);border-top-color:var(--deep)}
+.plan.pick+.plan{border-top-color:var(--deep)}
+.plan h2{font:800 44px/1 "Bricolage Grotesque";font-stretch:80%;letter-spacing:-.02em}
+.plan .d{margin-top:10px;color:var(--deep);max-width:20em}
+.pick .d{color:#CFE1E8}
+.pick .badge{display:inline-block;margin-top:16px;background:var(--buoy);color:var(--ink);font-weight:700;font-size:15px;padding:3px 12px;border-radius:99px}
+ul{list-style:none;padding:0;columns:2;column-gap:32px}
+li{padding:7px 0 7px 26px;position:relative;break-inside:avoid}
+li::before{content:"";position:absolute;left:0;top:15px;width:12px;height:6px;border-left:2.5px solid var(--deep);border-bottom:2.5px solid var(--deep);transform:rotate(-45deg)}
+.pick li::before{border-color:var(--buoy)}
+.pr{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.amt{font:800 clamp(64px,7vw,96px)/.9 "Bricolage Grotesque";font-stretch:75%;letter-spacing:-.02em;font-variant-numeric:tabular-nums;display:flex;align-items:flex-start}
+.amt sup{font-size:.4em;margin:.12em .08em 0 0;font-weight:700}
+.amt span{display:inline-block;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.per{font-weight:500}
+.sub{color:var(--mute);font-size:15px;min-height:24px}
+.pick .sub{color:#A9C7D3}
+.sub s{opacity:.8}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:52px;padding:0 28px;margin-top:10px;background:var(--ink);color:var(--foam);font:600 16px "Instrument Sans";text-decoration:none;border-radius:4px;transition:background .2s,transform .2s}
+.btn:hover{background:var(--deep)}.btn:active{transform:translateY(1px)}
+.pick .btn{background:var(--buoy);color:var(--ink)}.pick .btn:hover{background:#FFD84F}
+.note{padding:28px 0 72px;color:var(--mute);font-size:15px}
+@media (max-width:900px){
+ .wrap{padding:0 20px}.plan{margin:0 -20px;padding:36px 20px;grid-template-columns:1fr;gap:20px}
+ .top{grid-template-columns:1fr}.pr{text-align:left;align-items:flex-start}ul{columns:1}
+ .plan h2{font-size:38px}.tog button{padding:0 14px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.amt span{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="mark" href="#">Tidewater</a><a class="l" href="#">Back to site</a></header>
+<div class="top">
+  <div><h1>One diary. Pick your size.</h1><p>Every plan includes the full calendar, reminders and CSV import. Pay yearly and take 20% off.</p></div>
+  <div class="tog" role="radiogroup" aria-label="Billing period">
+    <button role="radio" aria-checked="true" data-p="m">Monthly</button>
+    <button role="radio" aria-checked="false" data-p="y">Yearly <em>Save 20%</em></button>
+  </div>
+</div>
+
+<section aria-label="Plans">
+ <article class="plan" data-m="19">
+  <div><h2>Solo</h2><p class="d">For an independent therapist with one treatment room.</p></div>
+  <ul><li>1 therapist, 1 room</li><li>Online booking page</li><li>Automatic text reminders</li><li>Up to 150 active patients</li><li>Email support</li><li>CSV patient import</li></ul>
+  <div class="pr"><div class="amt" aria-live="polite"></div><div class="per">per month</div><div class="sub"></div><a class="btn" href="#">Choose Solo</a></div>
+ </article>
+ <article class="plan pick" data-m="49">
+  <div><h2>Clinic</h2><p class="d">For clinics with a small team sharing rooms.</p><span class="badge">Most clinics choose this</span></div>
+  <ul><li>Up to 8 therapists, 6 rooms</li><li>Waitlist that refills cancellations</li><li>Unlimited patients</li><li>Shared and personal calendars</li><li>Two-way text reminders</li><li>Priority chat support</li></ul>
+  <div class="pr"><div class="amt" aria-live="polite"></div><div class="per">per month</div><div class="sub"></div><a class="btn" href="#">Choose Clinic</a></div>
+ </article>
+ <article class="plan" data-m="129">
+  <div><h2>Group</h2><p class="d">For multi-site practices that need one overview.</p></div>
+  <ul><li>Unlimited therapists and rooms</li><li>Unlimited sites</li><li>Cross-site reporting</li><li>Role-based site access</li><li>Single sign-on</li><li>Named onboarding contact</li></ul>
+  <div class="pr"><div class="amt" aria-live="polite"></div><div class="per">per month</div><div class="sub"></div><a class="btn" href="#">Choose Group</a></div>
+ </article>
+</section>
+<p class="note">Prices in US dollars. Yearly plans are billed once a year; cancel any time.</p>
+</div>
+<script>
+const plans=[...document.querySelectorAll('.plan')],btns=[...document.querySelectorAll('.tog button')];
+const money=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).replace(/\.00$/,'');
+let mode='m';
+function render(){plans.forEach(p=>{
+  const m=+p.dataset.m,v=mode==='y'?m*.8:m,a=p.querySelector('.amt');
+  a.innerHTML='<sup>$</sup>'+[...money(v)].map(c=>`<span>${c}</span>`).join('');
+  [...a.querySelectorAll('span')].forEach((s,i)=>{s.style.transform='translateY(-10px)';requestAnimationFrame(()=>requestAnimationFrame(()=>{s.style.transitionDelay=i*30+'ms';s.style.transform=''}))});
+  p.querySelector('.sub').innerHTML=mode==='y'?`<s>$${m}</s> &nbsp;$${money(m*.8*12)} billed yearly`:'Billed monthly';
+})}
+btns.forEach(b=>{b.addEventListener('click',()=>{mode=b.dataset.p;btns.forEach(x=>x.setAttribute('aria-checked',x===b));render()});
+ b.addEventListener('keydown',e=>{if(e.key.startsWith('Arrow')){const o=btns[1-btns.indexOf(b)];o.focus();o.click()}})});
+render();
+</script>
+</body>
+</html>

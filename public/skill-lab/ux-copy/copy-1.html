@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UX Copy: Import patients from CSV</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fbfaf8;color:#1d2125;font:17px/1.6 Georgia,"Iowan Old Style",serif;-webkit-font-smoothing:antialiased}
+main{max-width:760px;margin:0 auto;padding:48px 24px 72px}
+h1{font:700 28px/1.25 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;margin:0 0 6px;letter-spacing:-.01em}
+h2{font:700 13px/1.3 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.09em;color:#5c6670;margin:40px 0 14px;padding-top:18px;border-top:1px solid #dcd8d0}
+h3{font:600 19px/1.35 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;margin:0 0 6px}
+h4{font:700 12px/1.3 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#8a6d2f;margin:26px 0 8px}
+p{margin:0 0 12px}
+.meta{font:14px/1.6 -apple-system,"Segoe UI",Helvetica,sans-serif;color:#5c6670;margin:0 0 4px}
+.meta b{color:#1d2125;font-weight:600}
+.card{background:#fff;border:1px solid #e4e0d8;border-radius:10px;padding:20px 22px;margin:0 0 14px}
+.card p:last-child{margin-bottom:0}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;font:600 14px -apple-system,"Segoe UI",Helvetica,sans-serif}
+.btn{display:inline-block;padding:9px 16px;border-radius:7px;background:#1d2125;color:#fff}
+.btn.sec{background:transparent;color:#1d2125;border:1px solid #b9b4aa}
+.lbl{font:700 11px/1 -apple-system,"Segoe UI",Helvetica,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#8a8f94;margin-bottom:6px;display:block}
+table{border-collapse:collapse;width:100%;font:14px/1.5 -apple-system,"Segoe UI",Helvetica,sans-serif;margin:8px 0 18px;background:#fff}
+th,td{border:1px solid #e4e0d8;padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f3f0ea;font-weight:600}
+ol,ul{margin:0 0 12px;padding-left:22px}li{margin:0 0 6px}
+.mail{background:#fff;border:1px solid #e4e0d8;border-radius:10px;overflow:hidden}
+.mail .hd{padding:14px 22px;background:#f3f0ea;font:14px/1.6 -apple-system,"Segoe UI",Helvetica,sans-serif;border-bottom:1px solid #e4e0d8}
+.mail .bd{padding:24px 26px}
+.card.hero{padding:26px 28px}
+.hero .h{font:700 40px/1.12 -apple-system,"Segoe UI",Helvetica,sans-serif;letter-spacing:-.02em;margin:0 0 14px}
+.hero .s{font-size:19px;color:#3b434a;margin:0 0 16px}
+.blurbs{display:grid;gap:14px;margin-top:6px}
+.note{font:14px/1.6 -apple-system,"Segoe UI",Helvetica,sans-serif;color:#4a535b}
+.flag{background:#fff6dc;border:1px solid #ecd48b;border-radius:4px;padding:0 5px;font:600 13px -apple-system,sans-serif}
+code{font:14px ui-monospace,Menlo,monospace;background:#f1eee8;padding:1px 5px;border-radius:4px}
+@media(max-width:520px){h1{font-size:23px}.hero .h{font-size:30px}main{padding:28px 18px 56px}.mail .bd{padding:18px}}
+</style></head><body><main>
+
+<h1>UX Copy: Import patients from CSV</h1>
+<p class="meta"><b>Screen:</b> Patients &rsaquo; Import. <b>User state:</b> a practice manager moving off spreadsheets, a little nervous about breaking something. <b>Tone:</b> reassuring, plain. <b>Constraints:</b> headings under 40 characters, buttons under 20.</p>
+
+<h2>Recommended copy</h2>
+<h4>Empty state</h4>
+<div class="card"><h3>No patients imported yet</h3>
+<p>Import a CSV file to bring your existing patient list into Tidewater. Your file needs a header row with first name, last name, and either a phone number or an email address.</p>
+<div class="btns"><span class="btn">Choose CSV file</span><span class="btn sec">Download template</span></div></div>
+
+<h4>Upload error</h4>
+<div class="card"><h3>Couldn't import patients.csv</h3>
+<p>3 rows are missing contact details. Row 14 has no phone number or email, and rows 22 and 40 have no last name. Nothing was imported, so your patient list hasn't changed. Fix those rows in your file and upload it again.</p>
+<div class="btns"><span class="btn">Upload fixed file</span><span class="btn sec">Download error report</span></div></div>
+
+<h4>Success message</h4>
+<div class="card"><h3>128 patients imported</h3>
+<p>They're in your patient list and ready to book. We skipped 6 rows because those patients already exist in Tidewater.</p>
+<div class="btns"><span class="btn">View patients</span><span class="btn sec">Book an appointment</span></div></div>
+
+<h2>Alternatives</h2>
+<h4>Empty state heading</h4>
+<table><tr><th>Option</th><th>Copy</th><th>Tone</th><th>Best for</th></tr><tr><td>A</td><td>No patients imported yet</td><td>Neutral, informative</td><td>Default; works on every screen width</td></tr><tr><td>B</td><td>Start with your patient list</td><td>Encouraging</td><td>Onboarding flow, first visit to the screen</td></tr><tr><td>C</td><td>Your patient list is empty</td><td>Plain, direct</td><td>Admin settings view</td></tr></table>
+<h4>Error heading</h4>
+<table><tr><th>Option</th><th>Copy</th><th>Tone</th><th>Best for</th></tr><tr><td>A</td><td>Couldn't import patients.csv</td><td>Empathetic, specific</td><td>Default; names the file so there is no doubt what failed</td></tr><tr><td>B</td><td>3 rows need fixing</td><td>Action-oriented</td><td>Narrow toast or inline banner</td></tr><tr><td>C</td><td>Import stopped: 3 rows are incomplete</td><td>Clear, a little formal</td><td>Clinics with compliance-minded admins</td></tr></table>
+<h4>Success heading</h4>
+<table><tr><th>Option</th><th>Copy</th><th>Tone</th><th>Best for</th></tr><tr><td>A</td><td>128 patients imported</td><td>Celebratory, restrained</td><td>Default</td></tr><tr><td>B</td><td>All set: 128 patients added</td><td>Warm</td><td>Onboarding flow</td></tr><tr><td>C</td><td>Import complete</td><td>Neutral</td><td>Repeat imports, where the number matters less</td></tr></table>
+
+<h2>Rationale</h2>
+<ul>
+<li><b>Empty state</b> follows what this is, why it's empty, how to start. The heading says why it's empty, the body says what the feature does, and the primary button is the first step.</li>
+<li><b>Error</b> follows what happened, why, how to fix. It gives row numbers because "some rows are invalid" sends a person hunting through 1,000 lines. The sentence "Nothing was imported" answers the first worry, which is whether the file half-loaded.</li>
+<li><b>Success</b> leads with the number, because that is what the user wants to check. One short consequence ("ready to book") and one honest detail (6 skipped) keep it from over-celebrating.</li>
+<li><b>Buttons</b> start with a verb and name the outcome: "Choose CSV file", "Upload fixed file". Neither says "Submit" or "OK".</li>
+</ul>
+
+<h2>Localization notes</h2>
+<ul>
+<li>Keep "CSV" untranslated. Use the local word for "row" that spreadsheet apps use in that market.</li>
+<li>Counts need plural rules: "1 patient imported" versus "128 patients imported", including languages with more than two plural forms.</li>
+<li>"Ready to book" is idiomatic; translate by meaning (can be booked now), not word for word.</li>
+<li>German and Finnish buttons run about 30% longer. Leave room for "Download error report" on one line, or allow it to wrap.</li>
+</ul>
+</main></body></html>

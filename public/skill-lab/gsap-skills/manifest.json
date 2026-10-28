@@ -1,0 +1,40 @@
+{
+  "id": "gsap-skills",
+  "sets": [
+    "motion"
+  ],
+  "skillSays": [
+    "Use GSAP (to / from / fromTo / set) with camelCase vars when the job needs sequencing, interruption or runtime control.",
+    "Animate transform aliases (x, y, xPercent, scale, rotation) and use autoAlpha for fades, instead of layout properties or raw opacity.",
+    "Sequence with gsap.timeline(): position parameter, labels, and timeline defaults. Never chain steps with delay.",
+    "Keep the returned tween or timeline so it can be paused, restarted or killed.",
+    "Wrap setup in gsap.matchMedia() so prefers-reduced-motion gets a calm static state, and do not nest gsap.context() inside it.",
+    "Stacked from() tweens on one property need immediateRender: false; stick to documented eases."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "One looping gsap.timeline with defaults and the labels in/out, tweens placed with position offsets (\"in+=0.15\") instead of delays",
+        "Toast slides with x + autoAlpha (visibility hidden at 0) and the wait is a scaleX bar tween with ease none, no left/opacity animation",
+        "A matchMedia branch shows the finished toast statically when reduced motion is on; Replay is tl.restart() and × jumps to the out label"
+      ]
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Open and close are one timeline with approach/press/open/scan/close labels; the cursor, ripple, menu and items are all placed against those labels",
+        "Menu scales and fades from a top-right origin with back.out, items stagger in by 0.05 s via the stagger var",
+        "The hover highlight is a single element tweened on y (transform) down the list; matchMedia gets both a reduce and a no-preference query so the handler always runs"
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "Master timeline built from small nested timelines (check(), remove()) added with the position parameter and labels add/check/remove",
+        "Removing a row slides it out with xPercent + autoAlpha and closes the gap by tweening the rows below on y, never height",
+        "Strike-through and tick are drawn with scaleX and strokeDashoffset; the loop fades the list out and back in so the repeat has no hard cut"
+      ]
+    }
+  ]
+}

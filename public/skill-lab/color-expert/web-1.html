@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  color-scheme:light dark;
+  --ref-sea-50: oklch(97.5% 0.0126 222.0);
+  --ref-sea-100: oklch(94.5% 0.0262 222.0);
+  --ref-sea-200: oklch(89.5% 0.0473 222.0);
+  --ref-sea-300: oklch(82.5% 0.0735 222.0);
+  --ref-sea-400: oklch(74.5% 0.0966 222.0);
+  --ref-sea-500: oklch(64.5% 0.1050 222.0);
+  --ref-sea-600: oklch(54.5% 0.1007 222.0);
+  --ref-sea-700: oklch(47.5% 0.0878 222.0);
+  --ref-sea-800: oklch(40.5% 0.0748 222.0);
+  --ref-sea-900: oklch(33.5% 0.0619 222.0);
+  --ref-sea-950: oklch(23.5% 0.0434 222.0);
+  --ref-coral-50: oklch(97.5% 0.0129 42.0);
+  --ref-coral-100: oklch(94.5% 0.0290 42.0);
+  --ref-coral-200: oklch(89.5% 0.0578 42.0);
+  --ref-coral-300: oklch(82.5% 0.1026 42.0);
+  --ref-coral-400: oklch(74.5% 0.1380 42.0);
+  --ref-coral-500: oklch(64.5% 0.1500 42.0);
+  --ref-coral-600: oklch(54.5% 0.1500 42.0);
+  --ref-coral-700: oklch(47.5% 0.1350 42.0);
+  --ref-coral-800: oklch(40.5% 0.1170 42.0);
+  --ref-coral-900: oklch(33.5% 0.0930 42.0);
+  --ref-coral-950: oklch(23.5% 0.0675 42.0);
+  --ref-sand-50: oklch(97.5% 0.0036 85.0);
+  --ref-sand-100: oklch(94.5% 0.0075 85.0);
+  --ref-sand-200: oklch(89.5% 0.0135 85.0);
+  --ref-sand-300: oklch(82.5% 0.0210 85.0);
+  --ref-sand-400: oklch(74.5% 0.0276 85.0);
+  --ref-sand-500: oklch(64.5% 0.0300 85.0);
+  --ref-sand-600: oklch(54.5% 0.0300 85.0);
+  --ref-sand-700: oklch(47.5% 0.0270 85.0);
+  --ref-sand-800: oklch(40.5% 0.0234 85.0);
+  --ref-sand-900: oklch(33.5% 0.0186 85.0);
+  --ref-sand-950: oklch(23.5% 0.0135 85.0);
+  --ref-neutral-50: oklch(97.5% 0.0011 230.0);
+  --ref-neutral-100: oklch(94.5% 0.0022 230.0);
+  --ref-neutral-200: oklch(89.5% 0.0040 230.0);
+  --ref-neutral-300: oklch(82.5% 0.0063 230.0);
+  --ref-neutral-400: oklch(74.5% 0.0083 230.0);
+  --ref-neutral-500: oklch(64.5% 0.0090 230.0);
+  --ref-neutral-600: oklch(54.5% 0.0090 230.0);
+  --ref-neutral-700: oklch(47.5% 0.0081 230.0);
+  --ref-neutral-800: oklch(40.5% 0.0070 230.0);
+  --ref-neutral-900: oklch(33.5% 0.0056 230.0);
+  --ref-neutral-950: oklch(23.5% 0.0040 230.0);
+  --ref-red-50: oklch(97.5% 0.0122 27.0);
+  --ref-red-100: oklch(94.5% 0.0275 27.0);
+  --ref-red-200: oklch(89.5% 0.0549 27.0);
+  --ref-red-300: oklch(82.5% 0.0977 27.0);
+  --ref-red-400: oklch(74.5% 0.1545 27.0);
+  --ref-red-500: oklch(64.5% 0.1700 27.0);
+  --ref-red-600: oklch(54.5% 0.1700 27.0);
+  --ref-red-700: oklch(47.5% 0.1530 27.0);
+  --ref-red-800: oklch(40.5% 0.1326 27.0);
+  --ref-red-900: oklch(33.5% 0.1054 27.0);
+  --ref-red-950: oklch(23.5% 0.0765 27.0);
+  --ref-green-50: oklch(97.5% 0.0144 155.0);
+  --ref-green-100: oklch(94.5% 0.0300 155.0);
+  --ref-green-200: oklch(89.5% 0.0540 155.0);
+  --ref-green-300: oklch(82.5% 0.0840 155.0);
+  --ref-green-400: oklch(74.5% 0.1104 155.0);
+  --ref-green-500: oklch(64.5% 0.1200 155.0);
+  --ref-green-600: oklch(54.5% 0.1200 155.0);
+  --ref-green-700: oklch(47.5% 0.1080 155.0);
+  --ref-green-800: oklch(40.5% 0.0936 155.0);
+  --ref-green-900: oklch(33.5% 0.0744 155.0);
+  --ref-green-950: oklch(23.5% 0.0540 155.0);
+  --ref-white: oklch(100% 0 0);
+  --bg: light-dark(var(--ref-neutral-50), var(--ref-neutral-950));
+  --surface: light-dark(var(--ref-white), var(--ref-neutral-900));
+  --sunken: light-dark(var(--ref-neutral-100), var(--ref-neutral-950));
+  --line: light-dark(var(--ref-neutral-200), var(--ref-neutral-800));
+  --text: light-dark(var(--ref-neutral-900), var(--ref-neutral-50));
+  --text2: light-dark(var(--ref-neutral-700), var(--ref-neutral-300));
+  --text3: light-dark(var(--ref-neutral-600), var(--ref-neutral-400));
+  --brand: light-dark(var(--ref-sea-700), var(--ref-sea-400));
+  --brand-hover: light-dark(var(--ref-sea-800), var(--ref-sea-300));
+  --on-brand: light-dark(var(--ref-white), var(--ref-neutral-950));
+  --tint: light-dark(var(--ref-sea-100), var(--ref-sea-900));
+  --tint-text: light-dark(var(--ref-sea-800), var(--ref-sea-200));
+  --band: light-dark(var(--ref-sea-900), var(--ref-sea-800));
+  --on-band: light-dark(var(--ref-sea-50), var(--ref-sea-50));
+  --accent: light-dark(var(--ref-coral-500), var(--ref-coral-400));
+  --on-accent: light-dark(var(--ref-neutral-950), var(--ref-neutral-950));
+  --accent-text: light-dark(var(--ref-coral-700), var(--ref-coral-300));
+  --err: light-dark(var(--ref-red-700), var(--ref-red-300));
+  --err-bg: light-dark(var(--ref-red-50), var(--ref-red-950));
+  --ok: light-dark(var(--ref-green-700), var(--ref-green-300));
+  --ok-bg: light-dark(var(--ref-green-50), var(--ref-green-950));
+}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+/* semantic layer on top of reference ramps; hover/tints are derived, not hand-picked */
+:root{
+  --font:'Manrope',system-ui,sans-serif;
+  --brand-hover-d:color-mix(in oklab,var(--brand),var(--text) 14%);
+  --brand-wash:oklch(from var(--brand) l c h / .10);
+  --brand-line:oklch(from var(--brand) l c h / .28);
+  --focus:oklch(from var(--brand) l c h / .45);
+  --shadow:0 18px 40px -22px oklch(from var(--band) l c h / .55);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font:400 16px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.1}
+a{color:var(--brand)}
+.nav{display:flex;align-items:center;gap:28px;padding-top:22px;padding-bottom:22px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;color:var(--text);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
+.logo svg{width:28px;height:28px;color:var(--brand)}
+.nav ul{display:flex;gap:26px;list-style:none;padding:0;font-size:14.5px;font-weight:600}
+.nav ul a{color:var(--text2);text-decoration:none}.nav ul a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px/1 var(--font);padding:15px 24px;border-radius:12px;border:1.5px solid transparent;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.btn.primary{background:var(--brand);color:var(--on-brand)}
+.btn.primary:hover{background:var(--brand-hover-d)}
+.btn.ghost{color:var(--brand);border-color:var(--brand-line);background:transparent}
+.btn.ghost:hover{background:var(--brand-wash);border-color:var(--brand)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.mode{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--text2);display:grid;place-items:center;cursor:pointer}
+.mode:hover{border-color:var(--brand-line);color:var(--brand)}
+.mode svg{width:20px;height:20px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:700 12px/1 var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--tint-text)}
+.eyebrow::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.hero{background:linear-gradient(170deg in oklch,var(--tint) 0%,var(--bg) 62%);padding-bottom:84px}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-top:36px}
+h1{font-size:clamp(36px,4.8vw,58px);margin:20px 0 22px;max-width:15ch}
+.mark{background:linear-gradient(transparent 62%,oklch(from var(--accent) l c h / .55) 62% 92%,transparent 92%);padding:0 4px;margin:0 -4px}
+.lead{font-size:18px;color:var(--text2);max-width:48ch}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin:32px 0 26px}
+.proof{font-size:14px;color:var(--text3)}.proof b{color:var(--text)}
+.board{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+.bh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.pill{font-size:12px;font-weight:700;padding:6px 12px;border-radius:99px;background:var(--tint);color:var(--tint-text)}
+.rows{display:grid;gap:8px}
+.r{display:grid;grid-template-columns:8px 46px 1fr auto;gap:14px;align-items:center;padding:13px 16px;border-radius:14px;background:var(--sunken);border:1px solid transparent}
+.dot{width:8px;height:34px;border-radius:99px;background:var(--brand)}.dot.a{background:var(--accent)}
+.t{font-weight:700;font-size:13px;color:var(--text2);font-variant-numeric:tabular-nums}
+.w{display:grid;font-size:14.5px}.w small{color:var(--text3);font-size:12.5px}
+.st{font-size:12px;font-weight:700;color:var(--text2)}.st.ok{color:var(--ok)}.st.a{color:var(--accent-text)}
+.r.gap{background:transparent;border:1.5px dashed oklch(from var(--accent) l c h / .7)}
+.band{background:var(--band);color:var(--on-band);padding:84px 0 92px}
+.band .eyebrow{color:var(--on-band)}
+.band h2{font-size:clamp(28px,3.6vw,42px);max-width:20ch;margin:16px 0 44px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.cards article{background:color-mix(in oklab,var(--band),white 9%);border:1px solid oklch(from var(--on-band) l c h / .16);border-radius:20px;padding:28px}
+.ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:var(--on-band);color:var(--band);margin-bottom:22px}
+.ic svg{width:26px;height:26px}
+.cards h3{font-size:19px;margin-bottom:10px}.cards p{font-size:15px;color:oklch(from var(--on-band) l c h / .86)}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:26px 28px;font-size:13.5px;color:var(--text3)}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.nav ul{display:none}}
+@media(max-width:480px){.r{grid-template-columns:8px 42px 1fr}.st{grid-column:3}.cta .btn{width:100%}.nav .btn{display:none}.nav{gap:12px}}
+
+</style>
+</head>
+<body>
+<header class="wrap nav">
+  <a class="logo" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c3-3 6-3 9 0s6 3 9 0"/><path d="M3 15c3-3 6-3 9 0s6 3 9 0"/></svg>Tidewater</a>
+  <ul><li><a href="#features">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Clinics</a></li></ul>
+  <button class="mode" id="theme" type="button" aria-label="Toggle light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+  <a class="btn primary" href="#">Book a demo</a>
+</header>
+<main>
+<section class="hero"><div class="wrap grid">
+  <div class="copy">
+    <p class="eyebrow">Scheduling for physiotherapy clinics</p>
+    <h1>Fill every treatment room, <span class="mark">quietly</span>.</h1>
+    <p class="lead">Tidewater takes online bookings, checks therapist skills and room equipment, and sends reminders patients answer. Small clinics run a full week from one calm calendar.</p>
+    <div class="cta"><a class="btn primary" href="#">Start free for 30 days</a><a class="btn ghost" href="#features">See how it works</a></div>
+    <p class="proof"><b>1,200+</b> small clinics &middot; <b>31%</b> fewer no-shows in the first quarter</p>
+  </div>
+  <div class="board" role="img" aria-label="Example schedule">
+    <div class="bh"><b>Tuesday 14 October</b><span class="pill">3 rooms</span></div>
+    <div class="rows">
+      <div class="r"><i class="dot"></i><span class="t">08:30</span><span class="w"><b>Knee rehab</b><small>J. Whitlock &middot; Dr. Okafor</small></span><span class="st ok">Confirmed</span></div>
+      <div class="r"><i class="dot"></i><span class="t">09:30</span><span class="w"><b>Shoulder mobility</b><small>P. Rao &middot; Dr. Okafor</small></span><span class="st ok">Confirmed</span></div>
+      <div class="r"><i class="dot"></i><span class="t">10:30</span><span class="w"><b>New assessment</b><small>M. Lindqvist &middot; T. Brandt</small></span><span class="st">Reminder sent</span></div>
+      <div class="r gap"><i class="dot a"></i><span class="t">11:30</span><span class="w"><b>Open slot</b><small>Waitlist notified, 2 patients</small></span><span class="st a">Open</span></div>
+    </div>
+  </div>
+</div></section>
+<section id="features" class="band"><div class="wrap">
+  <p class="eyebrow">What Tidewater does</p>
+  <h2>Three jobs your front desk can hand over.</h2>
+  <div class="cards">
+    <article><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 2.5v4M16 2.5v4M3 10h18M9 15l2 2 4-4"/></svg></div><h3>Booking that respects the room</h3><p>Patients choose a time online. Tidewater checks skills, equipment and treatment length first, so the day fits together.</p></article>
+    <article><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 1 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></div><h3>Reminders that get answered</h3><p>Text and email go out 48 and 3 hours ahead. One tap confirms, moves or releases the slot to your waitlist.</p></article>
+    <article><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h5v5"/></svg></div><h3>A week you can see at a glance</h3><p>Utilisation, cancellations and open hours on one screen, so you know on Monday where Thursday needs help.</p></article>
+  </div>
+</div></section>
+</main>
+<footer class="wrap foot"><span>Tidewater Scheduling</span><span>For clinics of 2 to 40 therapists</span></footer>
+
+<script>
+(function(){var b=document.getElementById('theme');if(!b)return;b.addEventListener('click',function(){var d=document.documentElement,c=d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.setAttribute('data-theme',c==='dark'?'light':'dark')})})();
+
+</script>
+</body>
+</html>

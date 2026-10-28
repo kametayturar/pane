@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--sand:#f6f2ea;--paper:#fffdf9;--ink:#0d2b3a;--ink2:#41596a;--line:#e2dccf;--teal:#0f6f7d;--teal-d:#0a5560;--mint:#d6ebe5;--coral:#e8714f}
+*{box-sizing:border-box;margin:0}
+body{font:400 16px/1.5 "DM Sans",system-ui,sans-serif;color:var(--ink);background:var(--sand);padding:40px 40px 56px;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1120px;margin:0 auto}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:36px;flex-wrap:wrap}
+h2{font:500 clamp(34px,4vw,48px)/1.05 "Fraunces",serif;letter-spacing:-.025em;margin-bottom:10px}
+.head p{color:var(--ink2);max-width:28em}
+/* segmented control */
+.seg{position:relative;display:inline-grid;grid-template-columns:repeat(2,minmax(0,1fr));min-width:300px;background:#ebe5d8;border-radius:999px;padding:4px;isolation:isolate}
+.seg button{all:unset;cursor:pointer;position:relative;z-index:1;padding:0 16px;min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:15px;color:var(--ink2);border-radius:999px;transition:color .2s}
+.seg button[aria-checked=true]{color:var(--ink)}
+.seg .thumb{position:absolute;z-index:0;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:var(--paper);border-radius:999px;box-shadow:0 1px 3px #0d2b3a33;transition:transform .28s cubic-bezier(.3,.7,.2,1)}
+.seg[data-y=true] .thumb{transform:translateX(100%)}
+.save{font-size:12px;font-weight:700;background:var(--coral);color:#fff;padding:2px 8px;border-radius:999px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.plan{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:32px 30px 30px;display:flex;flex-direction:column;position:relative}
+.plan.f{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 30px 60px -28px #0d2b3a99}
+.badge{position:absolute;top:-13px;left:30px;background:var(--coral);color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:999px}
+.plan h3{font:600 24px "Fraunces",serif;margin-bottom:4px}
+.for{font-size:14px;color:var(--ink2);min-height:42px}.f .for{color:#b8c8d2}
+.price{display:flex;align-items:baseline;gap:6px;margin:22px 0 4px}
+.amt{font:500 56px/1 "Fraunces",serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.price sup{font:500 24px "Fraunces",serif;align-self:flex-start;margin-top:8px}
+.per{font-size:15px;color:var(--ink2)}.f .per{color:#b8c8d2}
+.bill{font-size:13px;color:var(--ink2);min-height:20px;margin-bottom:24px}.f .bill{color:#b8c8d2}
+.bill s{opacity:.7}
+.btn{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:999px;font-weight:600;text-decoration:none;font-size:16px;border:1.5px solid var(--ink);color:var(--ink);transition:background .15s}
+.btn:hover{background:#efe9dc}
+.f .btn{background:var(--coral);border-color:var(--coral);color:#fff}.f .btn:hover{background:#d9603f}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0 20px}.f hr{border-color:#ffffff26}
+.inc{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:12px}.f .inc{color:#b8c8d2}
+ul{list-style:none;padding:0;display:grid;gap:10px}
+li{display:flex;gap:10px;font-size:15px;align-items:flex-start}
+li svg{flex:none;width:18px;height:18px;margin-top:2px;color:var(--teal)}.f li svg{color:#7fd1c2}
+.note{margin-top:28px;text-align:center;font-size:14px;color:var(--ink2)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:900px){.grid{grid-template-columns:1fr;max-width:460px;margin:0 auto}.plan.f{order:-1}.for{min-height:0}}
+@media(max-width:600px){body{padding:36px 20px 56px}.seg{width:100%}.seg button{justify-content:center;padding:0 10px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div class="wrap">
+<div class="head">
+  <div><h2>Priced for clinics,<br>not enterprises.</h2><p>Every plan starts with a 14-day free trial. Change or cancel whenever you like.</p></div>
+  <div class="seg" id="seg" role="radiogroup" aria-label="Billing period" data-y="false">
+    <span class="thumb"></span>
+    <button role="radio" aria-checked="true" data-y="false">Monthly</button>
+    <button role="radio" aria-checked="false" data-y="true">Yearly <span class="save">−20%</span></button>
+  </div>
+</div>
+<div class="grid" id="grid">
+  <article class="plan">
+    <h3>Solo</h3><p class="for">For a therapist running their own practice.</p>
+    <div class="price"><sup>$</sup><span class="amt" data-m="19">19</span><span class="per">/ month</span></div>
+    <p class="bill" data-m="19" aria-live="polite">Billed monthly</p>
+    <a class="btn" href="#">Start with Solo</a><hr>
+    <p class="inc">What's included</p>
+    <ul><li><svg><use href="#ck"/></svg>1 therapist, 1 room</li><li><svg><use href="#ck"/></svg>Online patient booking</li><li><svg><use href="#ck"/></svg>Email reminders</li><li><svg><use href="#ck"/></svg>Calendar sync (Google, Outlook)</li></ul>
+  </article>
+  <article class="plan f">
+    <span class="badge">Most popular</span>
+    <h3>Clinic</h3><p class="for">For growing clinics with a small team and shared rooms.</p>
+    <div class="price"><sup>$</sup><span class="amt" data-m="49">49</span><span class="per">/ month</span></div>
+    <p class="bill" data-m="49" aria-live="polite">Billed monthly</p>
+    <a class="btn" href="#">Start with Clinic</a><hr>
+    <p class="inc">Everything in Solo, plus</p>
+    <ul><li><svg><use href="#ck"/></svg>Up to 8 therapists, 10 rooms</li><li><svg><use href="#ck"/></svg>SMS reminders with one-tap confirm</li><li><svg><use href="#ck"/></svg>Room and equipment conflicts</li><li><svg><use href="#ck"/></svg>No-show and utilisation reports</li></ul>
+  </article>
+  <article class="plan">
+    <h3>Group</h3><p class="for">For multi-site practices that need control.</p>
+    <div class="price"><sup>$</sup><span class="amt" data-m="129">129</span><span class="per">/ month</span></div>
+    <p class="bill" data-m="129" aria-live="polite">Billed monthly</p>
+    <a class="btn" href="#">Start with Group</a><hr>
+    <p class="inc">Everything in Clinic, plus</p>
+    <ul><li><svg><use href="#ck"/></svg>Unlimited therapists and sites</li><li><svg><use href="#ck"/></svg>Roles, permissions and audit log</li><li><svg><use href="#ck"/></svg>API and billing exports</li><li><svg><use href="#ck"/></svg>Priority support, 1-hour reply</li></ul>
+  </article>
+</div>
+<p class="note">Prices in USD per clinic. Yearly billing saves 20% and is paid upfront.</p>
+</div>
+<svg width="0" height="0" style="position:absolute"><symbol id="ck" viewBox="0 0 18 18" fill="none"><path d="m3.5 9.5 3.3 3.3L14.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
+<script>
+const seg=document.getElementById('seg');
+seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>set(b.dataset.y==='true')));
+seg.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){set(seg.dataset.y!=='true');seg.querySelector('[aria-checked=true]').focus()}});
+function set(y){
+  seg.dataset.y=y;
+  seg.querySelectorAll('button').forEach(b=>{const on=(b.dataset.y==='true')===y;b.setAttribute('aria-checked',on);b.tabIndex=on?0:-1});
+  document.querySelectorAll('.amt').forEach(el=>{const m=+el.dataset.m;el.textContent=y?(m*0.8).toFixed(2):m});
+  document.querySelectorAll('.bill').forEach(el=>{const m=+el.dataset.m;el.innerHTML=y?`Billed $${(m*0.8*12).toFixed(2)} a year · <s>$${m*12}</s>`:'Billed monthly'});
+}
+set(false);
+</script>
+</body></html>

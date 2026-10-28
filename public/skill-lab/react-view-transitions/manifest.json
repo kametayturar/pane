@@ -1,0 +1,44 @@
+{
+  "id": "react-view-transitions",
+  "sets": [
+    "motion"
+  ],
+  "skillSays": [
+    "Animate between UI states with the browser's native document.startViewTransition; declare what animates with view-transition names/classes and style it in CSS.",
+    "Every transition must say what it communicates: shared element, reveal, list identity, enter/exit, or route change; if it says nothing, do not add it.",
+    "Use the provided timing vars (exit 150ms, enter 210ms, move 400ms) and ready-made recipes: fade, slide-up/down, scale-in/out, morph.",
+    "Give each list item its own unique name so siblings glide into their new spot; wrap displaced content so it glides instead of jumping.",
+    "Make the root a live capture (hide old root, no root animation) and set ::view-transition { pointer-events: none } so the page stays interactive and hover keeps working.",
+    "Always include the reduced-motion block; unsupported browsers just skip the animation."
+  ],
+  "examples": [
+    {
+      "prompt": "motion-1",
+      "changes": [
+        "Toast and the booked slot change in ONE startViewTransition call: toast has view-transition-name: toast, class slide-up/slide-down; the slot is a named update so it cross-fades.",
+        "Enter uses the slide-up recipe: opacity 210ms ease-in plus translateY(32px) 400ms ease-in; exit uses slide-down: 150ms ease-out (fade + 16px). Dropped the recipe's 150ms enter delay because nothing is exiting beside it.",
+        "Root is live (::view-transition-old(root) hidden, new(root) animation none) and ::view-transition has pointer-events: none.",
+        "Reduced-motion block from the skill zeroes all view-transition durations."
+      ],
+      "note": "Plain JS on the browser View Transitions API, no React: the skill's <ViewTransition> is a thin wrapper over document.startViewTransition, so the demo calls it directly with view-transition-name/-class."
+    },
+    {
+      "prompt": "motion-2",
+      "changes": [
+        "Menu is a named view transition (menu) toggled with hidden inside startViewTransition; it uses the skill's scale recipes: scale-in 210ms ease-out from scale(0.85), scale-out 150ms ease-in.",
+        "transform-origin: top right set on both pseudo-elements so it grows from the trigger; enter delay removed (no paired exit).",
+        "The hover highlight inside the menu is deliberately not a view transition: unnamed content stays live under the transition.",
+        "view-transition-class holds both scale-in and scale-out so one element covers entering and leaving."
+      ]
+    },
+    {
+      "prompt": "motion-3",
+      "changes": [
+        "List identity pattern: every task li gets a unique view-transition-name (task-1, task-2, ...) so siblings glide up on removal with the 400ms ease-in-out group animation (--duration-move).",
+        "New rows use class fade-in (210ms ease-out), removed rows use fade-out (150ms ease-in), set per transition, because a class on an element that exists in both states would flash.",
+        "Layout displacement morph: the footer and the count pill are named too, so they glide or cross-fade instead of jumping; the empty-state is a named enter/exit.",
+        "Check-off is an update on the named row, so it cross-fades at 210ms; the root stays live so the typed input keeps updating."
+      ]
+    }
+  ]
+}

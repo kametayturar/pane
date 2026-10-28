@@ -1,0 +1,32 @@
+{
+  "id": "agentry-style",
+  "sets": ["web"],
+  "skillSays": [
+    "Build quiet surfaces: colour comes only from alpha-of-ink tokens (88/61/45/27% text, 6% fills and hairlines), one accent, status colours as tints rather than fills.",
+    "Cards get a soft hairline shadow instead of borders; 13px/20px body, 14-15px titles at weight 500, tabular numbers, radii of 6-12 for controls and cards.",
+    "Use one easing curve everywhere, cubic-bezier(.22,1,.36,1), with enters that fade, rise 4px and de-blur; heights and thumbs glide instead of jumping.",
+    "Make the signature art ordered dither: a noise field compared against a Bayer threshold and drawn as small tinted squares behind a radial mask, never gradient washes.",
+    "Give each piece a live built-in simulation, loops that stop off screen, a still frame for reduced motion, and a light/dark flip that only changes tokens.",
+    "Verify with real headless screenshots (light, dark, 390px, mid-animation) and tick the checklist: one curve, keyboard/ARIA, 360-1200px, invented content."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Replaced the typical stock hero image with a live, self-playing day sheet (a cancellation is refilled from the waitlist and a toast confirms) built from tokens, so the product is the art.",
+      "Added a Bayer-dithered noise field in the accent colour fading out under a radial mask instead of a gradient background.",
+      "All text colour is ink alpha (88/61/45%); cards use a hairline shadow, no borders; elements enter with the blur-in rise on staggered 70ms delays.",
+      "Feature cards carry small hand-drawn SVG 'studio' illustrations on a quiet well, with a one-word-per-job headline and no icon tiles."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "The monthly/yearly control is a segmented pill whose white thumb slides to the chosen option on the shared easing curve, not a hard swap.",
+      "Prices re-enter digit by digit with the blur-in, in tabular numbers, and each card states the exact yearly total and saving.",
+      "Status colour is a tint: the 'Most chosen' tag and the Save 20% chip are accent/green on a 10% wash; the highlighted plan gets an accent ring instead of a heavy fill.",
+      "Radio-group ARIA, arrow-key support, container-free grid that collapses at 860px and a reduced-motion path."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Validation messages slide open by animating grid-template-rows (0fr to 1fr) so the form below glides rather than jumps; errors state the fix and the live count ('You have 5').",
+      "Errors, focus rings and the password meter are token tints (soft red glow, accent 22% halo) rather than solid fills or outlines.",
+      "A split layout with a dithered, masked accent field on the quiet side panel replaces a stock illustration or photo.",
+      "Show/hide password, aria-invalid, aria-describedby and focus-to-first-error are built in; the sample state pre-fills an invalid email and short password so the errors are visible."
+    ]}
+  ]
+}

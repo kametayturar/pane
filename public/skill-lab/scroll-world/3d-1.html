@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – calm scheduling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#17383c;--muted:#52707a;--teal:#0e7c86;--teal-d:#0a5b63;--line:rgba(23,56,60,.14);--card:rgba(255,252,245,.86)}
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:auto}
+  body{font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);background:radial-gradient(1100px 760px at 55% 45%,#fffaf0 0%,#eaf4f0 45%,#cfe5e0 100%);overflow-x:hidden}
+  #gl{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0}
+  .vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 55%,rgba(23,56,60,.12) 100%)}
+  nav{position:fixed;top:0;left:0;right:0;z-index:6;display:flex;justify-content:space-between;align-items:center;padding:24px 40px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px}
+  .brand i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--teal),#35b3a8);display:grid;place-items:center}
+  .brand svg{width:18px;height:18px}
+  nav a.cta{font-weight:600;font-size:14px;color:var(--teal-d);text-decoration:none;border:1px solid var(--line);background:#fff;padding:9px 16px;border-radius:99px}
+  .track{position:relative;z-index:0;pointer-events:none}
+  .sec{position:fixed;z-index:4;opacity:0;visibility:hidden;will-change:transform,opacity}
+  .eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-d);margin-bottom:14px}
+  .eyebrow b{width:7px;height:7px;border-radius:50%;background:#35b3a8;display:block}
+  h1,h2{font-family:"Fraunces",Georgia,serif;font-weight:600;letter-spacing:-.025em;line-height:1.04}
+  h1{font-size:clamp(40px,5.6vw,80px)}
+  h2{font-size:clamp(30px,3.2vw,46px)}
+  p.body{font-size:clamp(15.5px,1.4vw,18px);line-height:1.55;color:var(--muted);margin-top:16px}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  .tags span{font-size:12.5px;font-weight:600;color:var(--teal-d);background:#fff;border:1px solid var(--line);padding:6px 12px;border-radius:99px}
+  .btn{display:inline-block;margin-top:24px;font:600 15px "DM Sans",sans-serif;padding:14px 22px;border-radius:12px;background:var(--teal);color:#fff;text-decoration:none;box-shadow:0 10px 24px -10px rgba(14,124,134,.6)}
+  .btn.ghost{background:#fff;color:var(--ink);box-shadow:none;border:1px solid var(--line);margin-left:10px}
+  .card{background:var(--card);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:20px;padding:26px 28px;max-width:420px;box-shadow:0 24px 50px -28px rgba(23,56,60,.35)}
+  .left{left:max(40px,calc((100vw - 1200px)/2));top:50%;margin-top:-170px;max-width:560px}
+  .right{right:max(40px,calc((100vw - 1200px)/2));top:50%;margin-top:-150px}
+  .center{left:0;right:0;top:22%;margin:0 auto;text-align:center;width:min(980px,calc(100vw - 48px))}
+  .rail{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:14px}
+  .rail a{display:block;width:10px;height:10px;border-radius:50%;background:rgba(23,56,60,.2);position:relative;transition:transform .3s,background .3s}
+  .rail a.on{background:var(--teal);transform:scale(1.5)}
+  .rail a span{position:absolute;right:20px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:12px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:4px 10px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .rail a:hover span,.rail a:focus-visible span{opacity:1}
+  .progress{position:fixed;left:0;right:0;bottom:0;height:3px;background:rgba(23,56,60,.08);z-index:6}
+  .progress i{display:block;height:100%;background:var(--teal);transform-origin:left center;transform:scaleX(0)}
+  .scrollhint{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:5;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  @media (max-width:860px){
+    nav{padding:18px 20px}
+    .left,.right{left:16px;right:16px;top:auto;bottom:34px;margin-top:0;max-width:none}
+    .card{max-width:none;padding:20px}
+    .center{top:20%}
+    .rail{right:10px;gap:11px}
+    .rail a span{display:none}
+    h1{font-size:clamp(36px,10.5vw,52px)}
+    h2{font-size:30px}
+    .scrollhint{display:none}
+  }
+</style>
+</head>
+<body>
+<nav><div class="brand"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M3 9c3-3 5-3 9 0s6 3 9 0M3 15c3-3 5-3 9 0s6 3 9 0"/></svg></i>Tidewater</div><a class="cta" href="#">Book a demo</a></nav>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="vig"></div>
+<div class="rail" aria-label="Sections"><a href="#" data-go="0"><span>Hero</span></a><a href="#" data-go="1"><span>Inside a slot</span></a></div>
+<div class="progress"><i id="bar"></i></div>
+<div class="scrollhint">Scroll to step inside</div>
+<main class="track" id="track" style="height:240vh"></main>
+<section class="sec left" data-sec="0">
+  <div class="eyebrow"><b></b>Scheduling for physiotherapy clinics</div>
+  <h1>Calm scheduling, one slot at a time.</h1>
+  <p class="body">Tidewater lets the day settle: bookings land in open time, reminders go out by themselves, and gaps fill before they cost you a session.</p>
+  <a class="btn" href="#">Start free for 14 days</a><a class="btn ghost" href="#">See how it works</a>
+</section>
+<section class="sec right card" data-sec="1">
+  <div class="eyebrow"><b></b>Inside the island</div>
+  <h2>Every slot has a place to land.</h2>
+  <p class="body">Open slots stay quiet until a booking arrives. Then the pearl settles and the tile turns teal: confirmed, reminded, done.</p>
+  <div class="tags"><span>Auto-fill gaps</span><span>SMS reminders</span><span>No double-booking</span></div>
+</section>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+</script>
+<script>window.__MODE="hero";</script>
+<script type="module">
+import * as THREE from "three";
+
+const MODE = window.__MODE;                       // "hero" | "world"
+const canvas = document.getElementById("gl");
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const coarse = matchMedia("(pointer: coarse)").matches || innerWidth < 860;
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.setClearColor(0x000000, 0);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xe4f0ed, 40, 130);
+const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 140);
+
+// ---------- palette: soft matte clay ----------
+const C = { sand: 0xeadcc4, sandD: 0xd5c3a3, cream: 0xfbf6ec, teal: 0x2a9d94, tealD: 0x0e7c86, tealL: 0x8fd6cd, coral: 0xe9a07a, ink: 0x2c4a4e, grass: 0xa8cfa0 };
+const clay = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.92, metalness: 0, flatShading: true, ...extra });
+const soft = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0, ...extra });
+const mats = {}, geos = [];
+const M = (k, color, f = clay) => (mats[k] ??= f(color));
+const G = (g) => (geos.push(g), g);
+const mesh = (geo, mat, x = 0, y = 0, z = 0, parent) => { const m = new THREE.Mesh(G(geo), mat); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; parent?.add(m); return m; };
+
+// ---------- lights ----------
+const sun = new THREE.DirectionalLight(0xfff0dc, 2.6);
+sun.castShadow = true; sun.shadow.mapSize.set(coarse ? 1024 : 2048, coarse ? 1024 : 2048);
+Object.assign(sun.shadow.camera, { left: -11, right: 11, top: 11, bottom: -11, near: 1, far: 50 });
+sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.04;
+scene.add(sun, sun.target);
+scene.add(new THREE.HemisphereLight(0xe9f6f3, 0xd9cdb6, 1.25));
+
+// ---------- islands ----------
+const islands = [];
+function makeBase(group, r = 4.2) {
+  mesh(new THREE.CylinderGeometry(r, r * 1.06, 0.7, 6), M("top", C.grass), 0, 0, 0, group).rotation.y = Math.PI / 6;
+  mesh(new THREE.CylinderGeometry(r * 1.06, r * 1.0, 0.28, 6), M("rim", C.sand), 0, -0.45, 0, group).rotation.y = Math.PI / 6;
+  const rock = mesh(new THREE.ConeGeometry(r * 1.0, 2.6, 6), M("rock", C.sandD), 0, -2.05, 0, group); rock.rotation.set(Math.PI, Math.PI / 6, 0);
+  return group;
+}
+const live = [];           // per-frame animators
+
+// Island 0: booking calendar
+function islandBooking() {
+  const g = new THREE.Group(); makeBase(g);
+  const tiles = [];
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 5; c++) {
+    const booked = ((c * 3 + r * 5) % 7) < 3;
+    const m = mesh(new THREE.BoxGeometry(0.66, 0.16, 0.66), (booked ? M("tileB", C.teal) : M("tileF", C.cream)), (c - 2) * 0.78, 0.43, (r - 1.5) * 0.78 + 0.5, g);
+    tiles.push({ m, booked, ph: Math.random() * 6.28 });
+  }
+  // clock
+  const clock = new THREE.Group(); clock.position.set(-2.4, 0.35, -1.9); g.add(clock);
+  mesh(new THREE.CylinderGeometry(0.95, 0.95, 0.22, 28), M("cface", C.cream, soft), 0, 1.2, 0, clock).rotation.x = Math.PI / 2;
+  mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.9, 8), M("pole", C.sandD), 0, 0.45, -0.02, clock);
+  const hand1 = new THREE.Group(), hand2 = new THREE.Group(); hand1.position.set(0, 1.2, 0.14); hand2.position.set(0, 1.2, 0.16); clock.add(hand1, hand2);
+  mesh(new THREE.BoxGeometry(0.1, 0.62, 0.05), M("hand", C.ink), 0, 0.3, 0, hand1); mesh(new THREE.BoxGeometry(0.08, 0.8, 0.05), M("hand", C.ink), 0, 0.4, 0, hand2);
+  // pearl
+  const pearl = mesh(new THREE.SphereGeometry(0.34, 32, 20), M("pearl", 0xfdfaf2, (c) => soft(c, { roughness: 0.25 })), 0, 1.2, 0, g);
+  // trees
+  for (const [x, z, s] of [[2.3, -1.9, 1], [2.7, 1.2, 0.8], [-2.6, 1.8, 0.9]]) {
+    mesh(new THREE.CylinderGeometry(0.08, 0.1, 0.5 * s, 6), M("trunk", 0xb89a74), x, 0.55 * s, z, g);
+    mesh(new THREE.IcosahedronGeometry(0.42 * s, 0), M("leaf", C.tealL), x, 1.0 * s, z, g);
+  }
+  let hop = 0, from = new THREE.Vector3(), to = new THREE.Vector3(), t0 = 0;
+  const pick = () => tiles[Math.floor(Math.random() * tiles.length)];
+  to.set(0, 1, 0); from.copy(to);
+  live.push((t, dt) => {
+    hand1.rotation.z = -t * 0.35; hand2.rotation.z = -t * 0.03;
+    tiles.forEach(({ m, booked, ph }) => { m.position.y = 0.43 + (booked ? 0.12 : 0) + Math.sin(t * 1.2 + ph) * 0.02; });
+    if (t - t0 > 1.3) { t0 = t; from.copy(pearl.position); const k = pick(); k.m.getWorldPosition(to); g.worldToLocal(to); to.y = 1.0; hop = 0; }
+    hop = Math.min(1, hop + dt / 1.0); const e = hop * hop * (3 - 2 * hop);
+    pearl.position.lerpVectors(from, to, e); pearl.position.y += Math.sin(Math.PI * e) * 0.8 + 0.18;
+  });
+  return g;
+}
+// Island 1: reminders
+function islandReminders() {
+  const g = new THREE.Group(); makeBase(g);
+  const pts = [[0, 0], [0.9, 0], [1.05, 0.3], [0.8, 1.0], [0.6, 1.9], [0.3, 2.3], [0.08, 2.5]].map(([x, y]) => new THREE.Vector2(x, y));
+  const bell = new THREE.Group(); bell.position.set(0, 2.0, 0); g.add(bell);
+  mesh(new THREE.LatheGeometry(pts, 20), M("bell", C.teal), 0, -1.4, 0, bell);
+  mesh(new THREE.SphereGeometry(0.28, 16, 12), M("clap", C.cream, soft), 0, -1.5, 0, bell);
+  mesh(new THREE.TorusGeometry(0.2, 0.06, 8, 16), M("ring", C.sandD), 0, 1.15, 0, bell);
+  const rings = [];
+  for (let i = 0; i < 3; i++) { const m = new THREE.Mesh(G(new THREE.TorusGeometry(1.2, 0.04, 6, 40)), new THREE.MeshBasicMaterial({ color: C.tealL, transparent: true, opacity: 0.6 })); m.rotation.x = Math.PI / 2; m.position.y = 0.6; g.add(m); rings.push(m); }
+  for (let i = 0; i < 3; i++) {
+    const a = 0.7 + i * 2.1; const ph = new THREE.Group(); ph.position.set(Math.cos(a) * 2.7, 0.8, Math.sin(a) * 2.7); ph.rotation.y = -a + Math.PI / 2; g.add(ph);
+    mesh(new THREE.BoxGeometry(0.62, 1.05, 0.12), M("phone", C.ink), 0, 0.1, 0, ph);
+    mesh(new THREE.BoxGeometry(0.5, 0.5, 0.02), M("screen", i === 1 ? C.coral : C.tealL, soft), 0, 0.2, 0.07, ph);
+    live.push((t) => { ph.position.y = 0.8 + Math.sin(t * 1.1 + i * 2) * 0.12; });
+  }
+  live.push((t) => {
+    bell.rotation.z = Math.sin(t * 2.2) * 0.12 * (0.5 + 0.5 * Math.sin(t * 0.5));
+    rings.forEach((m, i) => { const k = ((t * 0.4 + i / 3) % 1); m.scale.setScalar(0.4 + k * 1.6); m.material.opacity = 0.65 * (1 - k); });
+  });
+  return g;
+}
+// Island 2: treatment room (roof lifts as the camera arrives)
+let roofRef = null;
+function islandRoom() {
+  const g = new THREE.Group(); makeBase(g);
+  mesh(new THREE.BoxGeometry(4.4, 0.12, 3.6), M("floor", C.cream), 0, 0.42, 0, g);
+  mesh(new THREE.BoxGeometry(4.4, 2.1, 0.18), M("wall", C.sand), 0, 1.45, -1.85, g);
+  mesh(new THREE.BoxGeometry(0.18, 2.1, 3.6), M("wall", C.sand), -2.2, 1.45, 0, g);
+  const win = mesh(new THREE.BoxGeometry(1.5, 1.0, 0.06), M("win", 0xcfeeff, (c) => soft(c, { emissive: 0xbfe6f2, emissiveIntensity: 0.5 })), 0.7, 1.7, -1.74, g);
+  mesh(new THREE.BoxGeometry(0.1, 1.0, 0.08), M("mull", C.cream), 0.7, 1.7, -1.7, g);
+  // bed
+  mesh(new THREE.BoxGeometry(2.2, 0.35, 1.0), M("bed", C.tealD), 0.4, 0.95, 0.2, g);
+  mesh(new THREE.BoxGeometry(2.0, 0.18, 0.84), M("cush", C.tealL), 0.4, 1.2, 0.2, g);
+  for (const [x, z] of [[-0.6, -0.2], [1.4, -0.2], [-0.6, 0.6], [1.4, 0.6]]) mesh(new THREE.BoxGeometry(0.12, 0.6, 0.12), M("leg", C.sandD), x, 0.7, z, g);
+  // plant + ball
+  mesh(new THREE.CylinderGeometry(0.28, 0.2, 0.4, 8), M("pot", C.coral), -1.6, 0.68, -1.2, g);
+  mesh(new THREE.IcosahedronGeometry(0.46, 0), M("leaf2", C.grass), -1.6, 1.15, -1.2, g);
+  const ball = mesh(new THREE.SphereGeometry(0.3, 20, 14), M("ball", C.coral, soft), 1.7, 0.65, 1.2, g);
+  // roof panel
+  const roof = new THREE.Group(); roof.position.set(0, 2.55, 0); g.add(roof); roofRef = roof;
+  mesh(new THREE.BoxGeometry(4.6, 0.16, 3.8), M("roof", C.teal), 0, 0, 0, roof);
+  live.push((t) => { ball.position.y = 0.65 + Math.abs(Math.sin(t * 1.6)) * 0.35; });
+  return g;
+}
+// Island 3: recovery steps
+function islandSteps() {
+  const g = new THREE.Group(); makeBase(g);
+  const n = 6;
+  for (let i = 0; i < n; i++) mesh(new THREE.BoxGeometry(1.1, 0.35 + i * 0.28, 1.1), M(i % 2 ? "stepA" : "stepB", i % 2 ? C.cream : C.tealL), -2.4 + i * 0.85, 0.35 + (0.35 + i * 0.28) / 2, 1.0 - i * 0.35, g);
+  const fig = new THREE.Group(); g.add(fig);
+  mesh(new THREE.CapsuleGeometry(0.2, 0.42, 6, 12), M("fig", C.coral, soft), 0, 0.5, 0, fig); mesh(new THREE.SphereGeometry(0.17, 16, 12), M("head", C.cream, soft), 0, 1.02, 0, fig);
+  const flagP = new THREE.Group(); flagP.position.set(2.6, 0.35 + 0.35 + 5 * 0.28, 1.0 - 5 * 0.35); g.add(flagP);
+  mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.6, 6), M("pole", C.sandD), 0, 0.8, 0, flagP);
+  const flag = mesh(new THREE.PlaneGeometry(0.8, 0.5, 8, 1), new THREE.MeshStandardMaterial({ color: C.teal, side: THREE.DoubleSide, roughness: 0.8 }), 0.44, 1.35, 0, flagP);
+  const base = flag.geometry.attributes.position.array.slice();
+  live.push((t) => {
+    const k = (Math.sin(t * 0.25) * 0.5 + 0.5), i = Math.min(n - 1, Math.floor(k * n * 0.999));
+    const target = new THREE.Vector3(-2.4 + i * 0.85, 0.35 + 0.35 + i * 0.28 + 0.2, 1.0 - i * 0.35);
+    fig.position.lerp(target, 0.08); fig.rotation.y = 0.5;
+    const a = flag.geometry.attributes.position;
+    for (let j = 0; j < a.count; j++) a.setZ(j, Math.sin(t * 3 + base[j * 3] * 4) * 0.08 * (base[j * 3] + 0.4));
+    a.needsUpdate = true;
+  });
+  return g;
+}
+
+const spots = MODE === "hero" ? [[0, 0, 0]] : [[0, 0, 0], [15, 0, -6], [28, 0, 4], [42, 0, -4]];
+const builders = [islandBooking, islandReminders, islandRoom, islandSteps];
+spots.forEach((p, i) => { const g = builders[i](); g.position.set(...p); g.userData.base = p; g.userData.ph = i * 1.7; scene.add(g); islands.push(g); });
+
+// ---------- motes (ambient drifting particles) ----------
+const MOTES = coarse ? 260 : 700;
+const moteGeo = new THREE.BufferGeometry(), motePos = new Float32Array(MOTES * 3), moteSeed = new Float32Array(MOTES);
+const xr = MODE === "hero" ? 22 : 60;
+for (let i = 0; i < MOTES; i++) { motePos.set([(Math.random() - 0.3) * xr, Math.random() * 14 - 2, (Math.random() - 0.5) * 30], i * 3); moteSeed[i] = Math.random() * 6.28; }
+moteGeo.setAttribute("position", new THREE.BufferAttribute(motePos, 3).setUsage(THREE.DynamicDrawUsage));
+const moteTex = (() => { const c = document.createElement("canvas"); c.width = c.height = 32; const g = c.getContext("2d"); const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 32, 32); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+const moteMat = new THREE.PointsMaterial({ size: 0.16, map: moteTex, color: 0xffffff, transparent: true, opacity: 0.75, depthWrite: false, sizeAttenuation: true });
+const motes = new THREE.Points(moteGeo, moteMat); motes.frustumCulled = false; scene.add(motes);
+
+// ---------- camera route: one continuous spline, scroll is the scrubber ----------
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const at = (i, x, y, z) => { const b = spots[i]; return V(b[0] + x, b[1] + y, b[2] + z); };
+let wp = [];      // [{pos, look, sec?}]
+if (MODE === "hero") {
+  wp = [
+    { pos: at(0, 10.5, 9.2, 16.5), look: at(0, 0, 0.2, 0), sec: 0 },
+    { pos: at(0, 10.0, 8.8, 15.8), look: at(0, 0, 0.3, 0), sec: 0 },
+    { pos: at(0, 5.2, 4.6, 8.8), look: at(0, -0.2, 0.9, 0) },
+    { pos: at(0, 2.2, 2.6, 5.6), look: at(0, -0.3, 0.9, 0.2), sec: 1 },
+    { pos: at(0, 2.0, 2.5, 5.3), look: at(0, -0.3, 0.9, 0.2), sec: 1 }
+  ];
+} else {
+  wp.push({ pos: at(0, 10.5, 9.2, 17), look: at(0, 0, 3.0, 0.2), sec: 0 }, { pos: at(0, 10, 8.8, 16.2), look: at(0, 0, 3.0, 0.3), sec: 0 });
+  for (let i = 0; i < 4; i++) {
+    wp.push({ pos: at(i, 4.2, 4.2, 8.4), look: at(i, 0, 0.6, 0) });                                   // descend
+    wp.push({ pos: at(i, 1.8, 2.5, 5.6), look: at(i, 0, 1.0, -0.2), sec: i + 1 });   // dive (linger)
+    wp.push({ pos: at(i, 1.5, 2.4, 5.3), look: at(i, 0, 1.0, -0.2), sec: i + 1 });
+    if (i < 3) {
+      const a = spots[i], b = spots[i + 1];
+      wp.push({ pos: V((a[0] + b[0]) / 2 + 1, 13, (a[2] + b[2]) / 2 + 13), look: V((a[0] + b[0]) / 2 + 2, 0, (a[2] + b[2]) / 2) });   // climb out, cross, arrive
+    }
+  }
+  wp.push({ pos: V(21, 30, 58), look: V(21, -2, -1), sec: 5 });
+}
+const posCurve = new THREE.CatmullRomCurve3(wp.map((w) => w.pos), false, "centripetal", 0.5);
+const lookCurve = new THREE.CatmullRomCurve3(wp.map((w) => w.look), false, "centripetal", 0.5);
+const K = wp.length - 1;
+
+// copy sections: weight by distance (in waypoint index space) from the waypoints that carry `sec`
+const secEls = [...document.querySelectorAll("[data-sec]")];
+const secIdx = new Map(); wp.forEach((w, k) => { if (w.sec !== undefined) { const a = secIdx.get(w.sec) ?? []; a.push(k); secIdx.set(w.sec, a); } });
+const railDots = [...document.querySelectorAll(".rail a")];
+
+// ---------- scroll ----------
+const track = document.getElementById("track");
+let target = 0, s = 0;
+const clamp = THREE.MathUtils.clamp;
+const readScroll = () => { const m = track.offsetHeight - innerHeight; target = m > 0 ? clamp(scrollY / m, 0, 1) : 0; };
+addEventListener("scroll", readScroll, { passive: true });
+document.querySelectorAll(".rail a").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); const k = secIdx.get(+a.dataset.go)?.[0] ?? 0; scrollTo({ top: (track.offsetHeight - innerHeight) * (k / K), behavior: reduceMotion.matches ? "auto" : "smooth" }); }));
+
+const tmpP = new THREE.Vector3(), tmpL = new THREE.Vector3();
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.fov = w / h < 0.8 ? 46 : 32;             // portrait: wider lens so islands still fit
+  camera.updateProjectionMatrix();
+  readScroll();
+}
+addEventListener("resize", () => { resize(); if (reduceMotion.matches) draw(0, 0.016); });
+resize();
+
+function placeCamera(u, t) {
+  posCurve.getPoint(u, tmpP); lookCurve.getPoint(u, tmpL);
+  // gentle handheld sway
+  tmpP.x += Math.sin(t * 0.3) * 0.12; tmpP.y += Math.sin(t * 0.37) * 0.08;
+  // hero: push the object toward the right half on wide screens
+  if (MODE === "hero" && camera.aspect > 1.05) { const k = 1 - clamp(u * 3, 0, 1); tmpL.x -= 3.6 * k; }
+  camera.position.copy(tmpP); camera.lookAt(tmpL);
+  sun.target.position.copy(tmpL); sun.position.copy(tmpL).add(V(7, 12, 8));
+}
+
+function draw(t, dt) {
+  s = THREE.MathUtils.damp(s, target, 5, dt);                        // scroll scrubs time, eased
+  const u = clamp(s, 0, 1);
+  placeCamera(u, t);
+  const k = u * K;
+  secEls.forEach((el) => {
+    const idxs = secIdx.get(+el.dataset.sec) ?? [];
+    const d = Math.min(...idxs.map((i) => Math.abs(k - i)));
+    const wgt = clamp(1 - (d - 0.15) / 0.85, 0, 1);
+    el.style.opacity = wgt; el.style.transform = "translateY(" + (1 - wgt) * 18 + "px)"; el.style.pointerEvents = wgt > 0.6 ? "auto" : "none"; el.style.visibility = wgt > 0.01 ? "visible" : "hidden";
+  });
+  let best = 0, bd = 1e9; secIdx.forEach((idxs, sec) => { const d = Math.min(...idxs.map((i) => Math.abs(k - i))); if (d < bd) { bd = d; best = sec; } });
+  railDots.forEach((a) => a.classList.toggle("on", +a.dataset.go === best));
+  document.getElementById("bar").style.transform = "scaleX(" + u + ")";
+
+  islands.forEach((g) => { g.position.y = g.userData.base[1] + Math.sin(t * 0.6 + g.userData.ph) * 0.12; g.rotation.y = MODE === "hero" ? Math.sin(t * 0.18) * 0.12 + (1 - u) * 0.0 : 0; });
+  if (roofRef) { const isl = islands[2]; const d = camera.position.distanceTo(isl.position); const lift = clamp(1 - (d - 4) / 9, 0, 1); roofRef.position.y = THREE.MathUtils.lerp(2.55, 6.5, lift); roofRef.rotation.z = lift * 0.5; roofRef.visible = lift < 0.98; }
+  live.forEach((f) => f(t, dt));
+  // motes drift upward, wrap
+  for (let i = 0; i < MOTES; i++) { const i3 = i * 3; motePos[i3 + 1] += dt * (0.25 + (moteSeed[i] % 1) * 0.3); motePos[i3] += Math.sin(t * 0.4 + moteSeed[i]) * dt * 0.15; if (motePos[i3 + 1] > 12) motePos[i3 + 1] = -2; }
+  moteGeo.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera);
+}
+
+const timeSrc = { last: performance.now(), t: 0 };
+function frame(now) { const dt = Math.min((now - timeSrc.last) / 1000, 0.05); timeSrc.last = now; timeSrc.t += dt; draw(timeSrc.t, dt); }
+function applyMotionPreference() {
+  renderer.setAnimationLoop(null);
+  if (reduceMotion.matches) { s = target; draw(1.5, 0.016); }        // still frame, scroll still moves the camera via the listener below
+  else { timeSrc.last = performance.now(); renderer.setAnimationLoop(frame); }
+}
+reduceMotion.addEventListener("change", applyMotionPreference);
+addEventListener("scroll", () => { if (reduceMotion.matches) { s = target; draw(1.5, 0.016); } }, { passive: true });
+applyMotionPreference();
+window.__draw = (u, t = 1.5) => { cancelAnimationFrame(0); renderer.setAnimationLoop(null); target = u; s = u; draw(t, 0.016); };   // deterministic hook for screenshots
+
+addEventListener("pagehide", () => {
+  renderer.setAnimationLoop(null); geos.forEach((g) => g.dispose()); Object.values(mats).forEach((m) => m.dispose()); moteGeo.dispose(); moteMat.dispose(); moteTex.dispose(); renderer.dispose();
+});
+
+</script>
+</body>
+</html>

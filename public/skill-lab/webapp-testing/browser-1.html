@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-1-invalid.png" alt="browser-1: invalid email + short password -&gt; inline errors, no success box"><figcaption>browser-1: invalid email + short password -&gt; inline errors, no success box</figcaption></figure><figure><img src="browser-1-valid.png" alt="browser-1: valid data -&gt; success status message"><figcaption>browser-1: valid data -&gt; success status message</figcaption></figure></div>
+<h2>Result</h2><div class="result">browser-1 (signup flow)
+Submitting "dana@clinic" with a 5-character password: the form stays put, the inline errors "Enter a valid work email" and "Use at least 8 characters" appear, the name error is empty and no success box is rendered. Submitting dana@reyesphysio.com with a valid password: all three error slots are cleared and a role=status box reads "Account created for dana@reyesphysio.com. Check your inbox." Network log shows no request other than the page load, so signup is purely client-side: nothing is sent to a server, the "account" is never persisted.
+
+
+Tool: Python Playwright 1.x via `uv venv` + `uv pip install playwright` + `playwright install chromium` in scratch (worked, no swap). Followed the real SKILL.md: ran `with_server.py --help` first and used it as a black box to start/stop the server, wrote plain sync_playwright scripts (headless chromium), did reconnaissance first (wait_for_load_state('networkidle') then screenshot + list buttons/inputs), then acted on discovered selectors. Server: python3 -m http.server on port 7112 managed by with_server.py.
+Notable finding about the skill's helper: with_server.py starts the command with a shell, and when I used the cd-style command from the skill's own multi-server example (`--server "cd site &amp;&amp; python3 -m http.server 7112"`) the shell was stopped but the python server child was orphaned and kept port 7112 open; the next runs then hit a stale, unresponsive listener (net::ERR_EMPTY_RESPONSE on page.goto) until I killed pid 89911. Using a command without `cd &amp;&amp;` (`python3 -m http.server 7112 --directory site`) stopped cleanly and `lsof` showed no leftover listener. Also: the console example in the skill writes to /mnt/user-data/outputs, which does not exist here, so I captured console and pageerror events in memory instead.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># skill: always run helper scripts with --help first, do not read the source</div><div class="cmd">python with_server.py --help</div><div class="out">usage: with_server.py [-h] --server SERVERS --port PORTS [--timeout TIMEOUT] ...
+  --server SERVER   Server command (can be repeated)
+  --port PORTS      Port for each server</div></div><div class="step"><div class="note"># install worked in scratch</div><div class="cmd">uv venv .venv &amp;&amp; uv pip install --python .venv/bin/python playwright &amp;&amp; .venv/bin/playwright install chromium</div><div class="out"> + playwright
+ + pyee==13.0.1
+...
+Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded</div></div><div class="step"><div class="note"># failed on the 2nd+ run: the first run orphaned the python server (pid 89911, parent 1) which still held the port</div><div class="cmd">python with_server.py --server "cd site &amp;&amp; python3 -m http.server 7112" --port 7112 -- python recon.py   # run 2, 3, 4</div><div class="out">playwright._impl._errors.Error: Page.goto: net::ERR_EMPTY_RESPONSE at http://localhost:7112/index.html</div></div><div class="step"><div class="note"># diagnosis: leaked child of the shell that with_server.py started</div><div class="cmd">lsof -nP -iTCP:7112 -sTCP:LISTEN; ps -o pid,ppid,command -p 89911; kill 89911</div><div class="out">Python 89911 ... TCP *:7112 (LISTEN)
+  PID  PPID COMMAND
+89911     1 .../Python -m http.server 7112</div></div><div class="step"><div class="note"># reconnaissance: waited for networkidle, screenshot, discovered selectors; lsof afterwards: no leftover listener</div><div class="cmd">python with_server.py --server "python3 -m http.server 7112 --directory site" --port 7112 -- python recon.py</div><div class="out">buttons: ['Create account']
+inputs: [('name', None), ('email', 'email'), ('pw', 'password')]
+Server ready on port 7112 ... Server 1 stopped
+All servers stopped</div></div><div class="step"><div class="note"># browser-1 with evidence (see screenshots)</div><div class="cmd">python with_server.py --server "python3 -m http.server 7112 --directory site" --port 7112 -- python signup_test.py</div><div class="out">INVALID -&gt; {'name': '', 'email': 'Enter a valid work email', 'pw': 'Use at least 8 characters'} | success box: 0
+VALID   -&gt; {'name': '', 'email': '', 'pw': ''} | success: Account created for dana@reyesphysio.com. Check your inbox.
+requests after load: ['GET http://localhost:7112/index.html']
+console/pageerrors: none</div></div><div class="step"><div class="note"># server cleanly stopped by with_server.py</div><div class="cmd">lsof -nP -iTCP:7112 -sTCP:LISTEN</div><div class="out">(no output)</div></div></div>
+<h2>Files</h2><details open><summary>signup_test.py</summary><pre><span class="k">from</span> playwright.sync_api <span class="k">import</span> sync_playwright
+URL = <span <span class="k">class</span>="s">'http://localhost:<span class="n">7112</span>/index.html'</span>
+requests, logs = [], []
+<span class="k">with</span> sync_playwright() <span class="k">as</span> p:
+    browser = p.chromium.launch(headless=<span class="k">True</span>)
+    page = browser.new_page(viewport={<span <span class="k">class</span>="s">'width'</span>: <span class="n">1280</span>, <span <span class="k">class</span>="s">'height'</span>: <span class="n">720</span>})
+    page.on(<span <span class="k">class</span>="s">'request'</span>, <span class="k">lambda</span> r: requests.append(f<span <span class="k">class</span>="s">'{r.method} {r.url}'</span>) <span class="k">if</span> <span <span class="k">class</span>="s">'favicon'</span> not <span class="k">in</span> r.url <span class="k">else</span> <span class="k">None</span>)
+    page.on(<span <span class="k">class</span>="s">'console'</span>, <span class="k">lambda</span> m: logs.append(f<span <span class="k">class</span>="s">'[{m.<span class="k">type</span>}] {m.text}'</span>))
+    page.on(<span <span class="k">class</span>="s">'pageerror'</span>, <span class="k">lambda</span> e: logs.append(f<span <span class="k">class</span>="s">'[pageerror] {e}'</span>))
+    page.goto(URL); page.wait_for_load_state(<span <span class="k">class</span>="s">'networkidle'</span>)
+<span class="c">    # 1. invalid email + short password</span>
+    page.fill(<span <span class="k">class</span>="s">'#name'</span>, <span <span class="k">class</span>="s">'Dana Reyes'</span>); page.fill(<span <span class="k">class</span>="s">'#email'</span>, <span <span class="k">class</span>="s">'dana@clinic'</span>); page.fill(<span <span class="k">class</span>="s">'#pw'</span>, <span <span class="k">class</span>="s">'short'</span>)
+    page.click(<span <span class="k">class</span>="s">'button[<span class="k">type</span>=submit]'</span>)
+    page.wait_for_selector(<span <span class="k">class</span>="s">'#e-email:not(:empty)'</span>)
+    print(<span <span class="k">class</span>="s">'INVALID -&gt;'</span>, {k: page.inner_text(f<span <span class="k">class</span>="s">'#e-{k}'</span>) <span class="k">for</span> k <span class="k">in</span> (<span <span class="k">class</span>="s">'name'</span>, <span <span class="k">class</span>="s">'email'</span>, <span <span class="k">class</span>="s">'pw'</span>)}, <span <span class="k">class</span>="s">'| success box:'</span>, page.locator(<span <span class="k">class</span>="s">'.ok'</span>).count())
+    page.screenshot(path=<span <span class="k">class</span>="s">'out/browser-<span class="n">1</span>-invalid.png'</span>)
+<span class="c">    # 2. valid</span>
+    page.fill(<span <span class="k">class</span>="s">'#email'</span>, <span <span class="k">class</span>="s">'dana@reyesphysio.com'</span>); page.fill(<span <span class="k">class</span>="s">'#pw'</span>, <span <span class="k">class</span>="s">'correct-horse-<span class="n">9</span>'</span>); page.select_option(<span <span class="k">class</span>="s">'#size'</span>, label=<span <span class="k">class</span>="s">'<span class="n">4</span>–<span class="n">10</span> therapists'</span>)
+    page.click(<span <span class="k">class</span>="s">'button[<span class="k">type</span>=submit]'</span>)
+    page.wait_for_selector(<span <span class="k">class</span>="s">'.ok'</span>)
+    print(<span <span class="k">class</span>="s">'VALID   -&gt;'</span>, {k: page.inner_text(f<span <span class="k">class</span>="s">'#e-{k}'</span>) <span class="k">for</span> k <span class="k">in</span> (<span <span class="k">class</span>="s">'name'</span>, <span <span class="k">class</span>="s">'email'</span>, <span <span class="k">class</span>="s">'pw'</span>)}, <span <span class="k">class</span>="s">'| success:'</span>, page.inner_text(<span <span class="k">class</span>="s">'.ok'</span>))
+    page.screenshot(path=<span <span class="k">class</span>="s">'out/browser-<span class="n">1</span>-valid.png'</span>)
+    print(<span <span class="k">class</span>="s">'requests after load:'</span>, requests)
+    print(<span <span class="k">class</span>="s">'console/pageerrors:'</span>, logs or <span <span class="k">class</span>="s">'none'</span>)
+    browser.close()
+</pre></details><details><summary>recon.py</summary><pre><span class="k">from</span> playwright.sync_api <span class="k">import</span> sync_playwright
+URL = <span <span class="k">class</span>="s">'http://localhost:<span class="n">7112</span>/index.html'</span>
+<span class="k">with</span> sync_playwright() <span class="k">as</span> p:
+    browser = p.chromium.launch(headless=<span class="k">True</span>)
+    page = browser.new_page(viewport={<span <span class="k">class</span>="s">'width'</span>: <span class="n">1280</span>, <span <span class="k">class</span>="s">'height'</span>: <span class="n">720</span>})
+    page.goto(URL)
+    page.wait_for_load_state(<span <span class="k">class</span>="s">'networkidle'</span>)
+    page.screenshot(path=<span <span class="k">class</span>="s">'out/recon-signup.png'</span>, full_page=<span class="k">True</span>)
+    print(<span <span class="k">class</span>="s">'buttons:'</span>, [b.inner_text() <span class="k">for</span> b <span class="k">in</span> page.locator(<span <span class="k">class</span>="s">'button'</span>).all()])
+    print(<span <span class="k">class</span>="s">'inputs:'</span>, [(i.get_attribute(<span <span class="k">class</span>="s">'id'</span>), i.get_attribute(<span <span class="k">class</span>="s">'<span class="k">type</span>'</span>)) <span class="k">for</span> i <span class="k">in</span> page.locator(<span <span class="k">class</span>="s">'input'</span>).all()])
+    browser.close()
+</pre></details>
+</main>
+
+</body></html>

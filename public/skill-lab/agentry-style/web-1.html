@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – Scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+.tw{
+  --tw-ink:#000; --tw-surface:#fff; --tw-bg:#fafaf9; --tw-accent:#0060e2;
+  --tw-t1:color-mix(in oklab,var(--tw-ink) 88%,transparent);
+  --tw-t2:color-mix(in oklab,var(--tw-ink) 61%,transparent);
+  --tw-t3:color-mix(in oklab,var(--tw-ink) 45%,transparent);
+  --tw-t4:color-mix(in oklab,var(--tw-ink) 27%,transparent);
+  --tw-fill:color-mix(in oklab,var(--tw-ink) 6%,transparent);
+  --tw-line:color-mix(in oklab,var(--tw-ink) 6%,transparent);
+  --tw-green:#1a8f4c; --tw-amber:#b7791f;
+  --tw-shadow:0 0 0 .5px rgb(0 0 0/.06),0 1px 1px -1px rgb(0 0 0/.1),0 1px 2px 0 rgb(0 0 0/.05);
+  --tw-shadow-lg:0 0 0 .5px rgb(0 0 0/.06),0 2px 4px -2px rgb(0 0 0/.08),0 12px 32px -8px rgb(0 0 0/.1);
+  --tw-ease:cubic-bezier(.22,1,.36,1);
+  font:13px/20px Inter,ui-sans-serif,system-ui,sans-serif; color:var(--tw-t1);
+  background:var(--tw-bg); min-height:100vh; -webkit-font-smoothing:antialiased;
+}
+@media (prefers-color-scheme:dark){
+  .tw:not([data-theme="light"]){--tw-ink:#fff;--tw-surface:#1c1c1e;--tw-bg:#111112;--tw-accent:#4d8dff;--tw-green:#4cc47f;--tw-amber:#e0a84a;
+    --tw-shadow:0 0 0 .5px rgb(255 255 255/.1),0 1px 2px 0 rgb(0 0 0/.4);--tw-shadow-lg:0 0 0 .5px rgb(255 255 255/.1),0 12px 32px -8px rgb(0 0 0/.6);}
+}
+.tw[data-theme="dark"]{--tw-ink:#fff;--tw-surface:#1c1c1e;--tw-bg:#111112;--tw-accent:#4d8dff;--tw-green:#4cc47f;--tw-amber:#e0a84a;
+  --tw-shadow:0 0 0 .5px rgb(255 255 255/.1),0 1px 2px 0 rgb(0 0 0/.4);--tw-shadow-lg:0 0 0 .5px rgb(255 255 255/.1),0 12px 32px -8px rgb(0 0 0/.6);}
+.tw *{box-sizing:border-box;margin:0}
+.tw a{text-decoration:none}
+.tw a:not(.tw-btn){color:inherit}
+.tw :focus-visible{outline:2px solid var(--tw-accent);outline-offset:2px;border-radius:6px}
+
+/* motion */
+@keyframes tw-in{from{opacity:0;transform:translateY(4px);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+.tw .in{animation:tw-in .56s var(--tw-ease) backwards;animation-delay:calc(var(--i,0)*70ms)}
+
+.tw-wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.tw-nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.tw-logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:var(--tw-t1)}
+.tw-logo i{width:18px;height:18px;border-radius:6px;background:var(--tw-ink);position:relative;overflow:hidden;display:block}
+.tw-logo i::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:var(--tw-bg);opacity:.9;border-radius:50% 50% 0 0/100% 100% 0 0}
+.tw-links{display:flex;gap:24px;color:var(--tw-t2)}
+.tw-links a{transition:color .2s var(--tw-ease)}.tw-links a:hover{color:var(--tw-t1)}
+.tw .tw-btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:8px;font-weight:500;font-size:13px;background:var(--tw-ink);color:var(--tw-surface);box-shadow:var(--tw-shadow);transition:transform .16s var(--tw-ease),opacity .2s;cursor:pointer;border:0}
+.tw-btn:hover{opacity:.88}.tw-btn:active{transform:scale(.97)}
+.tw-btn.lg{height:40px;padding:0 16px;font-size:14px;border-radius:10px}
+.tw .tw-btn.ghost{background:var(--tw-surface);color:var(--tw-t1)}
+
+/* hero */
+.tw-hero{position:relative;padding:72px 0 96px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:48px;align-items:center}
+.tw-dots{position:absolute;inset:-64px -24px auto -24px;height:640px;z-index:0;pointer-events:none;-webkit-mask-image:radial-gradient(70% 70% at 70% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(70% 70% at 70% 40%,#000 20%,transparent 75%)}
+.tw-dots canvas{width:100%;height:100%;display:block}
+.tw-copy,.tw-stage{position:relative;z-index:1}
+.tw-pill{display:inline-flex;align-items:center;gap:8px;height:24px;padding:0 10px 0 8px;border-radius:99px;background:var(--tw-surface);box-shadow:var(--tw-shadow);color:var(--tw-t2);font-size:12px}
+.tw-pill b{width:6px;height:6px;border-radius:50%;background:var(--tw-green);box-shadow:0 0 0 3px color-mix(in oklab,var(--tw-green) 18%,transparent)}
+.tw h1{font:400 clamp(38px,5.2vw,60px)/1.02 "Instrument Serif",Georgia,serif;letter-spacing:-.02em;color:var(--tw-t1);margin:20px 0 16px;text-wrap:balance}
+.tw h1 em{font-style:italic;color:var(--tw-t3)}
+.tw-lede{font-size:16px;line-height:26px;color:var(--tw-t2);max-width:440px}
+.tw-cta{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.tw-meta{margin-top:20px;font-size:12px;color:var(--tw-t3)}
+
+/* studio prop: live day sheet */
+.tw-stage{aspect-ratio:1.05;container-type:inline-size}
+.tw-card{background:var(--tw-surface);border-radius:16px;box-shadow:var(--tw-shadow-lg);overflow:hidden}
+.tw-sheet{height:100%;display:flex;flex-direction:column}
+.tw-sh-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;box-shadow:inset 0 -.5px 0 var(--tw-line)}
+.tw-sh-h h3{font-size:14px;font-weight:500;color:var(--tw-t1)}
+.tw-sh-h span{color:var(--tw-t3);font-size:12px}
+.tw-seg{display:flex;gap:2px;padding:2px;border-radius:8px;background:var(--tw-fill)}
+.tw-seg span{padding:2px 8px;border-radius:6px;color:var(--tw-t3);font-size:12px}
+.tw-seg span.on{background:var(--tw-surface);color:var(--tw-t1);box-shadow:var(--tw-shadow)}
+.tw-rows{position:relative;flex:1}
+.tw-hr{position:relative;display:grid;grid-template-columns:52px 1fr;height:calc(100% / 6);align-items:start}
+.tw-hr time{padding:8px 0 0 18px;font-size:11.5px;color:var(--tw-t4);font-variant-numeric:tabular-nums}
+.tw-hr::after{content:"";position:absolute;left:52px;right:0;top:0;height:.5px;background:var(--tw-line)}
+.tw-slots{position:absolute;left:52px;right:14px;top:0;bottom:0}
+.tw-ev{position:absolute;left:0;right:0;border-radius:8px;padding:6px 10px;display:flex;flex-direction:column;justify-content:center;
+  transition:top .7s var(--tw-ease),opacity .45s var(--tw-ease),filter .45s var(--tw-ease),transform .45s var(--tw-ease),height .7s var(--tw-ease);
+  background:linear-gradient(color-mix(in oklab,var(--c) 10%,transparent),color-mix(in oklab,var(--c) 10%,transparent)),var(--tw-surface);box-shadow:inset 2px 0 0 var(--c)}
+.tw-ev b{font-weight:500;font-size:12.5px;color:var(--tw-t1);line-height:16px}
+.tw-ev small{font-size:11.5px;color:var(--tw-t3);line-height:15px}
+.tw-ev.hide{opacity:0;transform:translateY(4px);filter:blur(3px)}
+.tw-ev.gap{background-color:var(--tw-surface);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--tw-ink) 14%,transparent);border-radius:8px;background-image:repeating-linear-gradient(135deg,transparent 0 5px,var(--tw-fill) 5px 6px)}
+.tw-toast{position:absolute;right:18px;bottom:16px;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--tw-surface);box-shadow:var(--tw-shadow-lg);font-size:12.5px;color:var(--tw-t1);
+  opacity:0;transform:translateY(6px);filter:blur(3px);transition:all .45s var(--tw-ease)}
+.tw-toast.on{opacity:1;transform:none;filter:none}
+.tw-toast i{width:16px;height:16px;border-radius:50%;background:color-mix(in oklab,var(--tw-green) 14%,transparent);color:var(--tw-green);display:grid;place-items:center;font-style:normal;font-size:10px}
+.tw-chip{position:absolute;left:-14px;top:30%;z-index:2}
+.tw-float{position:absolute;padding:8px 12px;border-radius:12px;background:var(--tw-surface);box-shadow:var(--tw-shadow-lg);font-size:12px;color:var(--tw-t2)}
+.tw-float strong{display:block;font-size:19px;line-height:24px;font-weight:500;color:var(--tw-t1);font-variant-numeric:tabular-nums}
+.tw-f1{left:-28px;bottom:-34px}
+
+/* features */
+.tw-feat{padding:24px 0 112px}
+.tw-feat h2{font:400 clamp(28px,3.4vw,38px)/1.1 "Instrument Serif",Georgia,serif;letter-spacing:-.015em;color:var(--tw-t1);max-width:520px;margin-bottom:40px;text-wrap:balance}
+.tw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tw-f{background:var(--tw-surface);border-radius:12px;box-shadow:var(--tw-shadow);padding:20px;display:flex;flex-direction:column;gap:20px;min-height:300px;transition:transform .3s var(--tw-ease),box-shadow .3s var(--tw-ease)}
+.tw-f:hover{transform:translateY(-2px);box-shadow:var(--tw-shadow-lg)}
+.tw-f h3{font-size:15px;font-weight:500;color:var(--tw-t1);margin-bottom:4px}
+.tw-f p{color:var(--tw-t2);font-size:13px;line-height:20px}
+.tw-art{flex:1;border-radius:8px;background:var(--tw-bg);position:relative;overflow:hidden;min-height:130px}
+.tw-art svg{position:absolute;inset:0;width:100%;height:100%}
+.tw-foot{padding:0 0 40px;color:var(--tw-t3);font-size:12px;display:flex;justify-content:space-between}
+
+@media (max-width:860px){
+  .tw-hero{grid-template-columns:1fr;gap:40px;padding:40px 0 64px}
+  .tw-grid{grid-template-columns:1fr}.tw-f{min-height:0}
+  .tw-links{display:none}
+  .tw-f1{left:auto;right:8px;bottom:-18px}.tw-stage{aspect-ratio:.95}
+}
+@media (max-width:420px){.tw-hr time{padding-left:12px}.tw-sh-h{padding:12px 14px}.tw-seg{display:none}}
+@media (prefers-reduced-motion:reduce){.tw .in{animation:none}.tw-ev,.tw-toast{transition:none}}
+</style>
+</head>
+<body style="margin:0">
+<div class="tw" id="tw">
+  <div class="tw-wrap">
+    <nav class="tw-nav in" aria-label="Main">
+      <a class="tw-logo" href="#"><i></i>Tidewater</a>
+      <div class="tw-links"><a href="#features">Features</a><a href="#">Pricing</a><a href="#">Clinics</a><a href="#">Sign in</a></div>
+      <a class="tw-btn" href="#">Start free</a>
+    </nav>
+
+    <section class="tw-hero">
+      <div class="tw-dots" aria-hidden="true"><canvas id="dots"></canvas></div>
+      <div class="tw-copy">
+        <span class="tw-pill in" style="--i:1"><b></b>Now booking for 1,200+ treatment rooms</span>
+        <h1 class="in" style="--i:2">A calmer day for every physiotherapy clinic</h1>
+        <p class="tw-lede in" style="--i:3">Tidewater fills gaps, moves cancellations and reminds patients on its own, so your front desk spends the day with people instead of a diary.</p>
+        <div class="tw-cta in" style="--i:4"><a class="tw-btn lg" href="#">Start 30 days free</a><a class="tw-btn lg ghost" href="#features">See how it works</a></div>
+        <p class="tw-meta in" style="--i:5">No card needed. Import your diary from CSV in one step.</p>
+      </div>
+
+      <div class="tw-stage in" style="--i:3" role="img" aria-label="Animated preview of a Tidewater day sheet: a cancelled slot is refilled from the waitlist and a patient is notified.">
+        <div class="tw-card tw-sheet">
+          <div class="tw-sh-h"><div><h3>Tuesday, 14 October</h3><span>Room 2 · Dr. Okafor</span></div><div class="tw-seg"><span class="on">Day</span><span>Week</span></div></div>
+          <div class="tw-rows" id="rows">
+            <div class="tw-hr"><time>9:00</time></div><div class="tw-hr"><time>9:30</time></div><div class="tw-hr"><time>10:00</time></div>
+            <div class="tw-hr"><time>10:30</time></div><div class="tw-hr"><time>11:00</time></div><div class="tw-hr"><time>11:30</time></div>
+            <div class="tw-slots" id="slots"></div>
+          </div>
+          <div class="tw-toast" id="toast"><i>✓</i><span id="toast-t">Maya R. booked into 10:30</span></div>
+        </div>
+        <div class="tw-float tw-f1 in" style="--i:7"><strong id="kpi">94%</strong>chair time used today</div>
+      </div>
+    </section>
+
+    <section class="tw-feat" id="features">
+      <h2>Three quiet jobs, done before you ask</h2>
+      <div class="tw-grid">
+        <article class="tw-f in" style="--i:1">
+          <div class="tw-art" aria-hidden="true">
+            <svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><g fill="none">
+              <rect x="30" y="22" width="240" height="26" rx="6" fill="currentColor" opacity=".07"/>
+              <rect x="30" y="58" width="150" height="26" rx="6" fill="#0060e2" opacity=".14"/><rect x="30" y="58" width="2" height="26" fill="#0060e2"/>
+              <rect x="190" y="58" width="80" height="26" rx="6" stroke="currentColor" opacity=".22" stroke-dasharray="3 3"/>
+              <rect x="30" y="94" width="110" height="26" rx="6" fill="#1a8f4c" opacity=".14"/><rect x="30" y="94" width="2" height="26" fill="#1a8f4c"/>
+              <path d="M222 71h-10m0 0 4-4m-4 4 4 4" stroke="#0060e2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>
+            </g></svg>
+          </div>
+          <div><h3>Gaps fill themselves</h3><p>When someone cancels, Tidewater offers the slot to your waitlist in order of fit and books the first yes.</p></div>
+        </article>
+        <article class="tw-f in" style="--i:2">
+          <div class="tw-art" aria-hidden="true">
+            <svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><g fill="currentColor">
+              <rect x="40" y="26" width="150" height="30" rx="10" opacity=".07"/><rect x="40" y="26" width="150" height="30" rx="10" fill="none" stroke="currentColor" opacity=".1"/>
+              <rect x="56" y="38" width="86" height="5" rx="2.5" opacity=".28"/>
+              <rect x="110" y="66" width="150" height="30" rx="10" fill="#0060e2" opacity=".9"/><rect x="126" y="78" width="70" height="5" rx="2.5" fill="#fff" opacity=".85"/>
+              <rect x="40" y="106" width="110" height="26" rx="10" opacity=".07"/><rect x="56" y="116" width="54" height="5" rx="2.5" opacity=".28"/>
+            </g></svg>
+          </div>
+          <div><h3>Reminders that get answered</h3><p>Patients confirm or move their visit by text in two taps. No-shows drop without a single phone call.</p></div>
+        </article>
+        <article class="tw-f in" style="--i:3">
+          <div class="tw-art" aria-hidden="true">
+            <svg viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor">
+              <path d="M30 118 L30 30" opacity=".14"/><path d="M30 118 L270 118" opacity=".14"/>
+              <path d="M30 100 C70 96 90 70 130 68 S210 46 270 36" stroke="#0060e2" stroke-width="2" stroke-linecap="round"/>
+              <path d="M30 108 C80 106 110 98 150 96 S220 88 270 84" opacity=".3" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="270" cy="36" r="4" fill="#0060e2" stroke="none"/><circle cx="270" cy="36" r="9" fill="#0060e2" stroke="none" opacity=".15"/>
+            </g></svg>
+          </div>
+          <div><h3>One view of every room</h3><p>See each therapist, room and treatment bay on one timeline, and spot over-booking before the patient arrives.</p></div>
+        </article>
+      </div>
+    </section>
+    <div class="tw-foot"><span>© 2026 Tidewater Health Software</span><span>Privacy · Terms</span></div>
+  </div>
+</div>
+
+<script>
+(()=>{
+const root=document.getElementById('tw');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+
+/* ---- dither field: Bayer 8x8 threshold over a slow noise field ---- */
+const cv=document.getElementById('dots'),cx=cv.getContext('2d');
+const B4=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+function bayerN(x,y,n){let X=x,Y=y,d=0;for(let k=0;k<Math.log2(n);k++){const bx=(X>>k)&1,by=(Y>>k)&1;d=d*4+((bx^by)*1+by*2);}return d/(n*n);}
+const BM=[];for(let y=0;y<8;y++){BM[y]=[];for(let x=0;x<8;x++)BM[y][x]=bayerN(x,y,8);}
+const hash=(x,y)=>{let h=Math.sin(x*127.1+y*311.7)*43758.5453;return h-Math.floor(h)};
+const sm=(t)=>t*t*(3-2*t);
+const vn=(x,y)=>{const xi=Math.floor(x),yi=Math.floor(y),xf=sm(x-xi),yf=sm(y-yi);
+  const a=hash(xi,yi),b=hash(xi+1,yi),c=hash(xi,yi+1),d=hash(xi+1,yi+1);return a+(b-a)*xf+(c-a)*yf+(a-b-c+d)*xf*yf;};
+let W=0,H=0,CELL=7,dpr=1,t0=performance.now(),run=true,vis=true;
+function size(){const r=cv.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;draw(0)}
+function draw(t){
+  const cs=getComputedStyle(root);const acc=cs.getPropertyValue('--tw-accent').trim()||'#0060e2';
+  cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);cx.fillStyle=acc;
+  const cols=Math.ceil(W/CELL),rows=Math.ceil(H/CELL);
+  for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){
+    const nx=i*.045+t*.00005,ny=j*.06-t*.00003;
+    let v=vn(nx,ny)*.7+vn(nx*2.1+9,ny*2.1)*.3;
+    v=v*(1.0-(j/rows)*.35);
+    if(v>BM[j&7][i&7]*.9+.12){const s=(v-.45)*1.6;cx.globalAlpha=Math.min(.7,.18+s*.5);const r=Math.max(.7,Math.min(2.1,s*3));cx.fillRect(i*CELL,j*CELL,r,r);}
+  }
+}
+function loop(now){if(run&&vis&&!document.hidden&&!reduce.matches)draw(now-t0);requestAnimationFrame(loop)}
+new ResizeObserver(size).observe(cv);
+new IntersectionObserver(e=>vis=e[0].isIntersecting).observe(cv);
+if(!reduce.matches)requestAnimationFrame(loop);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>draw(performance.now()-t0));
+
+/* ---- day sheet simulation ---- */
+const slots=document.getElementById('slots'),toast=document.getElementById('toast'),tt=document.getElementById('toast-t'),kpi=document.getElementById('kpi');
+const SLOT=100/6; // each half hour = 1/6 of height
+const C={blue:'#0060e2',green:'#1a8f4c',amber:'#b7791f'};
+const evs=[
+ {id:'a',s:0,l:2,n:'Hip mobility',p:'Daniel Cho · 60 min',c:C.blue},
+ {id:'b',s:2,l:1,n:'Follow-up',p:'Priya Nair · 30 min',c:C.green},
+ {id:'c',s:3,l:2,n:'Rotator cuff review',p:'Lena Voss · 60 min',c:C.blue},
+ {id:'d',s:5,l:1,n:'Gait assessment',p:'Tom Reyes · 30 min',c:C.amber},
+];
+const els={};
+for(const e of evs){const d=document.createElement('div');d.className='tw-ev';d.style.setProperty('--c',e.c);d.innerHTML=`<b>${e.n}</b><small>${e.p}</small>`;els[e.id]=d;slots.appendChild(d);place(e)}
+function place(e,d=els[e.id]){d.style.top=`calc(${e.s*SLOT}% + 2px)`;d.style.height=`calc(${e.l*SLOT}% - 4px)`}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let token=0;
+async function cycle(){
+  const my=++token;const ok=()=>my===token;
+  // reset
+  evs[2].s=3;evs[2].n='Rotator cuff review';place(evs[2]);els.c.querySelector('b').textContent='Rotator cuff review';els.c.querySelector('small').textContent='Lena Voss · 60 min';
+  els.c.classList.remove('gap','hide');kpi.textContent='94%';toast.classList.remove('on');
+  if(reduce.matches){els.c.classList.add('gap');els.c.querySelector('b').textContent='Maya R. booked';els.c.querySelector('small').textContent='From waitlist · 60 min';els.c.classList.remove('gap');toast.classList.add('on');return}
+  await sleep(2200);if(!ok())return;
+  els.c.classList.add('gap');els.c.querySelector('b').textContent='Cancelled · open slot';els.c.querySelector('small').textContent='Offering to 3 on the waitlist…';kpi.textContent='81%';
+  await sleep(2400);if(!ok())return;
+  els.c.classList.remove('gap');els.c.querySelector('b').textContent='Maya R. · Rotator cuff';els.c.querySelector('small').textContent='From waitlist · 60 min';kpi.textContent='94%';
+  tt.textContent='Maya R. booked into 10:30';toast.classList.add('on');
+  await sleep(3200);if(!ok())return;
+  toast.classList.remove('on');await sleep(900);if(ok())cycle();
+}
+cycle();
+matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',()=>cycle());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)cycle()});
+})();
+</script>
+</body>
+</html>

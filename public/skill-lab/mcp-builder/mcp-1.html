@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="mcp-1-inspector-connected.png" alt="MCP Inspector (web UI) connected to the built server over stdio"><figcaption>MCP Inspector (web UI) connected to the built server over stdio</figcaption></figure><figure><img src="mcp-1-inspector-tool-call.png" alt="tidewater_get_availability executed from the Inspector: text result plus structured output"><figcaption>tidewater_get_availability executed from the Inspector: text result plus structured output</figcaption></figure></div>
+<h2>Result</h2><div class="result">Built tidewater-mcp-server (TypeScript, @modelcontextprotocol/sdk 1.32.1, Zod) from fixtures/mcp/openapi.json following the mcp-builder skill. The API is mocked entirely in memory (src/mockApi.js-style module with seeded therapists, patients and appointments); one tool per OpenAPI operation: tidewater_list_appointments, tidewater_book_appointment, tidewater_cancel_appointment, tidewater_list_therapists, tidewater_search_patients, tidewater_get_availability.
+
+Verified for real: npm run build (tsc) compiles; MCP Inspector CLI lists the 6 tools with annotations and input/output schemas and runs a tools/call; a small SDK client script drove a realistic sequence over stdio (search patient, check availability, book 11:00, availability shrinks, overlapping 11:15 booking rejected with an actionable 409, cancel, JSON + paginated listing, 404, out-of-hours 422, and a Zod protocol error for a bad date); the same server also answered initialize and tools/call over streamable HTTP (stateless JSON, 127.0.0.1:7133) via curl; and the Inspector web UI (v2.12.0) connected, showed the 6 tools and executed tidewater_get_availability with structured output (screenshots).
+
+Skill-driven decisions: server name tidewater-mcp-server and service-prefixed snake_case tool names; descriptions with Args/Returns/Use when/Don't use when; Zod .strict() input schemas with described fields and constraints; outputSchema plus structuredContent on every tool; readOnly/destructive/idempotent/openWorld annotations; response_format markdown|json; limit/offset pagination with has_more/next_offset; 25,000-character truncation guard; errors returned as isError results with next-step hints; stdio for local use and stateless-JSON streamable HTTP bound to 127.0.0.1; no stdout logging. Not done: the skill's Phase 4 (10 evaluation questions run through an LLM with scripts/evaluation.py) - it needs an Anthropic API key and a model run, which was out of scope here.
+
+Notes: each Inspector --cli call starts a fresh server process (state resets), so the multi-step scenario uses the client script. TypeScript 7 does not auto-include @types/node, so tsconfig sets "types": ["node"].</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Skill recommends TypeScript + the MCP SDK + Zod.</div><div class="cmd">npm i @modelcontextprotocol/sdk zod &amp;&amp; npm i -D typescript @types/node</div><div class="out">found 0 vulnerabilities (sdk ^1.32.1, zod ^4.6.7, typescript ^7.0.2)</div></div><div class="step"><div class="note"># First tsc run failed on missing node types (TS 7 no longer auto-includes @types/node); fixed with "types": ["node"].</div><div class="cmd">npm run build</div><div class="out">&gt; tsc
+(no errors; dist/ has index, tools, schemas, mockApi, format, constants, types)</div></div><div class="step"><div class="note"># Tool list as the Inspector CLI sees it (raw JSON was 591 lines).</div><div class="cmd">npx @modelcontextprotocol/inspector --cli node dist/index.js --method tools/list   # summarised</div><div class="out">tools/list via inspector --cli -&gt; 6 tools
+tidewater_list_appointments      ro=True  destructive=False idem=True  in=['date', 'therapist_id', 'status', 'limit', 'offset', 'response_format'] out=['total', 'count', 'offset', 'appointments', 'has_more', 'next_offset']
+tidewater_book_appointment       ro=False destructive=False idem=False in=['patient_id', 'therapist_id', 'start', 'duration_min', 'response_format'] out=['appointment']
+tidewater_cancel_appointment     ro=False destructive=True  idem=True  in=['appointment_id', 'reason', 'notify_patient', 'response_format'] out=['appointment', 'patientNotified', 'alreadyCancelled']
+tidewater_list_therapists        ro=True  destructive=False idem=True  in=['response_format'] out=['count', 'therapists']
+tidewater_search_patients        ro=True  destructive=False idem=True  in=['query', 'response_format'] out=['count', 'patients']
+tidewater_get_availability       ro=True  destructive=False idem=True  in=['therapist_id', 'date', 'response_format'] out=['therapist_id', 'date', 'count', 'slots']</div></div><div class="step"><div class="note"># One real tool call through the Inspector CLI.</div><div class="cmd">npx @modelcontextprotocol/inspector --cli node dist/index.js --method tools/call --tool-name tidewater_get_availability --tool-arg therapist_id=t1 --tool-arg date=2026-10-26</div><div class="out">tidewater-mcp-server running on stdio
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "# Open slots for t1 on 2026-10-26\n\n- 2026-10-26 11:00 UTC\n- 2026-10-26 12:00 UTC\n- 2026-10-26 13:00 UTC\n- 2026-10-26 14:00 UTC\n- 2026-10-26 15:00 UTC\n- 2026-10-26 16:00 UTC"
+    }
+  ],
+  "structuredContent": {
+    "therapist_id": "t1",
+    "date": "2026-10-26",
+    "count": 6,
+    "slots": [
+      "2026-10-26T11:00:00.000Z",
+      "2026-10-26T12:00:00.000Z",
+      "2026-10-26T13:00:00.000Z",
+      "2026-10-26T14:00:00.000Z",
+      "2026-10-26T15:00:00.000Z",
+      "2026-10-26T16:00:00.000Z"
+    ]
+  }
+}</div></div><div class="step"><div class="note"># Booking changes availability, overlap is rejected with guidance, cancel works, bad input is rejected by the Zod schema (-32602). Output after adding outputSchema.</div><div class="cmd">node client.mjs   # SDK Client over stdio: full scenario</div><div class="out">tidewater-mcp-server running on stdio
+tools: tidewater_list_appointments, tidewater_book_appointment, tidewater_cancel_appointment, tidewater_list_therapists, tidewater_search_patients, tidewater_get_availability
+
+&gt;&gt;&gt; tidewater_search_patients {"query":"maya"}
+isError=false
+# Patients matching 'maya'
+
+- Maya Fernandez (p1) - +1-555-0101
+- Maya Chen (p4) - +1-555-0104
+structuredContent keys: count, patients
+
+&gt;&gt;&gt; tidewater_get_availability {"therapist_id":"t1","date":"2026-10-26"}
+isError=false
+# Open slots for t1 on 2026-10-26
+
+- 2026-10-26 11:00 UTC
+- 2026-10-26 12:00 UTC
+- 2026-10-26 13:00 UTC
+- 2026-10-26 14:00 UTC
+- 2026-10-26 15:00 UTC
+- 2026-10-26 16:00 UTC
+structuredContent keys: therapist_id, date, count, slots
+
+&gt;&gt;&gt; tidewater_book_appointment {"patient_id":"p4","therapist_id":"t1","start":"2026-10-26T11:00:00Z"}
+isError=false
+Booked appointment:
+
+- **a7** 2026-10-26 11:00 UTC (45 min) - Maya Chen (p4) with Dr. Amara Okafor (t1) [booked]
+structuredContent keys: appointment
+
+&gt;&gt;&gt; tidewater_get_availability {"therapist_id":"t1","date":"2026-10-26"}
+isError=false
+# Open slots for t1 on 2026-10-26
+
+- 2026-10-26 12:00 UTC
+- 2026-10-26 13:00 UTC
+- 2026-10-26 14:00 UTC
+- 2026-10-26 15:00 UTC
+- 2026-10-26 16:00 UTC
+structuredContent keys: therapist_id, date, count, slots
+
+&gt;&gt;&gt; tidewater_book_appointment {"patient_id":"p3","therapist_id":"t1","start":"2026-10-26T11:15:00Z"}
+isError=true
+Error: Therapist t1 already has appointment a7 at 2026-10-26T11:00:00.000Z. Call tidewater_get_availability to pick a free slot. (HTTP 409)
+
+&gt;&gt;&gt; tidewater_cancel_appointment {"appointment_id":"a7","reason":"Patient travelling","notify_patient":true}
+isError=false
+Cancelled:
+
+- **a7** 2026-10-26 11:00 UTC (45 min) - Maya Chen (p4) with Dr. Amara Okafor (t1) [cancelled]
+- Patient notified: yes
+- Reason: Patient travelling
+structuredContent keys: appointment, patientNotified, alreadyCancelled
+
+&gt;&gt;&gt; tidewater_list_appointments {"therapist_id":"t1","date":"2026-10-26","response_format":"json","limit":2}
+isError=false
+{
+  "total": 3,
+  "count": 2,
+  "offset": 0,
+  "appointments": [
+    {
+      "id": "a1",
+      "patientId": "p1",
+      "therapistId": "t1",
+      "start": "2026-10-26T09:00:00.000Z",
+      "durationMin": 45,
+      "status": "booked"
+    },
+    {
+      "id": "a2",
+      "patientId": "p2",
+      "therapistId": "t1",
+      "start": "2026-10-26T10:00:00.000Z",
+      "durationMin": 45,
+      "status": "booked"
+    }
+  ],
+  "has_more": true,
+  "next_offset": 2
+}
+structuredContent keys: total, count, offset, appointments, has_more, next_offset
+
+&gt;&gt;&gt; tidewater_list_appointments {"status":"booked","limit":2,"offset":2}
+isError=false
+# Appointments (2 of 4)
+
+- **a2** 2026-10-26 10:00 UTC (45 min) - Tom Whitfield (p2) with Dr. Amara Okafor (t1) [booked]
+- **a4** 2026-10-27 14:00 UTC (45 min) - Maya Chen (p4) with Dr. Lena Brandt (t2) [booked]
+structuredContent keys: total, count, offset, appointments, has_more
+
+&gt;&gt;&gt; tidewater_cancel_appointment {"appointment_id":"zzz"}
+isError=true
+Error: Appointment 'zzz' not found. Use tidewater_list_appointments to find valid IDs. (HTTP 404)
+
+&gt;&gt;&gt; tidewater_book_appointment {"patient_id":"p1","therapist_id":"t1","start":"2026-10-26T20:00:00Z"}
+isError=true
+Error: The clinic is open 9:00-17:00 UTC. Choose a start/duration that ends by 17:00; tidewater_get_availability lists open slots. (HTTP 422)
+
+&gt;&gt;&gt; tidewater_get_availability {"therapist_id":"t1","date":"26/10/2026"}
+isError=true
+MCP error -32602: Input validation error: Invalid arguments for tool tidewater_get_availability: Use YYYY-MM-DD, e.g. 2026-10-26 at date</div></div><div class="step"><div class="note"># Stateless JSON streamable HTTP, bound to 127.0.0.1.</div><div class="cmd">TRANSPORT=http PORT=7133 node dist/index.js  +  curl POST /mcp (initialize, tools/call)</div><div class="out">$ curl -s -X POST http://127.0.0.1:7133/mcp -d &lt;initialize&gt;   # TRANSPORT=http PORT=7133 node dist/index.js
+{"result":{"protocolVersion":"2025-06-18","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"tidewater-mcp-server","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+
+$ curl -s -X POST http://127.0.0.1:7133/mcp -d &lt;tools/call tidewater_search_patients {"query":"0105"}&gt;
+{"count": 1, "patients": [{"id": "p5", "name": "Luis Ortega", "phone": "+1-555-0105"}]}</div></div><div class="step"><div class="note"># Local-only, auth omitted deliberately for a scripted run on loopback.</div><div class="cmd">CLIENT_PORT=7134 SERVER_PORT=7135 DANGEROUSLY_OMIT_AUTH=true npx @modelcontextprotocol/inspector node dist/index.js   # then puppeteer-core drives the UI</div><div class="out">MCP Inspector Web is up and running at: http://127.0.0.1:7134
+(connect -&gt; Tools -&gt; tidewater_get_availability -&gt; t1 / 2026-10-26 -&gt; Execute Tool; see screenshots)</div></div></div>
+<h2>Files</h2><details open><summary>src/index.ts</summary><pre><span class="c">#!/usr/bin/env node</span>
+<span class="k">import</span> { McpServer } <span class="k">from</span> <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk/<span class="k">server</span>/mcp.js"</span>;
+<span class="k">import</span> { StdioServerTransport } <span class="k">from</span> <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk/<span class="k">server</span>/stdio.js"</span>;
+<span class="k">import</span> { StreamableHTTPServerTransport } <span class="k">from</span> <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk/<span class="k">server</span>/streamableHttp.js"</span>;
+<span class="k">import</span> { createServer } <span class="k">from</span> <span <span class="k">class</span>="s">"node:http"</span>;
+<span class="k">import</span> { SERVER_NAME, SERVER_VERSION } <span class="k">from</span> <span <span class="k">class</span>="s">"./constants.js"</span>;
+<span class="k">import</span> { registerTools } <span class="k">from</span> <span <span class="k">class</span>="s">"./tools.js"</span>;
+
+<span class="k">function</span> buildServer(): McpServer {
+  <span class="k">const</span> <span class="k">server</span> = <span class="k">new</span> McpServer({ name: SERVER_NAME, version: SERVER_VERSION });
+  registerTools(<span class="k">server</span>);
+  <span class="k">return</span> <span class="k">server</span>;
+}
+
+<span class="c">// stdio: local, single client. Never log to stdout - it carries the protocol.</span>
+<span class="k">async</span> <span class="k">function</span> runStdio(): Promise&lt;void&gt; {
+  <span class="k">await</span> buildServer().connect(<span class="k">new</span> StdioServerTransport());
+  console.error(<span <span class="k">class</span>="s">`${SERVER_NAME} running on stdio`</span>);
+}
+
+<span class="c">// Streamable HTTP, stateless JSON: a fresh server + transport per request, bound to 127.0.0.1.</span>
+<span class="k">async</span> <span class="k">function</span> runHttp(port: number): Promise&lt;void&gt; {
+  <span class="k">const</span> http = createServer(<span class="k">async</span> (req, res) =&gt; {
+    <span class="k">if</span> (req.url !== <span <span class="k">class</span>="s">"/mcp"</span> || req.method !== <span <span class="k">class</span>="s">"POST"</span>) {
+      res.writeHead(<span class="n">404</span>).end();
+      <span class="k">return</span>;
+    }
+    <span class="k">const</span> chunks: Buffer[] = [];
+    <span class="k">for</span> <span class="k">await</span> (<span class="k">const</span> c <span class="k">of</span> req) chunks.push(c <span class="k">as</span> Buffer);
+    <span class="k">const</span> <span class="k">server</span> = buildServer();
+    <span class="k">const</span> transport = <span class="k">new</span> StreamableHTTPServerTransport({ sessionIdGenerator: <span class="k">undefined</span>, enableJsonResponse: <span class="k">true</span> });
+    res.on(<span <span class="k">class</span>="s">"close"</span>, () =&gt; { transport.close(); <span class="k">server</span>.close(); });
+    <span class="k">await</span> <span class="k">server</span>.connect(transport);
+    <span class="k">await</span> transport.handleRequest(req, res, JSON.parse(Buffer.concat(chunks).toString(<span <span class="k">class</span>="s">"utf8"</span>)));
+  });
+  http.listen(port, <span <span class="k">class</span>="s">"<span class="n">127.0</span>.<span class="n">0.1</span>"</span>, () =&gt; console.error(<span <span class="k">class</span>="s">`${SERVER_NAME} listening on http://<span class="n">127.0</span>.<span class="n">0.1</span>:${port}/mcp`</span>));
+}
+
+<span class="k">const</span> mode = process.env.TRANSPORT ?? <span <span class="k">class</span>="s">"stdio"</span>;
+<span class="k">if</span> (mode === <span <span class="k">class</span>="s">"http"</span>) runHttp(Number(process.env.PORT ?? <span class="n">7133</span>)).<span class="k">catch</span>((e) =&gt; { console.error(e); process.exit(<span class="n">1</span>); });
+<span class="k">else</span> runStdio().<span class="k">catch</span>((e) =&gt; { console.error(e); process.exit(<span class="n">1</span>); });
+</pre></details><details><summary>src/tools.ts</summary><pre><span class="k">import</span> <span class="k">type</span> { McpServer } <span class="k">from</span> <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk/<span class="k">server</span>/mcp.js"</span>;
+<span class="k">import</span> * <span class="k">as</span> api <span class="k">from</span> <span <span class="k">class</span>="s">"./mockApi.js"</span>;
+<span class="k">import</span> { lookup } <span class="k">from</span> <span <span class="k">class</span>="s">"./mockApi.js"</span>;
+<span class="k">import</span> { fmtTime, respond } <span class="k">from</span> <span <span class="k">class</span>="s">"./format.js"</span>;
+<span class="k">import</span> {
+  BookAppointmentInput, CancelAppointmentInput, GetAvailabilityInput,
+  ListAppointmentsInput, ListTherapistsInput, SearchPatientsInput,
+  ListAppointmentsOutput, BookAppointmentOutput, CancelAppointmentOutput, ListTherapistsOutput, SearchPatientsOutput, GetAvailabilityOutput
+} <span class="k">from</span> <span <span class="k">class</span>="s">"./schemas.js"</span>;
+<span class="k">import</span> <span class="k">type</span> { Appointment } <span class="k">from</span> <span <span class="k">class</span>="s">"./types.js"</span>;
+
+<span class="k">const</span> label = (a: Appointment) =&gt; {
+  <span class="k">const</span> p = lookup.patient(a.patientId)?.name ?? a.patientId;
+  <span class="k">const</span> t = lookup.therapist(a.therapistId)?.name ?? a.therapistId;
+  <span class="k">return</span> <span <span class="k">class</span>="s">`**${a.id}** ${fmtTime(a.start)} (${a.durationMin} min) - ${p} (${a.patientId}) <span class="k">with</span> ${t} (${a.therapistId}) [${a.status}]`</span>;
+};
+
+<span class="k">export</span> <span class="k">function</span> registerTools(<span class="k">server</span>: McpServer): void {
+  <span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"tidewater_list_appointments"</span>, {
+    title: <span <span class="k">class</span>="s">"List Tidewater Appointments"</span>,
+    description: `List appointments, optionally filtered by UTC day, therapist or status, newest-last.
+
+Read-only. Does not book or change anything.
+
+Args:
+  - date (string, optional): <span <span class="k">class</span>="s">'YYYY-MM-DD'</span> (UTC)
+  - therapist_id (string, optional): e.g. <span <span class="k">class</span>="s">'t1'</span>
+  - status (<span <span class="k">class</span>="s">'booked'</span> | <span <span class="k">class</span>="s">'cancelled'</span> | <span <span class="k">class</span>="s">'done'</span>, optional)
+  - limit (number, <span class="n">1</span>-<span class="n">100</span>, <span class="k">default</span> <span class="n">20</span>), offset (number, <span class="k">default</span> <span class="n">0</span>)
+  - response_format (<span <span class="k">class</span>="s">'markdown'</span> | <span <span class="k">class</span>="s">'json'</span>, <span class="k">default</span> <span <span class="k">class</span>="s">'markdown'</span>)
+
+Returns (structuredContent): { total, count, offset, appointments: [{ id, patientId, therapistId, start, durationMin, status }], has_more, next_offset? }
+
+Use when: <span <span class="k">class</span>="s">"What is on Dr. Okafor's schedule on Monday?"</span> -&gt; therapist_id=<span <span class="k">class</span>="s">'t1'</span>, date=<span <span class="k">class</span>="s">'<span class="n">2026</span>-<span class="n">10</span>-<span class="n">26</span>'</span>.
+Don't use when: you need free slots (use tidewater_get_availability).`,
+    inputSchema: ListAppointmentsInput,
+    outputSchema: ListAppointmentsOutput,
+    annotations: { readOnlyHint: <span class="k">true</span>, destructiveHint: <span class="k">false</span>, idempotentHint: <span class="k">true</span>, openWorldHint: <span class="k">false</span> }
+  }, <span class="k">async</span> (p) =&gt; {
+    <span class="k">const</span> res = <span class="k">await</span> api.listAppointments({ date: p.date, therapistId: p.therapist_id, status: p.status });
+    <span class="k">return</span> respond(res, (all: Appointment[]) =&gt; {
+      <span class="k">const</span> page = all.slice(p.offset, p.offset + p.limit);
+      <span class="k">const</span> has_more = all.length &gt; p.offset + page.length;
+      <span class="k">const</span> data = { total: all.length, count: page.length, offset: p.offset, appointments: page, has_more, ...(has_more ? { next_offset: p.offset + page.length } : {}) };
+      <span class="k">const</span> md = page.length
+        ? <span <span class="k">class</span>="s">`# Appointments (${page.length} <span class="k">of</span> ${all.length})\n\n${page.map((a) =&gt; `</span>- ${label(a)}<span <span class="k">class</span>="s">`).join("\n")}${has_more ? `</span>\n\nMore available: call again <span class="k">with</span> offset=${p.offset + page.length}.<span <span class="k">class</span>="s">` : ""}`</span>
+        : <span <span class="k">class</span>="s">"No appointments match those filters. Try removing the date or status filter."</span>;
+      <span class="k">return</span> { data, markdown: md };
+    }, p.response_format);
+  });
+
+  <span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"tidewater_book_appointment"</span>, {
+    title: <span <span class="k">class</span>="s">"Book a Tidewater Appointment"</span>,
+    description: `Book a <span class="k">new</span> appointment <span class="k">for</span> a patient <span class="k">with</span> a therapist. Creates a record; it does not notify the patient.
+
+Fails <span class="k">with</span> an actionable error <span class="k">if</span> the patient or therapist ID is unknown, the time is outside clinic hours (<span class="n">09</span>:<span class="n">00</span>-<span class="n">17</span>:<span class="n">00</span> UTC) or the therapist already has an overlapping booked appointment.
+
+Args:
+  - patient_id (string), therapist_id (string)
+  - start (string): ISO <span class="n">8601</span> date-time, UTC, e.g. <span <span class="k">class</span>="s">'<span class="n">2026</span>-<span class="n">10</span>-26T11:<span class="n">00</span>:00Z'</span>
+  - duration_min (number, <span class="n">15</span>-<span class="n">120</span>, <span class="k">default</span> <span class="n">45</span>)
+  - response_format (<span <span class="k">class</span>="s">'markdown'</span> | <span <span class="k">class</span>="s">'json'</span>, <span class="k">default</span> <span <span class="k">class</span>="s">'markdown'</span>)
+
+Returns (structuredContent): { appointment: { id, patientId, therapistId, start, durationMin, status } }
+
+Use when: the user has chosen a patient, therapist and time.
+Don't use when: you do not know a free slot yet (call tidewater_get_availability first) or to move an existing booking (cancel it, then book).`,
+    inputSchema: BookAppointmentInput,
+    outputSchema: BookAppointmentOutput,
+    annotations: { readOnlyHint: <span class="k">false</span>, destructiveHint: <span class="k">false</span>, idempotentHint: <span class="k">false</span>, openWorldHint: <span class="k">false</span> }
+  }, <span class="k">async</span> (p) =&gt; {
+    <span class="k">const</span> res = <span class="k">await</span> api.bookAppointment({ patientId: p.patient_id, therapistId: p.therapist_id, start: p.start, durationMin: p.duration_min });
+    <span class="k">return</span> respond(res, (a: Appointment) =&gt; ({ data: { appointment: a }, markdown: <span <span class="k">class</span>="s">`Booked appointment:\n\n- ${label(a)}`</span> }), p.response_format);
+  });
+
+  <span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"tidewater_cancel_appointment"</span>, {
+    title: <span <span class="k">class</span>="s">"Cancel a Tidewater Appointment"</span>,
+    description: `Cancel an appointment by ID. Frees the therapist<span <span class="k">class</span>="s">'s slot. Cancelling an appointment that is already cancelled succeeds without notifying the patient again; completed ('</span>done') appointments cannot be cancelled.
+
+Args:
+  - appointment_id (string): e.g. <span <span class="k">class</span>="s">'a2'</span>
+  - reason (string, optional, max <span class="n">500</span> chars)
+  - notify_patient (boolean, <span class="k">default</span> <span class="k">true</span>)
+  - response_format (<span <span class="k">class</span>="s">'markdown'</span> | <span <span class="k">class</span>="s">'json'</span>, <span class="k">default</span> <span <span class="k">class</span>="s">'markdown'</span>)
+
+Returns (structuredContent): { appointment, patientNotified, alreadyCancelled }
+
+Use when: the user explicitly asks to cancel a specific appointment.
+Don't use when: you only want to look at appointments (tidewater_list_appointments).`,
+    inputSchema: CancelAppointmentInput,
+    outputSchema: CancelAppointmentOutput,
+    annotations: { readOnlyHint: <span class="k">false</span>, destructiveHint: <span class="k">true</span>, idempotentHint: <span class="k">true</span>, openWorldHint: <span class="k">false</span> }
+  }, <span class="k">async</span> (p) =&gt; {
+    <span class="k">const</span> res = <span class="k">await</span> api.cancelAppointment(p.appointment_id, { reason: p.reason, notifyPatient: p.notify_patient });
+    <span class="k">return</span> respond(res, (b: { appointment: Appointment; patientNotified: boolean; alreadyCancelled: boolean }) =&gt; ({
+      data: b,
+      markdown: <span <span class="k">class</span>="s">`${b.alreadyCancelled ? "Already cancelled (no change)" : "Cancelled"}:\n\n- ${label(b.appointment)}\n- Patient notified: ${b.patientNotified ? "yes" : "no"}${b.appointment.cancelReason ? `</span>\n- Reason: ${b.appointment.cancelReason}<span <span class="k">class</span>="s">` : ""}`</span>
+    }), p.response_format);
+  });
+
+  <span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"tidewater_list_therapists"</span>, {
+    title: <span <span class="k">class</span>="s">"List Tidewater Therapists"</span>,
+    description: `List every therapist <span class="k">with</span> their ID and specialty. Read-only.
+
+Args:
+  - response_format (<span <span class="k">class</span>="s">'markdown'</span> | <span <span class="k">class</span>="s">'json'</span>, <span class="k">default</span> <span <span class="k">class</span>="s">'markdown'</span>)
+
+Returns (structuredContent): { count, therapists: [{ id, name, specialty }] }
+
+Use when: you need a therapist_id <span class="k">for</span> another <span class="k">tool</span>.`,
+    inputSchema: ListTherapistsInput,
+    outputSchema: ListTherapistsOutput,
+    annotations: { readOnlyHint: <span class="k">true</span>, destructiveHint: <span class="k">false</span>, idempotentHint: <span class="k">true</span>, openWorldHint: <span class="k">false</span> }
+  }, <span class="k">async</span> (p) =&gt; {
+    <span class="k">const</span> res = <span class="k">await</span> api.listTherapists();
+    <span class="k">return</span> respond(res, (rows) =&gt; ({
+      data: { count: rows.length, therapists: rows },
+      markdown: <span <span class="k">class</span>="s">`# Therapists\n\n${rows.map((t: any) =&gt; `</span>- ${t.name} (${t.id}) - ${t.specialty}<span <span class="k">class</span>="s">`).join("\n")}`</span>
+    }), p.response_format);
+  });
+
+  <span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"tidewater_search_patients"</span>, {
+    title: <span <span class="k">class</span>="s">"Search Tidewater Patients"</span>,
+    description: `Search patients by part <span class="k">of</span> their name or phone number (case-insensitive). Read-only.
+
+Args:
+  - query (string, <span class="n">2</span>-<span class="n">100</span> chars): e.g. <span <span class="k">class</span>="s">'maya'</span> or <span <span class="k">class</span>="s">'<span class="n">0104</span>'</span>
+  - response_format (<span <span class="k">class</span>="s">'markdown'</span> | <span <span class="k">class</span>="s">'json'</span>, <span class="k">default</span> <span <span class="k">class</span>="s">'markdown'</span>)
+
+Returns (structuredContent): { count, patients: [{ id, name, phone }] }. Several patients can share a first name - confirm <span class="k">with</span> the phone number before booking.
+
+Use when: you have a name or phone and need a patient_id.`,
+    inputSchema: SearchPatientsInput,
+    outputSchema: SearchPatientsOutput,
+    annotations: { readOnlyHint: <span class="k">true</span>, destructiveHint: <span class="k">false</span>, idempotentHint: <span class="k">true</span>, openWorldHint: <span class="k">false</span> }
+  }, <span class="k">async</span> (p) =&gt; {
+    <span class="k">const</span> res = <span class="k">await</span> api.searchPatients(p.query);
+    <span class="k">return</span> respond(res, (rows) =&gt; ({
+      data: { count: rows.length, patients: rows },
+      markdown: rows.length
+        ? <span <span class="k">class</span>="s">`# Patients matching '${p.query}'\n\n${rows.map((x: any) =&gt; `</span>- ${x.name} (${x.id}) - ${x.phone}<span <span class="k">class</span>="s">`).join("\n")}`</span>
+        : <span <span class="k">class</span>="s">`No patients match '${p.query}'. Try a shorter part <span class="k">of</span> the name or the last digits <span class="k">of</span> the phone number.`</span>
+    }), p.response_format);
+  });
+
+  <span class="k">server</span>.registerTool(<span <span class="k">class</span>="s">"tidewater_get_availability"</span>, {
+    title: <span <span class="k">class</span>="s">"Get Tidewater Availability"</span>,
+    description: `List the open <span class="n">45</span>-minute slot start times <span class="k">for</span> one therapist on one UTC day (hourly starts <span class="n">09</span>:<span class="n">00</span>-<span class="n">16</span>:<span class="n">00</span>, minus booked appointments). Read-only.
+
+Args:
+  - therapist_id (string): e.g. <span <span class="k">class</span>="s">'t1'</span>
+  - date (string): <span <span class="k">class</span>="s">'YYYY-MM-DD'</span> (UTC)
+  - response_format (<span <span class="k">class</span>="s">'markdown'</span> | <span <span class="k">class</span>="s">'json'</span>, <span class="k">default</span> <span <span class="k">class</span>="s">'markdown'</span>)
+
+Returns (structuredContent): { therapist_id, date, count, slots: [ISO start times] }
+
+Use when: choosing a time before tidewater_book_appointment.`,
+    inputSchema: GetAvailabilityInput,
+    outputSchema: GetAvailabilityOutput,
+    annotations: { readOnlyHint: <span class="k">true</span>, destructiveHint: <span class="k">false</span>, idempotentHint: <span class="k">true</span>, openWorldHint: <span class="k">false</span> }
+  }, <span class="k">async</span> (p) =&gt; {
+    <span class="k">const</span> res = <span class="k">await</span> api.getAvailability(p.therapist_id, p.date);
+    <span class="k">return</span> respond(res, (slots: string[]) =&gt; ({
+      data: { therapist_id: p.therapist_id, date: p.date, count: slots.length, slots },
+      markdown: slots.length
+        ? <span <span class="k">class</span>="s">`# Open slots <span class="k">for</span> ${p.therapist_id} on ${p.date}\n\n${slots.map((s) =&gt; `</span>- ${fmtTime(s)}<span <span class="k">class</span>="s">`).join("\n")}`</span>
+        : <span <span class="k">class</span>="s">`No open slots <span class="k">for</span> ${p.therapist_id} on ${p.date}. Try another date.`</span>
+    }), p.response_format);
+  });
+}
+</pre></details><details><summary>src/schemas.ts</summary><pre><span class="k">import</span> { z } <span class="k">from</span> <span <span class="k">class</span>="s">"zod"</span>;
+<span class="k">import</span> { DEFAULT_LIMIT, MAX_LIMIT, ResponseFormat } <span class="k">from</span> <span <span class="k">class</span>="s">"./constants.js"</span>;
+
+<span class="k">const</span> isoDate = z.string().regex(/^\d{<span class="n">4</span>}-\d{<span class="n">2</span>}-\d{<span class="n">2</span>}$/, <span <span class="k">class</span>="s">"Use YYYY-MM-DD, e.g. <span class="n">2026</span>-<span class="n">10</span>-<span class="n">26</span>"</span>);
+
+<span class="k">const</span> responseFormat = z.nativeEnum(ResponseFormat).<span class="k">default</span>(ResponseFormat.MARKDOWN)
+  .describe(<span <span class="k">class</span>="s">"'markdown' <span class="k">for</span> human-readable text (<span class="k">default</span>) or 'json' <span class="k">for</span> machine-readable text"</span>);
+
+<span class="k">export</span> <span class="k">const</span> ListAppointmentsInput = z.object({
+  date: isoDate.optional().describe(<span <span class="k">class</span>="s">"Only appointments starting on this UTC day, e.g. '<span class="n">2026</span>-<span class="n">10</span>-<span class="n">26</span>'"</span>),
+  therapist_id: z.string().min(<span class="n">1</span>).optional().describe(<span <span class="k">class</span>="s">"Only this therapist's appointments, e.g. 't1' (see tidewater_list_therapists)"</span>),
+  status: z.enum([<span <span class="k">class</span>="s">"booked"</span>, <span <span class="k">class</span>="s">"cancelled"</span>, <span <span class="k">class</span>="s">"done"</span>]).optional().describe(<span <span class="k">class</span>="s">"Filter by status"</span>),
+  limit: z.number().int().min(<span class="n">1</span>).max(MAX_LIMIT).<span class="k">default</span>(DEFAULT_LIMIT).describe(<span <span class="k">class</span>="s">"Max results to <span class="k">return</span> (<span class="n">1</span>-<span class="n">100</span>, <span class="k">default</span> <span class="n">20</span>)"</span>),
+  offset: z.number().int().min(<span class="n">0</span>).<span class="k">default</span>(<span class="n">0</span>).describe(<span <span class="k">class</span>="s">"Results to skip <span class="k">for</span> pagination"</span>),
+  response_format: responseFormat
+}).strict();
+
+<span class="k">export</span> <span class="k">const</span> BookAppointmentInput = z.object({
+  patient_id: z.string().min(<span class="n">1</span>).describe(<span <span class="k">class</span>="s">"Patient ID, e.g. 'p1' (find it <span class="k">with</span> tidewater_search_patients)"</span>),
+  therapist_id: z.string().min(<span class="n">1</span>).describe(<span <span class="k">class</span>="s">"Therapist ID, e.g. 't1' (see tidewater_list_therapists)"</span>),
+  start: z.string().min(<span class="n">10</span>).describe(<span <span class="k">class</span>="s">"Start <span class="k">as</span> ISO <span class="n">8601</span> date-time <span class="k">in</span> UTC, e.g. '<span class="n">2026</span>-<span class="n">10</span>-26T11:<span class="n">00</span>:00Z'"</span>),
+  duration_min: z.number().int().min(<span class="n">15</span>).max(<span class="n">120</span>).<span class="k">default</span>(<span class="n">45</span>).describe(<span <span class="k">class</span>="s">"Length <span class="k">in</span> minutes (<span class="k">default</span> <span class="n">45</span>)"</span>),
+  response_format: responseFormat
+}).strict();
+
+<span class="k">export</span> <span class="k">const</span> CancelAppointmentInput = z.object({
+  appointment_id: z.string().min(<span class="n">1</span>).describe(<span <span class="k">class</span>="s">"Appointment ID, e.g. 'a2' (see tidewater_list_appointments)"</span>),
+  reason: z.string().max(<span class="n">500</span>).optional().describe(<span <span class="k">class</span>="s">"Why it is being cancelled; stored on the appointment"</span>),
+  notify_patient: z.boolean().<span class="k">default</span>(<span class="k">true</span>).describe(<span <span class="k">class</span>="s">"Send the patient a cancellation notice (<span class="k">default</span> <span class="k">true</span>)"</span>),
+  response_format: responseFormat
+}).strict();
+
+<span class="k">export</span> <span class="k">const</span> ListTherapistsInput = z.object({ response_format: responseFormat }).strict();
+
+<span class="k">export</span> <span class="k">const</span> SearchPatientsInput = z.object({
+  query: z.string().min(<span class="n">2</span>).max(<span class="n">100</span>).describe(<span <span class="k">class</span>="s">"Part <span class="k">of</span> a patient's name or phone number, e.g. 'maya' or '<span class="n">0104</span>'"</span>),
+  response_format: responseFormat
+}).strict();
+
+<span class="k">export</span> <span class="k">const</span> GetAvailabilityInput = z.object({
+  therapist_id: z.string().min(<span class="n">1</span>).describe(<span <span class="k">class</span>="s">"Therapist ID, e.g. 't1'"</span>),
+  date: isoDate.describe(<span <span class="k">class</span>="s">"UTC day to check, e.g. '<span class="n">2026</span>-<span class="n">10</span>-<span class="n">26</span>'"</span>),
+  response_format: responseFormat
+}).strict();
+
+<span class="c">// Output schemas: advertised to clients and validated against structuredContent by the SDK.</span>
+<span class="k">const</span> Appointment = z.object({
+  id: z.string(), patientId: z.string(), therapistId: z.string(),
+  start: z.string().describe(<span <span class="k">class</span>="s">"ISO <span class="n">8601</span> UTC"</span>), durationMin: z.number().int(),
+  status: z.enum([<span <span class="k">class</span>="s">"booked"</span>, <span <span class="k">class</span>="s">"cancelled"</span>, <span <span class="k">class</span>="s">"done"</span>]), cancelReason: z.string().optional()
+});
+
+<span class="k">export</span> <span class="k">const</span> ListAppointmentsOutput = {
+  total: z.number().int(), count: z.number().int(), offset: z.number().int(),
+  appointments: z.array(Appointment), has_more: z.boolean(), next_offset: z.number().int().optional()
+};
+<span class="k">export</span> <span class="k">const</span> BookAppointmentOutput = { appointment: Appointment };
+<span class="k">export</span> <span class="k">const</span> CancelAppointmentOutput = { appointment: Appointment, patientNotified: z.boolean(), alreadyCancelled: z.boolean() };
+<span class="k">export</span> <span class="k">const</span> ListTherapistsOutput = { count: z.number().int(), therapists: z.array(z.object({ id: z.string(), name: z.string(), specialty: z.string() })) };
+<span class="k">export</span> <span class="k">const</span> SearchPatientsOutput = { count: z.number().int(), patients: z.array(z.object({ id: z.string(), name: z.string(), phone: z.string() })) };
+<span class="k">export</span> <span class="k">const</span> GetAvailabilityOutput = { therapist_id: z.string(), date: z.string(), count: z.number().int(), slots: z.array(z.string()) };
+</pre></details><details><summary>src/format.ts</summary><pre><span class="k">import</span> { CHARACTER_LIMIT, ResponseFormat } <span class="k">from</span> <span <span class="k">class</span>="s">"./constants.js"</span>;
+<span class="k">import</span> <span class="k">type</span> { ApiResult } <span class="k">from</span> <span <span class="k">class</span>="s">"./types.js"</span>;
+
+<span class="k">export</span> <span class="k">type</span> ToolResponse = {
+  content: { <span class="k">type</span>: <span <span class="k">class</span>="s">"text"</span>; text: string }[];
+  structuredContent?: Record&lt;string, unknown&gt;;
+  isError?: boolean;
+  [k: string]: unknown;
+};
+
+<span class="k">export</span> <span class="k">function</span> errorResponse(message: string): ToolResponse {
+  <span class="k">return</span> { isError: <span class="k">true</span>, content: [{ <span class="k">type</span>: <span <span class="k">class</span>="s">"text"</span>, text: <span <span class="k">class</span>="s">`Error: ${message}`</span> }] };
+}
+
+/** Turns an API result into a <span class="k">tool</span> response: structuredContent + text <span class="k">in</span> the requested format. */
+<span class="k">export</span> <span class="k">function</span> respond(
+  result: ApiResult&lt;unknown&gt;,
+  build: (body: any) =&gt; { data: Record&lt;string, unknown&gt;; markdown: string },
+  format: ResponseFormat
+): ToolResponse {
+  <span class="k">if</span> (!result.ok) <span class="k">return</span> errorResponse(<span <span class="k">class</span>="s">`${result.error} (HTTP ${result.status})`</span>);
+  <span class="k">const</span> { data, markdown } = build(result.body);
+  <span class="k">let</span> text = format === ResponseFormat.JSON ? JSON.stringify(data, <span class="k">null</span>, <span class="n">2</span>) : markdown;
+  <span class="k">if</span> (text.length &gt; CHARACTER_LIMIT) {
+    text = text.slice(<span class="n">0</span>, CHARACTER_LIMIT) + <span <span class="k">class</span>="s">`\n\n[Truncated at ${CHARACTER_LIMIT} characters. Use 'limit'/'offset' or filters to narrow the result.]`</span>;
+  }
+  <span class="k">return</span> { content: [{ <span class="k">type</span>: <span <span class="k">class</span>="s">"text"</span>, text }], structuredContent: data };
+}
+
+<span class="k">export</span> <span class="k">const</span> fmtTime = (iso: string) =&gt; iso.replace(<span <span class="k">class</span>="s">"T"</span>, <span <span class="k">class</span>="s">" "</span>).replace(/:<span class="n">00</span>\.000Z$/, <span <span class="k">class</span>="s">" UTC"</span>);
+</pre></details><details><summary>src/mockApi.ts</summary><pre><span class="c">// In-memory stand-in for https://api.tidewater.example/v1 (openapi.json). Every function</span>
+<span class="c">// maps to one operation in the spec and returns an HTTP-like result, so swapping in a real</span>
+<span class="c">// fetch-based client later only means replacing this file.</span>
+<span class="k">import</span> { DAY_END_HOUR, DAY_START_HOUR, DEFAULT_DURATION_MIN } <span class="k">from</span> <span <span class="k">class</span>="s">"./constants.js"</span>;
+<span class="k">import</span> <span class="k">type</span> { ApiResult, Appointment, AppointmentStatus, Patient, Therapist } <span class="k">from</span> <span <span class="k">class</span>="s">"./types.js"</span>;
+
+<span class="k">const</span> therapists: Therapist[] = [
+  { id: <span <span class="k">class</span>="s">"t1"</span>, name: <span <span class="k">class</span>="s">"Dr. Amara Okafor"</span>, specialty: <span <span class="k">class</span>="s">"Sports rehab"</span> },
+  { id: <span <span class="k">class</span>="s">"t2"</span>, name: <span <span class="k">class</span>="s">"Dr. Lena Brandt"</span>, specialty: <span <span class="k">class</span>="s">"Neuro physiotherapy"</span> },
+  { id: <span <span class="k">class</span>="s">"t3"</span>, name: <span <span class="k">class</span>="s">"Dr. Joel Sato"</span>, specialty: <span <span class="k">class</span>="s">"Paediatrics"</span> }
+];
+
+<span class="k">const</span> patients: Patient[] = [
+  { id: <span <span class="k">class</span>="s">"p1"</span>, name: <span <span class="k">class</span>="s">"Maya Fernandez"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">1</span>-<span class="n">555</span>-<span class="n">0101</span>"</span> },
+  { id: <span <span class="k">class</span>="s">"p2"</span>, name: <span <span class="k">class</span>="s">"Tom Whitfield"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">1</span>-<span class="n">555</span>-<span class="n">0102</span>"</span> },
+  { id: <span <span class="k">class</span>="s">"p3"</span>, name: <span <span class="k">class</span>="s">"Priya Nair"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">1</span>-<span class="n">555</span>-<span class="n">0103</span>"</span> },
+  { id: <span <span class="k">class</span>="s">"p4"</span>, name: <span <span class="k">class</span>="s">"Maya Chen"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">1</span>-<span class="n">555</span>-<span class="n">0104</span>"</span> },
+  { id: <span <span class="k">class</span>="s">"p5"</span>, name: <span <span class="k">class</span>="s">"Luis Ortega"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">1</span>-<span class="n">555</span>-<span class="n">0105</span>"</span> },
+  { id: <span <span class="k">class</span>="s">"p6"</span>, name: <span <span class="k">class</span>="s">"Hannah Kowalski"</span>, phone: <span <span class="k">class</span>="s">"+<span class="n">1</span>-<span class="n">555</span>-<span class="n">0106</span>"</span> }
+];
+
+<span class="k">const</span> appointments: Appointment[] = [
+  { id: <span <span class="k">class</span>="s">"a1"</span>, patientId: <span <span class="k">class</span>="s">"p1"</span>, therapistId: <span <span class="k">class</span>="s">"t1"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-26T09:<span class="n">00</span>:<span class="n">00</span>.000Z"</span>, durationMin: <span class="n">45</span>, status: <span <span class="k">class</span>="s">"booked"</span> },
+  { id: <span <span class="k">class</span>="s">"a2"</span>, patientId: <span <span class="k">class</span>="s">"p2"</span>, therapistId: <span <span class="k">class</span>="s">"t1"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-26T10:<span class="n">00</span>:<span class="n">00</span>.000Z"</span>, durationMin: <span class="n">45</span>, status: <span <span class="k">class</span>="s">"booked"</span> },
+  { id: <span <span class="k">class</span>="s">"a3"</span>, patientId: <span <span class="k">class</span>="s">"p3"</span>, therapistId: <span <span class="k">class</span>="s">"t2"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-26T09:<span class="n">00</span>:<span class="n">00</span>.000Z"</span>, durationMin: <span class="n">60</span>, status: <span <span class="k">class</span>="s">"booked"</span> },
+  { id: <span <span class="k">class</span>="s">"a4"</span>, patientId: <span <span class="k">class</span>="s">"p4"</span>, therapistId: <span <span class="k">class</span>="s">"t2"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-27T14:<span class="n">00</span>:<span class="n">00</span>.000Z"</span>, durationMin: <span class="n">45</span>, status: <span <span class="k">class</span>="s">"booked"</span> },
+  { id: <span <span class="k">class</span>="s">"a5"</span>, patientId: <span <span class="k">class</span>="s">"p5"</span>, therapistId: <span <span class="k">class</span>="s">"t3"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-27T11:<span class="n">00</span>:<span class="n">00</span>.000Z"</span>, durationMin: <span class="n">30</span>, status: <span <span class="k">class</span>="s">"cancelled"</span> },
+  { id: <span <span class="k">class</span>="s">"a6"</span>, patientId: <span <span class="k">class</span>="s">"p6"</span>, therapistId: <span <span class="k">class</span>="s">"t1"</span>, start: <span <span class="k">class</span>="s">"<span class="n">2026</span>-<span class="n">10</span>-19T15:<span class="n">00</span>:<span class="n">00</span>.000Z"</span>, durationMin: <span class="n">45</span>, status: <span <span class="k">class</span>="s">"done"</span> }
+];
+<span class="k">let</span> nextId = appointments.length + <span class="n">1</span>;
+
+<span class="k">const</span> ok = &lt;T&gt;(body: T, status = <span class="n">200</span>): ApiResult&lt;T&gt; =&gt; ({ ok: <span class="k">true</span>, status, body });
+<span class="k">const</span> fail = (status: number, error: string): ApiResult&lt;never&gt; =&gt; ({ ok: <span class="k">false</span>, status, error });
+<span class="k">const</span> endMs = (a: Pick&lt;Appointment, <span <span class="k">class</span>="s">"start"</span> | <span <span class="k">class</span>="s">"durationMin"</span>&gt;) =&gt; Date.parse(a.start) + a.durationMin * 60_000;
+<span class="k">const</span> overlaps = (aStart: number, aEnd: number, b: Appointment) =&gt; aStart &lt; endMs(b) &amp;&amp; Date.parse(b.start) &lt; aEnd;
+
+<span class="c">// GET /appointments</span>
+<span class="k">export</span> <span class="k">async</span> <span class="k">function</span> listAppointments(q: { date?: string; therapistId?: string; status?: AppointmentStatus }) {
+  <span class="k">const</span> rows = appointments
+    .filter((a) =&gt; !q.date || a.start.startsWith(q.date))
+    .filter((a) =&gt; !q.therapistId || a.therapistId === q.therapistId)
+    .filter((a) =&gt; !q.status || a.status === q.status)
+    .sort((a, b) =&gt; a.start.localeCompare(b.start));
+  <span class="k">return</span> ok(rows);
+}
+
+<span class="c">// POST /appointments</span>
+<span class="k">export</span> <span class="k">async</span> <span class="k">function</span> bookAppointment(b: { patientId: string; therapistId: string; start: string; durationMin?: number }) {
+  <span class="k">if</span> (!patients.some((p) =&gt; p.id === b.patientId)) <span class="k">return</span> fail(<span class="n">404</span>, <span <span class="k">class</span>="s">`Patient '${b.patientId}' not found. Use tidewater_search_patients to find a valid patient ID.`</span>);
+  <span class="k">if</span> (!therapists.some((t) =&gt; t.id === b.therapistId)) <span class="k">return</span> fail(<span class="n">404</span>, <span <span class="k">class</span>="s">`Therapist '${b.therapistId}' not found. Use tidewater_list_therapists to see valid IDs.`</span>);
+  <span class="k">const</span> startMs = Date.parse(b.start);
+  <span class="k">if</span> (Number.isNaN(startMs)) <span class="k">return</span> fail(<span class="n">400</span>, <span <span class="k">class</span>="s">`'${b.start}' is not a valid ISO <span class="n">8601</span> date-time. Example: <span class="n">2026</span>-<span class="n">10</span>-26T11:<span class="n">00</span>:00Z.`</span>);
+  <span class="k">const</span> durationMin = b.durationMin ?? DEFAULT_DURATION_MIN;
+  <span class="k">const</span> d = <span class="k">new</span> Date(startMs);
+  <span class="k">const</span> dayStart = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), DAY_START_HOUR);
+  <span class="k">const</span> dayEnd = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), DAY_END_HOUR);
+  <span class="k">const</span> endAt = startMs + durationMin * 60_000;
+  <span class="k">if</span> (startMs &lt; dayStart || endAt &gt; dayEnd) {
+    <span class="k">return</span> fail(<span class="n">422</span>, <span <span class="k">class</span>="s">`The clinic is open ${DAY_START_HOUR}:<span class="n">00</span>-${DAY_END_HOUR}:<span class="n">00</span> UTC. Choose a start/duration that ends by ${DAY_END_HOUR}:<span class="n">00</span>; tidewater_get_availability lists open slots.`</span>);
+  }
+  <span class="k">const</span> clash = appointments.find((a) =&gt; a.status === <span <span class="k">class</span>="s">"booked"</span> &amp;&amp; a.therapistId === b.therapistId &amp;&amp; overlaps(startMs, endAt, a));
+  <span class="k">if</span> (clash) <span class="k">return</span> fail(<span class="n">409</span>, <span <span class="k">class</span>="s">`Therapist ${b.therapistId} already has appointment ${clash.id} at ${clash.start}. Call tidewater_get_availability to pick a free slot.`</span>);
+  <span class="k">const</span> created: Appointment = { id: <span <span class="k">class</span>="s">`a${nextId++}`</span>, patientId: b.patientId, therapistId: b.therapistId, start: <span class="k">new</span> Date(startMs).toISOString(), durationMin, status: <span <span class="k">class</span>="s">"booked"</span> };
+  appointments.push(created);
+  <span class="k">return</span> ok(created, <span class="n">201</span>);
+}
+
+<span class="c">// POST /appointments/{id}/cancel</span>
+<span class="k">export</span> <span class="k">async</span> <span class="k">function</span> cancelAppointment(id: string, b: { reason?: string; notifyPatient?: boolean }) {
+  <span class="k">const</span> a = appointments.find((x) =&gt; x.id === id);
+  <span class="k">if</span> (!a) <span class="k">return</span> fail(<span class="n">404</span>, <span <span class="k">class</span>="s">`Appointment '${id}' not found. Use tidewater_list_appointments to find valid IDs.`</span>);
+  <span class="k">if</span> (a.status === <span <span class="k">class</span>="s">"done"</span>) <span class="k">return</span> fail(<span class="n">409</span>, <span <span class="k">class</span>="s">`Appointment '${id}' is already completed and cannot be cancelled.`</span>);
+  <span class="k">const</span> alreadyCancelled = a.status === <span <span class="k">class</span>="s">"cancelled"</span>;
+  a.status = <span <span class="k">class</span>="s">"cancelled"</span>;
+  <span class="k">if</span> (b.reason) a.cancelReason = b.reason;
+  <span class="k">return</span> ok({ appointment: a, patientNotified: !alreadyCancelled &amp;&amp; (b.notifyPatient ?? <span class="k">true</span>), alreadyCancelled });
+}
+
+<span class="c">// GET /therapists</span>
+<span class="k">export</span> <span class="k">async</span> <span class="k">function</span> listTherapists() { <span class="k">return</span> ok(therapists); }
+
+<span class="c">// GET /patients/search</span>
+<span class="k">export</span> <span class="k">async</span> <span class="k">function</span> searchPatients(q: string) {
+  <span class="k">const</span> needle = q.trim().toLowerCase();
+  <span class="k">return</span> ok(patients.filter((p) =&gt; p.name.toLowerCase().includes(needle) || p.phone.replace(/\D/g, <span <span class="k">class</span>="s">""</span>).includes(needle.replace(/\D/g, <span <span class="k">class</span>="s">""</span>) || <span <span class="k">class</span>="s">"\u0000"</span>)));
+}
+
+<span class="c">// GET /availability</span>
+<span class="k">export</span> <span class="k">async</span> <span class="k">function</span> getAvailability(therapistId: string, date: string) {
+  <span class="k">if</span> (!therapists.some((t) =&gt; t.id === therapistId)) <span class="k">return</span> fail(<span class="n">404</span>, <span <span class="k">class</span>="s">`Therapist '${therapistId}' not found. Use tidewater_list_therapists to see valid IDs.`</span>);
+  <span class="k">const</span> [y, m, d] = date.split(<span <span class="k">class</span>="s">"-"</span>).map(Number);
+  <span class="k">const</span> slots: string[] = [];
+  <span class="k">for</span> (<span class="k">let</span> h = DAY_START_HOUR; h + <span class="n">1</span> &lt;= DAY_END_HOUR; h++) {
+    <span class="k">const</span> s = Date.UTC(y, m - <span class="n">1</span>, d, h);
+    <span class="k">const</span> e = s + DEFAULT_DURATION_MIN * 60_000;
+    <span class="k">const</span> busy = appointments.some((a) =&gt; a.status === <span <span class="k">class</span>="s">"booked"</span> &amp;&amp; a.therapistId === therapistId &amp;&amp; overlaps(s, e, a));
+    <span class="k">if</span> (!busy) slots.push(<span class="k">new</span> Date(s).toISOString());
+  }
+  <span class="k">return</span> ok(slots);
+}
+
+<span class="k">export</span> <span class="k">const</span> lookup = {
+  therapist: (id: string) =&gt; therapists.find((t) =&gt; t.id === id),
+  patient: (id: string) =&gt; patients.find((p) =&gt; p.id === id)
+};
+</pre></details><details><summary>src/constants.ts</summary><pre><span class="k">export</span> <span class="k">const</span> SERVER_NAME = <span <span class="k">class</span>="s">"tidewater-mcp-<span class="k">server</span>"</span>;
+<span class="k">export</span> <span class="k">const</span> SERVER_VERSION = <span <span class="k">class</span>="s">"<span class="n">1.0</span>.<span class="n">0</span>"</span>;
+<span class="k">export</span> <span class="k">const</span> DEFAULT_LIMIT = <span class="n">20</span>;
+<span class="k">export</span> <span class="k">const</span> MAX_LIMIT = <span class="n">100</span>;
+<span class="k">export</span> <span class="k">const</span> CHARACTER_LIMIT = <span class="n">25000</span>;
+<span class="k">export</span> <span class="k">const</span> DEFAULT_DURATION_MIN = <span class="n">45</span>;
+<span class="k">export</span> <span class="k">const</span> DAY_START_HOUR = <span class="n">9</span>; // UTC, mock clinic hours
+<span class="k">export</span> <span class="k">const</span> DAY_END_HOUR = <span class="n">17</span>;
+
+<span class="k">export</span> enum ResponseFormat {
+  MARKDOWN = <span <span class="k">class</span>="s">"markdown"</span>,
+  JSON = <span <span class="k">class</span>="s">"json"</span>
+}
+</pre></details><details><summary>src/types.ts</summary><pre><span class="k">export</span> <span class="k">type</span> AppointmentStatus = <span <span class="k">class</span>="s">"booked"</span> | <span <span class="k">class</span>="s">"cancelled"</span> | <span <span class="k">class</span>="s">"done"</span>;
+
+<span class="k">export</span> <span class="k">interface</span> Therapist { id: string; name: string; specialty: string }
+<span class="k">export</span> <span class="k">interface</span> Patient { id: string; name: string; phone: string }
+<span class="k">export</span> <span class="k">interface</span> Appointment {
+  id: string;
+  patientId: string;
+  therapistId: string;
+  start: string; // ISO <span class="n">8601</span>, UTC
+  durationMin: number;
+  status: AppointmentStatus;
+  cancelReason?: string;
+}
+
+/** Mirrors an HTTP response so tools can treat the mock exactly like the real API. */
+<span class="k">export</span> <span class="k">type</span> ApiResult&lt;T&gt; = { ok: <span class="k">true</span>; status: number; body: T } | { ok: <span class="k">false</span>; status: number; error: string };
+</pre></details><details><summary>package.json</summary><pre>{
+  <span <span class="k">class</span>="s">"name"</span>: <span <span class="k">class</span>="s">"tidewater-mcp-<span class="k">server</span>"</span>,
+  <span <span class="k">class</span>="s">"version"</span>: <span <span class="k">class</span>="s">"<span class="n">1.0</span>.<span class="n">0</span>"</span>,
+  <span <span class="k">class</span>="s">"description"</span>: <span <span class="k">class</span>="s">"MCP <span class="k">server</span> <span class="k">for</span> the Tidewater Appointments API (<span class="k">in</span>-memory mock)"</span>,
+  <span <span class="k">class</span>="s">"<span class="k">type</span>"</span>: <span <span class="k">class</span>="s">"module"</span>,
+  <span <span class="k">class</span>="s">"main"</span>: <span <span class="k">class</span>="s">"dist/index.js"</span>,
+  <span <span class="k">class</span>="s">"bin"</span>: {
+    <span <span class="k">class</span>="s">"tidewater-mcp-<span class="k">server</span>"</span>: <span <span class="k">class</span>="s">"dist/index.js"</span>
+  },
+  <span <span class="k">class</span>="s">"scripts"</span>: {
+    <span <span class="k">class</span>="s">"build"</span>: <span <span class="k">class</span>="s">"tsc"</span>,
+    <span <span class="k">class</span>="s">"start"</span>: <span <span class="k">class</span>="s">"node dist/index.js"</span>
+  },
+  <span <span class="k">class</span>="s">"engines"</span>: {
+    <span <span class="k">class</span>="s">"node"</span>: <span <span class="k">class</span>="s">"&gt;=<span class="n">18</span>"</span>
+  },
+  <span <span class="k">class</span>="s">"dependencies"</span>: {
+    <span <span class="k">class</span>="s">"@modelcontextprotocol/sdk"</span>: <span <span class="k">class</span>="s">"^<span class="n">1.32</span>.<span class="n">1</span>"</span>,
+    <span <span class="k">class</span>="s">"zod"</span>: <span <span class="k">class</span>="s">"^<span class="n">4.6</span>.<span class="n">7</span>"</span>
+  },
+  <span <span class="k">class</span>="s">"devDependencies"</span>: {
+    <span <span class="k">class</span>="s">"@types/node"</span>: <span <span class="k">class</span>="s">"^<span class="n">26.6</span>.<span class="n">5</span>"</span>,
+    <span <span class="k">class</span>="s">"typescript"</span>: <span <span class="k">class</span>="s">"^<span class="n">7.0</span>.<span class="n">2</span>"</span>
+  }
+}
+</pre></details><details><summary>tsconfig.json</summary><pre>{
+  <span <span class="k">class</span>="s">"compilerOptions"</span>: {
+    <span <span class="k">class</span>="s">"target"</span>: <span <span class="k">class</span>="s">"ES2022"</span>, <span <span class="k">class</span>="s">"module"</span>: <span <span class="k">class</span>="s">"Node16"</span>, <span <span class="k">class</span>="s">"moduleResolution"</span>: <span <span class="k">class</span>="s">"Node16"</span>,
+    <span <span class="k">class</span>="s">"outDir"</span>: <span <span class="k">class</span>="s">"./dist"</span>, <span <span class="k">class</span>="s">"rootDir"</span>: <span <span class="k">class</span>="s">"./src"</span>, <span <span class="k">class</span>="s">"strict"</span>: <span class="k">true</span>,
+    <span <span class="k">class</span>="s">"esModuleInterop"</span>: <span class="k">true</span>, <span <span class="k">class</span>="s">"skipLibCheck"</span>: <span class="k">true</span>, <span <span class="k">class</span>="s">"declaration"</span>: <span class="k">false</span>, <span <span class="k">class</span>="s">"types"</span>: [<span <span class="k">class</span>="s">"node"</span>]
+  },
+  <span <span class="k">class</span>="s">"include"</span>: [<span <span class="k">class</span>="s">"src/**/*"</span>]
+}
+</pre></details>
+</main>
+
+</body></html>

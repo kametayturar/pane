@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-2-nothing.png" alt="First click on Book appointment: nothing happens (10:30 only looks selected)"><figcaption>First click on Book appointment: nothing happens (10:30 only looks selected)</figcaption></figure><figure><img src="browser-2-after-select.png" alt="After clicking the slot: request fires, banner shows (despite the 501)"><figcaption>After clicking the slot: request fires, banner shows (despite the 501)</figcaption></figure></div>
+<h2>Result</h2><div class="result">Cause: in the Book page, the click handler does `fetch("/api/book", { body: JSON.stringify({ slot: selected.id }) })`, but the module-level `selected` is only assigned inside the slot click listener. The 10:30 slot is rendered with the "sel" class (i === 1) so it LOOKS selected, yet `selected` is still undefined. Clicking "Book appointment" without first clicking a slot throws TypeError: Cannot read properties of undefined (reading 'id') inside the async handler, before any request is made. The rejection is swallowed by the event handler, so the UI does nothing.
+
+Evidence: Playwright captured pageerror "Cannot read properties of undefined (reading 'id')", no /api request, and an empty #result div on the first click. After clicking the 10:30 slot explicitly, the same button sends POST /api/book {"slot":"s2"} and the page shows "Booked 10:30" – which proves the cause.
+
+Fix: initialise `selected = SLOTS[1]` when rendering (match the visual default) or render no default highlight. Second defect seen on the working path: the code never checks res.ok. My static server has no API, so POST /api/book returned 501 and the page still said "Booked 10:30"; the success message should depend on res.ok.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Listens to console, pageerror, request and response events, then compares clicking without and with a slot selection.</div><div class="cmd">PW_HEADLESS=true PW_ARTIFACT_DIR=./art node "$SKILL_DIR/run.js" playwright-test-book.js</div><div class="out">visually selected slot: 10:30
+--- A: click Book without touching a slot
+PAGEERROR: Cannot read properties of undefined (reading 'id')
+result div: ""
+--- B: pick a slot first, then Book
+REQUEST POST http://127.0.0.1:7131/api/book {"slot":"s2"}
+RESPONSE 501 http://127.0.0.1:7131/api/book
+CONSOLE error Failed to load resource: the server responded with a status of 501 (Unsupported method ('POST'))
+result div: "&lt;div class=\"ok\"&gt;Booked 10:30&lt;/div&gt;"</div></div><div class="step"><div class="note"># Server side confirms exactly one POST, only from the second scenario.</div><div class="cmd">tail -3 server.log</div><div class="out">127.0.0.1 - - [22/Oct/2026 21:59:34] code 501, message Unsupported method ('POST')
+127.0.0.1 - - [22/Oct/2026 21:59:34] "POST /api/book HTTP/1.1" 501 -</div></div></div>
+<h2>Files</h2><details open><summary>playwright-test-book.js</summary><pre><span class="k">const</span> path = require(<span <span class="k">class</span>="s">'node:path'</span>);
+<span class="k">const</span> helpers = require(<span <span class="k">class</span>="s">`${process.env.PW_SKILL_DIR}/lib/helpers`</span>);
+<span class="k">const</span> targetUrl = process.env.TARGET_URL || <span <span class="k">class</span>="s">'http://<span class="n">127.0</span>.<span class="n">0.1</span>:<span class="n">7131</span>'</span>;
+<span class="k">const</span> art = process.env.PW_ARTIFACT_DIR;
+
+(<span class="k">async</span> () =&gt; {
+  <span class="k">const</span> browser = <span class="k">await</span> helpers.launchBrowser(<span <span class="k">class</span>="s">'chromium'</span>);
+  <span class="k">try</span> {
+    <span class="k">const</span> context = <span class="k">await</span> helpers.createContext(browser);
+    <span class="k">const</span> page = <span class="k">await</span> context.newPage();
+    page.on(<span <span class="k">class</span>="s">'console'</span>, m =&gt; console.log(<span <span class="k">class</span>="s">'CONSOLE'</span>, m.<span class="k">type</span>(), m.text()));
+    page.on(<span <span class="k">class</span>="s">'pageerror'</span>, e =&gt; console.log(<span <span class="k">class</span>="s">'PAGEERROR:'</span>, e.message));
+    page.on(<span <span class="k">class</span>="s">'request'</span>, r =&gt; { <span class="k">if</span> (r.url().includes(<span <span class="k">class</span>="s">'/api/'</span>)) console.log(<span <span class="k">class</span>="s">'REQUEST'</span>, r.method(), r.url(), r.postData()); });
+    page.on(<span <span class="k">class</span>="s">'response'</span>, r =&gt; { <span class="k">if</span> (r.url().includes(<span <span class="k">class</span>="s">'/api/'</span>)) console.log(<span <span class="k">class</span>="s">'RESPONSE'</span>, r.status(), r.url()); });
+
+    <span class="k">await</span> page.goto(targetUrl + <span <span class="k">class</span>="s">'/#book'</span>);
+    <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'heading'</span>, { name: <span <span class="k">class</span>="s">'Book an appointment'</span> }).waitFor();
+    console.log(<span <span class="k">class</span>="s">'visually selected slot:'</span>, <span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'.slot.sel'</span>).textContent());
+
+    console.log(<span <span class="k">class</span>="s">'--- A: click Book without touching a slot'</span>);
+    <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'button'</span>, { name: <span <span class="k">class</span>="s">'Book appointment'</span> }).click();
+    <span class="k">await</span> page.waitForTimeout(<span class="n">500</span>);
+    console.log(<span <span class="k">class</span>="s">'result div:'</span>, JSON.stringify(<span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'#result'</span>).innerHTML()));
+    <span class="k">await</span> page.screenshot({ path: path.join(art, <span <span class="k">class</span>="s">'browser-<span class="n">2</span>-nothing.png'</span>) });
+
+    console.log(<span <span class="k">class</span>="s">'--- B: pick a slot first, then Book'</span>);
+    <span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'.slot'</span>, { hasText: <span <span class="k">class</span>="s">'<span class="n">10</span>:<span class="n">30</span>'</span> }).click();
+    <span class="k">await</span> page.getByRole(<span <span class="k">class</span>="s">'button'</span>, { name: <span <span class="k">class</span>="s">'Book appointment'</span> }).click();
+    <span class="k">await</span> page.waitForTimeout(<span class="n">500</span>);
+    console.log(<span <span class="k">class</span>="s">'result div:'</span>, JSON.stringify(<span class="k">await</span> page.locator(<span <span class="k">class</span>="s">'#result'</span>).innerHTML()));
+    <span class="k">await</span> page.screenshot({ path: path.join(art, <span <span class="k">class</span>="s">'browser-<span class="n">2</span>-after-select.png'</span>) });
+  } finally { <span class="k">await</span> browser.close(); }
+})();
+</pre></details>
+</main>
+
+</body></html>

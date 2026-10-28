@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f1f5f3;--paper:#fff;--ink:#0f2a2c;--muted:#53696a;--line:#d9e3df;--accent:#0b7a75;--accent-d:#085c58;--accent-l:#d6efec;--err:#d93025;--err-bg:#fce8e6;--ok:#188038;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Inter',system-ui,sans-serif;
+  --gutter:clamp(1.25rem,1rem + 2vw,2.5rem);
+}
+@layer base,components;
+@layer base{
+  *,*::before,*::after{box-sizing:border-box}*{margin:0}
+  body{font-family:var(--sans);font-size:1rem;line-height:1.6;background:var(--bg);color:var(--ink);overflow-wrap:break-word}
+  a{color:inherit;text-decoration:none}
+  button,input,select{font:inherit;color:inherit}
+  :focus-visible{outline:3px solid #e08b00;outline-offset:3px}
+  h1,h2{font-family:var(--serif);font-weight:400;line-height:1.05;text-wrap:balance}
+  p{text-wrap:pretty}
+}
+@layer components{
+  .wrap{inline-size:min(100% - 2*var(--gutter),72rem);margin-inline:auto}
+  .site-head{display:flex;align-items:center;justify-content:space-between;padding-block:1.25rem}
+  .brand{display:flex;align-items:center;gap:.6rem;font-family:var(--serif);font-size:1.75rem;line-height:1}
+  .brand svg{inline-size:1.6rem;block-size:1.6rem}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-block-size:3rem;padding-inline:1.4rem;border-radius:.75rem;font-weight:600;font-size:.9375rem;border:1px solid transparent;cursor:pointer;transition:background-color .2s}
+  .btn-pri{background:var(--accent);color:#fff}.btn-pri:hover{background:var(--accent-d)}
+  .btn-pri:disabled{opacity:.65;cursor:default}
+  .btn-sec{border-color:var(--line);background:var(--paper);min-block-size:2.75rem}
+  .btn-block{inline-size:100%}
+  .signup{display:grid;gap:2rem;align-items:center;padding-block:1rem 4rem;min-block-size:min(calc(100svh - 6rem),50rem)}
+  .kicker{font-size:.8125rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+  .pitch h1{font-size:clamp(2.5rem,1.4rem + 4.8vw,4.75rem);margin-block:.75rem 1rem}
+  .pitch p:not(.kicker){color:var(--muted);font-size:1.1875rem;max-inline-size:32ch}
+  .pitch ul{display:none;list-style:none;padding:0;margin-block-start:1.5rem;gap:.7rem;font-size:.9688rem}
+  .pitch li{display:flex;gap:.75rem;align-items:center}.pitch li::before{content:"";inline-size:.5rem;block-size:.5rem;border-radius:50%;background:var(--accent)}
+  .card-wrap{container-type:inline-size}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:1.25rem;padding:1.5rem;box-shadow:0 1px 2px rgb(15 42 44 / .05),0 24px 48px -24px rgb(15 42 44 / .22)}
+  .card h2{font-size:2rem}
+  .sub{color:var(--muted);font-size:.9375rem;margin-block:.15rem 1.5rem}
+  form{display:grid;gap:1.25rem}
+  .row{display:grid;gap:1.25rem}
+  @container (min-width:32rem){.row.two{grid-template-columns:1fr 1fr}}
+  .field{display:grid;gap:.35rem;min-inline-size:0;align-content:start}
+  .field>label{font-weight:600;font-size:.875rem}
+  /* hints sit ABOVE the control so autofill popovers and mobile keyboards never cover them */
+  .hint{font-size:.8125rem;color:var(--muted)}
+  .ctl{inline-size:100%;min-block-size:3rem;border:1.5px solid var(--line);border-radius:.75rem;padding-inline:.9rem;background:#fff;font-size:1rem}
+  .ctl:hover{border-color:#b4c4bf}
+  .ctl:focus-visible{outline:3px solid #e08b00;outline-offset:2px}
+  /* errors only after the user has interacted: :user-invalid. The class is the documented fallback for browsers without it. */
+  .ctl:user-invalid,.ctl.user-invalid-fallback{border-color:var(--err);background:var(--err-bg)}
+  .ctl:user-valid{border-color:var(--ok)}
+  .error-msg{display:none;color:var(--err);font-size:.875rem;font-weight:500}
+  .ctl:user-invalid ~ .error-msg,.ctl.user-invalid-fallback ~ .error-msg{display:block}
+  .field:has(.check input:user-invalid) .error-msg{display:block}
+  .field:has(.ctl:user-invalid) .hint,.field:has(.ctl.user-invalid-fallback) .hint{color:var(--err);font-weight:600}
+  .pw-wrap{position:relative;display:grid}
+  .pw-wrap .ctl{padding-inline-end:4.5rem}
+  .pw-wrap button{position:absolute;inset-block:.25rem;inset-inline-end:.25rem;min-inline-size:2.75rem;border:0;background:transparent;border-radius:.5rem;font-size:.8125rem;font-weight:600;color:var(--accent);cursor:pointer}
+  .check{display:grid;grid-template-columns:1.5rem 1fr;gap:.75rem;align-items:start;font-size:.9375rem}
+  .check input{inline-size:1.375rem;block-size:1.375rem;margin:.1rem 0 0;accent-color:var(--accent)}
+  .check a{color:var(--accent);text-decoration:underline;text-underline-offset:.15em}
+  .done{text-align:center;padding-block:2rem}.done h2{margin-block-end:.5rem}.done p{color:var(--muted)}
+  .site-foot{border-block-start:1px solid var(--line);padding-block:1.5rem;color:var(--muted);font-size:.875rem}
+}
+@media (min-width:60rem){
+  .signup{grid-template-columns:1fr 1fr;gap:4rem}
+  .pitch ul{display:grid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-head"><a class="brand" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0b7a75"/><path d="M3 21c3-3 6-3 9 0s6 3 9 0 5-2 8 0v11H3z" fill="#d6efec"/></svg>Tidewater</a><a class="btn btn-sec" href="#">Log in</a></header>
+  <main class="signup">
+    <section class="pitch">
+      <p class="kicker">Start free</p>
+      <h1>Set up your clinic in an afternoon.</h1>
+      <p>Import your patients, invite your therapists and send your first reminders before the day is out.</p>
+      <ul><li>Free for 30 days, no card needed</li><li>Import from CSV or your old system</li><li>Cancel anytime, export your data</li></ul>
+    </section>
+    <div class="card-wrap"><div class="card" id="card">
+      <h2>Create your account</h2>
+      <p class="sub">30 days free. No card needed.</p>
+      <form id="signup" action="/signup" method="POST">
+        <div class="row two">
+          <div class="field">
+            <label for="name">Full name</label>
+            <input class="ctl" type="text" id="name" name="name" required autocomplete="name" value="Jordan Lee" aria-errormessage="name-error">
+            <div id="name-error" class="error-msg">Enter your full name.</div>
+          </div>
+          <div class="field">
+            <label for="size">Clinic size</label>
+            <select class="ctl" id="size" name="size" required aria-errormessage="size-error">
+              <option value="">Select clinic size</option><option>Just me</option><option>2–5 people</option><option>6–10 people</option><option>11–25 people</option><option>26–50 people</option><option>50+ people</option>
+            </select>
+            <div id="size-error" class="error-msg">Choose your clinic size.</div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Work email</label>
+          <span class="hint" id="email-hint">Format: you@clinic.com</span>
+          <input class="ctl" type="email" id="email" name="email" required autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false"
+                 pattern="[^\s@]+@[^\s@]+\.[^\s@]{2,}" value="jordan@clinic" aria-describedby="email-hint" aria-errormessage="email-error">
+          <div id="email-error" class="error-msg">Enter a valid work email, like name@clinic.com.</div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <span class="hint" id="pw-hint">At least 8 characters.</span>
+          <div class="pw-wrap">
+            <input class="ctl" type="password" id="password" name="password" required minlength="8" pattern=".{8,}" autocomplete="new-password" value="tide" aria-describedby="pw-hint" aria-errormessage="pw-error">
+            <button type="button" id="toggle-pw" aria-controls="password" aria-pressed="false">Show</button>
+          </div>
+          <div id="pw-error" class="error-msg">Password is too short. Use at least 8 characters.</div>
+        </div>
+        <div class="field">
+          <label class="check" for="terms" style="font-weight:400"><input class="ctl" type="checkbox" id="terms" name="terms" required aria-errormessage="terms-error"><span>I accept the <a href="#terms">terms of service</a> and <a href="#privacy">privacy policy</a>.</span></label>
+          <div id="terms-error" class="error-msg">Accept the terms to continue.</div>
+        </div>
+        <button class="btn btn-pri btn-block" type="submit">Create account</button>
+      </form>
+    </div></div>
+  </main>
+  <footer class="site-foot">© 2026 Tidewater · Scheduling for small physiotherapy clinics</footer>
+</div>
+<script>
+const form=document.getElementById('signup');
+const fields=[...form.querySelectorAll('input.ctl,select.ctl')];
+const hasUserInvalid=CSS.supports('selector(:user-invalid)');
+// Keep aria-invalid in step with the visual :user-invalid state (blur shows it, input clears it).
+function syncAria(el){
+  const bad=hasUserInvalid?el.matches(':user-invalid'):el.classList.contains('user-invalid-fallback');
+  if(bad)el.setAttribute('aria-invalid','true');else el.removeAttribute('aria-invalid');
+}
+// Fallback tracking for engines without :user-invalid (WeakMap so no dirty attributes on the DOM).
+const seen=new WeakMap();
+function fallback(el,type){
+  if(hasUserInvalid)return;
+  const s=seen.get(el)||{input:false,blur:false};
+  if(type==='blur')s.blur=true;else s.input=true;seen.set(el,s);
+  if(s.blur&&s.input){el.classList.toggle('user-invalid-fallback',!el.checkValidity())}
+}
+fields.forEach(el=>{
+  el.addEventListener('blur',()=>{fallback(el,'blur');syncAria(el)});
+  el.addEventListener('input',()=>{fallback(el,'input');if(el.hasAttribute('aria-invalid'))syncAria(el)});
+  el.addEventListener('change',()=>{fallback(el,'input');syncAria(el)});
+});
+// Demo state: the first two fields arrive pre-filled and already committed, so their errors are visible.
+['email','password'].forEach(id=>{const el=document.getElementById(id);el.classList.add('user-invalid-fallback');el.setAttribute('aria-invalid','true');
+  el.addEventListener('input',()=>{el.classList.toggle('user-invalid-fallback',!el.checkValidity());syncAria(el);
+    if(el.checkValidity())el.removeAttribute('aria-invalid');else el.setAttribute('aria-invalid','true')})});
+document.getElementById('toggle-pw').onclick=e=>{const p=document.getElementById('password'),s=p.type==='password';p.type=s?'text':'password';e.target.textContent=s?'Hide':'Show';e.target.setAttribute('aria-pressed',s)};
+// A failed submit is native: the browser focuses the first invalid field and :user-invalid applies at once.
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const btn=form.querySelector('[type=submit]');btn.disabled=true; // only after a valid submit, to stop double-posts
+  document.getElementById('card').innerHTML=`<div class="done" role="status"><h2>Welcome, ${form.elements.name.value.split(' ')[0]}.</h2><p>We sent a confirmation link to ${form.elements.email.value}.</p></div>`;
+});
+</script>
+</body>
+</html>

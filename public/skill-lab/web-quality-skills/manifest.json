@@ -1,0 +1,34 @@
+{
+  "id": "web-quality-skills",
+  "sets": [
+    "code"
+  ],
+  "skillSays": [
+    "Measure first: run a live Lighthouse or trace on the real page, use the failing audits to locate causes, then re-run the same conditions after the fix",
+    "Report evidence with conditions (URL, form factor, throttling, cold cache, median of three runs) and keep lab data separate from field data; missing CrUX data is 'unavailable', never 'passing'",
+    "Performance: defer or remove render-blocking scripts, preconnect to third-party origins, trim fonts to the weights used with font-display swap, and code-split",
+    "Accessibility to WCAG 2.2: native buttons and links, focus visible, 4.5:1 contrast, a main landmark, a lang attribute, ordered headings, and manual keyboard checks because automation covers only a subset",
+    "SEO: unique title, meta description, canonical, viewport, crawlable links and real heading content; do not promise ranking changes or invent structured data",
+    "Findings are listed by severity with evidence, fix and a verification status that says what is still unproven"
+  ],
+  "examples": [
+    {
+      "prompt": "perf-1",
+      "changes": [
+        "Measured before editing: long tasks and input-event latency under a 4x CPU throttle exposed that the original crashes on the first clock tick and, once repaired, blocks 1.1 s per 4 s with a 544 ms keystroke",
+        "Used the guide's own patterns: React.lazy code splitting for the chart, a per-method lodash import, a 150 ms debounce on the search box and content-visibility:auto on the long sections",
+        "Final result under the same conditions: no long tasks in 4 s idle, slowest keystroke 56 ms, last data on screen at 224 ms instead of 1618 ms, initial JS 166 KB to 53 KB gzip",
+        "Said which fixes did not come from the guide (isolating the clock, memoised rows, the chart-effect cleanup) because the guide has no React re-render advice"
+      ]
+    },
+    {
+      "prompt": "perf-2",
+      "changes": [
+        "Ran Lighthouse 13.5 three times before and after instead of eyeballing the file: performance 81 to 100, accessibility 27 to 100, SEO 80 to 100, best practices 88 to 100; FCP 2.97 s to 0.65 s",
+        "Used the failing audits to find the real blockers (jQuery 1.96 s, unused moment, an 18-weight font stylesheet with display=block) and removed them, rather than guessing",
+        "Checked the keyboard path by hand with puppeteer (the old Tab key reached nothing; the new link and cookie button work with Tab and Enter) and computed every old and new contrast ratio",
+        "Stated what is unverified: field data unavailable on localhost, placeholder canonical domain, no screen reader run, and no invented JSON-LD or sitemap"
+      ]
+    }
+  ]
+}

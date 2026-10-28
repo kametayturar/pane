@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="perf-2-before.png" alt="Original at 1280x800 (no charset: emoji render as mojibake; 200-weight heading; 1.8:1 button)."><figcaption>Original at 1280x800 (no charset: emoji render as mojibake; 200-weight heading; 1.8:1 button).</figcaption></figure><figure><img src="perf-2-after.png" alt="Fixed page at 1280x800."><figcaption>Fixed page at 1280x800.</figcaption></figure><figure><img src="perf-2-before-mobile.png" alt="Original at 390 px: no viewport meta, so a 980 px desktop layout is shrunk."><figcaption>Original at 390 px: no viewport meta, so a 980 px desktop layout is shrunk.</figcaption></figure><figure><img src="perf-2-after-mobile.png" alt="Fixed page at 390 px."><figcaption>Fixed page at 390 px.</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered a fixed landing page (site/new/index.html, full contents below): faster first paint, accessible and with search metadata, and the same look.
+
+Scope note: the guide I followed is a React/Next.js performance guide. It speaks to scripts, third-party loading, resource hints and idle work, but has nothing on accessibility or SEO and no rule for non-blocking CSS. I applied its rules to performance first, measured, and handled accessibility and SEO with general practice (flagged below), then used a general technique for the last performance blocker once the measurement showed it.
+
+Measured with Lighthouse 13.5 (mobile, simulated slow 4G + 4x CPU, localhost, cold cache, median of 3):
+- Original: performance 80, accessibility 27, SEO 80, best practices 88; FCP 3.23 s, LCP 3.94 s.
+- After applying the guide's performance rules only (v1): FCP 3.45 s (range 3.25 to 6.5 s), performance 84 median with one 59 outlier. The rules removed jQuery and moment from the critical path, but the first paint was still held by the Google Fonts stylesheet, so first paint did not improve.
+- Final (non-blocking font CSS added): performance 100, accessibility 100, SEO 100, best practices 100; FCP = LCP 0.62 s; requests 10 -&gt; 4, transfer about 90 KiB -&gt; 20 KiB; CLS 0.01 (a small font-swap shift, below the 0.1 threshold).
+
+What was applied from the guide: defer/remove blocking scripts (moment was unused and jQuery only inserted one block, so both were removed rather than just deferred; the 3e7-iteration busy loop that delayed first paint was removed - genuinely deferrable work belongs in requestIdleCallback chunks); resource hints (preconnect to fonts.googleapis.com and fonts.gstatic.com); load only what is used (one font family, two weights); render content that is known at build time in the HTML instead of injecting it late.
+What was not from the guide: font-display=swap and the media-swap trick for the stylesheet; every accessibility and SEO change (lang, title, meta description, viewport, doctype, charset, a real link and a real button, a main landmark, heading order, readable contrast with computed ratios, a visible focus ring).
+
+Not done / uncertain: no canonical, Open Graph or structured data (needs the real domain and facts); Google Fonts is still a third-party request (self-hosting would remove it); the tagline wording is unchanged but its weight changed from 200 to 600 for legibility; contrast on the gradient was computed at both endpoints only; a score of 100 is not proof of WCAG conformance and no screen reader was run; lab data only, no field data exists for a local page.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># The rules from the guide that apply to a plain HTML page; each rules/&lt;name&gt;.md was read. The guide has nothing for accessibility or SEO.</div><div class="cmd">gh api repos/vercel-labs/agent-skills/contents/skills/react-best-practices/SKILL.md --jq .content | base64 -d | grep -E '^- `(rendering-script-defer-async|rendering-resource-hints|bundle-defer-third-party|bundle-conditional|js-request-idle-callback|rendering-content-visibility)`'</div><div class="out">- `bundle-defer-third-party` - Load analytics/logging after hydration
+- `bundle-conditional` - Load modules only when feature is activated
+- `rendering-content-visibility` - Use content-visibility for long lists
+- `rendering-resource-hints` - Use React DOM resource hints for preloading
+- `rendering-script-defer-async` - Use defer or async on script tags
+- `js-request-idle-callback` - Defer non-critical work to browser idle time</div></div><div class="step"><div class="note"># Baseline. python3 -m http.server serves site/orig and site/new on port 7104.</div><div class="cmd">npx lighthouse http://localhost:7104/orig/ --form-factor=mobile --output=json --chrome-flags='--headless=new --no-sandbox'   # x3, then node summarize.mjs orig 3</div><div class="out">{
+ "variant": "orig",
+ "runs": 3,
+ "lighthouse": "13.5.0",
+ "form": "mobile, simulated slow-4G + 4x CPU",
+ "scores": {
+  "performance": "80 (runs 78/80/81)",
+  "accessibility": "27 (runs 27/27/27)",
+  "seo": "80 (runs 80/80/80)",
+  "best-practices": "88 (runs 88/88/88)"
+ },
+ "metrics": {
+  "FCP_ms": "3229.43 (range 2964.91-3373.62)",
+  "LCP_ms": "3936.57 (range 3373.62-4163.88)",
+  "TBT_ms": "0 (range 0-0)",
+  "CLS": "0 (range 0-0)",
+  "SpeedIndex_ms": "4880.65 (range 3193.29-6307.89)"
+ },
+ "failingAudits": [
+  "best-practices: errors-in-console",
+  "accessibility: color-contrast",
+  "accessibility: document-title",
+  "accessibility: heading-order",
+  "accessibility: html-has-lang",
+  "accessibility: landmark-one-main",
+  "best-practices: doctype",
+  "best-practices: charset",
+  "seo: meta-description"
+ ]
+}</div></div><div class="step"><div class="note"># The failing audits: jQuery (2.2 s), moment (unused) and the 18-weight font CSS block first paint; 11 low-contrast nodes; missing metadata.</div><div class="cmd">node details.mjs orig</div><div class="out">render-blocking: Est savings of 2,610 ms; cdn.jsdelivr.net/npm/moment@2.30.1/mom=458ms, cdn.jsdelivr.net/npm/jquery@3.7.1/dist=2169ms, fonts.googleapis.com/css2?family=Inter=1690ms
+font-display: Est savings of 710 ms
+LCP breakdown: Time to first byte 3ms, Element render delay 2962ms
+unused-javascript: Est savings of 23 KiB
+third-parties: JSDelivr CDN 51 KiB, Google Fonts 37 KiB
+bootup-time: 0.1 s
+color-contrast: score 0 FAIL (11 nodes: 1.8, 2.84, 3.28)
+document-title: score 0 FAIL
+html-has-lang: score 0 FAIL
+heading-order: score 0 FAIL
+landmark-one-main: score 0 FAIL
+meta-description: score 0 FAIL
+doctype: score 0 FAIL
+charset: score 0 FAIL
+errors-in-console: score 0 FAIL</div></div><div class="step"><div class="note"># Accessibility, SEO and best practices are fixed, but first paint barely moved (3.45 s).</div><div class="cmd">npx lighthouse http://localhost:7104/v1/ ...   # v1 = the guide's rules + the general accessibility/SEO fixes; x3, then node summarize.mjs v1 3</div><div class="out">{
+ "variant": "v1",
+ "runs": 3,
+ "lighthouse": "13.5.0",
+ "form": "mobile, simulated slow-4G + 4x CPU",
+ "scores": {
+  "performance": "84 (runs 84/84/59)",
+  "accessibility": "100 (runs 100/100/100)",
+  "seo": "100 (runs 100/100/100)",
+  "best-practices": "100 (runs 100/100/100)"
+ },
+ "metrics": {
+  "FCP_ms": "3445.29 (range 3252.52-6500.89)",
+  "LCP_ms": "3445.29 (range 3252.52-6500.89)",
+  "TBT_ms": "0 (range 0-0)",
+  "CLS": "0 (range 0-0.01)",
+  "SpeedIndex_ms": "4798.28 (range 3491.19-9014.26)"
+ },
+ "failingAudits": []
+}</div></div><div class="step"><div class="note"># Why: the Google Fonts stylesheet is the one remaining render-blocking resource (~1.5 s) and the LCP element waits 2.5 s to render. The guide has no rule for it.</div><div class="cmd">node details.mjs v1</div><div class="out">render-blocking: Est savings of 2,620 ms; fonts.googleapis.com/css2?family=Poppi=1488ms
+font-display: ok
+LCP breakdown: Time to first byte 2ms, Element render delay 2488ms
+unused-javascript: -
+third-parties: Google Fonts 17 KiB
+bootup-time: 0.0 s
+color-contrast: score 1 (0 nodes: )
+document-title: score 1
+html-has-lang: score 1
+heading-order: score 1
+landmark-one-main: score 1
+meta-description: score 1
+doctype: score 1
+charset: score 1
+errors-in-console: score 1</div></div><div class="step"><div class="note"># General technique, not from the guide. Same tool, same conditions.</div><div class="cmd"># v2: load the font stylesheet with media='print' onload="this.media='all'" (+ &lt;noscript&gt; fallback), then:
+npx lighthouse http://localhost:7104/new/ ...   # x3, then node summarize.mjs new 3</div><div class="out">{
+ "variant": "new",
+ "runs": 3,
+ "lighthouse": "13.5.0",
+ "form": "mobile, simulated slow-4G + 4x CPU",
+ "scores": {
+  "performance": "100 (runs 100/100/100)",
+  "accessibility": "100 (runs 100/100/100)",
+  "seo": "100 (runs 100/100/100)",
+  "best-practices": "100 (runs 100/100/100)"
+ },
+ "metrics": {
+  "FCP_ms": "617.68 (range 615.73-622.55)",
+  "LCP_ms": "617.68 (range 615.73-622.55)",
+  "TBT_ms": "0 (range 0-0)",
+  "CLS": "0.01 (range 0.01-0.01)",
+  "SpeedIndex_ms": "617.68 (range 615.73-622.55)"
+ },
+ "failingAudits": []
+}</div></div><div class="step"><div class="note"># Render-blocking is gone; LCP element render delay fell from about 3.0 s to 38 ms.</div><div class="cmd">node details.mjs new; node -e '...network-requests count and transfer for orig / v1 / new'</div><div class="out">render-blocking: none; 
+LCP breakdown: Time to first byte 1ms, Element render delay 38ms
+orig requests 10 transfer 90 KiB
+v1 requests 4 transfer 20 KiB
+new requests 4 transfer 20 KiB</div></div><div class="step"><div class="note"># Gradient checked at both endpoints.</div><div class="cmd">python3 - &lt;&lt;'EOF'   # WCAG relative-luminance contrast of the new colour pairs</div><div class="out">NEW hero white on #6d28d9: 7.1:1      (old: white on #7c3aed 5.7:1, white on #06b6d4 2.43:1)
+NEW hero white on #0e7490: 5.36:1
+NEW button #5b21b6 on #fff: 8.98:1  (old: #fff on #22d3ee 1.81:1)
+NEW body #4b5563 on #fff: 7.56:1    (old: #999 on #fff 2.85:1)
+NEW banner #d1d5db on #111: 12.81:1 (old: #666 on #111 3.29:1)</div></div><div class="step"><div class="note"># Manual checks Lighthouse cannot do: the original page cannot be tabbed (focus stays on body); the new link and button are reachable in order, Enter dismisses the banner, no horizontal overflow at 390 px.</div><div class="cmd">node manual.mjs   # puppeteer: orig, then new (Tab x4, Enter on the cookie OK, 390 px overflow)</div><div class="out">{
+ "variant": "orig",
+ "doc": {
+  "lang": "(none)",
+  "title": "(none)",
+  "viewportMeta": false,
+  "description": false,
+  "compat": "BackCompat",
+  "h1": [
+   "The future of clinic scheduling"
+  ],
+  "landmarks": []
+ },
+ "tabStops": [
+  "(body)",
+  "(body)",
+  "(body)",
+  "(body)"
+ ],
+ "bannerRemovedByKeyboard": "n/a: the OK control is a span, it cannot be focused",
+ "mobile": {
+  "innerWidth": 980,
+  "scrollWidth": 980,
+  "horizontalOverflow": false
+ }
+}
+{
+ "variant": "new",
+ "doc": {
+  "lang": "en",
+  "title": "Tidewater \u2013 Scheduling software for physiotherapy clinics",
+  "viewportMeta": true,
+  "description": true,
+  "compat": "CSS1Compat",
+  "h1": [
+   "The future of clinic scheduling"
+  ],
+  "landmarks": [
+   "main"
+  ]
+ },
+ "tabStops": [
+  "a:Get started",
+  "button:OK",
+  "(body)",
+  "a:Get started"
+ ],
+ "bannerRemovedByKeyboard": true,
+ "mobile": {
+  "innerWidth": 390,
+  "scrollWidth": 390,
+  "horizontalOverflow": false
+ }
+}</div></div></div>
+<h2>Files</h2><details open><summary>site/new/index.html</summary><pre>&lt;!doctype html&gt;
+&lt;html lang=<span <span class="k">class</span>="s">"en"</span>&gt;
+&lt;head&gt;
+&lt;meta charset=<span <span class="k">class</span>="s">"utf-<span class="n">8</span>"</span>&gt;
+&lt;meta name=<span <span class="k">class</span>="s">"viewport"</span> content=<span <span class="k">class</span>="s">"width=device-width, initial-scale=<span class="n">1</span>"</span>&gt;
+&lt;title&gt;Tidewater – Scheduling software <span class="k">for</span> physiotherapy clinics&lt;/title&gt;
+&lt;meta name=<span <span class="k">class</span>="s">"description"</span> content=<span <span class="k">class</span>="s">"Tidewater is appointment scheduling <span class="k">for</span> small physiotherapy clinics: a smart calendar, reminders that reduce no-shows, and insights on your schedule."</span>&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"icon"</span> href=<span <span class="k">class</span>="s">"data:,"</span>&gt;
+&lt;!-- Resource hints: open the font connections early instead <span class="k">of</span> discovering them after the CSS arrives --&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"preconnect"</span> href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com"</span>&gt;
+&lt;link rel=<span <span class="k">class</span>="s">"preconnect"</span> href=<span <span class="k">class</span>="s">"https://fonts.gstatic.com"</span> crossorigin&gt;
+&lt;!-- Only the family and weights that are used; display=swap so text is visible <span class="k">while</span> the font loads --&gt;
+&lt;!-- Load the font CSS without blocking first paint (media swap), <span class="k">with</span> a no-JS fallback --&gt;
+&lt;link href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com/css2?family=Poppins:wght@<span class="n">400</span>;<span class="n">600</span>&amp;display=swap"</span> rel=<span <span class="k">class</span>="s">"stylesheet"</span> media=<span <span class="k">class</span>="s">"print"</span> onload=<span <span class="k">class</span>="s">"this.media='all'"</span>&gt;
+&lt;noscript&gt;&lt;link href=<span <span class="k">class</span>="s">"https://fonts.googleapis.com/css2?family=Poppins:wght@<span class="n">400</span>;<span class="n">600</span>&amp;display=swap"</span> rel=<span <span class="k">class</span>="s">"stylesheet"</span>&gt;&lt;/noscript&gt;
+&lt;style&gt;
+body{font-family:Poppins,sans-serif;margin:<span class="n">0</span>;color:#4b5563;background:#fff;padding-bottom:64px}
+.hero{min-height:100vh;background:linear-gradient(135deg,#6d28d9,#0e7490);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.hero h1{font-size:clamp(36px,8vw,64px);font-weight:<span class="n">600</span>}
+.btn{background:#fff;color:#5b21b6;padding:14px 28px;border-radius:30px;text-decoration:none;font-weight:<span class="n">600</span>}
+.btn:focus-visible,.banner button:focus-visible{outline:3px solid #fbbf24;outline-offset:3px}
+.features{display:flex;flex-wrap:wrap;gap:20px;padding:60px 24px}
+.card{flex:<span class="n">1</span> <span class="n">1</span> 240px;padding:24px;box-shadow:<span class="n">0</span> 10px 40px rgba(<span class="n">0</span>,<span class="n">0</span>,<span class="n">0</span>,.<span class="n">2</span>)}
+.testimonials{height:400px;padding:60px 24px}
+.banner{position:fixed;bottom:<span class="n">0</span>;left:<span class="n">0</span>;right:<span class="n">0</span>;padding:12px 16px;background:#<span class="n">111</span>;color:#d1d5db}
+.banner button{font:inherit;background:#fff;color:#<span class="n">111</span>;border:<span class="n">0</span>;border-radius:6px;padding:8px 14px;margin-left:8px;cursor:pointer}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+  &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"hero"</span>&gt;
+    &lt;p&gt;Welcome to Tidewater&lt;/p&gt;
+    &lt;h1&gt;The future <span class="k">of</span> clinic scheduling&lt;/h1&gt;
+    &lt;a <span class="k">class</span>=<span <span class="k">class</span>="s">"btn"</span> href=<span <span class="k">class</span>="s">"/signup"</span>&gt;Get started&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"features"</span>&gt;
+    &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h2&gt;Smart calendar&lt;/h2&gt;&lt;p&gt;Our AI-powered calendar revolutionizes how you schedule.&lt;/p&gt;&lt;/div&gt;
+    &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h2&gt;Reminders&lt;/h2&gt;&lt;p&gt;Seamlessly reduce no-shows <span class="k">with</span> cutting-edge reminders.&lt;/p&gt;&lt;/div&gt;
+    &lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"card"</span>&gt;&lt;h2&gt;Insights&lt;/h2&gt;&lt;p&gt;Unlock the power <span class="k">of</span> your data <span class="k">with</span> robust analytics.&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Rendered <span class="k">in</span> the HTML itself (was injected by jQuery after <span class="n">1.5</span> s, which shifted layout and needed a library) --&gt;
+  &lt;section <span class="k">class</span>=<span <span class="k">class</span>="s">"testimonials"</span>&gt;&lt;h2&gt;Loved by clinics&lt;/h2&gt;&lt;p&gt;<span <span class="k">class</span>="s">"Tidewater changed everything."</span> – A clinic&lt;/p&gt;&lt;/section&gt;
+&lt;/main&gt;
+&lt;div <span class="k">class</span>=<span <span class="k">class</span>="s">"banner"</span> id=<span <span class="k">class</span>="s">"cookies"</span>&gt;We use cookies. &lt;button <span class="k">type</span>=<span <span class="k">class</span>="s">"button"</span> id=<span <span class="k">class</span>="s">"cookies-ok"</span>&gt;OK&lt;/button&gt;&lt;/div&gt;
+&lt;script&gt;document.getElementById(<span <span class="k">class</span>="s">"cookies-ok"</span>).addEventListener(<span <span class="k">class</span>="s">"click"</span>,<span class="k">function</span>(){document.getElementById(<span <span class="k">class</span>="s">"cookies"</span>).remove()})&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></details>
+</main>
+
+</body></html>

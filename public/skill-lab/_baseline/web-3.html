@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign up for Tidewater</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #ecfeff, #eff6ff); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; color: #1f2937; }
+  .card { background: #fff; width: 100%; max-width: 440px; border-radius: 18px; padding: 36px 32px; box-shadow: 0 20px 50px rgba(14,116,144,.15); }
+  .logo { font-weight: 800; color: #0e7490; font-size: 20px; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+  .logo i { width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #3b82f6); display: inline-block; }
+  h1 { font-size: 26px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 6px; }
+  .sub { color: #6b7280; font-size: 15px; margin-bottom: 24px; }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  input[type=text], input[type=email], input[type=password], select {
+    width: 100%; padding: 11px 14px; border: 1.5px solid #d1d5db; border-radius: 10px; font-size: 15px; font-family: inherit; background: #fff; transition: border-color .2s, box-shadow .2s;
+  }
+  input:focus, select:focus { outline: none; border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6,182,212,.2); }
+  .field.invalid input, .field.invalid select { border-color: #dc2626; }
+  .field.invalid input:focus { box-shadow: 0 0 0 3px rgba(220,38,38,.15); }
+  .error { color: #dc2626; font-size: 13px; margin-top: 6px; display: none; }
+  .field.invalid .error { display: block; }
+  .hint { font-size: 12px; color: #6b7280; margin-top: 6px; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+  .check input { margin-top: 3px; width: 16px; height: 16px; accent-color: #0891b2; }
+  .check label { font-weight: 400; margin: 0; }
+  .check a { color: #0891b2; }
+  button.submit { width: 100%; padding: 13px; border: none; border-radius: 10px; background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 6px; font-family: inherit; }
+  button.submit:hover { opacity: .92; }
+  .success { display: none; background: #dcfce7; color: #166534; padding: 12px 14px; border-radius: 10px; margin-top: 16px; font-size: 14px; }
+  .login { text-align: center; font-size: 14px; color: #6b7280; margin-top: 18px; }
+  .login a { color: #0891b2; font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo"><i></i>Tidewater</div>
+  <h1>Create your account</h1>
+  <p class="sub">Start your 14-day free trial. No credit card needed.</p>
+  <form id="form" novalidate>
+    <div class="field" id="f-name">
+      <label for="name">Full name</label>
+      <input type="text" id="name" placeholder="Jane Smith" autocomplete="name">
+      <div class="error">Please enter your full name.</div>
+    </div>
+    <div class="field" id="f-email">
+      <label for="email">Work email</label>
+      <input type="email" id="email" placeholder="jane@yourclinic.com" autocomplete="email" value="jane@clinic">
+      <div class="error">Please enter a valid email address, like jane@yourclinic.com.</div>
+    </div>
+    <div class="field" id="f-pw">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" placeholder="At least 8 characters" autocomplete="new-password" value="abc123">
+      <div class="error">Password is too short. Use at least 8 characters.</div>
+    </div>
+    <div class="field" id="f-size">
+      <label for="size">Clinic size</label>
+      <select id="size">
+        <option value="">Select clinic size</option>
+        <option>Just me</option>
+        <option>2–5 practitioners</option>
+        <option>6–15 practitioners</option>
+        <option>16+ practitioners</option>
+      </select>
+      <div class="error">Please select your clinic size.</div>
+    </div>
+    <div class="field" id="f-terms">
+      <div class="check">
+        <input type="checkbox" id="terms">
+        <label for="terms">I accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
+      </div>
+      <div class="error">You need to accept the terms to continue.</div>
+    </div>
+    <button type="submit" class="submit">Create account</button>
+    <div class="success" id="ok">Account created. Welcome to Tidewater!</div>
+  </form>
+  <p class="login">Already have an account? <a href="#">Log in</a></p>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const checks = {
+    'f-name': () => $('name').value.trim().length >= 2,
+    'f-email': () => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('email').value.trim()),
+    'f-pw': () => $('pw').value.length >= 8,
+    'f-size': () => $('size').value !== '',
+    'f-terms': () => $('terms').checked
+  };
+  function validate(id) { const ok = checks[id](); $(id).classList.toggle('invalid', !ok); return ok; }
+  $('form').addEventListener('submit', e => {
+    e.preventDefault();
+    $('ok').style.display = 'none';
+    const results = Object.keys(checks).map(validate);
+    if (results.every(Boolean)) $('ok').style.display = 'block';
+  });
+  ['name', 'email', 'pw', 'size', 'terms'].forEach(f => {
+    const map = { name: 'f-name', email: 'f-email', pw: 'f-pw', size: 'f-size', terms: 'f-terms' };
+    $(f).addEventListener('blur', () => validate(map[f]));
+    $(f).addEventListener('input', () => { if ($(map[f]).classList.contains('invalid')) validate(map[f]); });
+  });
+  // show validation states on load so the errors are visible
+  validate('f-email'); validate('f-pw');
+</script>
+</body>
+</html>

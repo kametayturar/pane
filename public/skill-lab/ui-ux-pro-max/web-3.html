@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your Tidewater account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Design system (ui-ux-pro-max --design-system): Neumorphism, calm cyan + health green, Atkinson Hyperlegible */
+:root{
+ --color-primary:#0891B2;--color-on-primary:#000;--color-secondary:#22D3EE;--color-accent:#059669;--color-on-accent:#000;
+ --color-background:#ECFEFF;--color-foreground:#164E63;--color-card:#fff;--color-muted:#E8F1F6;--color-muted-foreground:#475569;
+ --color-border:#A5F3FC;--color-destructive:#B91C1C;--color-ring:#0E7490;
+ --radius:14px;--shadow-out:-6px -6px 14px rgba(255,255,255,.95),6px 6px 14px rgba(22,78,99,.16);
+ --shadow-in:inset -4px -4px 9px rgba(255,255,255,.95),inset 4px 4px 9px rgba(22,78,99,.14);
+ --shadow-sm:-3px -3px 8px rgba(255,255,255,.95),3px 3px 8px rgba(22,78,99,.14);
+ --space-1:4px;--space-2:8px;--space-3:16px;--space-4:24px;--space-5:32px;--space-6:48px;--space-7:64px;--space-8:96px;
+ --dur:200ms;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.5 "Atkinson Hyperlegible",system-ui,sans-serif;color:var(--color-foreground);background:var(--color-background);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--color-ring);outline-offset:3px;border-radius:8px}
+a{color:inherit}
+button,a.btn,select,input[type=checkbox]{cursor:pointer}
+.skip{position:absolute;left:-999px;top:8px;background:var(--color-foreground);color:#fff;padding:8px 14px;border-radius:8px;z-index:9}.skip:focus{left:8px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 var(--space-4)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 var(--space-4);border:0;border-radius:var(--radius);font:700 16px "Atkinson Hyperlegible";text-decoration:none;background:var(--color-primary);color:var(--color-on-primary);box-shadow:var(--shadow-sm);transition:box-shadow var(--dur) ease-out,transform var(--dur) ease-out}
+.btn:hover{box-shadow:-2px -2px 6px rgba(255,255,255,.95),2px 2px 6px rgba(22,78,99,.18)}
+.btn:active{box-shadow:var(--shadow-in);transform:scale(.985)}
+.btn.cta{background:var(--color-accent)}
+.btn.soft{background:var(--color-background);color:var(--color-foreground)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+body{display:grid;place-items:center;min-height:100vh;padding:var(--space-5) var(--space-3)}
+.card{width:100%;max-width:480px;background:var(--color-background);border-radius:24px;box-shadow:var(--shadow-out);padding:var(--space-6) var(--space-5)}
+.logo{display:flex;align-items:center;gap:10px;font:700 20px "Atkinson Hyperlegible";margin-bottom:var(--space-5)}
+.logo i{width:32px;height:32px;border-radius:10px;box-shadow:var(--shadow-sm);display:grid;place-items:center;color:var(--color-primary)}
+h1{font:700 28px/1.2 "Atkinson Hyperlegible";margin-bottom:var(--space-1)}
+.sub{color:var(--color-muted-foreground);margin-bottom:var(--space-4)}
+.sum{display:none;margin-bottom:var(--space-4);padding:var(--space-3);border-radius:var(--radius);box-shadow:var(--shadow-in);border-left:4px solid var(--color-destructive)}
+.sum.show{display:block}
+.sum h2{font:700 16px "Atkinson Hyperlegible";color:var(--color-destructive);margin-bottom:6px}
+.sum ul{margin:0;padding-left:20px}.sum a{color:var(--color-destructive);font-weight:700}
+.f{margin-bottom:var(--space-4)}
+label.t{display:block;font-weight:700;margin-bottom:8px}
+.req{color:var(--color-destructive)}
+input[type=text],input[type=email],input[type=password],select{width:100%;min-height:48px;padding:0 var(--space-3);border:2px solid transparent;border-radius:var(--radius);background:var(--color-background);box-shadow:var(--shadow-in);font:16px "Atkinson Hyperlegible";color:var(--color-foreground);appearance:none;-webkit-appearance:none;outline:none;transition:border-color var(--dur) ease-out}
+input:focus,select:focus{border-color:var(--color-ring)}
+.f.err input,.f.err select{border-color:var(--color-destructive)}
+.help{font-size:14px;color:var(--color-muted-foreground);margin-top:6px}
+.err-m{display:none;margin-top:6px;font-size:15px;font-weight:700;color:var(--color-destructive);gap:8px}
+.f.err .err-m{display:flex}
+.f.err .help{display:none}
+.pw{position:relative}.pw button{position:absolute;right:4px;top:2px;min-height:44px;min-width:60px;border:0;background:none;font:700 15px "Atkinson Hyperlegible";color:var(--color-ring);border-radius:10px}
+.sel{position:relative}.sel::after{content:"";position:absolute;right:18px;top:18px;width:9px;height:9px;border-right:2.5px solid var(--color-foreground);border-bottom:2.5px solid var(--color-foreground);transform:rotate(45deg);pointer-events:none}
+.chk{display:flex;gap:12px;align-items:flex-start;margin-bottom:var(--space-4);min-height:44px}
+.chk input{appearance:none;-webkit-appearance:none;flex:none;width:28px;height:28px;border-radius:8px;box-shadow:var(--shadow-in);border:2px solid transparent;display:grid;place-items:center;margin:0}
+.chk input:checked::after{content:"";width:12px;height:7px;border-left:3px solid var(--color-accent);border-bottom:3px solid var(--color-accent);transform:rotate(-45deg) translate(1px,-1px)}
+.chk.err input{border-color:var(--color-destructive)}
+.chk label{padding-top:2px}.chk a{color:var(--color-ring);font-weight:700}
+.go{width:100%;min-height:52px;font-size:17px}
+.go[disabled]{opacity:.6;cursor:wait}
+.alt{text-align:center;margin-top:var(--space-4);color:var(--color-muted-foreground)}.alt a{color:var(--color-ring);font-weight:700}
+.done{display:none;text-align:center}.done.show{display:block}
+@media (max-width:480px){.card{padding:var(--space-5) var(--space-3)}}
+</style>
+</head>
+<body>
+<main class="card">
+ <div class="logo"><i aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M2 14c3-4 5-4 8 0s5 4 8 0 3-3 4-2"/><path d="M2 19c3-4 5-4 8 0s5 4 8 0 3-3 4-2" opacity=".45"/></svg></i>Tidewater</div>
+ <form id="f" novalidate>
+  <h1>Create your account</h1>
+  <p class="sub">Free for 30 days. Fields marked <span class="req" aria-hidden="true">*</span> are required.</p>
+  <div class="sum" id="sum" role="alert" tabindex="-1"><h2>Fix 2 things to continue</h2><ul id="sum-l"></ul></div>
+  <div class="f" data-k="name"><label class="t" for="name">Full name <span class="req" aria-hidden="true">*</span></label><input id="name" type="text" autocomplete="name" required aria-describedby="name-e"><div class="err-m" id="name-e"></div></div>
+  <div class="f" data-k="email"><label class="t" for="email">Work email <span class="req" aria-hidden="true">*</span></label><input id="email" type="email" autocomplete="email" required value="jordan@northside" aria-describedby="email-e"><div class="err-m" id="email-e"></div></div>
+  <div class="f" data-k="pw"><label class="t" for="pw">Password <span class="req" aria-hidden="true">*</span></label><div class="pw"><input id="pw" type="password" autocomplete="new-password" required value="tide2" aria-describedby="pw-h pw-e"><button type="button" id="eye" aria-pressed="false" aria-label="Show password">Show</button></div><p class="help" id="pw-h">Use at least 10 characters.</p><div class="err-m" id="pw-e"></div></div>
+  <div class="f" data-k="size"><label class="t" for="size">Clinic size <span class="req" aria-hidden="true">*</span></label><div class="sel"><select id="size" required aria-describedby="size-e"><option value="">Select a size</option><option>Just me</option><option>2 to 5 therapists</option><option>6 to 15 therapists</option><option>16 or more therapists</option></select></div><div class="err-m" id="size-e"></div></div>
+  <div class="chk" id="tw"><input type="checkbox" id="terms" aria-describedby="terms-e"><label for="terms">I accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. <span class="req" aria-hidden="true">*</span><span class="err-m" id="terms-e" style="display:none;margin-top:4px"></span></label></div>
+  <button class="btn cta go" type="submit" id="go">Create account</button>
+  <p class="alt">Already have an account? <a href="#">Sign in</a></p>
+ </form>
+ <div class="done" id="done" role="status" tabindex="-1"><h1>Check your inbox</h1><p class="sub">We sent a confirmation link to <strong id="sent"></strong>.</p></div>
+</main>
+<script>
+const $=s=>document.querySelector(s),I={name:$('#name'),email:$('#email'),pw:$('#pw'),size:$('#size')};
+const L={name:'Full name',email:'Work email',pw:'Password',size:'Clinic size'};
+const rule={name:v=>v.trim().length<2?'Enter your full name.':'',
+ email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?'':'Enter a valid email, for example name@clinic.com.',
+ pw:v=>v.length<10?`Password is too short. Add ${10-v.length} more characters.`:'',
+ size:v=>v?'':'Select your clinic size.'};
+function check(k){const w=document.querySelector(`[data-k=${k}]`),m=rule[k](I[k].value);w.classList.toggle('err',!!m);$(`#${k}-e`).textContent=m;I[k].setAttribute('aria-invalid',!!m);return !m}
+function summary(show){const bad=Object.keys(I).filter(k=>I[k].getAttribute('aria-invalid')==='true');const termsBad=$('#tw').classList.contains('err');
+ const items=bad.map(k=>`<li><a href="#${k}">${L[k]}: ${$('#'+k+'-e').textContent}</a></li>`);if(termsBad)items.push('<li><a href="#terms">Accept the terms to continue.</a></li>');
+ $('#sum-l').innerHTML=items.join('');$('#sum h2').textContent=`Fix ${items.length} thing${items.length===1?'':'s'} to continue`;$('#sum').classList.toggle('show',show&&items.length>0)}
+for(const k in I){I[k].addEventListener('blur',()=>check(k));I[k].addEventListener('input',()=>{if(I[k].closest('.f').classList.contains('err')){check(k);summary($('#sum').classList.contains('show'))}})}
+$('#eye').onclick=e=>{const s=I.pw.type==='password';I.pw.type=s?'text':'password';e.target.textContent=s?'Hide':'Show';e.target.setAttribute('aria-pressed',s);e.target.setAttribute('aria-label',s?'Hide password':'Show password')};
+$('#terms').onchange=()=>{$('#tw').classList.remove('err');$('#terms-e').style.display='none'};
+$('#f').addEventListener('submit',e=>{e.preventDefault();let ok=true;for(const k in I)ok=check(k)&&ok;
+ const t=$('#terms').checked;$('#tw').classList.toggle('err',!t);$('#terms-e').textContent=t?'':'You need to accept the terms.';$('#terms-e').style.display=t?'none':'block';ok=ok&&t;
+ summary(true);if(!ok){$('#sum').focus();return}
+ $('#go').disabled=true;$('#go').textContent='Creating account...';setTimeout(()=>{$('#f').style.display='none';$('#sent').textContent=I.email.value;$('#done').classList.add('show');$('#done').focus()},600)});
+check('email');check('pw');summary(true);
+</script>
+</body>
+</html>

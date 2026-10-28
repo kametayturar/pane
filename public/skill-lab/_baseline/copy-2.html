@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome email – copy</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; max-width: 680px; margin: 0 auto; padding: 48px 24px; color: #222; line-height: 1.65; background: #fff; }
+  .meta { background: #f5f5f5; padding: 14px 16px; border-radius: 6px; font-size: 14px; margin-bottom: 28px; }
+  .meta div { margin: 2px 0; }
+  .meta b { display: inline-block; width: 80px; color: #666; font-weight: 600; }
+  p { margin: 14px 0; }
+  ol { padding-left: 22px; }
+  li { margin: 8px 0; }
+  .btn { display: inline-block; background: #e8e8e8; padding: 8px 16px; border-radius: 4px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="meta">
+  <div><b>From:</b> Tidewater Team &lt;hello@tidewater.example&gt;</div>
+  <div><b>To:</b> {{first_name}}</div>
+  <div><b>Subject:</b> Welcome to Tidewater, {{first_name}}</div>
+  <div><b>Preview:</b> Your clinic is set up. Here's how to book your first appointment.</div>
+</div>
+
+<p>Hi {{first_name}},</p>
+
+<p>Welcome to Tidewater, and thank you for choosing us for {{clinic_name}}. Your account is ready and your 14-day free trial has started.</p>
+
+<p>Here are three steps to get your schedule running today:</p>
+
+<ol>
+  <li><strong>Add your team.</strong> Invite your physiotherapists and set their working hours.</li>
+  <li><strong>Set up your appointment types.</strong> Add the sessions you offer, such as initial assessment or follow-up, with their length and price.</li>
+  <li><strong>Share your booking link.</strong> Put it on your website or send it to patients so they can book online.</li>
+</ol>
+
+<p><span class="btn">Go to my dashboard</span></p>
+
+<p>Already have patients in another system? You can import them from a CSV file in Settings &rarr; Import. It takes a few minutes.</p>
+
+<p>If you get stuck, just reply to this email. A real person will answer, usually within a few hours on weekdays.</p>
+
+<p>We're glad you're here.</p>
+
+<p>Best wishes,<br>Sam from the Tidewater team</p>
+
+<p style="font-size:13px;color:#777;margin-top:32px">You received this email because you created a Tidewater account. Tidewater, 1 Harbour Street, Bristol.</p>
+</body>
+</html>

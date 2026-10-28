@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-1-invalid.png" alt="browser-1: invalid email + short password -&gt; inline errors, no success box"><figcaption>browser-1: invalid email + short password -&gt; inline errors, no success box</figcaption></figure><figure><img src="browser-1-valid.png" alt="browser-1: valid data -&gt; success status message"><figcaption>browser-1: valid data -&gt; success status message</figcaption></figure></div>
+<h2>Result</h2><div class="result">browser-1 (signup flow)
+Submitting "dana@clinic" with a 5-character password: the form stays put, the inline errors "Enter a valid work email" and "Use at least 8 characters" appear, the name error is empty and no success box is rendered. Submitting dana@reyesphysio.com with a valid password: all three error slots are cleared and a role=status box reads "Account created for dana@reyesphysio.com. Check your inbox." Network log shows no request other than the page load, so signup is purely client-side: nothing is sent to a server, the "account" is never persisted.
+
+
+Tool: dev-browser. The SKILL.md describes the Puppeteer-based 1.0 API (page.snapshot, ref/eN, waitForLoad), but `npm i dev-browser` installed 0.2.9 (the old Playwright/QuickJS version: its daemon asked for "dev-browser install" and has no snapshot API). I installed the `next` tag instead (1.0.0-rc.4), which matches the skill; it reused the system Chrome. Followed the skill: read `dev-browser --help` first, named pages, snapshot -&gt; act by ref -&gt; verify with the cheapest check, end scripts with semicolons, headless via --headless. Server: python3 -m http.server on port 7113 (my range was 7111-7130), killed afterwards; `dev-browser stop` ended the daemon.
+Notes: incremental snapshots (track) only showed interactive-element changes, so the inline error text was verified with $$eval instead. dev-browser prints page console errors and uncaught exceptions at the end of every script on its own ("[page:book] uncaught: ...") which made the browser-2 root cause visible with no extra code. Screenshots go to ~/.dev-browser/v1/tmp and were copied from there.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># latest tag is the old API; the skill's snapshot/ref API is not there</div><div class="cmd">npm i dev-browser &amp;&amp; dev-browser --help</div><div class="out">dev-browser 0.2.9 ... Scripts run in a sandboxed QuickJS runtime ... 'Embedded daemon dependencies are missing. Run `dev-browser install` first.'</div></div><div class="step"><div class="note"># this version matches the SKILL.md</div><div class="cmd">npm i dev-browser@next &amp;&amp; dev-browser --help &amp;&amp; dev-browser install</div><div class="out">dev-browser 1.0.0-rc.4 — browser automation CLI for coding agents (Puppeteer scripts, named pages, snapshot refs)
+...
+Chrome already available (system): /Applications/Google Chrome.app/Contents/MacOS/Google Chrome</div></div><div class="step"><div class="note"># look</div><div class="cmd">dev-browser --headless -t 20 &lt;&lt;'EOF'
+const page = await browser.getPage("signup");
+await page.goto("http://localhost:7113/index.html");
+await page.snapshot({ interactive: true, track: "s" }).then(s =&gt; s.full)
+EOF</div><div class="out">- main [ref=e5]:
+  - heading "Create your clinic account" [level=1] [ref=e6]
+  - textbox "Full name" [ref=e9]
+  - textbox "Work email" [ref=e12]
+  - textbox "Password" [ref=e15]
+  - combobox "Clinic size" [ref=e18]
+  - button "Create account" [ref=e19]</div></div><div class="step"><div class="note"># browser-1, invalid; the incremental diff only covers interactive nodes, so errors were read with $$eval</div><div class="cmd">dev-browser --headless -t 20 &lt;&lt;'EOF'   # fill ref/e9, ref/e12 'dana@clinic', ref/e15 'short', click ref/e19, waitForSelector, incremental snapshot, shot, read .err texts
+EOF</div><div class="out">[image] ~/.dev-browser/v1/tmp/browser-1-invalid.png (1280x720)
+-   - textbox "Full name" [ref=e9]
++   - textbox "Full name" [ref=e9]: Dana Reyes
++   - textbox "Work email" [ref=e12]: dana@clinic
+{ "errors": ["e-name: ", "e-email: Enter a valid work email", "e-pw: Use at least 8 characters"], "successBoxes": 0 }</div></div><div class="step"><div class="note"># browser-1, valid: the named page 'signup' persisted between runs, no re-navigation</div><div class="cmd">dev-browser --headless -t 20 &lt;&lt;'EOF'   # same named page: fill valid email/password, click, wait for .ok, shot
+EOF</div><div class="out">{ "errors": ["e-name: \"\"", "e-email: \"\"", "e-pw: \"\""], "success": "Account created for dana@reyesphysio.com. Check your inbox." }</div></div><div class="step"><div class="note"># cleanup; no listeners left in my port range</div><div class="cmd">dev-browser stop; pkill -f 'http.server 7113'; lsof -nP -iTCP:7111-7130 -sTCP:LISTEN</div><div class="out">stopped 1 browser(s) and the daemon</div></div></div>
+<h2>Files</h2><details open><summary>browser-2 script (as run)</summary><pre><span class="k">const</span> page = <span class="k">await</span> browser.getPage(<span <span class="k">class</span>="s">"book"</span>);
+<span class="k">await</span> page.goto(<span <span class="k">class</span>="s">"http://localhost:<span class="n">7113</span>/index.html#book"</span>);
+<span class="k">await</span> page.waitForSelector(<span <span class="k">class</span>="s">"#book"</span>, { visible: <span class="k">true</span>, timeout: <span class="n">3000</span> });
+console.log(<span class="k">await</span> page.snapshot({ interactive: <span class="k">true</span> }));
+<span class="k">const</span> reqs = [];
+page.on(<span <span class="k">class</span>="s">"request"</span>, r =&gt; { <span class="k">if</span> (r.url().includes(<span <span class="k">class</span>="s">"/api/"</span>)) reqs.push(r.method() + <span <span class="k">class</span>="s">" "</span> + r.url()); });
+<span class="k">await</span> page.click(<span <span class="k">class</span>="s">"#book"</span>);
+<span class="k">await</span> <span class="k">new</span> Promise(r =&gt; setTimeout(r, <span class="n">600</span>));
+<span class="k">const</span> shot = <span class="k">await</span> page.shot({ name: <span <span class="k">class</span>="s">"browser-<span class="n">2</span>-click.png"</span> });
+({ requestsFired: reqs, resultHtml: <span class="k">await</span> page.$eval(<span <span class="k">class</span>="s">"#result"</span>, e =&gt; e.innerHTML),
+   selectedVar: <span class="k">await</span> page.evaluate(() =&gt; typeof selected),
+   highlighted: <span class="k">await</span> page.$eval(<span <span class="k">class</span>="s">".slot.sel"</span>, e =&gt; e.textContent), shot: shot.path })</pre></details>
+</main>
+
+</body></html>

@@ -1,0 +1,40 @@
+{
+  "id": "hallmark",
+  "sets": [
+    "web"
+  ],
+  "skillSays": [
+    "Pre-flight the project, then ask audience, use case and tone (or state the inferences when told to go ahead) before designing; 'clean and modern' is not a tone.",
+    "Pick a genre, a named theme and one of 21 macrostructures out loud before writing code, and never repeat the previous build's macrostructure, nav or footer archetype.",
+    "Locked tokens: every colour and font comes from named OKLCH variables in :root, three font families at most, no inline hexes, no italic headings, no pure black or white surfaces outside the genre exceptions.",
+    "Ban the AI tells by name: purple gradient heroes, 3-column icon-tile grids, eyebrows on every section, fake browser chrome, invented metrics, the default full-width nav and four-column footer.",
+    "Run a 58-gate slop test and a six-axis self-critique before handoff, and stamp the choices at the top of the CSS."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Chose modern-minimal / Coral (warm grey paper, one coral accent, Geist) and the Workbench macrostructure, so the page is a tour of product frames rather than hero plus three feature cards",
+        "Replaced the standard nav with a detached floating pill (N5) and the footer with a single inline line (Ft2)",
+        "Product frames are drawn as UI with only a hairline border, no fake browser bar, and the callout carries a motivated dot, no decorative ornament",
+        "Primary button is ink-filled with coral limited to small marks, keeping the accent under a few percent of the viewport"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Switched macrostructure to Bento Grid (different from the previous build): one tall inverted Clinic tile beside two wide plan tiles instead of three equal columns",
+        "Used N9 edge-aligned nav and a statement closing line, rotating archetypes as the skill requires",
+        "Billed-period line reserves a one-line slot so toggling never shifts the layout"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Handled the form to the input-state gate: constant 1px borders, outline-based focus ring reserved at rest, 44px input and button height, error slot reserved at 1lh",
+        "Error copy follows the three-part rule and the checkbox, show/hide and submit all have hover, focus-visible and active styles",
+        "Split Studio layout (context left, form right) with a quiet wordmark instead of a nav"
+      ]
+    }
+  ]
+}

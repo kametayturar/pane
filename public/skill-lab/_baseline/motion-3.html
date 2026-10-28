@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task list</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f1f5f9; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .panel { background: #fff; border-radius: 16px; width: 100%; max-width: 420px; padding: 24px; box-shadow: 0 10px 30px rgba(15,23,42,.08); border: 1px solid #e2e8f0; }
+  h2 { font-size: 18px; color: #0f172a; margin-bottom: 4px; }
+  .count { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+  .input { display: flex; gap: 8px; margin-bottom: 14px; }
+  .input .field { flex: 1; border: 1.5px solid #e2e8f0; border-radius: 9px; padding: 9px 12px; font-size: 14px; color: #94a3b8; min-height: 38px; display: flex; align-items: center; }
+  .input .field.typing { color: #0f172a; border-color: #06b6d4; }
+  .input .add { background: #0891b2; color: #fff; border-radius: 9px; padding: 0 16px; font-size: 14px; font-weight: 600; display: flex; align-items: center; transition: transform .1s; }
+  .input .add.press { transform: scale(.94); }
+  ul { list-style: none; }
+  li { display: flex; align-items: center; gap: 12px; padding: 11px 6px; border-bottom: 1px solid #f1f5f9; overflow: hidden; max-height: 60px; transition: max-height .35s ease, opacity .3s ease, transform .35s ease, padding .35s ease; }
+  li.enter { max-height: 0; opacity: 0; transform: translateX(-16px); padding-top: 0; padding-bottom: 0; }
+  li.leave { max-height: 0; opacity: 0; transform: translateX(24px); padding-top: 0; padding-bottom: 0; }
+  .box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #cbd5e1; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+  .box svg { width: 12px; height: 12px; stroke: #fff; fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset .25s ease .05s; }
+  li.done .box { background: #10b981; border-color: #10b981; }
+  li.done .box svg { stroke-dashoffset: 0; }
+  .label { font-size: 15px; color: #1e293b; transition: color .2s; position: relative; }
+  li.done .label { color: #94a3b8; text-decoration: line-through; }
+  .replay { position: fixed; bottom: 20px; left: 20px; padding: 8px 14px; border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; font-family: inherit; font-size: 13px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="panel">
+  <h2>Today's front desk</h2>
+  <div class="count" id="count"></div>
+  <div class="input"><div class="field" id="field">Add a task…</div><div class="add" id="add">Add</div></div>
+  <ul id="list"></ul>
+</div>
+<button class="replay" id="replay">Replay</button>
+<script>
+  const list = document.getElementById('list'), field = document.getElementById('field'), add = document.getElementById('add'), count = document.getElementById('count');
+  const tasks = ['Confirm tomorrow\'s bookings', 'Call back J. Carter', 'Order resistance bands', 'Update Room 2 schedule'];
+  const check = '<svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>';
+  let timers = [], seq = 0;
+  const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+  function updateCount() {
+    const all = list.querySelectorAll('li:not(.leave)'), done = list.querySelectorAll('li.done:not(.leave)');
+    count.textContent = all.length ? done.length + ' of ' + all.length + ' done' : 'All clear';
+  }
+  function addTask(text) {
+    const li = document.createElement('li');
+    li.className = 'enter';
+    li.innerHTML = '<span class="box">' + check + '</span><span class="label"></span>';
+    li.querySelector('.label').textContent = text;
+    list.appendChild(li);
+    void li.offsetWidth;
+    li.classList.remove('enter');
+    updateCount();
+    return li;
+  }
+  function type(text, done) {
+    field.classList.add('typing'); field.textContent = '';
+    [...text].forEach((c, i) => at(i * 35, () => { field.textContent += c; }));
+    const total = text.length * 35;
+    at(total + 250, () => add.classList.add('press'));
+    at(total + 400, () => { add.classList.remove('press'); field.classList.remove('typing'); field.textContent = 'Add a task…'; done(); });
+  }
+  function run() {
+    timers.forEach(clearTimeout); timers = [];
+    list.innerHTML = ''; updateCount();
+    let t = 600;
+    const steps = [];
+    tasks.slice(0, 3).forEach(txt => { steps.push(() => type(txt, () => addTask(txt))); });
+    // add steps with fixed timing
+    const typeDur = txt => txt.length * 35 + 400;
+    tasks.slice(0, 3).forEach(txt => { at(t, () => type(txt, () => addTask(txt))); t += typeDur(txt) + 500; });
+    // check off
+    [0, 2, 1].forEach(i => { at(t, () => { list.children[i].classList.add('done'); updateCount(); }); t += 800; });
+    t += 400;
+    // remove
+    [0, 0, 0].forEach(() => {
+      at(t, () => { const li = list.querySelector('li:not(.leave)'); if (li) { li.classList.add('leave'); updateCount(); at(380, () => li.remove()); } });
+      t += 650;
+    });
+    t += 1200;
+    at(t, run);
+  }
+  document.getElementById('replay').addEventListener('click', run);
+  run();
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "id": "color-expert",
+  "sets": ["web"],
+  "skillSays": [
+    "Treat colour as a system, not a pick: build ramps in OKLCH so lightness steps are even across hues, then clamp chroma to the gamut instead of letting it clip.",
+    "Layer tokens as reference (raw palette), semantic (surface, text, brand, accent, error) and component use, and encode decisions (hover, tints) as derivations rather than hand-picked hex.",
+    "Use native CSS colour features first: oklch(), color-mix(in oklab), relative colour syntax, light-dark(), and gradients interpolated in OKLCH so they do not go grey in the middle.",
+    "Check every text and background pair with WCAG and APCA in both light and dark, and keep tints neutral-tinted rather than pure grey.",
+    "Proportion the palette (60-30-10), prefer character (muted, vivid, deep) over hue-wheel rules, and compute a complement from the actual colour's OKLCH hue instead of a colour name."
+  ],
+  "examples": [
+    { "prompt": "web-1", "changes": [
+      "Generated sea, coral, neutral, red and green ramps (50 to 950) in OKLCH with gamut-clamped chroma and tinted the grey ramp toward the brand hue, instead of picking a few hex values by eye.",
+      "Took the accent from the brand's actual OKLCH hue plus 180 degrees (sea 222, coral 42) and kept it to roughly 10% of the page: dots, one underline and the open-slot marker; teal surfaces carry the other 30%, neutrals the 60%.",
+      "Hero gradient is interpolated in OKLCH, the hover state is color-mix(in oklab) of the brand with the text colour, and translucent washes use relative colour syntax, so nothing has a second hard-coded hex.",
+      "Verified 26 text and surface pairs in light and dark with both WCAG and APCA, and changed the tertiary text step after one pair failed 4.5:1."
+    ]},
+    { "prompt": "web-2", "changes": [
+      "The recommended plan is separated by a brand-tinted OKLCH gradient and brand border, while coral appears only on the Most popular flag and the savings pill, so the accent stays rare.",
+      "Text on the coral flag uses the near-black neutral (4.8:1) rather than white, because the skill says to check the pair, not assume it.",
+      "Dark mode swaps through light-dark() on the semantic tokens, so every card, price and check icon follows without separate dark rules."
+    ]},
+    { "prompt": "web-3", "changes": [
+      "Error styling is a semantic pair (red text on a red-tinted background, both checked at 6:1 or more in both modes), plus a 3px ring derived from the error colour with relative syntax.",
+      "Control borders use the tertiary text step (4.5:1) so inputs stay visible, rather than a faint decorative line.",
+      "The page backdrop is an OKLCH gradient from the brand tint into the neutral surface, which stays clean instead of turning grey mid-way."
+    ]}
+  ]
+}

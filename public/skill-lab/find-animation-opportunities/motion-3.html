@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidewater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10302e;--ink2:#58716e;--paper:#eef4f2;--card:#fff;--line:rgba(16,48,46,.09);--teal:#0f766e;--teal2:#14b8a6;--tint:#e0f1ed;--danger:#b4361f;
+--shadow:0 1px 2px rgba(16,48,46,.06),0 10px 28px -10px rgba(16,48,46,.16)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:20px 32px}
+.brand{display:flex;gap:10px;align-items:center;font-weight:650;font-size:17px;letter-spacing:-.01em}
+.brand svg{width:26px;height:26px}
+.replay{font:inherit;font-size:13.5px;font-weight:550;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 14px 7px 11px;cursor:pointer;display:inline-flex;gap:7px;align-items:center;box-shadow:0 1px 2px rgba(16,48,46,.05)}
+.replay svg{width:14px;height:14px}
+main{flex:1;display:grid;place-items:center;padding:8px 16px 64px}
+.app{width:min(720px,100%);background:var(--card);border-radius:20px;box-shadow:var(--shadow);position:relative}
+.app-h{display:flex;justify-content:space-between;align-items:center;padding:22px 26px 12px;gap:12px}
+.app-h h1{font-size:19px;letter-spacing:-.015em;font-weight:620}
+.pill{font-size:12.5px;font-weight:550;color:var(--teal);background:var(--tint);padding:5px 11px;border-radius:99px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.slots{list-style:none;padding:4px 14px 18px}
+.slots li{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:12px;padding:15px 12px;border-radius:12px;min-height:68px}
+.slots li+li{border-top:1px solid var(--line)}
+time{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:14px}
+.who b{display:block;font-weight:600;font-size:15px}
+.who span{font-size:13px;color:var(--ink2)}
+.who.open b{color:var(--ink2);font-weight:550}
+.btn{font:inherit;font-weight:600;font-size:14px;background:var(--teal);color:#fff;border:0;border-radius:10px;padding:9px 18px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);padding:8px;border-radius:10px;display:grid;place-items:center}
+.btn.ghost svg{width:20px;height:20px}
+/* toast */
+.toast{position:fixed;right:28px;bottom:28px;z-index:20;display:flex;align-items:center;gap:12px;background:#10302e;color:#fff;padding:14px 12px 14px 14px;border-radius:14px;font-size:14.5px;font-weight:500;max-width:calc(100vw - 32px)}
+.toast .ico{width:24px;height:24px;flex:none}
+.toast .ico svg{width:24px;height:24px;display:block;overflow:visible}
+.ring{fill:#14b8a6}.tick{fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.toast .txt{display:block}
+.toast .x{font:inherit;background:transparent;border:0;color:rgba(255,255,255,.55);width:26px;height:26px;border-radius:8px;font-size:18px;line-height:1;cursor:pointer;flex:none}
+@media (max-width:480px){.toast{left:16px;right:16px;bottom:16px}header.top{padding:16px}}
+/* dropdown */
+.appts{list-style:none;padding:4px 14px 18px}
+.appts>li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:16px 12px;position:relative;border-radius:12px}
+.appts>li+li{border-top:1px solid var(--line)}
+.av{width:44px;height:44px;border-radius:50%;background:var(--tint);color:var(--teal);display:grid;place-items:center;font-weight:650;font-size:14px}
+.menu-wrap{position:relative}
+.menu{position:absolute;right:0;top:calc(100% + 6px);width:224px;background:#fff;border-radius:14px;padding:6px;z-index:10}
+.menu button{display:block;width:100%;text-align:left;font:inherit;font-size:14.5px;padding:10px 12px;border:0;background:transparent;border-radius:9px;color:var(--ink);cursor:pointer;position:relative}
+.menu hr{border:0;height:1px;background:var(--line);margin:5px 4px}
+.menu .danger{color:var(--danger)}
+/* tasks */
+.add{display:flex;gap:10px;margin:0 26px 8px}
+.inp{flex:1;border:1px solid var(--line);border-radius:10px;padding:0 14px;min-height:40px;display:flex;align-items:center;font-size:14.5px;min-width:0;white-space:nowrap;overflow:hidden}
+.inp:empty::before{content:attr(data-ph);color:#8aa09d}
+.tasks{list-style:none;padding:6px 14px 8px;position:relative}
+.task{display:flex;align-items:center;gap:12px;padding:0 12px;min-height:54px;border-radius:12px;font-size:15px;background:#fff}
+.chk{width:22px;height:22px;border-radius:7px;border:1.6px solid #b3c5c2;background:#fff;display:grid;place-items:center;flex:none;cursor:pointer;padding:0}
+.chk svg{width:14px;height:14px;overflow:visible}
+.chk path{fill:none;stroke:#fff;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.lbl{position:relative;min-width:0}
+.del{margin-left:auto;font:inherit;background:transparent;border:0;color:var(--ink2);font-size:20px;line-height:1;width:28px;height:28px;border-radius:8px;cursor:pointer;flex:none}
+.tasks{min-height:190px}
+.empty{margin-top:-190px;height:190px;display:grid;place-items:center;text-align:center;color:var(--ink2);font-size:14px;pointer-events:none;position:relative}
+.empty[hidden]{display:none}
+.foot{display:flex;justify-content:space-between;padding:10px 26px 22px;font-size:13px;color:var(--ink2)}
+:root{--ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1);--ease-drawer:cubic-bezier(0.32,0.72,0,1)}
+.btn{transition:transform 160ms ease-out}
+.btn:active,.btn.press{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.btn.ghost:hover{background:var(--tint)}}
+.tw{display:grid;grid-template-rows:1fr;opacity:1;transition:grid-template-rows 200ms var(--ease-out),opacity 200ms var(--ease-out)}
+.tw.collapsed{grid-template-rows:0fr;opacity:0}
+.tw.leaving{transition-duration:150ms}
+.tin{overflow:hidden;min-height:0}
+.lbl{transition:color 150ms ease-out}
+.lbl::after{content:'';position:absolute;left:0;right:0;top:55%;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform 160ms var(--ease-out)}
+.done .lbl{color:#8aa09d}.done .lbl::after{transform:scaleX(1)}
+.chk{transition:background-color 120ms ease-out,border-color 120ms ease-out,transform 160ms ease-out}
+.chk:active{transform:scale(.97)}
+.chk path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 160ms var(--ease-out)}
+.done .chk{background:var(--teal);border-color:var(--teal)}.done .chk path{stroke-dashoffset:0}
+.del{opacity:.55}
+@media (prefers-reduced-motion:reduce){.tw,.tw.collapsed{transition:opacity 150ms ease-out}.lbl::after{transition:none}.chk path{transition:none}}</style></head><body>
+<header class="top"><div class="brand"><svg viewBox="0 0 26 26"><rect width="26" height="26" rx="8" fill="#0f766e"/><path d="M4.5 15c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3 2.2 3 4.3 3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M4.5 19.5c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3 2.2 3 4.3 3" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/></svg>Tidewater</div><button class="replay" id="replay" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1"/><path d="M2.3 2.2v3h3"/></svg>Replay</button></header>
+<main><div class="app" id="app"><div class="app-h"><h1>Front desk · Tuesday</h1><span class="pill" id="count">0 of 0 done</span></div>
+<div class="add"><div class="inp" id="inp" data-ph="Add a task…"></div><button class="btn" id="addBtn" type="button">Add</button></div>
+<ul class="tasks" id="list"></ul><p class="empty" id="empty">No tasks yet. Add the first one above.</p>
+<div class="foot"><span>Shared with 3 teammates</span><span>Resets at midnight</span></div></div></main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const raf=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let RUN=0;class Cancel extends Error{}
+function guard(id){return async ms=>{await wait(ms);if(id!==RUN)throw new Cancel()}}
+async function typeInto(el,text,w,per=26){for(let i=1;i<=text.length;i++){el.textContent=text.slice(0,i);await w(per)}}
+function start(setup,seq){const go=async()=>{const id=++RUN;const w=guard(id);try{while(id===RUN){await setup();await seq(w,id)}}catch(e){if(!(e instanceof Cancel))throw e}};$('#replay').onclick=go;go()}
+
+const TT=['Confirm 9:00 with Marta','Call insurer about J. Pärn','Restock treatment tables'];
+async function taskScenario(w,h){
+ await w(700);
+ for(let i=0;i<3;i++){await typeInto($('#inp'),TT[i],w,22);await w(120);await h.pressAdd();$('#inp').textContent='';await h.add(TT[i],i);await w(i<2?420:700)}
+ await w(500);await h.check(0);await w(800);await h.check(1);await w(1000);await h.remove(0);await w(700);await h.remove(1);await w(800);await h.remove(2);await w(1500)}
+async function toastScenario(w,h){await w(900);await h.press();fillSlot(true);await h.show();await w(h.hold);await h.hide();await w(1500)}
+async function menuScenario(w,h){await w(800);await h.press();await h.open();await w(700);for(const i of [0,1,2]){h.hl(i);await w(i<2?480:600)}await h.choose(2);await h.close();await w(1600)}
+function setCount(done,total){$('#count').textContent=done+' of '+total+' done'}
+
+const list=$('#list'),empty=$('#empty'),els=[];
+const TICK='<svg viewBox="0 0 16 16"><path pathLength="1" d="M3.5 8.4l3 3 6-6.8"/></svg>';
+const mk=t=>{const li=document.createElement('li');li.className='tw collapsed';li.innerHTML='<div class="tin"><div class="task"><button class="chk" type="button" aria-label="Mark done">'+TICK+'</button><span class="lbl"></span><button class="del" type="button" aria-label="Remove task">×</button></div></div>';li.querySelector('.lbl').textContent=t;return li};
+const upd=()=>{const live=els.filter(e=>e.isConnected&&!e.gone);setCount(live.filter(e=>e.classList.contains('done')).length,live.length);empty.hidden=live.length>0};
+start(()=>{list.innerHTML='';els.length=0;$('#inp').textContent='';upd()},w=>taskScenario(w,{
+ pressAdd:async()=>{const b=$('#addBtn');b.classList.add('press');await wait(120);b.classList.remove('press')},
+ add:async t=>{const li=mk(t);list.appendChild(li);els.push(li);li.offsetHeight;li.classList.remove('collapsed');upd()},
+ check:async i=>{els[i].classList.add('done');upd()},
+ remove:async i=>{const li=els[i];li.gone=true;li.classList.add('leaving','collapsed');upd();await wait(160);li.remove()}}));</script>
+</body></html>

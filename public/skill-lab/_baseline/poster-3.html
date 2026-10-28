@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapping the World – exhibition poster</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #2a2118; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .poster {
+    --w: min(calc(100vw - 32px), calc((100vh - 32px) * 0.72));
+    width: var(--w); aspect-ratio: 18/25; position: relative; overflow: hidden; background: #efe2c3; color: #3b2a1a; font-family: 'Cormorant Garamond', serif; container-type: inline-size;
+    background-image: radial-gradient(ellipse at center, #f5ead0 30%, #dcc79a 100%);
+  }
+  .frame { position: absolute; inset: 3cqw; border: .4cqw solid #3b2a1a; }
+  .frame::after { content: ''; position: absolute; inset: 1cqw; border: .15cqw solid #3b2a1a; }
+  .head { position: absolute; top: 8cqw; left: 0; right: 0; text-align: center; }
+  .head .kicker { font-family: 'Inter', sans-serif; font-size: 2.2cqw; letter-spacing: .4em; text-transform: uppercase; color: #8a5a2b; }
+  .head h1 { font-size: 15cqw; font-weight: 700; line-height: .95; margin-top: 2cqw; }
+  .head h1 em { font-weight: 500; }
+  .head .sub { font-size: 4.2cqw; font-style: italic; margin-top: 2cqw; }
+  .globe { position: absolute; top: 46%; left: 50%; width: 56cqw; height: 56cqw; transform: translate(-50%, -20%); }
+  .foot { position: absolute; bottom: 8cqw; left: 0; right: 0; text-align: center; }
+  .foot .dates { font-size: 5cqw; font-weight: 700; }
+  .foot .place { font-family: 'Inter', sans-serif; font-size: 2cqw; letter-spacing: .12em; text-transform: uppercase; margin-top: 1.5cqw; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="frame"></div>
+  <div class="head">
+    <div class="kicker">An exhibition</div>
+    <h1>Mapping<br><em>the World</em></h1>
+    <div class="sub">Five centuries of maps, from parchment to satellite</div>
+  </div>
+  <svg class="globe" viewBox="-100 -100 200 200">
+    <g fill="none" stroke="#3b2a1a" stroke-width=".8">
+      <circle r="90"/><circle r="94" stroke-width=".4"/>
+      <ellipse rx="90" ry="30"/><ellipse rx="90" ry="60"/><ellipse rx="30" ry="90"/><ellipse rx="60" ry="90"/>
+      <line x1="-90" y1="0" x2="90" y2="0"/><line x1="0" y1="-90" x2="0" y2="90"/>
+    </g>
+    <g fill="#c9a66b" stroke="#3b2a1a" stroke-width=".8" opacity=".9">
+      <path d="M-55 -30 q10 -20 30 -14 q14 6 6 20 q-8 10 -4 22 q-10 16 -22 8 q-14 -10 -10 -36z"/>
+      <path d="M10 -50 q20 -8 36 6 q8 18 -4 26 q-6 14 6 26 q-4 14 -22 10 q-10 -20 -14 -34 q-6 -16 -2 -34z"/>
+      <path d="M-30 34 q10 -4 14 6 q0 14 -8 18 q-8 -4 -6 -24z"/>
+    </g>
+    <g transform="translate(0,0)" stroke="#8a2b1a" fill="#8a2b1a">
+      <path d="M0 -112 l5 14 l-5 -4 l-5 4z"/><text x="0" y="-116" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="12" font-weight="700" stroke="none">N</text>
+    </g>
+    <path d="M-70 60 q12 -8 24 0 q12 8 24 0" fill="none" stroke="#3b2a1a" stroke-width=".8"/>
+    <path d="M30 70 q12 -8 24 0 q12 8 24 0" fill="none" stroke="#3b2a1a" stroke-width=".8"/>
+  </svg>
+  <div class="foot">
+    <div class="dates">12 March – 30 August 2026</div>
+    <div class="place">City Museum · Gallery Hall 2 · Free entry on Sundays</div>
+  </div>
+</div>
+</body>
+</html>

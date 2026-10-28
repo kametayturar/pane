@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – Scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Design system (ui-ux-pro-max --design-system): Neumorphism, calm cyan + health green, Atkinson Hyperlegible */
+:root{
+ --color-primary:#0891B2;--color-on-primary:#000;--color-secondary:#22D3EE;--color-accent:#059669;--color-on-accent:#000;
+ --color-background:#ECFEFF;--color-foreground:#164E63;--color-card:#fff;--color-muted:#E8F1F6;--color-muted-foreground:#475569;
+ --color-border:#A5F3FC;--color-destructive:#B91C1C;--color-ring:#0E7490;
+ --radius:14px;--shadow-out:-6px -6px 14px rgba(255,255,255,.95),6px 6px 14px rgba(22,78,99,.16);
+ --shadow-in:inset -4px -4px 9px rgba(255,255,255,.95),inset 4px 4px 9px rgba(22,78,99,.14);
+ --shadow-sm:-3px -3px 8px rgba(255,255,255,.95),3px 3px 8px rgba(22,78,99,.14);
+ --space-1:4px;--space-2:8px;--space-3:16px;--space-4:24px;--space-5:32px;--space-6:48px;--space-7:64px;--space-8:96px;
+ --dur:200ms;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.5 "Atkinson Hyperlegible",system-ui,sans-serif;color:var(--color-foreground);background:var(--color-background);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--color-ring);outline-offset:3px;border-radius:8px}
+a{color:inherit}
+button,a.btn,select,input[type=checkbox]{cursor:pointer}
+.skip{position:absolute;left:-999px;top:8px;background:var(--color-foreground);color:#fff;padding:8px 14px;border-radius:8px;z-index:9}.skip:focus{left:8px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 var(--space-4)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 var(--space-4);border:0;border-radius:var(--radius);font:700 16px "Atkinson Hyperlegible";text-decoration:none;background:var(--color-primary);color:var(--color-on-primary);box-shadow:var(--shadow-sm);transition:box-shadow var(--dur) ease-out,transform var(--dur) ease-out}
+.btn:hover{box-shadow:-2px -2px 6px rgba(255,255,255,.95),2px 2px 6px rgba(22,78,99,.18)}
+.btn:active{box-shadow:var(--shadow-in);transform:scale(.985)}
+.btn.cta{background:var(--color-accent)}
+.btn.soft{background:var(--color-background);color:var(--color-foreground)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+nav.top{display:flex;align-items:center;justify-content:space-between;min-height:80px}
+.logo{display:flex;align-items:center;gap:10px;font:700 22px "Atkinson Hyperlegible";text-decoration:none}
+.logo i{width:32px;height:32px;border-radius:10px;background:var(--color-background);box-shadow:var(--shadow-sm);display:grid;place-items:center;color:var(--color-primary)}
+.links{display:flex;gap:var(--space-4);align-items:center}
+.links a:not(.btn){text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 4px;font-weight:700;color:var(--color-muted-foreground)}
+.links a:not(.btn):hover{color:var(--color-foreground)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-7);align-items:center;padding:var(--space-6) 0 var(--space-8)}
+h1{font:700 clamp(36px,5vw,56px)/1.1 "Atkinson Hyperlegible";letter-spacing:-.01em;margin-bottom:var(--space-3)}
+.lede{font-size:19px;line-height:1.6;color:var(--color-muted-foreground);max-width:32em;margin-bottom:var(--space-5)}
+.cta-row{display:flex;gap:var(--space-3);flex-wrap:wrap}
+.note{margin-top:var(--space-3);font-size:15px;color:var(--color-muted-foreground);display:flex;align-items:center;gap:8px}
+.note svg{color:var(--color-accent)}
+/* hero panel */
+.panel{background:var(--color-background);border-radius:24px;box-shadow:var(--shadow-out);padding:var(--space-4)}
+.panel h2{font:700 18px "Atkinson Hyperlegible";display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)}
+.panel h2 span{font-weight:400;font-size:15px;color:var(--color-muted-foreground)}
+.slot{display:grid;grid-template-columns:56px 1fr auto;gap:var(--space-3);align-items:center;padding:14px var(--space-3);border-radius:var(--radius);background:var(--color-background);box-shadow:var(--shadow-sm);margin-bottom:var(--space-3)}
+.slot time{font-weight:700;font-size:15px;color:var(--color-muted-foreground)}
+.slot b{display:block;font-size:16px}.slot small{font-size:14px;color:var(--color-muted-foreground)}
+.tag{font-size:14px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--color-background);box-shadow:var(--shadow-in);color:#065F46}
+.slot.gap{box-shadow:var(--shadow-in);}
+.slot.gap .tag{color:#0E7490}
+.panel>.slot:last-child{margin-bottom:0}
+/* features */
+.feat{padding:var(--space-6) 0 var(--space-8)}
+.feat>.wrap>h2{font:700 clamp(28px,3.4vw,38px)/1.15 "Atkinson Hyperlegible";max-width:18em;margin-bottom:var(--space-2)}
+.feat>.wrap>p{color:var(--color-muted-foreground);font-size:18px;margin-bottom:var(--space-6)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-5)}
+.card{background:var(--color-background);border-radius:20px;box-shadow:var(--shadow-out);padding:var(--space-5);transition:box-shadow var(--dur) ease-out}
+.card:hover{box-shadow:-3px -3px 9px rgba(255,255,255,.95),3px 3px 9px rgba(22,78,99,.16)}
+.ico{width:56px;height:56px;border-radius:16px;box-shadow:var(--shadow-in);display:grid;place-items:center;color:var(--color-primary);margin-bottom:var(--space-4)}
+.card h3{font:700 20px "Atkinson Hyperlegible";margin-bottom:var(--space-2)}
+.card p{color:var(--color-muted-foreground)}
+footer{padding:var(--space-5) 0 var(--space-6);color:var(--color-muted-foreground);font-size:15px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:var(--space-5);padding-bottom:var(--space-6)}.grid{grid-template-columns:1fr}.links a:not(.btn){display:none}.slot{grid-template-columns:48px 1fr auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+ <nav class="top" aria-label="Main">
+  <a class="logo" href="#"><i aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M2 14c3-4 5-4 8 0s5 4 8 0 3-3 4-2"/><path d="M2 19c3-4 5-4 8 0s5 4 8 0 3-3 4-2" opacity=".45"/></svg></i>Tidewater</a>
+  <div class="links"><a href="#features">Features</a><a href="#">Pricing</a><a href="#">Sign in</a><a class="btn cta" href="#">Start free</a></div>
+ </nav>
+ <main id="main">
+ <section class="hero">
+  <div>
+   <h1>Scheduling that keeps your clinic calm</h1>
+   <p class="lede">Tidewater fills cancelled slots, reminds patients by text and shows every room in one view, so your team spends the day treating people, not chasing them.</p>
+   <div class="cta-row"><a class="btn cta" href="#">Start 30 days free</a><a class="btn soft" href="#features">See how it works</a></div>
+   <p class="note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>No card needed. Import your diary from CSV.</p>
+  </div>
+  <div class="panel" role="img" aria-label="Sample day sheet: three appointments and one open slot">
+   <h2>Tuesday, 14 October <span>Room 2</span></h2>
+   <div class="slot"><time>9:00</time><div><b>Hip mobility</b><small>Daniel Cho, 60 min</small></div><span class="tag">Confirmed</span></div>
+   <div class="slot gap"><time>10:00</time><div><b>Open slot</b><small>Offered to 3 on the waitlist</small></div><span class="tag">Filling</span></div>
+   <div class="slot"><time>10:30</time><div><b>Rotator cuff review</b><small>Lena Voss, 60 min</small></div><span class="tag">Confirmed</span></div>
+   <div class="slot"><time>11:30</time><div><b>Gait assessment</b><small>Tom Reyes, 30 min</small></div><span class="tag">Reminder sent</span></div>
+  </div>
+ </section>
+ <section class="feat" id="features" aria-labelledby="ft">
+  <div class="wrap" style="padding:0">
+   <h2 id="ft">Everything the front desk does by hand, done for you</h2>
+   <p>Three tools that remove the daily juggling.</p>
+   <div class="grid">
+    <article class="card"><div class="ico" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18M9 16l2 2 4-4"/></svg></div><h3>Waitlist refills gaps</h3><p>When someone cancels, the first matching patient on your waitlist gets the slot and confirms in one tap.</p></article>
+    <article class="card"><div class="ico" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/><path d="M9 11h6M9 14h3"/></svg></div><h3>Reminders that get replies</h3><p>Text reminders let patients confirm or move a visit themselves, which cuts no-shows without phone calls.</p></article>
+    <article class="card"><div class="ico" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></div><h3>Every room in one view</h3><p>See therapists, rooms and bays on a single timeline and catch double-bookings before the patient arrives.</p></article>
+   </div>
+  </div>
+ </section>
+ </main>
+ <footer><span>© 2026 Tidewater Health Software</span><span>Privacy and terms</span></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – front desk tasks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#eef4f4;--card:#fff;--ink:#0f2a2e;--muted:#5b7276;--line:#d9e5e6;--teal:#0e7c86;--teal-d:#0a5b63;--teal-l:#d7eeee}
+  *{box-sizing:border-box;margin:0}
+  body{font-family:"DM Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:grid;place-items:center;padding:24px;overflow:hidden}
+  .stage{width:min(620px,100%);position:relative}
+  .replay{position:absolute;top:-44px;right:0;border:1px solid var(--line);background:#fff;color:var(--ink);font:600 14px "DM Sans",sans-serif;padding:8px 14px;border-radius:10px;cursor:pointer}
+  .replay:focus-visible{outline:3px solid #7fd0d4;outline-offset:2px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 20px 40px -24px rgba(15,42,46,.25)}
+  .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+  h1{font-size:22px;letter-spacing:-.01em}
+  .count{font-size:13px;color:var(--muted);font-weight:500}
+  .add{display:flex;gap:8px;margin-bottom:12px}
+  .field{flex:1;height:44px;border:1px solid var(--line);border-radius:11px;padding:0 14px;display:flex;align-items:center;font-size:15px;background:#fafdfd;min-width:0;position:relative;overflow:hidden;white-space:nowrap}
+  .field .caret{width:2px;height:18px;background:var(--teal);margin-left:1px;animation:blink 1s steps(2) infinite}
+  .field .ph{color:#93a8ab}
+  @keyframes blink{50%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){.field .caret{animation:none}}
+  .addbtn{height:44px;padding:0 18px;border:0;border-radius:11px;background:var(--teal);color:#fff;font:600 14px "DM Sans",sans-serif}
+  ul{list-style:none;padding:0;position:relative;min-height:236px}
+  li{display:flex;align-items:center;gap:14px;height:56px;border-bottom:1px solid var(--line);position:relative;will-change:transform}
+  li:last-child{border-bottom:0}
+  .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid #b4c7c9;display:grid;place-items:center;background:#fff;position:relative}
+  .box svg{width:15px;height:15px}
+  .box path{stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .label{position:relative;font-size:15.5px;font-weight:500;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .txt{position:relative;display:inline-block}
+  .strike{position:absolute;left:-2px;right:-2px;top:52%;height:2px;background:var(--muted);transform-origin:left center;transform:scaleX(0)}
+  .who{font-size:12px;font-weight:600;background:var(--teal-l);color:var(--teal-d);padding:3px 9px;border-radius:99px}
+  @media (max-width:480px){.who{display:none}.card{padding:18px}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <button class="replay" id="replay" type="button">Replay</button>
+  <div class="card">
+    <div class="head"><h1>Front desk · Tuesday</h1><span class="count" id="count" aria-live="polite">0 of 3 done</span></div>
+    <div class="add" aria-hidden="true">
+      <div class="field"><span id="typed"></span><span class="caret" id="caret"></span><span class="ph" id="ph">Add a task…</span></div>
+      <button class="addbtn" id="addbtn" type="button" tabindex="-1">Add</button>
+    </div>
+    <ul id="list">
+      <li data-k="a"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="label"><span class="txt">Confirm Wednesday’s cancellations<span class="strike"></span></span></span><span class="who">Mia</span></li>
+      <li data-k="b"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="label"><span class="txt">Call Mr. Osei about insurance<span class="strike"></span></span></span><span class="who">Dev</span></li>
+      <li data-k="c"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="label"><span class="txt">Restock ice packs and tape<span class="strike"></span></span></span><span class="who">Mia</span></li>
+      <li data-k="n"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="label"><span class="txt">Send intake forms to Priya<span class="strike"></span></span></span><span class="who">Dev</span></li>
+    </ul>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+  const $ = (s, r = document) => r.querySelector(s);
+  const rows = Object.fromEntries([...document.querySelectorAll("#list li")].map(li => [li.dataset.k, li]));
+  const ROW = 56;
+  const NEW_TEXT = "Send intake forms to Priya";
+  const setCount = (done, total) => { $("#count").textContent = done + " of " + total + " done"; };
+  let tl;
+  const mm = gsap.matchMedia();
+
+  // Check a row: box fills, tick draws, label strikes + dims.
+  const check = (li) => {
+    const box = li.querySelector(".box"), tick = li.querySelector(".box path");
+    return gsap.timeline({ defaults: { duration: 0.28, ease: "power2.out" } })
+      .to(box, { scale: 0.85, duration: 0.1, ease: "power1.in" })
+      .to(box, { scale: 1, backgroundColor: "#0e7c86", borderColor: "#0e7c86", ease: "back.out(2.4)" })
+      .fromTo(tick, { strokeDasharray: 24, strokeDashoffset: 24 }, { strokeDashoffset: 0 }, "<0.05")
+      .to(li.querySelector(".strike"), { scaleX: 1, duration: 0.35 }, "<0.05")
+      .to(li.querySelector(".label"), { opacity: 0.45 }, "<");
+  };
+
+  // Remove a row: slide it out on transforms, then close the gap by shifting the rows under it (y) – never animate height.
+  const remove = (li, below, shift) =>
+    gsap.timeline({ defaults: { ease: "power2.inOut" } })
+      .to(li, { xPercent: 12, autoAlpha: 0, duration: 0.35, ease: "power2.in" })
+      .to(below, { y: shift, duration: 0.35 }, "-=0.1");
+
+  mm.add({ reduce: "(prefers-reduced-motion: reduce)", normal: "(prefers-reduced-motion: no-preference)" }, (ctx) => {
+    gsap.set(".strike", { scaleX: 0 });
+    if (ctx.conditions.reduce) {          // static end state: first task checked, new task present
+      gsap.set(rows.a.querySelector(".box"), { backgroundColor: "#0e7c86", borderColor: "#0e7c86" });
+      gsap.set(rows.a.querySelector(".strike"), { scaleX: 1 });
+      gsap.set(rows.a.querySelector(".label"), { opacity: 0.45 });
+      setCount(1, 4);
+      tl = gsap.timeline({ paused: true });
+      return;
+    }
+
+    const typing = { n: 0 };
+    tl = gsap.timeline({ repeat: -1, defaults: { ease: "power2.out" } });
+
+    tl.call(() => { setCount(0, 3); $("#typed").textContent = ""; }, null, 0)
+      .fromTo("#list", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 0)
+      .set(rows.n, { autoAlpha: 0 }, 0)
+
+      // 1 · add
+      .addLabel("add", 0.9)
+      .set("#ph", { display: "none" }, "add")
+      .to(typing, { n: NEW_TEXT.length, duration: 1.2, ease: "none",
+        onUpdate: () => { $("#typed").textContent = NEW_TEXT.slice(0, Math.round(typing.n)); } }, "add")
+      .to("#addbtn", { scale: 0.93, duration: 0.1, yoyo: true, repeat: 1 }, "add+=1.45")
+      .call(() => { $("#typed").textContent = ""; setCount(0, 4); }, null, "add+=1.6")
+      .set("#ph", { display: "" }, "add+=1.6")
+      .fromTo(rows.n, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "power3.out" }, "add+=1.6")
+
+      // 2 · check two off
+      .addLabel("check", "add+=2.5")
+      .add(check(rows.a), "check")
+      .call(() => setCount(1, 4), null, "check+=0.35")
+      .add(check(rows.b), "check+=0.8")
+      .call(() => setCount(2, 4), null, "check+=1.15")
+
+      // 3 · remove them (rows below move up by transform)
+      .addLabel("remove", "check+=2.1")
+      .add(remove(rows.a, [rows.b, rows.c, rows.n], -ROW), "remove")
+      .call(() => setCount(1, 3), null, "remove+=0.4")
+      .add(remove(rows.b, [rows.c, rows.n], -2 * ROW), "remove+=0.8")
+      .call(() => setCount(0, 2), null, "remove+=1.2")
+
+      // 4 · rest, fade the list, loop
+      .to("#list", { autoAlpha: 0, duration: 0.35, ease: "power1.in" }, "remove+=2.3");
+  });
+
+  $("#replay").addEventListener("click", () => { if (tl) tl.restart(true); });
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "id": "react-best-practices",
+  "sets": [
+    "code"
+  ],
+  "skillSays": [
+    "Rules are ranked by impact: eliminate request waterfalls and bundle size first (CRITICAL), re-renders and JS micro-optimisations last",
+    "Run independent async work with Promise.all instead of awaiting one request after another",
+    "Avoid heavy or barrel imports (lodash, whole chart libraries) and load heavy components lazily, only when the feature is used",
+    "Keep frequently changing state (a ticking clock) out of the big component, memoise rows, use stable callbacks via functional setState and a deferred value for search input",
+    "Replace repeated find() calls and chained filter/sort passes with Map lookups and a single loop; keep effect dependencies narrow",
+    "Each rule is a short incorrect/correct code pair with an impact label, so changes can be tied to a named rule"
+  ],
+  "examples": [
+    {
+      "prompt": "perf-1",
+      "changes": [
+        "Fixed the three sequential fetches with Promise.all (+ AbortController): last response on screen at 247 ms instead of 1624 ms in the mocked benchmark",
+        "Pulled the 1-second clock into its own component, memoised Row with a stable onCancel(id) and a deferred search value; React render time over 4 s of ticks dropped from about 1477 ms to 2 ms (4x CPU throttle, 1500 rows)",
+        "Dropped lodash and moment for Map and Intl, imported only the line-chart parts of Chart.js and lazy-loaded the chart: initial JS 168.6 KB gzip to 47.2 KB",
+        "While applying the effect-dependency rule I found the chart effect crashed the whole dashboard on the first tick (Canvas is already in use); fixed with [data] deps and chart.destroy()"
+      ]
+    },
+    {
+      "prompt": "perf-2",
+      "changes": [
+        "The guide covers scripts, resource hints and idle work only, so the run said so: it removed the blocking jQuery and the unused moment, added preconnect for fonts and deleted the 3e7-iteration busy loop, then measured instead of assuming a win",
+        "Measurement showed those rules alone left first paint at about 3.4 s (the Google Fonts stylesheet still blocked it); a non-blocking stylesheet, which is outside the guide, brought FCP to 0.62 s and performance to 100",
+        "Rendered the testimonials in the HTML instead of injecting them after 1.5 s, trimmed the fonts to one family and two weights",
+        "Accessibility and SEO changes (lang, title, description, a real link and button, contrast) were made from general practice and flagged as not coming from the guide"
+      ]
+    }
+  ]
+}

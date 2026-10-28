@@ -1,0 +1,31 @@
+{
+  "id": "webapp-testing",
+  "sets": [
+    "code"
+  ],
+  "skillSays": [
+    "Write plain sync Playwright scripts, always headless chromium, and always close the browser",
+    "Run bundled helpers like with_server.py with --help first and treat them as black boxes",
+    "Decision tree: static HTML -> read the file; dynamic app -> start the server with with_server.py, then reconnaissance-then-action",
+    "Wait for `networkidle` before inspecting the DOM of a dynamic app, take a screenshot, discover selectors, then act",
+    "Capture console logs while automating (skill's example writes them to a file)",
+    "Pick descriptive selectors: text=, role=, CSS ids"
+  ],
+  "examples": [
+    {
+      "prompt": "browser-1",
+      "changes": [
+        "Ran a separate reconnaissance script (networkidle, screenshot, list buttons and inputs) before writing selectors",
+        "Let with_server.py own the server lifecycle; found it leaks the server when the command is `cd x && python ...` (orphaned child kept the port, later runs got ERR_EMPTY_RESPONSE), so used `--directory` instead",
+        "Hooked page.on('request'/'console'/'pageerror') for evidence"
+      ]
+    },
+    {
+      "prompt": "browser-2",
+      "changes": [
+        "Registered pageerror and request listeners before clicking, which showed the TypeError and zero requests in one run",
+        "Wrote A/B runs (default highlight vs explicitly clicked slot) so the cause is shown with a control"
+      ]
+    }
+  ]
+}

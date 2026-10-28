@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orbis – a history of maps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Crimson+Pro:ital,wght@1,300;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#1b1713}
+body{display:grid;place-items:center;overflow:hidden}
+svg{display:block;height:100vh;width:auto;max-width:100vw}
+@media (max-aspect-ratio:3/4){svg{width:100vw;height:auto}}
+</style></head><body>
+<svg viewBox="0 0 900 1200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Orbis – an exhibition about the history of maps">
+<defs><clipPath id="disc"><circle cx="450" cy="420" r="292"/></clipPath></defs>
+<rect width="900" height="1200" fill="#e9dfc6"/>
+<g id="g"></g>
+</svg>
+<script>
+const g=document.getElementById('g');let o=[];const add=s=>o.push(s);
+const INK='#2e2218',RED='#9a3220',GRN='#2f6a5f',GOLD='#a8812f',MUTE='#8a7a62';
+const mono=(x,y,t,{size=9,anchor='start',fill=INK,w=300,ls=1.6}={})=>add(`<text x="${x}" y="${y}" font-family="IBM Plex Mono" font-size="${size}" font-weight="${w}" fill="${fill}" text-anchor="${anchor}" letter-spacing="${ls}">${t}</text>`);
+add(`<rect x="48" y="48" width="804" height="1104" fill="none" stroke="${INK}" stroke-width=".9"/><rect x="54" y="54" width="792" height="1092" fill="none" stroke="${INK}" stroke-width=".4"/>`);
+mono(72,92,'PLATE I');mono(828,92,'FROM ECUMENE TO GLOBE · FOUR WAYS OF FLATTENING THE EARTH',{anchor:'end'});
+/* ---- portolan network ---- */
+const CX=450,CY=420,R=292;
+const srcR=96,N=16;
+let rh='';
+const dirs=32;
+for(let s=0;s<N;s++){
+  const sa=s*2*Math.PI/N;const sx=CX+srcR*Math.cos(sa),sy=CY+srcR*Math.sin(sa);
+  for(let d=0;d<dirs;d++){
+    const a=d*2*Math.PI/dirs;
+    const main=d%8===0,half=d%4===0,qtr=d%2===0;
+    const col=main?INK:half?GRN:qtr?RED:GRN;
+    const op=main?.75:half?.5:qtr?.4:.22;
+    rh+=`<line x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${(sx+Math.cos(a)*700).toFixed(1)}" y2="${(sy+Math.sin(a)*700).toFixed(1)}" stroke="${col}" stroke-opacity="${op}" stroke-width="${main?.55:.4}"/>`;
+  }
+}
+add(`<g clip-path="url(#disc)">${rh}</g>`);
+add(`<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="${INK}" stroke-width="1.1"/><circle cx="${CX}" cy="${CY}" r="${R+8}" fill="none" stroke="${INK}" stroke-width=".4"/>`);
+/* degree ticks around the rim */
+let tk='';
+for(let i=0;i<360;i+=2){const a=i*Math.PI/180,L=i%30===0?16:i%10===0?10:5;tk+=`<line x1="${(CX+(R+8)*Math.cos(a)).toFixed(1)}" y1="${(CY+(R+8)*Math.sin(a)).toFixed(1)}" x2="${(CX+(R+8+L)*Math.cos(a)).toFixed(1)}" y2="${(CY+(R+8+L)*Math.sin(a)).toFixed(1)}" stroke="${INK}" stroke-width="${i%30===0?.9:.4}"/>`}
+add(tk);
+/* land mass: noisy polar blob with water-lining echoes */
+function blob(rs,off=0){
+  let d='';const n=180;
+  for(let i=0;i<=n;i++){
+    const a=i/n*2*Math.PI;
+    let r=rs*(1+.2*Math.sin(3*a+.6)+.12*Math.sin(5*a+1.9)+.07*Math.sin(9*a+.3)+.04*Math.sin(17*a+2.2))+off;
+    d+=(i?'L':'M')+(CX+8+r*Math.cos(a)).toFixed(1)+' '+(CY-4+r*.88*Math.sin(a)).toFixed(1);
+  }
+  return d+'Z';
+}
+for(let k=5;k>=1;k--)add(`<path d="${blob(88,k*7)}" fill="none" stroke="${INK}" stroke-opacity="${.55-k*.09}" stroke-width=".5"/>`);
+add(`<path d="${blob(88)}" fill="#e9dfc6" stroke="${INK}" stroke-width="1.1"/>`);
+/* hatching on land */
+let hatch='';
+add(`<clipPath id="land"><path d="${blob(88)}"/></clipPath>`);
+for(let y=CY-140;y<CY+140;y+=4)hatch+=`<line x1="${CX-140}" y1="${y}" x2="${CX+160}" y2="${y}" stroke="${GOLD}" stroke-opacity=".55" stroke-width=".5"/>`;
+add(`<g clip-path="url(#land)">${hatch}</g>`);
+/* compass rose star at centre of the source circle */
+let star='';
+for(let i=0;i<16;i++){const a=i*Math.PI/8,L=i%4===0?24:i%2===0?16:10;star+=`<line x1="${CX+8}" y1="${CY-4}" x2="${(CX+8+L*Math.cos(a)).toFixed(1)}" y2="${(CY-4+L*Math.sin(a)).toFixed(1)}" stroke="${INK}" stroke-width="${i%4===0?1:.5}"/>`}
+add(star);add(`<circle cx="${CX+8}" cy="${CY-4}" r="2.2" fill="${RED}"/>`);
+/* north mark */
+
+/* ---- four small plates ---- */
+const PW=150,GAP=(756-4*PW)/3,PY=772,PH=150;
+const px=i=>72+i*(PW+GAP);
+const cap=['I · ECUMENE','II · CONIC','III · CYLINDRICAL','IV · ORTHOGRAPHIC'];
+const era=['c. 600 BCE','c. 150 CE','1569','TODAY'];
+for(let i=0;i<4;i++){
+  add(`<rect x="${px(i)}" y="${PY}" width="${PW}" height="${PH}" fill="none" stroke="${INK}" stroke-width=".6"/>`);
+  mono(px(i),PY+PH+22,cap[i],{size:8,w:400,ls:1.4});mono(px(i),PY+PH+36,era[i],{size:8,fill:MUTE,ls:1.4});
+}
+/* I: T-O map */
+{const cx=px(0)+PW/2,cy=PY+PH/2,r=58;
+ add(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${INK}" stroke-width="1"/><circle cx="${cx}" cy="${cy}" r="${r+7}" fill="none" stroke="${INK}" stroke-width=".4"/>`);
+ add(`<line x1="${cx-r}" y1="${cy}" x2="${cx+r}" y2="${cy}" stroke="${INK}" stroke-width="1.2"/><line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy+r}" stroke="${INK}" stroke-width="1.2"/>`);
+ add(`<path d="M ${cx-r*.55} ${cy} Q ${cx-r*.55} ${cy+r*.55} ${cx} ${cy+r*.55}" fill="none" stroke="${RED}" stroke-width=".7"/>`);
+ add(`<circle cx="${cx}" cy="${cy-r+10}" r="2" fill="${RED}"/>`);}
+/* II: conic graticule (Ptolemy-like) */
+{const cx=px(1)+PW/2,cy=PY+22,apex=-30;let s='';
+ for(let k=-5;k<=5;k++){const a=(k/5)*0.62;const x2=cx+Math.sin(a)*190,y2=cy+Math.cos(a)*190;s+=`<line x1="${cx}" y1="${cy+apex}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${INK}" stroke-width=".5"/>`}
+ for(let r=60;r<=170;r+=22)s+=`<path d="M ${(cx+Math.sin(-.62)*(r+(-apex))).toFixed(1)} ${(cy+apex+Math.cos(-.62)*(r+(-apex))*1).toFixed(1)} A ${r-apex} ${r-apex} 0 0 0 ${(cx+Math.sin(.62)*(r-apex)).toFixed(1)} ${(cy+apex+Math.cos(.62)*(r-apex)).toFixed(1)}" fill="none" stroke="${RED}" stroke-width=".5"/>`;
+ add(`<clipPath id="c2"><rect x="${px(1)}" y="${PY}" width="${PW}" height="${PH}"/></clipPath><g clip-path="url(#c2)">${s}</g>`);}
+/* III: Mercator grid, rising spacing */
+{let s='';const x0=px(2),x1=x0+PW;
+ for(let i=1;i<9;i++)s+=`<line x1="${x0+i*PW/9}" y1="${PY}" x2="${x0+i*PW/9}" y2="${PY+PH}" stroke="${INK}" stroke-width=".5"/>`;
+ for(let k=0;k<=7;k++){const lat=k*10*Math.PI/180,m=Math.log(Math.tan(Math.PI/4+lat/2));const y=PY+PH/2-m*PH*.62;if(y>PY&&y<PY+PH)s+=`<line x1="${x0}" y1="${y.toFixed(1)}" x2="${x1}" y2="${y.toFixed(1)}" stroke="${RED}" stroke-width=".5"/>`;
+  const y2=PY+PH/2+m*PH*.62;if(k&&y2>PY&&y2<PY+PH)s+=`<line x1="${x0}" y1="${y2.toFixed(1)}" x2="${x1}" y2="${y2.toFixed(1)}" stroke="${RED}" stroke-width=".5"/>`}
+ s+=`<line x1="${x0}" y1="${PY+PH/2}" x2="${x1}" y2="${PY+PH/2}" stroke="${INK}" stroke-width="1"/>`;add(s);}
+/* IV: orthographic globe graticule */
+{const cx=px(3)+PW/2,cy=PY+PH/2,r=60;let s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${INK}" stroke-width="1"/>`;
+ const tilt=.35;
+ for(let lon=-90;lon<=90;lon+=20){let d='';for(let lat=-90;lat<=90;lat+=5){const la=lat*Math.PI/180,lo=lon*Math.PI/180;
+   const x=Math.cos(la)*Math.sin(lo),y0=Math.sin(la),z0=Math.cos(la)*Math.cos(lo);
+   const y=y0*Math.cos(tilt)-z0*Math.sin(tilt),z=y0*Math.sin(tilt)+z0*Math.cos(tilt);if(z<0){d+='';continue}
+   d+=(d?'L':'M')+(cx+r*x).toFixed(1)+' '+(cy-r*y).toFixed(1)}
+  s+=`<path d="${d}" fill="none" stroke="${INK}" stroke-width=".5"/>`}
+ for(let lat=-60;lat<=60;lat+=20){let d='';for(let lon=-90;lon<=90;lon+=5){const la=lat*Math.PI/180,lo=lon*Math.PI/180;
+   const x=Math.cos(la)*Math.sin(lo),y0=Math.sin(la),z0=Math.cos(la)*Math.cos(lo);
+   const y=y0*Math.cos(tilt)-z0*Math.sin(tilt),z=y0*Math.sin(tilt)+z0*Math.cos(tilt);if(z<0)continue;
+   d+=(d?'L':'M')+(cx+r*x).toFixed(1)+' '+(cy-r*y).toFixed(1)}
+  s+=`<path d="${d}" fill="none" stroke="${RED}" stroke-width=".5"/>`}
+ add(s);}
+/* connecting thread between plates */
+add(`<line x1="72" y1="${PY-18}" x2="828" y2="${PY-18}" stroke="${INK}" stroke-width=".4"/>`);
+for(let i=0;i<4;i++)add(`<circle cx="${px(i)+PW/2}" cy="${PY-18}" r="2.2" fill="${i===3?RED:INK}"/>`);
+/* title */
+add(`<text x="72" y="1074" font-family="Italiana" font-size="108" fill="${INK}" textLength="350" lengthAdjust="spacing">ORBIS</text>`);
+add(`<text x="828" y="1030" font-family="Crimson Pro" font-style="italic" font-weight="300" font-size="24" fill="${INK}" text-anchor="end">A history of maps</text>`);
+add(`<line x1="${828-160}" y1="1042" x2="828" y2="1042" stroke="${INK}" stroke-width=".5"/>`);
+mono(828,1062,'AN EXHIBITION',{anchor:'end',size:9,w:400,ls:2.2});
+mono(828,1080,'14 NOV – 22 MAR · THE LONG GALLERY',{anchor:'end',size:8.5,fill:MUTE,ls:1.4});
+mono(72,1132,'ONE HUNDRED AND TWELVE MAPS, ONE PROBLEM',{size:8.5,fill:MUTE,ls:1.6});
+mono(828,1132,'N° 1',{anchor:'end',size:8.5,fill:MUTE});
+g.innerHTML=o.join('');
+</script></body></html>

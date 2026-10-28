@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="browser-1-invalid.png" alt="Invalid email: only the email field is flagged, no success message"><figcaption>Invalid email: only the email field is flagged, no success message</figcaption></figure><figure><img src="browser-1-valid.png" alt="Valid data: error cleared, success status shown"><figcaption>Valid data: error cleared, success status shown</figcaption></figure></div>
+<h2>Result</h2><div class="result">Drove the fixture app (served on http://localhost:7003, static server) with puppeteer-core + real Chrome and read the DOM, console and network after each step.
+
+Invalid email (name "Ada Lovelace", email "ada@clinic", password 15 chars): the form does NOT submit. Only the email field shows "Enter a valid work email" (red text under the field); name and password errors stay empty; no success message; zero network requests. All three fields empty gives three messages (name, email, "Use at least 8 characters").
+
+Valid data (Ada Lovelace / ada@clinic.example / 15-char password / 4-10 therapists): all errors clear and a green status box appears: "Account created for ada@clinic.example. Check your inbox." Submitting causes zero network requests: the "account" is never sent anywhere, so the app only claims success client-side. Fixing a previously invalid email and resubmitting also clears the old error text correctly.
+
+Other findings, all observed:
+- HTML injection: the success message is built with innerHTML using the raw email. The email regex accepts markup (no spaces), e.g. &lt;img/src/onerror=window.__xss=1&gt;@a.co passes validation and the injected img's onerror fires (window.__xss === 1). Self-inflicted here (you only inject yourself), but it becomes a real XSS the moment that string comes from a server or URL. Fix: textContent or escape.
+- Accessibility: the error divs are not linked to the inputs (no aria-describedby/aria-invalid; aria-invalid is null after a failed submit), they are not live regions, and focus stays on the submit button instead of moving to the first invalid field; screen reader users get no feedback. The success box does have role=status.
+- The regex rejects "ada@clinic" even though the HTML spec allows it (fine for a work-email form), and the form has novalidate so the browser's own validation never runs.
+Not testable here: real account creation, since the app has no backend (the only network request in the whole session was GET /favicon.ico -&gt; 404).</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># serve the fixture app locally</div><div class="cmd">node serve.mjs &amp;   # static: / -&gt; index.html, everything else 404 (listens on 7003)
+curl -s -o /dev/null -w "%{http_code}\n" localhost:7003/</div><div class="out">200</div></div><div class="step"><div class="note"># each line is the DOM state after the step: error text, result text, focused element, aria-invalid, network count</div><div class="cmd">node t1.mjs   # puppeteer: initial state, invalid email, all-empty, valid data, fix-after-error</div><div class="out">initial {"errors":{"name":"","email":"","pw":""},"result":"","focused":"BODY","emailInvalidAttr":null}
+invalid email {"errors":{"name":"","email":"Enter a valid work email","pw":""},"result":"","focused":"BUTTON","emailInvalidAttr":null}
+all empty {"errors":{"name":"Enter your name","email":"Enter a valid work email","pw":"Use at least 8 characters"},"result":"","focused":"BUTTON","emailInvalidAttr":null}
+valid {"errors":{"name":"","email":"","pw":""},"result":"Account created for ada@clinic.example. Check your inbox.","focused":"BUTTON","emailInvalidAttr":null}
+network requests caused by submit: 0
+error cleared after fixing {"errors":{"name":"","email":"","pw":""},"result":"Account created for a@b.co. Check your inbox.","focused":"BUTTON","emailInvalidAttr":null}</div></div><div class="step"><div class="note"># screenshot evidence for the invalid case</div><div class="cmd">(viewed signup-invalid.png)</div><div class="out">Email field shows red 'Enter a valid work email'; no success box; name/password fields filled.</div></div><div class="step"><div class="note"># screenshot evidence for the valid case</div><div class="cmd">(viewed signup-valid.png)</div><div class="out">Green box: 'Account created for ada@clinic.example. Check your inbox.'</div></div><div class="step"><div class="note"># first payload was rejected by the validator; the network log shows no POST at all</div><div class="cmd">node t1.mjs  (last part)  # email containing markup, no spaces</div><div class="out">markup email -&gt; {"xssFired":false,"imgInResult":false}   &lt;- first payload had spaces, rejected by the regex (correct)
+all requests: ["GET /","GET /favicon.ico","GET /","GET /","GET /","GET /"]
+console: ["error: Failed to load resource: ... 404 (Not Found)"]  &lt;- favicon only</div></div><div class="step"><div class="note"># payload passes validation, gets injected through innerHTML, and executes</div><div class="cmd">node t1b.mjs   # email = &lt;img/src/onerror=window.__xss=1&gt;@a.co (no whitespace)</div><div class="out">{"xssFired":true,"result":"&lt;div class=\"ok\" role=\"status\"&gt;Account created for &lt;img src=\"\" onerror=\"window.__xss=1\"&gt;@a.co. Check your inbox.&lt;/div&gt;","err":""}</div></div></div>
+<h2>Files</h2><details open><summary>t1.mjs (test script)</summary><pre><span class="k">import</span> puppeteer <span class="k">from</span> <span <span class="k">class</span>="s">"/Users/kametayturar/agentic-ui/ai-answer/docs/review/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js"</span>
+<span class="k">const</span> b = <span class="k">await</span> puppeteer.launch({ executablePath: <span <span class="k">class</span>="s">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span>, headless: <span class="k">true</span>, args: [<span <span class="k">class</span>="s">"--no-sandbox"</span>] })
+<span class="k">const</span> p = <span class="k">await</span> b.newPage(); <span class="k">await</span> p.setViewport({ width: <span class="n">900</span>, height: <span class="n">700</span> })
+<span class="k">const</span> reqs = [], logs = []
+p.on(<span <span class="k">class</span>="s">"request"</span>, (r) =&gt; reqs.push(r.method() + <span <span class="k">class</span>="s">" "</span> + <span class="k">new</span> URL(r.url()).pathname))
+p.on(<span <span class="k">class</span>="s">"console"</span>, (m) =&gt; logs.push(m.<span class="k">type</span>() + <span <span class="k">class</span>="s">": "</span> + m.text()))
+p.on(<span <span class="k">class</span>="s">"pageerror"</span>, (e) =&gt; logs.push(<span <span class="k">class</span>="s">"pageerror: "</span> + e.message))
+<span class="k">await</span> p.goto(<span <span class="k">class</span>="s">"http://localhost:<span class="n">7003</span>/#signup"</span>, { waitUntil: <span <span class="k">class</span>="s">"load"</span> })
+<span class="k">const</span> state = <span class="k">async</span> () =&gt; p.evaluate(() =&gt; ({
+  errors: Object.fromEntries([<span <span class="k">class</span>="s">"name"</span>,<span <span class="k">class</span>="s">"email"</span>,<span <span class="k">class</span>="s">"pw"</span>].map((k) =&gt; [k, document.getElementById(<span <span class="k">class</span>="s">"e-"</span> + k).textContent])),
+  result: document.getElementById(<span <span class="k">class</span>="s">"result"</span>).innerText,
+  focused: document.activeElement.id || document.activeElement.tagName,
+  emailInvalidAttr: document.getElementById(<span <span class="k">class</span>="s">"email"</span>).getAttribute(<span <span class="k">class</span>="s">"aria-invalid"</span>),
+}))
+console.log(<span <span class="k">class</span>="s">"initial"</span>, JSON.stringify(<span class="k">await</span> state()))
+<span class="c">// 1) invalid email, everything else valid</span>
+<span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#name"</span>, <span <span class="k">class</span>="s">"Ada Lovelace"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#email"</span>, <span <span class="k">class</span>="s">"ada@clinic"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#pw"</span>, <span <span class="k">class</span>="s">"correct-horse-<span class="n">9</span>"</span>)
+<span class="k">await</span> p.click(<span <span class="k">class</span>="s">"button[<span class="k">type</span>=submit]"</span>)
+console.log(<span <span class="k">class</span>="s">"invalid email"</span>, JSON.stringify(<span class="k">await</span> state()))
+<span class="k">await</span> p.screenshot({ path: <span <span class="k">class</span>="s">"signup-invalid.png"</span> })
+<span class="c">// 2) empty-everything</span>
+<span class="k">await</span> p.reload(); <span class="k">await</span> p.click(<span <span class="k">class</span>="s">"button[<span class="k">type</span>=submit]"</span>)
+console.log(<span <span class="k">class</span>="s">"all empty"</span>, JSON.stringify(<span class="k">await</span> state()))
+<span class="c">// 3) fix email -&gt; valid</span>
+<span class="k">await</span> p.reload()
+<span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#name"</span>, <span <span class="k">class</span>="s">"Ada Lovelace"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#email"</span>, <span <span class="k">class</span>="s">"ada@clinic.example"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#pw"</span>, <span <span class="k">class</span>="s">"correct-horse-<span class="n">9</span>"</span>)
+<span class="k">await</span> p.select(<span <span class="k">class</span>="s">"#size"</span>, <span <span class="k">class</span>="s">"<span class="n">4</span>–<span class="n">10</span> therapists"</span>)
+<span class="k">const</span> before = reqs.length
+<span class="k">await</span> p.click(<span <span class="k">class</span>="s">"button[<span class="k">type</span>=submit]"</span>)
+console.log(<span <span class="k">class</span>="s">"valid"</span>, JSON.stringify(<span class="k">await</span> state()))
+console.log(<span <span class="k">class</span>="s">"network requests caused by submit:"</span>, reqs.length - before)
+<span class="k">await</span> p.screenshot({ path: <span <span class="k">class</span>="s">"signup-valid.png"</span> })
+<span class="c">// 4) correct after error: error text cleared?</span>
+<span class="k">await</span> p.reload(); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#email"</span>, <span <span class="k">class</span>="s">"bad"</span>); <span class="k">await</span> p.click(<span <span class="k">class</span>="s">"button[<span class="k">type</span>=submit]"</span>)
+<span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#name"</span>, <span <span class="k">class</span>="s">"A"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#pw"</span>, <span <span class="k">class</span>="s">"<span class="n">12345678</span>"</span>); <span class="k">await</span> p.click(<span <span class="k">class</span>="s">"#email"</span>, { clickCount: <span class="n">3</span> }); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#email"</span>, <span <span class="k">class</span>="s">"a@b.co"</span>); <span class="k">await</span> p.click(<span <span class="k">class</span>="s">"button[<span class="k">type</span>=submit]"</span>)
+console.log(<span <span class="k">class</span>="s">"error cleared after fixing"</span>, JSON.stringify(<span class="k">await</span> state()))
+<span class="c">// 5) markup in email</span>
+<span class="k">await</span> p.reload()
+<span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#name"</span>, <span <span class="k">class</span>="s">"X"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#pw"</span>, <span <span class="k">class</span>="s">"<span class="n">12345678</span>"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#email"</span>, <span <span class="k">class</span>="s">'&lt;img src=x onerror="window.__xss=<span class="n">1</span>"&gt;@a.co'</span>)
+<span class="k">await</span> p.click(<span <span class="k">class</span>="s">"button[<span class="k">type</span>=submit]"</span>); <span class="k">await</span> <span class="k">new</span> Promise((r) =&gt; setTimeout(r, <span class="n">300</span>))
+console.log(<span <span class="k">class</span>="s">"markup email -&gt;"</span>, JSON.stringify(<span class="k">await</span> p.evaluate(() =&gt; ({ xssFired: window.__xss === <span class="n">1</span>, imgInResult: !!document.querySelector(<span <span class="k">class</span>="s">"#result img"</span>) }))))
+console.log(<span <span class="k">class</span>="s">"all requests:"</span>, JSON.stringify(reqs))
+console.log(<span <span class="k">class</span>="s">"console:"</span>, JSON.stringify(logs))
+<span class="k">await</span> b.close()
+</pre></details><details><summary>t1b.mjs (markup test)</summary><pre><span class="k">import</span> puppeteer <span class="k">from</span> <span <span class="k">class</span>="s">"/Users/kametayturar/agentic-ui/ai-answer/docs/review/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js"</span>
+<span class="k">const</span> b = <span class="k">await</span> puppeteer.launch({ executablePath: <span <span class="k">class</span>="s">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span>, headless: <span class="k">true</span>, args: [<span <span class="k">class</span>="s">"--no-sandbox"</span>] })
+<span class="k">const</span> p = <span class="k">await</span> b.newPage(); <span class="k">await</span> p.setViewport({ width: <span class="n">900</span>, height: <span class="n">700</span> })
+<span class="k">await</span> p.goto(<span <span class="k">class</span>="s">"http://localhost:<span class="n">7003</span>/#signup"</span>, { waitUntil: <span <span class="k">class</span>="s">"load"</span> })
+<span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#name"</span>, <span <span class="k">class</span>="s">"X"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#pw"</span>, <span <span class="k">class</span>="s">"<span class="n">12345678</span>"</span>); <span class="k">await</span> p.<span class="k">type</span>(<span <span class="k">class</span>="s">"#email"</span>, <span <span class="k">class</span>="s">"&lt;img/src/onerror=window.__xss=<span class="n">1</span>&gt;@a.co"</span>)
+<span class="k">await</span> p.click(<span <span class="k">class</span>="s">"button[<span class="k">type</span>=submit]"</span>); <span class="k">await</span> <span class="k">new</span> Promise((r) =&gt; setTimeout(r, <span class="n">400</span>))
+console.log(JSON.stringify(<span class="k">await</span> p.evaluate(() =&gt; ({ xssFired: window.__xss === <span class="n">1</span>, result: document.getElementById(<span <span class="k">class</span>="s">"result"</span>).innerHTML, err: document.getElementById(<span <span class="k">class</span>="s">"e-email"</span>).textContent }))))
+<span class="k">await</span> p.screenshot({ path: <span <span class="k">class</span>="s">"signup-markup.png"</span> })
+<span class="k">await</span> b.close()
+</pre></details>
+</main>
+
+</body></html>

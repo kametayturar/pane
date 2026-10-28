@@ -1,0 +1,41 @@
+{
+  "id": "ui-design-brain",
+  "sets": ["web"],
+  "skillSays": [
+    "Before writing any UI, look up each needed component (hero, form, card, select, toggle, badge...) in a 60+ component reference and follow its best practices.",
+    "Aim for modern, minimal, production-ready: restraint over decoration, an 8px spacing grid, one confident accent on a neutral palette.",
+    "Pair a distinctive display font with a clean body font and push weight contrast; avoid Inter/Roboto defaults, purple gradients and evenly spaced card grids.",
+    "Pick a design direction preset (Modern SaaS by default) and build real states: hover, focus, disabled, error, loading, empty.",
+    "Follow interaction rules: verb-first buttons, one primary per section, validate on blur, labels above inputs, 44px touch targets, WCAG AA contrast.",
+    "Avoid listed anti-patterns such as placeholder-only fields, equal-weight buttons, rainbow badges and disabled submit with no explanation."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Hero follows the component page: split layout, one primary CTA plus one secondary, and a product panel on the right instead of decoration.",
+        "The panel's rows use consistent vertical lanes (time / avatar / name / status) with fixed-width slots and a limited semantic badge palette, as the List and Badge rules say.",
+        "Features break the 'evenly spaced card grid' rule: one tall dark card beside two stacked light ones, each media then title then meta then action, border only (no shadow).",
+        "Committed to Bricolage Grotesque 800 with tight tracking against Instrument Sans, and one cobalt accent on warm off-white."
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "The billing switch became a segmented control (the Segmented control rule: 2-5 options, animated sliding indicator) instead of a bare toggle, with a 'Save 20%' pill.",
+        "One shared bordered surface with three lanes rather than three floating shadow cards; only the Clinic lane gets a tint, badge and filled primary button.",
+        "Unavailable features are shown as muted lines so plans compare row by row, and prices animate in 220ms ease-out when the period changes.",
+        "Yearly shows the true yearly total and the amount saved under each price."
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Form rules applied: single column, visible labels above inputs, placeholders only as format examples, native select with a prompt option, correct input types and autocomplete.",
+        "Validation runs on blur and re-checks as you type; on submit, focus moves to the first invalid field. Submit is never silently disabled.",
+        "Each error is inline under its field with an icon plus red border and tint, linked via aria-describedby; the terms control is a real checkbox, not a toggle.",
+        "Added a show-password control, a loading state on the button and a success state, covering the skill's 'graceful edge cases' bar."
+      ]
+    }
+  ]
+}

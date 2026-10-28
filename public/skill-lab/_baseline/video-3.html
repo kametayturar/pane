@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><div class="lottie" data-src="video-3-loading.json"></div><figcaption>video-3: Tidewater loading, looping Lottie (lottie-web)</figcaption></figure><figure><img src="video-3-frames.png" alt="Frames 0, 10, 20, 30, 40, 50 rendered by lottie-web"><figcaption>Frames 0, 10, 20, 30, 40, 50 rendered by lottie-web</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered tidewater-loading.json: a hand-generated Lottie (v5.7.0 schema), 200x200, 30 fps, 60 frames (2 s), 17.8 KB, looping. Three dots in Tidewater's teal palette (deep, mid, bright) ride a travelling sine wave: each dot moves up and down about 26 px and swells/shrinks 82 to 118 % in sync, with a small phase offset between dots so the wave appears to roll left to right. The motion is sampled from a cosine over exactly one 60-frame period with eased keyframes every 2 frames, so frame 60 equals frame 0 and the loop is seamless.
+
+Verified by loading the JSON in lottie-web 5.x (installed from npm in the scratch folder) in headless Chrome: isLoaded true, totalFrames 60, frameRate 30, no page errors (one 404 was the favicon). Six frames were screenshotted and shown below; the page also plays it live with lottie-web from a CDN. Not tested in lottie-ios or dotLottie players. Colours are my own guess at a Tidewater look, there was no brand file.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Generator writes 3 shape layers (ellipse + fill), keyframing position and scale.</div><div class="cmd">node gen.mjs &amp;&amp; wc -c tidewater-loading.json</div><div class="out">ok
+   17794 tidewater-loading.json</div></div><div class="step"><div class="note"># Local renderer for verification.</div><div class="cmd">npm init -y &amp;&amp; npm i lottie-web</div><div class="out">found 0 vulnerabilities</div></div><div class="step"><div class="note"># The 404 is the favicon request; no animation errors.</div><div class="cmd">node shot.mjs   # serves the folder on :7021, loads t.html with lottie-web, reads totalFrames, saves frames</div><div class="out">{"frames":60,"fr":30,"loaded":true} [
+  'Failed to load resource: the server responded with a status of 404 (Not Found)'
+]</div></div><div class="step"><div class="cmd">ffmpeg -v error -y -i f0.png -i f10.png -i f20.png -i f30.png -i f40.png -i f50.png -filter_complex hstack=inputs=6 sheet.png</div><div class="out">(sheet viewed: dots at different heights/sizes across frames, wave moves left to right)</div></div><div class="step"><div class="cmd">python3 -c "import json;d=json.load(open('tidewater-loading.json'));print(d['w'],d['h'],d['fr'],d['op'],len(d['layers']))"</div><div class="out">200 200 30 60 3</div></div></div>
+<h2>Files</h2><details open><summary>gen.mjs</summary><pre><span class="k">import</span> {writeFileSync} <span class="k">from</span> <span <span class="k">class</span>="s">"node:fs"</span>
+<span class="k">const</span> FR=<span class="n">30</span>, DUR=<span class="n">60</span>, W=<span class="n">200</span>, H=<span class="n">200</span>
+<span class="k">const</span> colors=[[<span class="n">0.043</span>,<span class="n">0.231</span>,<span class="n">0.29</span>],[<span class="n">0.059</span>,<span class="n">0.416</span>,<span class="n">0.451</span>],[<span class="n">0.102</span>,<span class="n">0.647</span>,<span class="n">0.627</span>]] // deep, mid, bright teal
+<span class="k">const</span> kfs=(f)=&gt;{ // f(t) -&gt; [x,y,s]; sample every <span class="n">2</span> frames, cyclic
+  <span class="k">const</span> out=[]; <span class="k">for</span>(<span class="k">let</span> t=<span class="n">0</span>;t&lt;=DUR;t+=<span class="n">2</span>){ out.push({t, v:f(t)}) } <span class="k">return</span> out }
+<span class="k">const</span> prop=(arr,idx)=&gt;({a:<span class="n">1</span>,k:arr.map((k,i)=&gt;({t:k.t,s:idx(k.v),...(i&lt;arr.length-<span class="n">1</span>?{i:{x:[<span class="n">0.5</span>],y:[<span class="n">1</span>]},o:{x:[<span class="n">0.5</span>],y:[<span class="n">0</span>]}}:{})})) })
+<span class="k">function</span> dot(i){
+  <span class="k">const</span> ph=i/<span class="n">3</span>*<span class="n">0.5</span> // phase offset <span class="k">in</span> cycle
+  <span class="k">const</span> f=t=&gt;{<span class="k">const</span> a=<span class="n">2</span>*Math.PI*(t/DUR-ph*<span class="n">0.6</span>); <span class="k">const</span> wave=Math.sin(a); <span class="k">return</span> {y:<span class="n">100</span>-wave*<span class="n">26</span>, s:<span class="n">100</span>+Math.max(<span class="n">0</span>,Math.cos(a))*<span class="n">0</span> + (wave)*<span class="n">18</span>, tt:t}}
+  <span class="k">const</span> arr=[];<span class="k">for</span>(<span class="k">let</span> t=<span class="n">0</span>;t&lt;=DUR;t+=<span class="n">2</span>)arr.push({t,v:f(t)})
+  <span class="k">return</span> {ty:<span class="n">4</span>,nm:<span <span class="k">class</span>="s">`Dot ${i+<span class="n">1</span>}`</span>,ind:i+<span class="n">1</span>,ip:<span class="n">0</span>,op:DUR,st:<span class="n">0</span>,ks:{o:{a:<span class="n">0</span>,k:<span class="n">100</span>},r:{a:<span class="n">0</span>,k:<span class="n">0</span>},a:{a:<span class="n">0</span>,k:[<span class="n">0</span>,<span class="n">0</span>,<span class="n">0</span>]},
+    p:{a:<span class="n">1</span>,k:arr.map((k,j)=&gt;({t:k.t,s:[<span class="n">60</span>+i*<span class="n">40</span>-<span class="n">0</span>,k.v.y,<span class="n">0</span>],...(j&lt;arr.length-<span class="n">1</span>?{i:{x:<span class="n">0.5</span>,y:<span class="n">1</span>},o:{x:<span class="n">0.5</span>,y:<span class="n">0</span>}}:{})}))},
+    s:{a:<span class="n">1</span>,k:arr.map((k,j)=&gt;({t:k.t,s:[k.v.s,k.v.s,<span class="n">100</span>],...(j&lt;arr.length-<span class="n">1</span>?{i:{x:[<span class="n">0.5</span>],y:[<span class="n">1</span>]},o:{x:[<span class="n">0.5</span>],y:[<span class="n">0</span>]}}:{})}))}},
+    shapes:[{ty:<span <span class="k">class</span>="s">"gr"</span>,nm:<span <span class="k">class</span>="s">"g"</span>,it:[{ty:<span <span class="k">class</span>="s">"el"</span>,p:{a:<span class="n">0</span>,k:[<span class="n">0</span>,<span class="n">0</span>]},s:{a:<span class="n">0</span>,k:[<span class="n">30</span>,<span class="n">30</span>]}},{ty:<span <span class="k">class</span>="s">"fl"</span>,c:{a:<span class="n">0</span>,k:[...colors[i],<span class="n">1</span>]},o:{a:<span class="n">0</span>,k:<span class="n">100</span>}},{ty:<span <span class="k">class</span>="s">"tr"</span>,p:{a:<span class="n">0</span>,k:[<span class="n">0</span>,<span class="n">0</span>]},a:{a:<span class="n">0</span>,k:[<span class="n">0</span>,<span class="n">0</span>]},s:{a:<span class="n">0</span>,k:[<span class="n">100</span>,<span class="n">100</span>]},r:{a:<span class="n">0</span>,k:<span class="n">0</span>},o:{a:<span class="n">0</span>,k:<span class="n">100</span>}}]}],bm:<span class="n">0</span>}
+}
+<span class="k">const</span> lot={v:<span <span class="k">class</span>="s">"<span class="n">5.7</span>.<span class="n">0</span>"</span>,fr:FR,ip:<span class="n">0</span>,op:DUR,w:W,h:H,nm:<span <span class="k">class</span>="s">"Tidewater loading"</span>,ddd:<span class="n">0</span>,assets:[],layers:[dot(<span class="n">0</span>),dot(<span class="n">1</span>),dot(<span class="n">2</span>)].reverse()}
+writeFileSync(<span <span class="k">class</span>="s">"tidewater-loading.json"</span>,JSON.stringify(lot))
+console.log(<span <span class="k">class</span>="s">"ok"</span>)
+</pre></details><details><summary>shot.mjs</summary><pre><span class="k">import</span> puppeteer <span class="k">from</span> <span <span class="k">class</span>="s">"/Users/kametayturar/agentic-ui/ai-answer/docs/review/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js"</span>
+<span class="k">import</span> http <span class="k">from</span> <span <span class="k">class</span>="s">"node:http"</span>; <span class="k">import</span> {readFileSync} <span class="k">from</span> <span <span class="k">class</span>="s">"node:fs"</span>
+<span class="k">const</span> srv=http.createServer((q,r)=&gt;{<span class="k">try</span>{<span class="k">const</span> f=q.url.split(<span <span class="k">class</span>="s">"?"</span>)[<span class="n">0</span>].slice(<span class="n">1</span>);r.end(readFileSync(f))}<span class="k">catch</span>{r.statusCode=<span class="n">404</span>;r.end()}}).listen(<span class="n">7021</span>)
+<span class="k">const</span> b=<span class="k">await</span> puppeteer.launch({executablePath:<span <span class="k">class</span>="s">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span>,headless:<span class="k">true</span>})
+<span class="k">const</span> p=<span class="k">await</span> b.newPage(); <span class="k">await</span> p.setViewport({width:<span class="n">200</span>,height:<span class="n">200</span>}); 
+<span class="k">const</span> errs=[];p.on(<span <span class="k">class</span>="s">"pageerror"</span>,e=&gt;errs.push(e.message));p.on(<span <span class="k">class</span>="s">"console"</span>,m=&gt;{<span class="k">if</span>(m.<span class="k">type</span>()==<span <span class="k">class</span>="s">"error"</span>)errs.push(m.text())})
+<span class="k">await</span> p.goto(<span <span class="k">class</span>="s">"http://localhost:<span class="n">7021</span>/t.html"</span>); <span class="k">await</span> <span class="k">new</span> Promise(r=&gt;setTimeout(r,<span class="n">800</span>))
+<span class="k">const</span> info=<span class="k">await</span> p.evaluate(()=&gt;({frames:an.totalFrames,fr:an.frameRate,loaded:an.isLoaded}));console.log(JSON.stringify(info),errs)
+<span class="k">for</span>(<span class="k">const</span> f <span class="k">of</span> [<span class="n">0</span>,<span class="n">10</span>,<span class="n">20</span>,<span class="n">30</span>,<span class="n">40</span>,<span class="n">50</span>]){<span class="k">await</span> p.evaluate(f=&gt;an.goToAndStop(f,<span class="k">true</span>),f);<span class="k">await</span> p.screenshot({path:<span <span class="k">class</span>="s">`f${f}.png`</span>})}
+<span class="k">await</span> b.close();srv.close()
+</pre></details>
+</main>
+<script>document.querySelectorAll(".lottie").forEach(el=>lottie.loadAnimation({container:el,renderer:"svg",loop:true,autoplay:true,path:el.dataset.src}))</script>
+</body></html>

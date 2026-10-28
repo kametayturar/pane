@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run report</title>
+<style>
+:root{--ink:#16181d;--muted:#6b7280;--line:#e7e8ec;--bg:#f7f7f8;--term:#0f1115}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1180px;margin:0 auto;padding:28px 32px 48px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:28px 0 10px}
+.result{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img,figure video{display:block;width:100%;height:auto;background:#000}
+.lottie{width:100%;aspect-ratio:16/10;background:#fff}
+figcaption{padding:8px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)}
+.term{background:var(--term);color:#d7dae0;border-radius:12px;padding:6px 0;font:12.5px/1.6 "JetBrains Mono",ui-monospace,Menlo,monospace;overflow:auto}
+.step{padding:10px 16px;border-bottom:1px solid #1c1f26}.step:last-child{border:0}
+.cmd{color:#8be9b0;white-space:pre-wrap}.cmd::before{content:"$ ";color:#5c6370}.note{color:#7f8794;font-style:italic;margin-bottom:2px}
+.out{color:#c4c8d0;white-space:pre-wrap;margin-top:4px;max-height:280px;overflow:auto}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:10px 14px;font:500 13px ui-monospace,Menlo,monospace}
+pre{margin:0;padding:12px 14px;background:#fbfbfc;border-top:1px solid var(--line);overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:520px}
+.k{color:#7c3aed}.s{color:#0f766e}.c{color:#9ca3af;font-style:italic}.n{color:#b45309}
+</style>
+
+</head><body><main>
+<h2>Output</h2><div class="media"><figure><img src="video-2-clip.gif" alt="video-2: looping GIF, 960x540, 15 fps, 1.24 MB"><figcaption>video-2: looping GIF, 960x540, 15 fps, 1.24 MB</figcaption></figure><figure><img src="video-2-frame.png" alt="Frame 40 decoded from the final GIF (legibility check)"><figcaption>Frame 40 decoded from the final GIF (legibility check)</figcaption></figure></div>
+<h2>Result</h2><div class="result">Delivered clip.gif: 960x540, 15 fps, 120 frames, full 8 s, loops forever, 1,299,074 bytes (1.24 MB, under the 2 MB limit). Made with a two-pass ffmpeg palette (palettegen with stats_mode=diff, then paletteuse with sierra2_4a dithering and rectangle diffing), Lanczos downscale from 1280x720.
+
+I tried five size/fps/palette combinations first (sizes 0.58 to 1.6 MB, listed below) and picked the largest one that still fit comfortably: 960 px wide keeps the small sidebar and UI labels readable in a Slack message, and 15 fps keeps the moving flow-diagram dots smooth. I checked a decoded GIF frame visually; text is legible. Not done: I did not trim to a seamless loop point, the 8 s clip is looped as is, so the animation may jump when it restarts. I did not upload to Slack to test.</div>
+<h2>Terminal</h2><div class="term"><div class="step"><div class="note"># Source is an 8 s screen recording of a UI, mostly static with small moving parts.</div><div class="cmd">ffprobe -v error -show_entries stream=width,height,r_frame_rate,duration,codec_name -of default=nw=1 clip.mp4</div><div class="out">codec_name=h264
+width=1280
+height=720
+r_frame_rate=30/1
+duration=8.000000</div></div><div class="step"><div class="note"># A shell quoting bug, not an ffmpeg one.</div><div class="cmd">ffmpeg -v error -y -i clip.mp4 -vf "fps=F,scale=W:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=C:stats_mode=diff[p];[b][p]paletteuse=dither=D:diff_mode=rectangle" -loop 0 out.gif   # a try() helper over W/F/C/D</div><div class="out">(first run failed: zsh expanded $c: as a modifier -&gt; "Invalid chars 'teuse=dither=bayer'"; fixed by using ${c} braces)</div></div><div class="step"><div class="note"># Sizes are small because the content is mostly static.</div><div class="cmd">try 1280 10 128 bayer; try 800 12 128 bayer; try 720 12 128 sierra2_4a; try 640 15 128 bayer; try 800 10 96 bayer</div><div class="out">1265939 t_1280_10_128_bayer.gif
+747580 t_800_12_128_bayer.gif
+601052 t_720_12_128_sierra2_4a.gif
+583851 t_640_15_128_bayer.gif
+608834 t_800_10_96_bayer.gif</div></div><div class="step"><div class="note"># Spend the budget on resolution and colours; picked 960 / 15 fps / 256 colours.</div><div class="cmd">try 960 15 256 sierra2_4a; try 1024 15 192 bayer; try 960 20 256 bayer</div><div class="out">1299074 t_960_15_256_sierra2_4a.gif
+1443257 t_1024_15_192_bayer.gif
+1621415 t_960_20_256_bayer.gif</div></div><div class="step"><div class="cmd">ffprobe -v error -count_frames -show_entries stream=width,height,nb_read_frames,r_frame_rate,duration:format=size -of default=nw=1 clip.gif</div><div class="out">width=960
+height=540
+nb_read_frames=120
+r_frame_rate=15/1
+duration=8.000000
+size=1299074</div></div><div class="step"><div class="cmd">ffmpeg -v error -y -i clip.gif -vf "select='eq(n,40)'" -frames:v 1 g40.png</div><div class="out">(decoded frame viewed: sidebar labels, buttons and node text are readable)</div></div></div>
+<h2>Files</h2><details open><summary>make-gif.sh</summary><pre>ffmpeg -v error -y -i clip.mp4 \
+  -vf <span <span class="k">class</span>="s">"fps=<span class="n">15</span>,scale=<span class="n">960</span>:-<span class="n">1</span>:flags=lanczos,split[a][b];[a]palettegen=max_colors=<span class="n">256</span>:stats_mode=diff[p];[b][p]paletteuse=dither=sierra2_4a:diff_mode=rectangle"</span> \
+  -loop <span class="n">0</span> clip.gif
+</pre></details>
+</main>
+
+</body></html>

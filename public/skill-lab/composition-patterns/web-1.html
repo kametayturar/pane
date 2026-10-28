@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater – Scheduling for physiotherapy clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"react":"https://esm.sh/react@19","react-dom/client":"https://esm.sh/react-dom@19/client"}}</script>
+<style>
+:root{--bg:#f5f2ea;--paper:#fffdf8;--ink:#12302e;--muted:#5a6e6b;--line:#e2dccd;--teal:#0f766e;--teal-d:#0a5852;--teal-l:#d7ece8;--sand:#ece5d3;--amber:#d98a1f;--err:#b3261e;--ok:#1d7a46;--r:16px;--serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.01em}
+.brand i{width:26px;height:26px;border-radius:8px;background:var(--teal);position:relative;display:block;overflow:hidden}
+.brand i::after{content:"";position:absolute;left:-4px;right:-4px;bottom:5px;height:9px;border-radius:50%;background:var(--teal-l);opacity:.9}
+.nav{display:flex;align-items:center;gap:26px;font-size:15px;color:var(--muted)}
+.nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:999px;padding:12px 22px;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s,transform .2s,border-color .2s}
+.btn:focus-visible,.slot:focus-visible,.seg button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f0b34a;outline-offset:2px}
+.btn-pri{background:var(--teal);color:#fff}.btn-pri:hover{background:var(--teal-d)}
+.btn-sec{background:transparent;border-color:var(--line);color:var(--ink)}.btn-sec:hover{border-color:var(--ink)}
+.btn-block{width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--teal)}
+.eyebrow::before{content:"";width:18px;height:2px;background:currentColor;border-radius:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;line-height:1.08}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+footer.ftr{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:14px;margin-top:40px}
+/* view source */
+.vs-btn{position:fixed;right:16px;bottom:16px;z-index:50;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.2);display:inline-flex;gap:6px;align-items:center}
+.vs-btn code{font:600 12px ui-monospace,Menlo,monospace}
+.vs-panel{position:fixed;right:16px;bottom:62px;z-index:49;width:min(620px,calc(100vw - 32px));height:min(70vh,560px);background:#0f1b1a;color:#cfe4e0;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}
+.vs-panel[hidden]{display:none}
+.vs-panel header{display:flex;align-items:baseline;gap:10px;padding:12px 16px;border-bottom:1px solid #243a37;font-size:13px}
+.vs-panel header b{color:#fff}
+.vs-panel header span{color:#7f9d98;flex:1}
+.vs-panel header button{background:#243a37;border:0;color:#cfe4e0;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer}
+.vs-panel pre{margin:0;overflow:auto;padding:16px;font:12px/1.6 ui-monospace,Menlo,monospace;flex:1;tab-size:2}
+.vs-panel .k{color:#f0b34a}.vs-panel .c{color:#6f8f8a}
+
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding:40px 0 72px}
+.hero h1{font-size:clamp(40px,5.4vw,68px);margin:18px 0 20px}
+.hero h1 em{font-style:italic;color:var(--teal)}
+.hero .lead{font-size:19px;color:var(--muted);max-width:30em}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.stage{position:relative;padding:0 0 40px}
+.board{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 30px 60px -30px rgba(18,48,46,.25)}
+.board-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.board-h b{font-family:var(--serif);font-weight:500;font-size:20px}
+.board-h span{font-size:13px;color:var(--muted)}
+.slots{display:grid;gap:8px;list-style:none;padding:0}
+.slot{width:100%;display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.slot:hover{border-color:#b9cfca}
+.slot[aria-pressed=true]{border-color:var(--teal);background:var(--teal-l);transform:translateX(4px)}
+.slot .t{font-weight:600;font-variant-numeric:tabular-nums;font-size:14px}
+.slot .w{font-weight:500;font-size:15px}.slot .w small{display:block;color:var(--muted);font-weight:400;font-size:12.5px}
+.slot .tick{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;color:#fff;font-size:11px}
+.slot[aria-pressed=true] .tick{background:var(--teal);border-color:var(--teal)}
+.summary{position:absolute;left:-28px;bottom:0;background:var(--ink);color:#fff;border-radius:14px;padding:14px 18px;max-width:270px;box-shadow:0 18px 40px -12px rgba(18,48,46,.5)}
+.summary small{display:block;color:#9fc7c0;font-size:12px;letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+.summary strong{font-family:var(--serif);font-weight:500;font-size:18px}
+.sec{padding:72px 0}
+.sec-h{max-width:34em;margin-bottom:40px}
+.sec-h h2{font-size:clamp(30px,3.6vw,44px);margin-top:12px}
+.sec-h p{color:var(--muted);margin-top:12px;font-size:17px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;list-style:none;padding:0}
+.feat{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:12px;height:100%}
+.feat .ic{width:46px;height:46px;border-radius:12px;background:var(--teal-l);color:var(--teal);display:grid;place-items:center}
+.feat .ic svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.feat h3{font-size:24px}
+.feat p{color:var(--muted);font-size:15.5px}
+.meter{margin-top:auto;padding-top:8px}
+.meter .bar{height:8px;border-radius:99px;background:var(--sand);overflow:hidden}
+.meter .bar i{display:block;height:100%;width:96%;background:var(--teal);border-radius:99px}
+.meter small,.tags{font-size:12.5px;color:var(--muted)}
+.meter small{display:block;margin-top:6px}
+.avatars{display:flex;margin-top:auto;padding-top:8px;align-items:center;gap:10px}
+.avatars span.av{width:30px;height:30px;border-radius:50%;border:2px solid var(--paper);margin-left:-8px;display:grid;place-items:center;font-size:11px;font-weight:600;color:#fff}
+.avatars span.av:first-child{margin-left:0}
+.avatars small{font-size:12.5px;color:var(--muted)}
+.tags{margin-top:auto;padding-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.tags span{background:var(--sand);border-radius:99px;padding:3px 10px}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:40px;padding-bottom:48px}.features{grid-template-columns:1fr}.summary{left:12px}.nav a:not(.btn){display:none}.sec{padding:48px 0}}
+@media (max-width:480px){.wrap{padding:0 18px}.hero .actions .btn{flex:1}.slot{grid-template-columns:54px 1fr auto}.summary{position:static;margin-top:14px;max-width:none}.stage{padding-bottom:0}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" id="app">
+import {createElement as h, createContext, use, useState} from 'react';
+import {createRoot} from 'react-dom/client';
+
+// <composition>
+// Hero is a compound component: small parts, no boolean props, no renderX props.
+// State lives in <BookingProvider> and is exposed as { state, actions, meta }.
+const BookingContext = createContext(null);
+
+function BookingProvider({children}) {
+  const [picked, setPicked] = useState('tue-1030');
+  return h(BookingContext, {value: {
+    state: {picked},
+    actions: {pick: setPicked},
+    meta: {slots: SLOTS},
+  }}, children);
+}
+
+// Parts that don't need state just take children.
+const Hero = {
+  Frame:   ({children}) => h('section', {className: 'hero'}, children),
+  Copy:    ({children}) => h('div', null, children),
+  Eyebrow: ({children}) => h('span', {className: 'eyebrow'}, children),
+  Title:   ({children}) => h('h1', null, children),
+  Lead:    ({children}) => h('p', {className: 'lead'}, children),
+  Actions: ({children}) => h('div', {className: 'actions'}, children),
+  Stage:   ({children}) => h('div', {className: 'stage'}, children),
+};
+
+// Parts that read shared state use() the context (React 19), not props.
+const Booking = {
+  Board({children}) {
+    return h('div', {className: 'board'},
+      h('div', {className: 'board-h'}, h('b', null, 'Tuesday'), h('span', null, '4 of 6 slots filled')),
+      children);
+  },
+  Slots() {
+    const {state, actions, meta} = use(BookingContext);
+    return h('ul', {className: 'slots'}, meta.slots.map(s =>
+      h('li', {key: s.id}, h('button', {
+        className: 'slot', type: 'button',
+        'aria-pressed': state.picked === s.id,
+        onClick: () => actions.pick(s.id),
+      },
+        h('span', {className: 't'}, s.time),
+        h('span', {className: 'w'}, s.who, h('small', null, s.kind)),
+        h('span', {className: 'tick', 'aria-hidden': true}, '✓')))));
+  },
+  // A sibling far from <Slots/> reads the same state: no prop drilling, no effects.
+  Summary() {
+    const {state, meta} = use(BookingContext);
+    const s = meta.slots.find(x => x.id === state.picked);
+    return h('div', {className: 'summary', 'aria-live': 'polite'},
+      h('small', null, 'Reminder queued'), h('strong', null, `${s.who.split(' ')[0]} · Tue ${s.time}`));
+  },
+};
+
+// Explicit buttons instead of <Button primary outline large>.
+const PrimaryAction   = ({children}) => h('a', {className: 'btn btn-pri', href: '#start'}, children);
+const SecondaryAction = ({children}) => h('a', {className: 'btn btn-sec', href: '#tour'}, children);
+
+// Each feature card is composed from the same parts; extras are just more children.
+const Feature = {
+  List:  ({children}) => h('ul', {className: 'features'}, children),
+  Frame: ({children}) => h('li', null, h('article', {className: 'feat'}, children)),
+  Icon:  ({d}) => h('div', {className: 'ic'}, h('svg', {viewBox: '0 0 24 24', 'aria-hidden': true}, h('path', {d}))),
+  Title: ({children}) => h('h3', null, children),
+  Body:  ({children}) => h('p', null, children),
+  Meter: ({value, label}) => h('div', {className: 'meter'},
+    h('div', {className: 'bar'}, h('i', {style: {width: value}})), h('small', null, label)),
+  Avatars: ({people, label}) => h('div', {className: 'avatars'},
+    people.map(([i, c]) => h('span', {key: i, className: 'av', style: {background: c}}, i)), h('small', null, label)),
+  Tags: ({items}) => h('div', {className: 'tags'}, items.map(t => h('span', {key: t}, t))),
+};
+
+function ReminderFeature() {
+  return h(Feature.Frame, null,
+    h(Feature.Icon, {d: 'M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0'}),
+    h(Feature.Title, null, 'Reminders that get answered'),
+    h(Feature.Body, null, 'Patients confirm or reschedule from a text in two taps, so your front desk stops playing phone tag.'),
+    h(Feature.Meter, {value: '96%', label: '96% of reminders answered within the hour'}));
+}
+function WaitlistFeature() {
+  return h(Feature.Frame, null,
+    h(Feature.Icon, {d: 'M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0'}),
+    h(Feature.Title, null, 'A waitlist that fills itself'),
+    h(Feature.Body, null, 'When someone cancels, the next matching patient is offered the slot automatically. Empty chairs get rare.'),
+    h(Feature.Avatars, {people: [['MR', '#0f766e'], ['JK', '#d98a1f'], ['AS', '#486b9a']], label: '3 patients waiting for Thursday'}));
+}
+function RoomsFeature() {
+  return h(Feature.Frame, null,
+    h(Feature.Icon, {d: 'M3 21V8l9-5 9 5v13M9 21v-6h6v6'}),
+    h(Feature.Title, null, 'Rooms and therapists, in sync'),
+    h(Feature.Body, null, 'Tidewater knows which therapist, room and equipment each treatment needs, and never double-books any of them.'),
+    h(Feature.Tags, {items: ['Room 2', 'Ultrasound', 'Dr. Okafor']}));
+}
+// </composition>
+
+const SLOTS = [
+  {id: 'tue-0900', time: '9:00',  who: 'Maya Reyes',   kind: 'Knee rehab · 45 min'},
+  {id: 'tue-1030', time: '10:30', who: 'Jonas Keller', kind: 'Shoulder mobility · 30 min'},
+  {id: 'tue-1130', time: '11:30', who: 'Aisha Samad',  kind: 'Lower back · 45 min'},
+  {id: 'tue-1400', time: '14:00', who: 'Tom Brandt',   kind: 'Post-op review · 30 min'},
+];
+
+function Header() {
+  return h('header', {className: 'hdr'},
+    h('a', {className: 'brand', href: '#'}, h('i'), 'Tidewater'),
+    h('nav', {className: 'nav', 'aria-label': 'Main'},
+      h('a', {href: '#features'}, 'Features'), h('a', {href: '#pricing'}, 'Pricing'), h('a', {href: '#clinics'}, 'For clinics'),
+      h('a', {className: 'btn btn-pri', href: '#start'}, 'Start free')));
+}
+
+function HomeHero() {
+  return h(BookingProvider, null,
+    h(Hero.Frame, null,
+      h(Hero.Copy, null,
+        h(Hero.Eyebrow, null, 'Scheduling for physiotherapy'),
+        h(Hero.Title, null, 'A calmer day, ', h('em', null, 'booked'), ' by lunchtime.'),
+        h(Hero.Lead, null, 'Tidewater keeps every therapist, room and follow-up in one quiet timetable, so your clinic spends its hours on patients, not on the phone.'),
+        h(Hero.Actions, null,
+          h(PrimaryAction, null, 'Start 30 days free'),
+          h(SecondaryAction, null, 'Watch a 2-min tour'))),
+      h(Hero.Stage, null,
+        h(Booking.Board, null, h(Booking.Slots)),
+        h(Booking.Summary))));
+}
+
+function App() {
+  return h('div', null,
+    h('div', {className: 'wrap'},
+      h(Header),
+      h('main', null,
+        h(HomeHero),
+        h('section', {className: 'sec', id: 'features'},
+          h('div', {className: 'sec-h'},
+            h('span', {className: 'eyebrow'}, 'What changes'),
+            h('h2', null, 'Three things small clinics stop doing by hand'),
+            h('p', null, 'Built with physiotherapists who ran their own front desks.')),
+          h(Feature.List, null, h(ReminderFeature), h(WaitlistFeature), h(RoomsFeature))))),
+    h('footer', {className: 'ftr'}, h('div', {className: 'wrap'}, '© 2026 Tidewater · Scheduling for small physiotherapy clinics')));
+}
+createRoot(document.getElementById('root')).render(h(App));
+</script>
+<button class="vs-btn" id="vsBtn" type="button" aria-expanded="false" aria-controls="vsPanel">View source <code>&lt;/&gt;</code></button>
+<aside class="vs-panel" id="vsPanel" hidden aria-label="Component source"><header><b>Composition layer</b><span>the compound components this page is built from</span><button type="button" id="vsClose">Close</button></header><pre><code id="vsCode"></code></pre></aside>
+<script>
+(function(){
+  var btn=document.getElementById('vsBtn'),panel=document.getElementById('vsPanel'),code=document.getElementById('vsCode');
+  var src=document.getElementById('app').textContent;
+  var a=src.indexOf('// <composition>'),b=src.indexOf('// </composition>');
+  var text=(a>-1&&b>a?src.slice(a+16,b):src).replace(/^\n+/,'').replace(/\s+$/,'');
+  var esc=function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')};
+  code.innerHTML=esc(text).split('\n').map(function(l){
+    if(/^\s*\/\//.test(l))return '<span class="c">'+l+'</span>';
+    return l.replace(/\b(function|const|return|export|import|from)\b/g,'<span class="k">$1</span>');
+  }).join('\n');
+  function set(o){panel.hidden=!o;btn.setAttribute('aria-expanded',o)}
+  btn.onclick=function(){set(panel.hidden)};
+  document.getElementById('vsClose').onclick=function(){set(false)};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false)});
+})();
+</script>
+
+</body>
+</html>

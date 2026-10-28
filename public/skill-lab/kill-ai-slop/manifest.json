@@ -1,0 +1,40 @@
+{
+  "id": "kill-ai-slop",
+  "sets": [
+    "web"
+  ],
+  "skillSays": [
+    "Slop is the absence of a decision: every colour, face and decoration has to be explainable, otherwise remove it.",
+    "Subtract first: one accent, one voice, one radius, hierarchy from scale and space rather than coloured words or extra fonts.",
+    "Run the bundled scanner over the project, triage each hit as slop versus intentional, then fix and rescan.",
+    "Specific copy beats punchy copy: no 'not just X, it's Y', no invented stat rows, no emoji, no kickers or 01/02/03 markers.",
+    "Decoration must mean something: no icon tiles, glowing dots, side-border callouts, badges, glass, big soft shadows or nested cards."
+  ],
+  "examples": [
+    {
+      "prompt": "web-1",
+      "changes": [
+        "Chose Atkinson Hyperlegible Next on purpose (patients of all ages) instead of the Inter / Space Grotesk / Geist default, and used it alone",
+        "One neutral ground, one deep teal accent, a 4px radius held everywhere, no shadows, no gradients, no icons",
+        "Features are three plain heading-plus-sentence rows split by hairlines, and the hero evidence is an honest one-therapist table rather than a mock dashboard",
+        "Ran the bundled scan.mjs on the output: only nav hover-underline hits remained, triaged as real links"
+      ]
+    },
+    {
+      "prompt": "web-2",
+      "changes": [
+        "Plans separated by hairlines, not cards; the single teal solid button marks Clinic, so emphasis comes from one button instead of a ringed 'popular' card or badge",
+        "Plain dash markers instead of green tick icons, and the 20% saving stated in the toggle label rather than a pill",
+        "Heading names the pricing basis plainly, no kicker above it"
+      ]
+    },
+    {
+      "prompt": "web-3",
+      "changes": [
+        "Errors say 'Error.' in bold with the fix, set on a neutral field with a 2px border, so state is carried by words and weight rather than a one-hue red tinted box",
+        "Native select and checkbox kept, with accent-color, no decorative glow or rounding",
+        "Single narrow column with real label hierarchy; no marketing panel, no emoji"
+      ]
+    }
+  ]
+}

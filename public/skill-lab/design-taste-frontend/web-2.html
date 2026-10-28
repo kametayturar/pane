@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidewater pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* Direction: "The sentence is the layout" (seed 1087265469). Type redrawn: Bodoni Moda / Jost (brief allows Google Fonts only).
+   Palette keeps the dealt proportions (dark ground, bone ink, one olive block, one ochre field) with colours taken from the tidal marsh. */
+:root{
+ --bg:#10282E;--surface:#17353D;--surface-2:#1F444E;--ink:#EAE6D4;--muted:#A9BDB9;
+ --accent:#566420;--accent-ink:#EAE6D4;
+ --field-1:#C79A3E;--field-1-ink:#1F1408;--field-2:#566420;--field-2-ink:#EAE6D4;--field-3:#2F6F7E;--field-3-ink:#F4F1E4;
+ --step-small:clamp(.8125rem,.79rem + .1vw,.875rem);--step-body:clamp(1.0625rem,1rem + .25vw,1.1875rem);--step-lead:clamp(1.25rem,1.1rem + .7vw,1.625rem);--step-head:clamp(2rem,1.3rem + 3.2vw,4rem);
+ --ease:cubic-bezier(.16,1,.3,1);--pad:clamp(20px,3vw,40px);--r:10px;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 var(--step-body)/1.5 Jost,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.disp{font-family:"Bodoni Moda",Georgia,serif;font-weight:500;letter-spacing:-.025em;line-height:.95;font-optical-sizing:auto}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--field-1);outline-offset:3px}
+.pad{padding-left:var(--pad);padding-right:var(--pad)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border:0;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);font:500 17px Jost,sans-serif;text-decoration:none;cursor:pointer;transition:transform .2s var(--ease),background .2s}
+.btn:hover{background:#6B7B28}.btn:active{transform:translateY(1px)}
+.btn.sand{background:var(--field-1);color:var(--field-1-ink)}.btn.sand:hover{background:#D8AB4B}
+.mark{font:500 20px/1 "Bodoni Moda",serif;letter-spacing:-.02em;text-decoration:none}
+.navlink{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;font-weight:500;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding-top:20px;padding-bottom:20px}
+.topbar .btn{min-height:44px;padding:0 20px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.topbar{padding-top:20px}
+.wrap{padding:clamp(48px,7vw,96px) var(--pad) clamp(72px,9vw,120px)}
+.tiles{display:grid;grid-template-columns:repeat(12,1fr);column-gap:8px;align-items:end}
+.head{grid-column:1/9;align-self:start;grid-row:1}
+.head h1{font-size:clamp(40px,5vw,76px);line-height:1;max-width:14ch}
+.sw{display:inline-flex;margin-top:24px;background:var(--surface);border-radius:var(--r);padding:4px;gap:4px}
+.sw button{min-height:48px;padding:0 22px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:500 17px Jost,sans-serif;cursor:pointer;transition:background .25s var(--ease),color .25s}
+.sw button[aria-checked=true]{background:var(--ink);color:var(--bg)}
+.sw small{font:600 14px Jost;margin-left:8px;padding:2px 10px;border-radius:99px;background:var(--field-1);color:var(--field-1-ink)}
+.tile{display:flex;flex-direction:column;border-radius:var(--r);overflow:hidden;background:var(--f);color:var(--fi);grid-row:1}
+.t1{grid-column:1/5;height:410px;--f:var(--field-1);--fi:var(--field-1-ink);--d:#A67E2B}
+.t2{grid-column:5/9;height:530px;--f:var(--field-3);--fi:var(--field-3-ink);--d:#245866}
+.t3{grid-column:9/13;height:650px;--f:var(--field-2);--fi:var(--field-2-ink);--d:#424E17}
+.head{grid-row:1}
+.body{flex:1;padding:28px}
+.tile h2{font:700 28px/1.1 "Bodoni Moda",serif;letter-spacing:-.01em}
+.price{display:flex;align-items:baseline;gap:10px;margin:6px 0 2px}
+.amt{font:500 56px/1.1 "Bodoni Moda",serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums;font-variation-settings:"wght" 560}
+.per{font-size:17px;opacity:.85}
+.bill{font-size:17px;min-height:26px;opacity:.9;margin-bottom:14px}
+.tile ul{list-style:none;padding:0;display:grid;gap:6px;font-size:17px}
+.tile li{display:flex;gap:10px}
+.tile li::before{content:"";flex:none;width:12px;height:6px;margin-top:9px;border-left:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(-45deg)}
+.buy{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 28px;background:var(--d);color:#fff;text-decoration:none;font:500 18px Jost,sans-serif;transition:filter .2s}
+.t1 .buy{color:var(--field-1-ink)}
+:root{--field-3-ink:#F1F4F0}
+.buy:hover{filter:brightness(1.12)}
+.buy::after{content:"";width:10px;height:10px;border-right:2.5px solid currentColor;border-top:2.5px solid currentColor;transform:rotate(45deg);transition:transform .25s var(--ease)}
+.buy:hover::after{transform:translateX(4px) rotate(45deg)}
+.note{margin-top:32px;color:var(--muted);font-size:16px;max-width:60ch}
+@media (prefers-reduced-motion:no-preference){.js .tile{animation:rise .9s var(--ease) backwards}.t2{animation-delay:.12s!important}.t3{animation-delay:.24s!important}@keyframes rise{from{transform:translateY(40px);opacity:0}}}
+@media (prefers-reduced-motion:no-preference){.js .tile li,.js .tile .price,.js .tile h2{animation:rise .8s var(--ease) backwards;animation-delay:calc(.35s + var(--k,0)*70ms)}.tile li:nth-child(1){--k:1}.tile li:nth-child(2){--k:2}.tile li:nth-child(3){--k:3}.tile li:nth-child(4){--k:4}.tile li:nth-child(5){--k:5}.tile li:nth-child(6){--k:6}.tile li:nth-child(7){--k:7}.js .tile h2{--k:0}.js .tile .price{--k:0}}
+@media (max-width:860px){
+ .tiles{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+ .head{order:0;padding-bottom:24px}.head h1{font-size:9vw}
+ .tile{height:auto!important}.t1{order:1}.t2{order:2}.t3{order:3}
+ .amt{font-size:44px}
+}
+.lines .line{display:block;overflow:hidden;padding:.04em .1em .12em;margin:-.04em -.1em -.12em}.lines [data-line]{display:block}
+@media (prefers-reduced-motion:no-preference){.js .lines [data-line]{transform:translateY(105%);animation:lineup 900ms var(--ease) forwards;animation-delay:calc(var(--i)*110ms + 150ms)}@keyframes lineup{to{transform:none}}}
+</style>
+</head>
+<body>
+<div class="topbar pad"><a class="mark" href="#">Tidewater</a></div>
+<main class="wrap">
+ <div class="tiles">
+  <div class="head"><h1 class="lines"><span class="line"><span data-line style="--i:0">Three sizes of clinic</span></span></h1>
+   <div class="sw" role="radiogroup" aria-label="Billing period"><button role="radio" aria-checked="true" data-p="m">Monthly</button><button role="radio" aria-checked="false" data-p="y">Yearly<small>Save 20%</small></button></div></div>
+  <article class="tile t1" data-m="19"><div class="body"><h2>Solo</h2><div class="price"><span class="amt"></span><span class="per">a month</span></div><div class="bill"></div><ul><li>1 therapist, 1 room</li><li>Online booking page</li><li>Up to 150 active patients</li><li>Email support</li></ul></div><a class="buy" href="#">Choose Solo</a></article>
+  <article class="tile t2" data-m="49"><div class="body"><h2>Clinic</h2><div class="price"><span class="amt"></span><span class="per">a month</span></div><div class="bill"></div><ul><li>Up to 8 therapists and 6 rooms</li><li>Waitlist refills cancelled hours</li><li>Unlimited patients</li><li>Shared and personal calendars</li><li>Two-way text reminders</li><li>Priority chat support</li></ul></div><a class="buy" href="#">Choose Clinic</a></article>
+  <article class="tile t3" data-m="129"><div class="body"><h2>Group</h2><div class="price"><span class="amt"></span><span class="per">a month</span></div><div class="bill"></div><ul><li>Everything in Clinic</li><li>Unlimited therapists and rooms</li><li>Unlimited sites</li><li>Cross-site reporting</li><li>Role-based access for each site</li><li>Single sign-on</li><li>Named onboarding contact</li></ul></div><a class="buy" href="#">Choose Group</a></article>
+ </div>
+ <p class="note" id="note">Every plan has the full calendar, text reminders and CSV import. Prices in US dollars, billed monthly. Cancel any time.</p>
+</main>
+<script>
+const tiles=[...document.querySelectorAll('.tile')],btns=[...document.querySelectorAll('.sw button')],note=document.getElementById('note');
+const money=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).replace(/\.00$/,'');
+let mode='m';
+function render(){tiles.forEach(t=>{const m=+t.dataset.m,v=mode==='y'?m*.8:m;t.querySelector('.amt').textContent='$'+money(v);
+ t.querySelector('.bill').textContent=mode==='y'?`$${money(m*.8*12)} billed once a year`:'Billed monthly'});
+ note.textContent='Every plan has the full calendar, text reminders and CSV import. '+(mode==='y'?'Prices in US dollars per month, billed yearly. Cancel any time.':'Prices in US dollars, billed monthly. Cancel any time.')}
+btns.forEach((b,i)=>{b.addEventListener('click',()=>{mode=b.dataset.p;btns.forEach(x=>x.setAttribute('aria-checked',x===b));render()});
+ b.addEventListener('keydown',e=>{if(e.key.startsWith('Arrow')){const o=btns[1-i];o.focus();o.click()}})});
+render();
+</script>
+</body>
+</html>
