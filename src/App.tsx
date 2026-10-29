@@ -126,6 +126,8 @@ import {
   BookOpenText,
   LayoutDashboard,
   Landmark,
+  Timer,
+  TextQuote,
 } from "lucide-react"
 
 import { Backdrop, BACKDROP_VARIANTS, type BackdropVariant, type StudioProps } from "@/components/motion/backdrop"
@@ -194,6 +196,8 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
       ui({ slug: "odometer", name: "Odometer", exportName: "Odometer", icon: Gauge, isNew: true, description: "A background agent's progress as one big rolling count that stops on the number it needs you to check." }),
       ui({ slug: "thought-stack", name: "Thought Stack", exportName: "ThoughtStack", icon: Layers, isNew: true, description: "Reasoning steps dealt as a deck of cards; the answer springs forward on top with the steps tucked underneath." }),
       ui({ slug: "fill-in", name: "Fill In", exportName: "FillIn", icon: TextCursorInput, isNew: true, description: "The agent stops mid-sentence at a blank; the answer you tap lifts out of the options and lands in the sentence." }),
+      ui({ slug: "effort-sentence", name: "Effort Sentence", exportName: "EffortSentence", icon: TextQuote, isNew: true, description: "How hard the model thinks, as one sentence: Think longer adds what it will do, and the seconds and price change in place." }),
+      ui({ slug: "undo-countdown", name: "Undo Countdown", exportName: "UndoCountdown", icon: Timer, isNew: true, description: "A big countdown to undo an agent's action; the word undo is the button, and the number becomes the count it moved." }),
     ],
   },
   {

@@ -2464,6 +2464,36 @@
           "target": "components/ui/fill-in.tsx"
         }
       ]
+    },
+    {
+      "name": "effort-sentence",
+      "type": "registry:ui",
+      "title": "Effort Sentence",
+      "description": "How hard the model thinks, as one sentence: Think longer adds what it will do, and the seconds and price change in place.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/effort-sentence.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/effort-sentence.tsx"
+        }
+      ]
+    },
+    {
+      "name": "undo-countdown",
+      "type": "registry:ui",
+      "title": "Undo Countdown",
+      "description": "A big countdown to undo an agent's action; the word undo is the button, and the number becomes the count it moved.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/undo-countdown.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/undo-countdown.tsx"
+        }
+      ]
     }
   ]
 }

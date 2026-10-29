@@ -1,6 +1,6 @@
 # Pane
 
-**143 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
+**145 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
 answers with sources, agents you can approve and steer, tactile controls, real glass, and animated scenes for your
 landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 
@@ -52,6 +52,8 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 | [**Odometer**](https://paneui.vercel.app/#/odometer) · [source](src/components/ui/odometer.tsx) | A background agent's progress as one big rolling count that stops on the number it needs you to check. | `agent` `progress` `text-effect` `kpi` |
 | [**Thought Stack**](https://paneui.vercel.app/#/thought-stack) · [source](src/components/ui/thought-stack.tsx) | Reasoning steps dealt as a deck of cards; the answer springs forward on top with the steps tucked underneath. | `chat` `reasoning` `card` `streaming` |
 | [**Fill In**](https://paneui.vercel.app/#/fill-in) · [source](src/components/ui/fill-in.tsx) | The agent stops mid-sentence at a blank; the answer you tap lifts out of the options and lands in the sentence. | `agent` `chat` `prompt` `feedback` |
+| [**Effort Sentence**](https://paneui.vercel.app/#/effort-sentence) · [source](src/components/ui/effort-sentence.tsx) | How hard the model thinks, as one sentence: Think longer adds what it will do, and the seconds and price change in place. | `model` `settings` `text-effect` `cost` |
+| [**Undo Countdown**](https://paneui.vercel.app/#/undo-countdown) · [source](src/components/ui/undo-countdown.tsx) | A big countdown to undo an agent's action; the word undo is the button, and the number becomes the count it moved. | `agent` `feedback` `notification` `text-effect` |
 
 ### Chat
 

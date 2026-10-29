@@ -987,6 +987,15 @@ html[data-style="mono"] .dz {
   --dz-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .efs {
+  --efs-ink: #000;
+  --efs-surface: #fff;
+  --efs-accent: #111;
+  --efs-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --efs-ease: cubic-bezier(.2, .9, .1, 1);
+  --efs-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .ed {
   --ed-ink: #000;
   --ed-surface: #fff;
@@ -1519,6 +1528,15 @@ html[data-style="mono"] .twt {
   --twt-shadow: 0 0 0 1px rgb(0 0 0 / .14);
   --twt-ease: cubic-bezier(.2, .9, .1, 1);
   --twt-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .udc {
+  --udc-ink: #000;
+  --udc-surface: #fff;
+  --udc-accent: #111;
+  --udc-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --udc-ease: cubic-bezier(.2, .9, .1, 1);
+  --udc-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .um {
@@ -2714,6 +2732,15 @@ html[data-style="mono"].dark .dz {
   --dz-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .efs {
+  --efs-ink: #fff;
+  --efs-surface: #0a0a0a;
+  --efs-accent: #f2f2f2;
+  --efs-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --efs-ease: cubic-bezier(.2, .9, .1, 1);
+  --efs-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .ed {
   --ed-ink: #fff;
   --ed-surface: #0a0a0a;
@@ -3246,6 +3273,15 @@ html[data-style="mono"].dark .twt {
   --twt-shadow: 0 0 0 1px rgb(255 255 255 / .16);
   --twt-ease: cubic-bezier(.2, .9, .1, 1);
   --twt-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .udc {
+  --udc-ink: #fff;
+  --udc-surface: #0a0a0a;
+  --udc-accent: #f2f2f2;
+  --udc-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --udc-ease: cubic-bezier(.2, .9, .1, 1);
+  --udc-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .um {
@@ -4497,6 +4533,15 @@ html[data-style="glass"] .dz {
   --dz-font: var(--pane-font);
 }
 
+html[data-style="glass"] .efs {
+  --efs-ink: var(--pane-ink);
+  --efs-surface: var(--pane-solid);
+  --efs-accent: var(--pane-accent);
+  --efs-shadow: var(--pane-shadow);
+  --efs-ease: var(--pane-ease);
+  --efs-font: var(--pane-font);
+}
+
 html[data-style="glass"] .ed {
   --ed-ink: var(--pane-ink);
   --ed-surface: var(--pane-solid);
@@ -5031,6 +5076,15 @@ html[data-style="glass"] .twt {
   --twt-font: var(--pane-font);
 }
 
+html[data-style="glass"] .udc {
+  --udc-ink: var(--pane-ink);
+  --udc-surface: var(--pane-solid);
+  --udc-accent: var(--pane-accent);
+  --udc-shadow: var(--pane-shadow);
+  --udc-ease: var(--pane-ease);
+  --udc-font: var(--pane-font);
+}
+
 html[data-style="glass"] .um {
   --um-ink: var(--pane-ink);
   --um-surface: var(--pane-solid);
@@ -5290,6 +5344,13 @@ html[data-style="glass"] .ed {
   --ed-t2: var(--pane-t2);
   --ed-t3: var(--pane-t3);
   --ed-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .efs {
+  --efs-t1: var(--pane-t1);
+  --efs-t2: var(--pane-t2);
+  --efs-t3: var(--pane-t3);
+  --efs-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .evs {
@@ -5911,6 +5972,13 @@ html[data-style="glass"] .tw {
 html[data-style="glass"] .twt {
   --twt-t2: var(--pane-t2);
   --twt-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .udc {
+  --udc-t1: var(--pane-t1);
+  --udc-t2: var(--pane-t2);
+  --udc-t3: var(--pane-t3);
+  --udc-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .ufc {

@@ -3638,6 +3638,40 @@
         "interrupt",
         "original"
       ]
+    },
+    "effort-sentence": {
+      "tags": [
+        "model",
+        "settings",
+        "text-effect",
+        "cost",
+        "toggle"
+      ],
+      "keywords": [
+        "reasoning effort",
+        "think longer",
+        "thinking budget",
+        "quick or deep",
+        "latency vs cost",
+        "original"
+      ]
+    },
+    "undo-countdown": {
+      "tags": [
+        "agent",
+        "feedback",
+        "notification",
+        "text-effect",
+        "kpi"
+      ],
+      "keywords": [
+        "undo",
+        "grace period",
+        "toast",
+        "revert action",
+        "archive",
+        "original"
+      ]
     }
   }
 }
