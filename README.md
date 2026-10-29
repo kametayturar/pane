@@ -1,6 +1,6 @@
 # Pane
 
-**139 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
+**143 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
 answers with sources, agents you can approve and steer, tactile controls, real glass, and animated scenes for your
 landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 
@@ -43,6 +43,15 @@ Press <kbd>⌘K</kbd> on the site: search runs across names, tags, synonyms ("mo
 and descriptions, tolerates typos, and every piece page links its tags and related pieces from other groups.
 
 ## Catalog
+
+### Originals
+
+| Piece | What it does | Tags |
+| --- | --- | --- |
+| [**Action Drum**](https://paneui.vercel.app/#/action-drum) · [source](src/components/ui/action-drum.tsx) | Confirm an agent's action by rolling a drum of verbs – Discard, Hold, Send – until the one you mean settles under the highlight. | `agent` `approval` `picker` `scroll` |
+| [**Odometer**](https://paneui.vercel.app/#/odometer) · [source](src/components/ui/odometer.tsx) | A background agent's progress as one big rolling count that stops on the number it needs you to check. | `agent` `progress` `text-effect` `kpi` |
+| [**Thought Stack**](https://paneui.vercel.app/#/thought-stack) · [source](src/components/ui/thought-stack.tsx) | Reasoning steps dealt as a deck of cards; the answer springs forward on top with the steps tucked underneath. | `chat` `reasoning` `card` `streaming` |
+| [**Fill In**](https://paneui.vercel.app/#/fill-in) · [source](src/components/ui/fill-in.tsx) | The agent stops mid-sentence at a blank; the answer you tap lifts out of the options and lands in the sentence. | `agent` `chat` `prompt` `feedback` |
 
 ### Chat
 

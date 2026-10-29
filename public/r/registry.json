@@ -2404,6 +2404,66 @@
           "target": "components/screens/task-tracker.tsx"
         }
       ]
+    },
+    {
+      "name": "action-drum",
+      "type": "registry:ui",
+      "title": "Action Drum",
+      "description": "Confirm an agent's action by rolling a drum of verbs until the one you mean settles under the highlight.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/action-drum.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/action-drum.tsx"
+        }
+      ]
+    },
+    {
+      "name": "odometer",
+      "type": "registry:ui",
+      "title": "Odometer",
+      "description": "A background agent's progress as one big rolling count that stops on the number it needs you to check.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/odometer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/odometer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "thought-stack",
+      "type": "registry:ui",
+      "title": "Thought Stack",
+      "description": "Reasoning steps dealt as a deck of cards; the answer springs forward on top with the steps tucked underneath.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/thought-stack.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/thought-stack.tsx"
+        }
+      ]
+    },
+    {
+      "name": "fill-in",
+      "type": "registry:ui",
+      "title": "Fill In",
+      "description": "The agent stops mid-sentence at a blank; the answer you tap lands in the sentence and writing resumes.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/fill-in.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/fill-in.tsx"
+        }
+      ]
     }
   ]
 }

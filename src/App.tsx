@@ -190,6 +190,10 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
   {
     label: "Originals",
     entries: [
+      ui({ slug: "action-drum", name: "Action Drum", exportName: "ActionDrum", icon: ChevronsUpDown, isNew: true, description: "Confirm an agent's action by rolling a drum of verbs – Discard, Hold, Send – until the one you mean settles under the highlight." }),
+      ui({ slug: "odometer", name: "Odometer", exportName: "Odometer", icon: Gauge, isNew: true, description: "A background agent's progress as one big rolling count that stops on the number it needs you to check." }),
+      ui({ slug: "thought-stack", name: "Thought Stack", exportName: "ThoughtStack", icon: Layers, isNew: true, description: "Reasoning steps dealt as a deck of cards; the answer springs forward on top with the steps tucked underneath." }),
+      ui({ slug: "fill-in", name: "Fill In", exportName: "FillIn", icon: TextCursorInput, isNew: true, description: "The agent stops mid-sentence at a blank; the answer you tap lifts out of the options and lands in the sentence." }),
     ],
   },
   {
@@ -393,6 +397,11 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
       bl({ slug: "instrument-shell", name: "Instrument Shell", exportName: "InstrumentShell", icon: PanelLeft, description: "The app frame: a rail with a ruler nav, ⌘K search, breadcrumb and a gridded content area." }),
       bl({ slug: "instrument-hero", name: "Instrument Hero", exportName: "InstrumentHero", icon: Type, description: "An editorial landing hero with a live specimen plot and proof numbers." }),
       bl({ slug: "instrument-pricing", name: "Instrument Pricing", exportName: "InstrumentPricing", icon: Tag, description: "Plans priced live from a usage ruler, with a comparison table that folds on mobile." }),
+    ],
+  },
+  {
+    label: "Archive",
+    entries: [
     ],
   },
 ]

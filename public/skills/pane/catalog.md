@@ -52,11 +52,18 @@
   How it works = `pipeline-steps` or `step-cards`. Integrations = `integration-beam` or `logo-cluster`. Product demo = an AI block
   (`ai-answer`, `ai-chat`, `agent-orchestrator`). Social proof = `logo-marquee`, `testimonial-wall`. Pricing numbers = `number-ticker`. Buttons = `button`.
 - **AI chat app:** `ai-chat` (full block) or compose `chat-composer` / `ai-composer` + `ai-answer` + `thinking-state` + `tool-call-card` + `message-actions`;
-  side assistant = `ai-side-panel`; model choice = `model-picker`; usage = `usage-meter`.
-- **Agent product:** `agent-orchestrator`, `agent-tasks`, `agent-approvals`, `agent-routines`, `agent-plan`, `approval-card`.
+  side assistant = `ai-side-panel`; model choice = `model-picker`; usage = `usage-meter`; reasoning that resolves into the answer = `thought-stack`.
+- **Agent product:** `agent-orchestrator`, `agent-tasks`, `agent-approvals`, `agent-routines`, `agent-plan`, `approval-card`, `action-drum` (confirm an irreversible action), `odometer` (background progress that stops on what needs you), `fill-in` (a clarifying question mid-task).
 - **Analytics / data:** KPI numbers with `number-ticker`, charts `sunburst`, `sankey-flow`, `streamgraph`, `treemap`, `race-bar-chart`, `realtime-stream`,
   tables `data-grid`; blocks `cohort-retention`, `mrr-waterfall`, `usage-forecast`, `journey-flow`.
 - **App chrome & polish:** `command-menu`, `dock`, `morph-nav`, `toaster`, `notification-stack`, `segmented-control`, `glass-*`, empty states (`empty-calendar`, `ghosted-chat`).
+
+## Originals
+
+- **Action Drum** (`action-drum`, component) – Confirm an agent's action by rolling a drum of verbs – Discard, Hold, Send – until the one you mean settles under the highlight. Tags: agent, approval, picker, scroll, keyboard. File: `components/ui/action-drum.tsx`. Install: `node add.mjs action-drum`
+- **Odometer** (`odometer`, component) – A background agent's progress as one big rolling count that stops on the number it needs you to check. Tags: agent, progress, text-effect, kpi, feedback. File: `components/ui/odometer.tsx`. Install: `node add.mjs odometer`
+- **Thought Stack** (`thought-stack`, component) – Reasoning steps dealt as a deck of cards; the answer springs forward on top with the steps tucked underneath. Tags: chat, reasoning, card, streaming, morph. File: `components/ui/thought-stack.tsx`. Install: `node add.mjs thought-stack`
+- **Fill In** (`fill-in`, component) – The agent stops mid-sentence at a blank; the answer you tap lifts out of the options and lands in the sentence. Tags: agent, chat, prompt, feedback, text-effect. File: `components/ui/fill-in.tsx`. Install: `node add.mjs fill-in`
 
 ## Chat
 

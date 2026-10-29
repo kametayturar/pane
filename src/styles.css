@@ -754,6 +754,15 @@ html[data-style="mono"] .itt {
   --itt-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .adr {
+  --adr-ink: #000;
+  --adr-surface: #fff;
+  --adr-accent: #111;
+  --adr-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --adr-ease: cubic-bezier(.2, .9, .1, 1);
+  --adr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .am {
   --am-ink: #000;
   --am-surface: #fff;
@@ -999,6 +1008,15 @@ html[data-style="mono"] .ifb {
   --ifb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .fil {
+  --fil-ink: #000;
+  --fil-surface: #fff;
+  --fil-accent: #111;
+  --fil-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --fil-ease: cubic-bezier(.2, .9, .1, 1);
+  --fil-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .fm {
   --fm-ink: #000;
   --fm-surface: #fff;
@@ -1159,6 +1177,15 @@ html[data-style="mono"] .nwp {
   --nwp-shadow: 0 0 0 1px rgb(0 0 0 / .14);
   --nwp-ease: cubic-bezier(.2, .9, .1, 1);
   --nwp-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .odm {
+  --odm-ink: #000;
+  --odm-surface: #fff;
+  --odm-accent: #111;
+  --odm-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --odm-ease: cubic-bezier(.2, .9, .1, 1);
+  --odm-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .orm {
@@ -1411,6 +1438,15 @@ html[data-style="mono"] .sbu {
   --sbu-shadow: 0 0 0 1px rgb(0 0 0 / .14);
   --sbu-ease: cubic-bezier(.2, .9, .1, 1);
   --sbu-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .tks {
+  --tks-ink: #000;
+  --tks-surface: #fff;
+  --tks-accent: #111;
+  --tks-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --tks-ease: cubic-bezier(.2, .9, .1, 1);
+  --tks-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .tdl {
@@ -2445,6 +2481,15 @@ html[data-style="mono"].dark .itt {
   --itt-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .adr {
+  --adr-ink: #fff;
+  --adr-surface: #0a0a0a;
+  --adr-accent: #f2f2f2;
+  --adr-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --adr-ease: cubic-bezier(.2, .9, .1, 1);
+  --adr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .am {
   --am-ink: #fff;
   --am-surface: #0a0a0a;
@@ -2690,6 +2735,15 @@ html[data-style="mono"].dark .ifb {
   --ifb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .fil {
+  --fil-ink: #fff;
+  --fil-surface: #0a0a0a;
+  --fil-accent: #f2f2f2;
+  --fil-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --fil-ease: cubic-bezier(.2, .9, .1, 1);
+  --fil-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .fm {
   --fm-ink: #fff;
   --fm-surface: #0a0a0a;
@@ -2850,6 +2904,15 @@ html[data-style="mono"].dark .nwp {
   --nwp-shadow: 0 0 0 1px rgb(255 255 255 / .16);
   --nwp-ease: cubic-bezier(.2, .9, .1, 1);
   --nwp-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .odm {
+  --odm-ink: #fff;
+  --odm-surface: #0a0a0a;
+  --odm-accent: #f2f2f2;
+  --odm-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --odm-ease: cubic-bezier(.2, .9, .1, 1);
+  --odm-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .orm {
@@ -3102,6 +3165,15 @@ html[data-style="mono"].dark .sbu {
   --sbu-shadow: 0 0 0 1px rgb(255 255 255 / .16);
   --sbu-ease: cubic-bezier(.2, .9, .1, 1);
   --sbu-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .tks {
+  --tks-ink: #fff;
+  --tks-surface: #0a0a0a;
+  --tks-accent: #f2f2f2;
+  --tks-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --tks-ease: cubic-bezier(.2, .9, .1, 1);
+  --tks-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .tdl {
@@ -4192,6 +4264,15 @@ html[data-style="glass"] .itt {
   --itt-font: var(--pane-font);
 }
 
+html[data-style="glass"] .adr {
+  --adr-ink: var(--pane-ink);
+  --adr-surface: var(--pane-solid);
+  --adr-accent: var(--pane-accent);
+  --adr-shadow: var(--pane-shadow);
+  --adr-ease: var(--pane-ease);
+  --adr-font: var(--pane-font);
+}
+
 html[data-style="glass"] .am {
   --am-ink: var(--pane-ink);
   --am-surface: var(--pane-solid);
@@ -4437,6 +4518,15 @@ html[data-style="glass"] .ifb {
   --ifb-font: var(--pane-font);
 }
 
+html[data-style="glass"] .fil {
+  --fil-ink: var(--pane-ink);
+  --fil-surface: var(--pane-solid);
+  --fil-accent: var(--pane-accent);
+  --fil-shadow: var(--pane-shadow);
+  --fil-ease: var(--pane-ease);
+  --fil-font: var(--pane-font);
+}
+
 html[data-style="glass"] .fm {
   --fm-ink: var(--pane-ink);
   --fm-surface: var(--pane-solid);
@@ -4597,6 +4687,15 @@ html[data-style="glass"] .nwp {
   --nwp-shadow: var(--pane-shadow);
   --nwp-ease: var(--pane-ease);
   --nwp-font: var(--pane-font);
+}
+
+html[data-style="glass"] .odm {
+  --odm-ink: var(--pane-ink);
+  --odm-surface: var(--pane-solid);
+  --odm-accent: var(--pane-accent);
+  --odm-shadow: var(--pane-shadow);
+  --odm-ease: var(--pane-ease);
+  --odm-font: var(--pane-font);
 }
 
 html[data-style="glass"] .orm {
@@ -4851,6 +4950,15 @@ html[data-style="glass"] .sbu {
   --sbu-font: var(--pane-font);
 }
 
+html[data-style="glass"] .tks {
+  --tks-ink: var(--pane-ink);
+  --tks-surface: var(--pane-solid);
+  --tks-accent: var(--pane-accent);
+  --tks-shadow: var(--pane-shadow);
+  --tks-ease: var(--pane-ease);
+  --tks-font: var(--pane-font);
+}
+
 html[data-style="glass"] .tdl {
   --tdl-ink: var(--pane-ink);
   --tdl-surface: var(--pane-solid);
@@ -4972,6 +5080,13 @@ html[data-style="glass"] .ad {
   --ad-t2: var(--pane-t2);
   --ad-t3: var(--pane-t3);
   --ad-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .adr {
+  --adr-t1: var(--pane-t1);
+  --adr-t2: var(--pane-t2);
+  --adr-t3: var(--pane-t3);
+  --adr-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .ag {
@@ -5182,6 +5297,13 @@ html[data-style="glass"] .evs {
   --evs-t2: var(--pane-t2);
   --evs-t3: var(--pane-t3);
   --evs-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .fil {
+  --fil-t1: var(--pane-t1);
+  --fil-t2: var(--pane-t2);
+  --fil-t3: var(--pane-t3);
+  --fil-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .fm {
@@ -5558,6 +5680,13 @@ html[data-style="glass"] .nwp {
   --nwp-t3: var(--pane-t3);
 }
 
+html[data-style="glass"] .odm {
+  --odm-t1: var(--pane-t1);
+  --odm-t2: var(--pane-t2);
+  --odm-t3: var(--pane-t3);
+  --odm-t4: var(--pane-t4);
+}
+
 html[data-style="glass"] .otp {
   --otp-t1: var(--pane-t1);
   --otp-t2: var(--pane-t2);
@@ -5739,6 +5868,13 @@ html[data-style="glass"] .ths {
   --ths-t2: var(--pane-t2);
   --ths-t3: var(--pane-t3);
   --ths-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .tks {
+  --tks-t1: var(--pane-t1);
+  --tks-t2: var(--pane-t2);
+  --tks-t3: var(--pane-t3);
+  --tks-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .tl {

@@ -3567,6 +3567,77 @@
         "tiers",
         "billing"
       ]
+    },
+    "action-drum": {
+      "tags": [
+        "agent",
+        "approval",
+        "picker",
+        "scroll",
+        "keyboard"
+      ],
+      "keywords": [
+        "confirm action",
+        "human in the loop",
+        "irreversible",
+        "send",
+        "approve deny",
+        "picker",
+        "original"
+      ]
+    },
+    "odometer": {
+      "tags": [
+        "agent",
+        "progress",
+        "text-effect",
+        "kpi",
+        "feedback"
+      ],
+      "keywords": [
+        "background task",
+        "rolling number",
+        "counter",
+        "needs attention",
+        "reconcile",
+        "ticker",
+        "original"
+      ]
+    },
+    "thought-stack": {
+      "tags": [
+        "chat",
+        "reasoning",
+        "card",
+        "streaming",
+        "morph"
+      ],
+      "keywords": [
+        "reasoning",
+        "chain of thought",
+        "steps",
+        "model thinking",
+        "answer card",
+        "original"
+      ]
+    },
+    "fill-in": {
+      "tags": [
+        "agent",
+        "chat",
+        "prompt",
+        "feedback",
+        "text-effect"
+      ],
+      "keywords": [
+        "clarifying question",
+        "human in the loop",
+        "choice",
+        "suggested answers",
+        "ask user",
+        "interrupt",
+        "original"
+      ]
     }
   }
 }
