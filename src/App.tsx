@@ -126,17 +126,6 @@ import {
   BookOpenText,
   LayoutDashboard,
   Landmark,
-  CloudFog,
-  Pill,
-  ScrollText,
-  Stamp,
-  Receipt,
-  Lasso,
-  CircleDotDashed,
-  SlidersVertical,
-  AudioLines,
-  Highlighter,
-  Blocks,
 } from "lucide-react"
 
 import { Backdrop, BACKDROP_VARIANTS, type BackdropVariant, type StudioProps } from "@/components/motion/backdrop"
@@ -201,20 +190,6 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
   {
     label: "Originals",
     entries: [
-      ui({ slug: "condensation", name: "Condensation", exportName: "Condensation", icon: CloudFog, isNew: true, description: "Secrets and agent memory behind steamed glass: wipe a clear trail and the fog creeps back." }),
-      ui({ slug: "agent-pebble", name: "Agent Pebble", exportName: "AgentPebble", icon: Pill, isNew: true, description: "A floating glass pebble for background agents – idle, working, needs you, done – that you drag to dock." }),
-      ui({ slug: "scroll-edge", name: "Scroll Edge", exportName: "ScrollEdge", icon: ScrollText, isNew: true, description: "A scroll frame where the large title folds into a glass bar and content slides under a progressive blur." }),
-      ui({ slug: "seal", name: "Seal", exportName: "Seal", icon: Stamp, isNew: true, description: "Approve with a wax-seal press: a dithered stamp leaves a timed impression, the slab flips and an undo window follows." }),
-      ui({ slug: "run-receipt", name: "Run Receipt", exportName: "RunReceipt", icon: Receipt, isNew: true, description: "An agent run's cost printed as a thermal receipt that feeds out of a slot and tears off with a pull." }),
-      ui({ slug: "tracing-paper", name: "Tracing Paper", exportName: "TracingPaper", icon: FileDiff, isNew: true, description: "Review an AI edit by dragging a curled sheet of tracing paper over the old version, changes edged in colour." }),
-      ui({ slug: "patchbay", name: "Patchbay", exportName: "Patchbay", icon: Cable, isNew: true, description: "Drag sagging patch cables from tools to agents; each cable shows the permission it grants." }),
-      ui({ slug: "loop-select", name: "Loop Select", exportName: "LoopSelect", icon: Lasso, isNew: true, description: "Circle files with a grease-pencil loop, then ask an agent about exactly what is inside." }),
-      ui({ slug: "folio", name: "Folio", exportName: "Folio", icon: Columns3, isNew: true, description: "Compare models or plans as hinged panels: pick one and its neighbours swing open into a shared grid." }),
-      ui({ slug: "bead-stepper", name: "Bead Stepper", exportName: "BeadStepper", icon: CircleDotDashed, isNew: true, description: "Run progress as beads on an abacus rod; an amber bead says why a step waits for you." }),
-      ui({ slug: "faderbank", name: "Faderbank", exportName: "Faderbank", icon: SlidersVertical, isNew: true, description: "A graphite mixing desk for model parameters: faders, LED meters, A/B models, mute and solo, and a live readout." }),
-      ui({ slug: "resonance-search", name: "Resonance Search", exportName: "ResonanceSearch", icon: AudioLines, isNew: true, description: "Search where each result is a vibrating string: relevance sets amplitude and the best match locks into one clean arch." }),
-      ui({ slug: "marker-pass", name: "Marker Pass", exportName: "MarkerPass", icon: Highlighter, isNew: true, description: "A cited answer beside its source: halftone marker strokes sweep the passages in the order the model read them." }),
-      ui({ slug: "assembler", name: "Assembler", exportName: "Assembler", icon: Blocks, isNew: true, description: "A generative-UI card that builds itself as an agent streams parts: skeletons settle, actions unlock." }),
     ],
   },
   {
@@ -764,11 +739,11 @@ type Feature = { slug: string; span: string; width: number; align?: "center" | "
 const FEATURED: Feature[] = [
   { slug: "neural-panels", span: "md:col-span-2 xl:col-span-4 xl:row-span-2", width: 1040, variant: "plain", accent: "#5b5bd6", tag: "Illustration" },
   { slug: "glass-tabbar", span: "xl:col-span-2 xl:row-span-2", width: 520, align: "top", tag: "Showpiece" },
-  { slug: "condensation", span: "xl:col-span-3", width: 1000, tag: "Original" },
+  { slug: "model-arena", span: "xl:col-span-3", width: 1000, align: "top", tag: "Component" },
   { slug: "data-flow", span: "xl:col-span-3", width: 900, variant: "dots", tag: "AI concept" },
-  { slug: "faderbank", span: "xl:col-span-2", width: 1100, tag: "Original" },
+  { slug: "voice-orb", span: "xl:col-span-2", width: 620, tag: "Component" },
   { slug: "sunburst", span: "xl:col-span-2", width: 760, align: "top", tag: "Chart" },
-  { slug: "seal", span: "xl:col-span-2", width: 620, tag: "Original" },
+  { slug: "approval-card", span: "xl:col-span-2", width: 480, align: "top", tag: "Agents" },
 ]
 
 function Home({ group }: { group?: string }) {

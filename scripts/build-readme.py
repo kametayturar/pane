@@ -55,7 +55,7 @@ landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 **Install a piece yourself** (any React + Tailwind v4 project, no setup needed):
 
 ```bash
-curl -sO {SITE}/add.mjs && node add.mjs ai-answer seal patchbay
+curl -sO {SITE}/add.mjs && node add.mjs ai-answer approval-card model-arena
 ```
 
 or with the shadcn CLI:

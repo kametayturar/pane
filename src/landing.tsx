@@ -437,19 +437,6 @@ type Category = { group: string; label: string; blurb: string; picks?: TilePick[
 
 const CATEGORIES: Category[] = [
   {
-    group: "Originals",
-    label: "Originals",
-    blurb: "New interactions, not restyled old ones: steamed glass for secrets, a wax seal to approve, patch cables for permissions.",
-    picks: [
-      { slug: "condensation", width: 1000 },
-      { slug: "seal", width: 520, align: "top" },
-      { slug: "faderbank", width: 1100, align: "top" },
-      { slug: "folio", width: 760, align: "top" },
-      { slug: "tracing-paper", width: 900, align: "top" },
-      { slug: "resonance-search", width: 760, align: "top" },
-    ],
-  },
-  {
     group: "Chat",
     label: "Chat",
     blurb: "Answers that stream at a steady pace, sources you can open, tools that show their work.",
@@ -465,14 +452,14 @@ const CATEGORIES: Category[] = [
   {
     group: "Agents",
     label: "Agents",
-    blurb: "Wire tools to agents, approve with a seal, watch a run bead by bead and tear off its receipt.",
+    blurb: "Plan, run and approve: agents that show their steps and ask before anything leaves the building.",
     picks: [
-      { slug: "patchbay", width: 900, align: "top" },
+      { slug: "agent-orchestrator", width: 900, align: "top" },
       { slug: "agent-plan", width: 480, align: "top" },
-      { slug: "seal", width: 520, align: "top" },
-      { slug: "bead-stepper", width: 760, align: "top" },
-      { slug: "run-receipt", width: 720, align: "top" },
-      { slug: "assembler", width: 620, align: "top" },
+      { slug: "approval-card", width: 480, align: "top" },
+      { slug: "agent-tasks", width: 760, align: "top" },
+      { slug: "agent-approvals", width: 720, align: "top" },
+      { slug: "agent-routines", width: 620, align: "top" },
     ],
   },
   {
@@ -654,7 +641,7 @@ function EaseCurve() {
 
 function HowBuilt({ find, dark, toggleDark, style, setStyle, styles }: { find: (s: string) => LandingEntry | undefined } & Omit<LandingProps, "groups">) {
   const piece = find("ai-answer") ?? find("thinking-state")
-  const files = ["ai-answer.tsx", "patchbay.tsx", "model-arena.tsx"]
+  const files = ["ai-answer.tsx", "agent-orchestrator.tsx", "model-arena.tsx"]
   return (
     <section className={cn(wrap, "mt-28 sm:mt-44")}>
       <Reveal>
@@ -878,7 +865,7 @@ export function Landing({ groups, dark, toggleDark, style, setStyle, styles }: L
     [count("motion"), "motion effects"],
     [SKILLS.length, "agent skills"],
   ] as [number, string][]).filter(([n]) => n)
-  const slugs = ["ai-answer", "agent-orchestrator", "model-arena", "neural-panels", "faderbank", "voice-orb", "eval-suite"].filter((s) => find(s))
+  const slugs = ["ai-answer", "agent-orchestrator", "model-arena", "neural-panels", "tool-call-card", "voice-orb", "eval-suite"].filter((s) => find(s))
   const ticker = React.useMemo(() => all.filter((e) => e.demo), [all])
 
   React.useEffect(() => {

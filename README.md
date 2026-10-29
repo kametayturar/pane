@@ -1,6 +1,6 @@
 # Pane
 
-**153 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
+**139 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
 answers with sources, agents you can approve and steer, tactile controls, real glass, and animated scenes for your
 landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 
@@ -14,7 +14,7 @@ landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 **Install a piece yourself** (any React + Tailwind v4 project, no setup needed):
 
 ```bash
-curl -sO https://paneui.vercel.app/add.mjs && node add.mjs ai-answer seal patchbay
+curl -sO https://paneui.vercel.app/add.mjs && node add.mjs ai-answer approval-card model-arena
 ```
 
 or with the shadcn CLI:
@@ -43,25 +43,6 @@ Press <kbd>⌘K</kbd> on the site: search runs across names, tags, synonyms ("mo
 and descriptions, tolerates typos, and every piece page links its tags and related pieces from other groups.
 
 ## Catalog
-
-### Originals
-
-| Piece | What it does | Tags |
-| --- | --- | --- |
-| [**Condensation**](https://paneui.vercel.app/#/condensation) · [source](src/components/ui/condensation.tsx) | Secrets and agent memory behind steamed glass: wipe a clear trail and the fog creeps back. | `card` `drag` `fluid` `gesture` |
-| [**Agent Pebble**](https://paneui.vercel.app/#/agent-pebble) · [source](src/components/ui/agent-pebble.tsx) | A floating glass pebble for background agents – idle, working, needs you, done – that you drag to dock. | `agent` `approval` `drag` `glass` |
-| [**Scroll Edge**](https://paneui.vercel.app/#/scroll-edge) · [source](src/components/ui/scroll-edge.tsx) | A scroll frame where the large title folds into a glass bar and content slides under a progressive blur. | `app-shell` `chat` `glass` `navigation` |
-| [**Seal**](https://paneui.vercel.app/#/seal) · [source](src/components/ui/seal.tsx) | Approve with a wax-seal press: a dithered stamp leaves a timed impression, the slab flips and an undo window follows. | `agent` `approval` `button` `dither` |
-| [**Run Receipt**](https://paneui.vercel.app/#/run-receipt) · [source](src/components/ui/run-receipt.tsx) | An agent run's cost printed as a thermal receipt that feeds out of a slot and tears off with a pull. | `agent` `card` `cost` `drag` |
-| [**Tracing Paper**](https://paneui.vercel.app/#/tracing-paper) · [source](src/components/ui/tracing-paper.tsx) | Review an AI edit by dragging a curled sheet of tracing paper over the old version, changes edged in colour. | `comment` `drag` `feedback` `paper` |
-| [**Patchbay**](https://paneui.vercel.app/#/patchbay) · [source](src/components/ui/patchbay.tsx) | Drag sagging patch cables from tools to agents; each cable shows the permission it grants. | `agent` `drag` `graph` `physics` |
-| [**Loop Select**](https://paneui.vercel.app/#/loop-select) · [source](src/components/ui/loop-select.tsx) | Circle files with a grease-pencil loop, then ask an agent about exactly what is inside. | `agent` `drag` `gesture` `media` |
-| [**Folio**](https://paneui.vercel.app/#/folio) · [source](src/components/ui/folio.tsx) | Compare models or plans as hinged panels: pick one and its neighbours swing open into a shared grid. | `3d` `card` `model` `morph` |
-| [**Bead Stepper**](https://paneui.vercel.app/#/bead-stepper) · [source](src/components/ui/bead-stepper.tsx) | Run progress as beads on an abacus rod; an amber bead says why a step waits for you. | `3d` `agent` `approval` `onboarding` |
-| [**Faderbank**](https://paneui.vercel.app/#/faderbank) · [source](src/components/ui/faderbank.tsx) | A graphite mixing desk for model parameters: faders, LED meters, A/B models, mute and solo, and a live readout. | `drag` `form` `input` `model` |
-| [**Resonance Search**](https://paneui.vercel.app/#/resonance-search) · [source](src/components/ui/resonance-search.tsx) | Search where each result is a vibrating string: relevance sets amplitude and the best match locks into one clean arch. | `input` `physics` `ranking` `retrieval` |
-| [**Marker Pass**](https://paneui.vercel.app/#/marker-pass) · [source](src/components/ui/marker-pass.tsx) | A cited answer beside its source: halftone marker strokes sweep the passages in the order the model read them. | `dither` `reasoning` `retrieval` `sources` |
-| [**Assembler**](https://paneui.vercel.app/#/assembler) · [source](src/components/ui/assembler.tsx) | A generative-UI card that builds itself as an agent streams parts: skeletons settle, actions unlock. | `agent` `card` `chart` `loading` |
 
 ### Chat
 

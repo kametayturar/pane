@@ -48,34 +48,15 @@
   `ops-dashboard` (business KPIs), `accounting` (reconcile, invoices, ledger, P&L), `finance` (cash runway, budgets, spend). Each is one file:
   keep its rail and top bar, replace the content with your data. Kit: `instrument-shell`, `instrument-form`, `spec-table`, `readout-bar`,
   `instrument-hero`, `instrument-pricing`, `provenance-trail`, `confidence-dither`, `run-scrubber`, `token-scope`.
-- **Landing page:** hero = `dither-field` or `gradient-floor` or `grid-background` behind `text-reveal`; or an illustration like `neural-panels`, `data-flow`, `condensation` (stage mode).
-  How it works = `pipeline-steps` or `step-cards`. Integrations = `integration-beam`, `logo-cluster` or `patchbay`. Product demo = an AI block
+- **Landing page:** hero = `dither-field` or `gradient-floor` or `grid-background` behind `text-reveal`; or an illustration like `neural-panels` or `data-flow`.
+  How it works = `pipeline-steps` or `step-cards`. Integrations = `integration-beam` or `logo-cluster`. Product demo = an AI block
   (`ai-answer`, `ai-chat`, `agent-orchestrator`). Social proof = `logo-marquee`, `testimonial-wall`. Pricing numbers = `number-ticker`. Buttons = `button`.
 - **AI chat app:** `ai-chat` (full block) or compose `chat-composer` / `ai-composer` + `ai-answer` + `thinking-state` + `tool-call-card` + `message-actions`;
-  side assistant = `ai-side-panel`; model choice = `model-picker`; usage = `usage-meter`, `run-receipt`; model settings = `faderbank`; cited answers = `marker-pass`.
-- **Agent product:** `agent-orchestrator`, `agent-tasks`, `agent-approvals`, `agent-routines`, `agent-plan`, `approval-card`, `seal` (approve), `bead-stepper` (run progress), `agent-pebble` (background status), `assembler` (generative UI).
+  side assistant = `ai-side-panel`; model choice = `model-picker`; usage = `usage-meter`.
+- **Agent product:** `agent-orchestrator`, `agent-tasks`, `agent-approvals`, `agent-routines`, `agent-plan`, `approval-card`.
 - **Analytics / data:** KPI numbers with `number-ticker`, charts `sunburst`, `sankey-flow`, `streamgraph`, `treemap`, `race-bar-chart`, `realtime-stream`,
   tables `data-grid`; blocks `cohort-retention`, `mrr-waterfall`, `usage-forecast`, `journey-flow`.
 - **App chrome & polish:** `command-menu`, `dock`, `morph-nav`, `toaster`, `notification-stack`, `segmented-control`, `glass-*`, empty states (`empty-calendar`, `ghosted-chat`).
-- **Originals (new interaction ideas):** compare plans with `folio`, review edits with `tracing-paper`, select by drawing with `loop-select`,
-  search with `resonance-search`, wrap long threads in `scroll-edge`, hide secrets in `condensation`.
-
-## Originals
-
-- **Condensation** (`condensation`, component) – Secrets and agent memory behind steamed glass: wipe a clear trail and the fog creeps back. Tags: card, drag, fluid, gesture, glass, hover, memory. File: `components/ui/condensation.tsx`. Install: `node add.mjs condensation`
-- **Agent Pebble** (`agent-pebble`, component) – A floating glass pebble for background agents – idle, working, needs you, done – that you drag to dock. Tags: agent, approval, drag, glass, morph, notification. File: `components/ui/agent-pebble.tsx`. Install: `node add.mjs agent-pebble`
-- **Scroll Edge** (`scroll-edge`, component) – A scroll frame where the large title folds into a glass bar and content slides under a progressive blur. Tags: app-shell, chat, glass, navigation, scroll. File: `components/ui/scroll-edge.tsx`. Install: `node add.mjs scroll-edge`
-- **Seal** (`seal`, component) – Approve with a wax-seal press: a dithered stamp leaves a timed impression, the slab flips and an undo window follows. Tags: agent, approval, button, dither, paper, physics. File: `components/ui/seal.tsx`. Install: `node add.mjs seal`
-- **Run Receipt** (`run-receipt`, component) – An agent run's cost printed as a thermal receipt that feeds out of a slot and tears off with a pull. Tags: agent, card, cost, drag, observability, paper. File: `components/ui/run-receipt.tsx`. Install: `node add.mjs run-receipt`
-- **Tracing Paper** (`tracing-paper`, component) – Review an AI edit by dragging a curled sheet of tracing paper over the old version, changes edged in colour. Tags: comment, drag, feedback, paper, scrub. File: `components/ui/tracing-paper.tsx`. Install: `node add.mjs tracing-paper`
-- **Patchbay** (`patchbay`, component) – Drag sagging patch cables from tools to agents; each cable shows the permission it grants. Tags: agent, drag, graph, physics, settings, tool-call. File: `components/ui/patchbay.tsx`. Install: `node add.mjs patchbay`
-- **Loop Select** (`loop-select`, component) – Circle files with a grease-pencil loop, then ask an agent about exactly what is inside. Tags: agent, drag, gesture, media, pointer-follow, prompt. File: `components/ui/loop-select.tsx`. Install: `node add.mjs loop-select`
-- **Folio** (`folio`, component) – Compare models or plans as hinged panels: pick one and its neighbours swing open into a shared grid. Tags: 3d, card, model, morph, picker, pricing. File: `components/ui/folio.tsx`. Install: `node add.mjs folio`
-- **Bead Stepper** (`bead-stepper`, component) – Run progress as beads on an abacus rod; an amber bead says why a step waits for you. Tags: 3d, agent, approval, onboarding, progress, timeline. File: `components/ui/bead-stepper.tsx`. Install: `node add.mjs bead-stepper`
-- **Faderbank** (`faderbank`, component) – A graphite mixing desk for model parameters: faders, LED meters, A/B models, mute and solo, and a live readout. Tags: drag, form, input, model, realtime, toggle. File: `components/ui/faderbank.tsx`. Install: `node add.mjs faderbank`
-- **Resonance Search** (`resonance-search`, component) – Search where each result is a vibrating string: relevance sets amplitude and the best match locks into one clean arch. Tags: input, physics, ranking, retrieval, search. File: `components/ui/resonance-search.tsx`. Install: `node add.mjs resonance-search`
-- **Marker Pass** (`marker-pass`, component) – A cited answer beside its source: halftone marker strokes sweep the passages in the order the model read them. Tags: dither, reasoning, retrieval, sources, text-effect. File: `components/ui/marker-pass.tsx`. Install: `node add.mjs marker-pass`
-- **Assembler** (`assembler`, component) – A generative-UI card that builds itself as an agent streams parts: skeletons settle, actions unlock. Tags: agent, card, chart, loading, morph, streaming. File: `components/ui/assembler.tsx`. Install: `node add.mjs assembler`
 
 ## Chat
 
