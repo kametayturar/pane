@@ -977,7 +977,7 @@ function EntryCard({ entry: e, wide }: { entry: Entry; wide?: boolean }) {
       </div>
       <p className="mt-2.5 text-[13px] leading-5 text-neutral-500 dark:text-neutral-400">{e.description}</p>
       {e.kind === "screen" && MERIDIAN.includes(e.slug) && (
-        <ScreenThumb slug={e.slug} className={cn("mt-3 rounded-xl shadow-[0_0_0_1px_rgb(0_0_0/0.05)] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.06)]", wide ? "h-40 flex-1 xl:min-h-[340px]" : "h-40")} />
+        <ScreenThumb slug={e.slug} className={cn("mt-3 rounded-xl shadow-[0_0_0_1px_rgb(0_0_0/0.05)] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.06)]", wide ? "h-40 min-h-40 flex-1 xl:min-h-[340px]" : "h-40")} />
       )}
       {e.demo && (
         <LivePreview
@@ -986,7 +986,7 @@ function EntryCard({ entry: e, wide }: { entry: Entry; wide?: boolean }) {
           align={studio ? "center" : "top"}
           replay={studio ? undefined : 12000}
           hovered={hovered}
-          className={cn("mt-3 rounded-xl shadow-[0_0_0_1px_rgb(0_0_0/0.05)] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.06)]", wide ? "h-40 flex-1 xl:min-h-[340px]" : "h-40")}
+          className={cn("mt-3 rounded-xl shadow-[0_0_0_1px_rgb(0_0_0/0.05)] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.06)]", wide ? "h-40 min-h-40 flex-1 xl:min-h-[340px]" : "h-40")}
         />
       )}
     </a>
