@@ -128,6 +128,9 @@ import {
   Landmark,
   Timer,
   TextQuote,
+  ArrowRightLeft,
+  GitMerge,
+  BellDot,
 } from "lucide-react"
 
 import { Backdrop, BACKDROP_VARIANTS, type BackdropVariant, type StudioProps } from "@/components/motion/backdrop"
@@ -198,6 +201,13 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
       ui({ slug: "fill-in", name: "Fill In", exportName: "FillIn", icon: TextCursorInput, isNew: true, description: "The agent stops mid-sentence at a blank; the answer you tap lifts out of the options and lands in the sentence." }),
       ui({ slug: "effort-sentence", name: "Effort Sentence", exportName: "EffortSentence", icon: TextQuote, isNew: true, description: "How hard the model thinks, as one sentence: Think longer adds what it will do, and the seconds and price change in place." }),
       ui({ slug: "undo-countdown", name: "Undo Countdown", exportName: "UndoCountdown", icon: Timer, isNew: true, description: "A big countdown to undo an agent's action; the word undo is the button, and the number becomes the count it moved." }),
+      ui({ slug: "plan-words", name: "Plan Words", exportName: "PlanWords", icon: ListChecks, isNew: true, description: "Before an agent starts, each step's last word is its control: Run, Ask first or Skip. At Go the words roll into live status." }),
+      ui({ slug: "same-page", name: "Same Page", exportName: "SamePage", icon: ArrowRightLeft, isNew: true, description: "A handoff between agents as one document: the first agent's finding lifts out of its notes and becomes the opening line the next agent writes on from." }),
+      ui({ slug: "tool-headline", name: "Tool Headline", exportName: "ToolHeadline", icon: Wrench, isNew: true, description: "The tool an agent is using right now as a big headline; the verb turns past tense and shrinks into a receipt as the next tool takes over." }),
+      ui({ slug: "scope-words", name: "Scope Words", exportName: "ScopeWords", icon: KeyRound, isNew: true, description: "Grant an agent access with three big words \u2013 Once, This task, Always \u2013 each with its consequence; the one you pick rises into the headline." }),
+      ui({ slug: "merge-range", name: "Merge Range", exportName: "MergeRange", icon: GitMerge, isNew: true, description: "Parallel sub-agents report at different times; their three findings glide together into one answer, a range like $19\u2013$31." }),
+      ui({ slug: "steer-swap", name: "Steer Swap", exportName: "SteerSwap", icon: Route, isNew: true, description: "Redirect a running agent: tap the other option and it grows into the headline while the old one shrinks into the row it left, with nothing lost." }),
+      ui({ slug: "pulled-focus", name: "Pulled Focus", exportName: "PulledFocus", icon: BellDot, isNew: true, description: "Back from a break: finished work folds into one small row and the one thing that needs you swells into the headline." }),
     ],
   },
   {

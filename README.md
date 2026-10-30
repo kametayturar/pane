@@ -1,6 +1,6 @@
 # Pane
 
-**145 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
+**152 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
 answers with sources, agents you can approve and steer, tactile controls, real glass, and animated scenes for your
 landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 
@@ -54,6 +54,13 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 | [**Fill In**](https://paneui.vercel.app/#/fill-in) · [source](src/components/ui/fill-in.tsx) | The agent stops mid-sentence at a blank; the answer you tap lifts out of the options and lands in the sentence. | `agent` `chat` `prompt` `feedback` |
 | [**Effort Sentence**](https://paneui.vercel.app/#/effort-sentence) · [source](src/components/ui/effort-sentence.tsx) | How hard the model thinks, as one sentence: Think longer adds what it will do, and the seconds and price change in place. | `model` `settings` `text-effect` `cost` |
 | [**Undo Countdown**](https://paneui.vercel.app/#/undo-countdown) · [source](src/components/ui/undo-countdown.tsx) | A big countdown to undo an agent's action; the word undo is the button, and the number becomes the count it moved. | `agent` `feedback` `notification` `text-effect` |
+| [**Plan Words**](https://paneui.vercel.app/#/plan-words) · [source](src/components/ui/plan-words.tsx) | Before an agent starts, each step's last word is its control: Run, Ask first or Skip. At Go the words roll into live status. | `agent` `approval` `toggle` `text-effect` |
+| [**Same Page**](https://paneui.vercel.app/#/same-page) · [source](src/components/ui/same-page.tsx) | A handoff between agents as one document: the first agent's finding lifts out of its notes and becomes the opening line the next agent writes on from. | `agent` `multi-agent` `text-effect` `streaming` |
+| [**Tool Headline**](https://paneui.vercel.app/#/tool-headline) · [source](src/components/ui/tool-headline.tsx) | The tool an agent is using right now as a big headline; the verb turns past tense and shrinks into a receipt as the next tool takes over. | `agent` `tool-call` `text-effect` `streaming` |
+| [**Scope Words**](https://paneui.vercel.app/#/scope-words) · [source](src/components/ui/scope-words.tsx) | Grant an agent access with three big words \u2013 Once, This task, Always \u2013 each with its consequence; the one you pick rises into the headline. | `agent` `approval` `picker` `text-effect` |
+| [**Merge Range**](https://paneui.vercel.app/#/merge-range) · [source](src/components/ui/merge-range.tsx) | Parallel sub-agents report at different times; their three findings glide together into one answer, a range like $19\u2013$31. | `multi-agent` `agent` `kpi` `text-effect` |
+| [**Steer Swap**](https://paneui.vercel.app/#/steer-swap) · [source](src/components/ui/steer-swap.tsx) | Redirect a running agent: tap the other option and it grows into the headline while the old one shrinks into the row it left, with nothing lost. | `agent` `toggle` `text-effect` `feedback` |
+| [**Pulled Focus**](https://paneui.vercel.app/#/pulled-focus) · [source](src/components/ui/pulled-focus.tsx) | Back from a break: finished work folds into one small row and the one thing that needs you swells into the headline. | `agent` `notification` `text-effect` `feedback` |
 
 ### Chat
 

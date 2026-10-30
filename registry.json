@@ -2494,6 +2494,111 @@
           "target": "components/ui/undo-countdown.tsx"
         }
       ]
+    },
+    {
+      "name": "plan-words",
+      "type": "registry:ui",
+      "title": "Plan Words",
+      "description": "Before an agent starts, each step's last word is its control: Run, Ask first or Skip. At Go the words roll into live status.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/plan-words.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/plan-words.tsx"
+        }
+      ]
+    },
+    {
+      "name": "same-page",
+      "type": "registry:ui",
+      "title": "Same Page",
+      "description": "A handoff between agents as one document: the first agent's finding lifts out of its notes and becomes the opening line the next agent writes on from.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/same-page.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/same-page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tool-headline",
+      "type": "registry:ui",
+      "title": "Tool Headline",
+      "description": "The tool an agent is using right now as a big headline; the verb turns past tense and shrinks into a receipt as the next tool takes over.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/tool-headline.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tool-headline.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scope-words",
+      "type": "registry:ui",
+      "title": "Scope Words",
+      "description": "Grant an agent access with three big words – Once, This task, Always – each with its consequence; the one you pick rises into the headline.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/scope-words.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/scope-words.tsx"
+        }
+      ]
+    },
+    {
+      "name": "merge-range",
+      "type": "registry:ui",
+      "title": "Merge Range",
+      "description": "Parallel sub-agents report at different times; their three findings glide together into one answer, a range like $19–$31.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/merge-range.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/merge-range.tsx"
+        }
+      ]
+    },
+    {
+      "name": "steer-swap",
+      "type": "registry:ui",
+      "title": "Steer Swap",
+      "description": "Redirect a running agent: tap the other option and it grows into the headline while the old one shrinks into the row it left, with nothing lost.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/steer-swap.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/steer-swap.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pulled-focus",
+      "type": "registry:ui",
+      "title": "Pulled Focus",
+      "description": "Back from a break: finished work folds into one small row and the one thing that needs you swells into the headline.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/pulled-focus.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/pulled-focus.tsx"
+        }
+      ]
     }
   ]
 }

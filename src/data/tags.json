@@ -3672,6 +3672,118 @@
         "archive",
         "original"
       ]
+    },
+    "plan-words": {
+      "tags": [
+        "agent",
+        "approval",
+        "toggle",
+        "text-effect"
+      ],
+      "keywords": [
+        "agent plan",
+        "edit plan",
+        "skip step",
+        "ask before acting",
+        "human in the loop",
+        "original"
+      ]
+    },
+    "same-page": {
+      "tags": [
+        "agent",
+        "multi-agent",
+        "text-effect",
+        "streaming"
+      ],
+      "keywords": [
+        "handoff",
+        "agent to agent",
+        "context passing",
+        "subagent",
+        "writer",
+        "original"
+      ]
+    },
+    "tool-headline": {
+      "tags": [
+        "agent",
+        "tool-call",
+        "text-effect",
+        "streaming"
+      ],
+      "keywords": [
+        "tool use",
+        "function call",
+        "what the agent is doing",
+        "activity",
+        "receipts",
+        "original"
+      ]
+    },
+    "scope-words": {
+      "tags": [
+        "agent",
+        "approval",
+        "picker",
+        "text-effect"
+      ],
+      "keywords": [
+        "permission",
+        "oauth scope",
+        "grant access",
+        "send as me",
+        "consent",
+        "original"
+      ]
+    },
+    "merge-range": {
+      "tags": [
+        "multi-agent",
+        "agent",
+        "kpi",
+        "text-effect"
+      ],
+      "keywords": [
+        "parallel agents",
+        "subagents",
+        "merge results",
+        "research",
+        "fan out fan in",
+        "original"
+      ]
+    },
+    "steer-swap": {
+      "tags": [
+        "agent",
+        "toggle",
+        "text-effect",
+        "feedback"
+      ],
+      "keywords": [
+        "steer agent",
+        "redirect",
+        "change course",
+        "mid run",
+        "interrupt",
+        "original"
+      ]
+    },
+    "pulled-focus": {
+      "tags": [
+        "agent",
+        "notification",
+        "text-effect",
+        "feedback"
+      ],
+      "keywords": [
+        "while you were away",
+        "catch up",
+        "summary",
+        "needs attention",
+        "background agent",
+        "original"
+      ]
     }
   }
 }
