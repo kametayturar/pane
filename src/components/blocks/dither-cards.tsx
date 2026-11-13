@@ -16,7 +16,7 @@ export type DitherCardTask = {
   done: number
   /** Segments in total (7 looks best). */
   total: number
-  /** Colour of the filled segments. Default "ok" (green). */
+  /** Kept for compatibility; filled segments are drawn in ink. */
   tone?: DitherCardTone
 }
 
@@ -29,7 +29,7 @@ export type DitherCardItem = {
   location: string
   /** The progress rows in the top-left corner (up to 4 look right). */
   tasks: DitherCardTask[]
-  /** Change today in percent. Positive is green, negative is red. */
+  /** Change today in percent. Shown as plain text with an arrow. */
   delta: number
   /** How many more people are watching – shown as "+N more are engaged". */
   watchers: number
@@ -48,7 +48,7 @@ export type DitherCardsProps = {
   interval?: number
   /** Called when a card's Expand button is pressed. */
   onExpand?: (item: DitherCardItem, index: number) => void
-  /** Accent colour of the art band (any CSS colour). Default indigo #5b5bd6. */
+  /** Accent colour of the art band (any CSS colour). Default slate #4a4b55. */
   accent?: string
   /** Art style: dithered dots or ASCII glyphs. Default "dither". */
   art?: "dither" | "ascii"
@@ -138,7 +138,7 @@ const CSS = `
 .dc {
   --dc-ink: #000;
   --dc-card: #fff;
-  --dc-accent: #5b5bd6;
+  --dc-accent: #4a4b55;
   --dc-art: var(--dc-accent);
   --dc-t1: color-mix(in oklab, var(--dc-ink) 88%, transparent);
   --dc-t2: color-mix(in oklab, var(--dc-ink) 61%, transparent);
@@ -197,7 +197,7 @@ const CSS = `
 .dc-task { display: grid; grid-template-columns: max-content 26px max-content; justify-content: start; align-items: center; gap: 9px; font-size: 10.5px; line-height: 14px }
 .dc-segs { display: flex; gap: 2px }
 .dc-seg { position: relative; width: 5px; height: 13px; border-radius: 2px; background: var(--dc-off); overflow: hidden }
-.dc-seg[data-on]::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--dc-tone, var(--dc-ok)); transform: scaleY(0); transform-origin: 50% 100%;
+.dc-seg[data-on]::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--dc-t1); transform: scaleY(0); transform-origin: 50% 100%;
   transition: transform .5s var(--dc-ease) calc(var(--i) * 70ms + var(--r) * 110ms + 160ms) }
 .dc-card[data-in] .dc-seg[data-on]::after { transform: scaleY(1) }
 .dc-count { color: var(--dc-t4); font-variant-numeric: tabular-nums }
@@ -209,14 +209,14 @@ const CSS = `
   transition: color .2s, background-color .2s, transform .2s var(--dc-ease) }
 .dc-copy:hover { color: var(--dc-t1) }
 .dc-copy:active { transform: scale(.97) }
-.dc-copy[data-done] { color: var(--dc-ok) }
+.dc-copy[data-done] { color: var(--dc-t1) }
 .dc-copy svg { width: 12px; height: 12px; flex: none }
 
 .dc-row { position: relative; display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px 14px; margin-top: auto; padding-top: 22px }
 .dc-title { margin: 0; font: 400 25px/1.08 var(--dc-serif); letter-spacing: -.01em; color: var(--dc-t1); text-wrap: balance }
 .dc-today { display: inline-flex; align-items: center; gap: 8px; font-size: 10.5px; color: var(--dc-t3) }
-.dc-delta { display: inline-flex; align-items: center; gap: 2px; height: 20px; padding: 0 7px 0 5px; border-radius: 6px; font-size: 10.5px; font-weight: 500; font-variant-numeric: tabular-nums;
-  color: var(--dc-tone); background: color-mix(in oklab, var(--dc-tone) 13%, transparent); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--dc-tone) 22%, transparent) }
+.dc-delta { display: inline-flex; align-items: center; gap: 2px; height: 20px; padding: 0; font-size: 10.5px; font-weight: 500; font-variant-numeric: tabular-nums;
+  color: var(--dc-t2) }
 .dc-delta svg { width: 12px; height: 12px }
 .dc-desc { margin: 8px 0 0; max-width: 46ch; font-size: 11.5px; line-height: 17px; color: var(--dc-t3); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
 
@@ -226,8 +226,8 @@ const CSS = `
 .dc-loc svg { width: 12px; height: 12px; flex: none; color: var(--dc-t4) }
 .dc-who { display: flex; align-items: center; gap: 8px; font-size: 10.5px; color: var(--dc-t4); min-width: 0 }
 .dc-stack { display: flex; flex: none }
-.dc-av { width: 20px; height: 20px; margin-left: -6px; display: grid; place-items: center; border-radius: 50%; font-size: 9px; font-weight: 600; color: #fff;
-  background: linear-gradient(135deg, hsl(var(--h) 72% 70%), hsl(calc(var(--h) + 42) 62% 52%)); box-shadow: 0 0 0 2px var(--dc-card) }
+.dc-av { width: 20px; height: 20px; margin-left: -6px; display: grid; place-items: center; border-radius: 50%; font-size: 9px; font-weight: 600; color: var(--dc-t2);
+  background: var(--dc-off); box-shadow: 0 0 0 2px var(--dc-card) }
 .dc-av:first-child { margin-left: 0 }
 .dc-expand { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 11px; border-radius: 8px; font-size: 11px; font-weight: 500;
   color: var(--dc-btn-ink); background: var(--dc-btn); box-shadow: 0 1px 2px rgb(0 0 0 / .2); transition: transform .2s var(--dc-ease), opacity .2s }
@@ -524,7 +524,7 @@ export function DitherCards({
     let t = 11
     let pageVisible = true
     let frame = 0
-    let color = "#5b5bd6"
+    let color = "#4a4b55"
 
     const drawAll = () => {
       if (frame++ % 40 === 0 && canvases[0]) color = getComputedStyle(canvases[0]).color || color
@@ -743,7 +743,7 @@ export function DitherCards({
                 <h3 className="dc-title">{item.title}</h3>
                 <span className="dc-today">
                   Today
-                  <span className="dc-delta" style={{ "--dc-tone": delta >= 0 ? "var(--dc-ok)" : "var(--dc-bad)" } as React.CSSProperties}>
+                  <span className="dc-delta">
                     {delta >= 0 ? <ArrowUpRight aria-hidden /> : <ArrowDownRight aria-hidden />}
                     {formatDelta(delta)}
                   </span>

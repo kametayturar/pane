@@ -21,7 +21,7 @@ export type StudioProps = {
   accent?: string
 }
 
-export const BACKDROP_VARIANTS = ["plain", "dots", "halftone", "grid", "drift", "floor", "aurora", "dither"] as const
+export const BACKDROP_VARIANTS = ["plain", "dots", "halftone", "grid", "drift", "floor", "aurora", "dither", "orbs"] as const
 export type BackdropVariant = (typeof BACKDROP_VARIANTS)[number]
 
 export type BackdropProps = {
@@ -82,8 +82,8 @@ const CSS = `
 .bd[data-variant="floor"] > .bd-layer::before { content: ""; position: absolute; left: -10%; right: -10%; bottom: -38%; height: 78%;
   background:
     radial-gradient(40% 60% at 25% 60%, color-mix(in oklab, var(--bd-accent) 70%, transparent), transparent 70%),
-    radial-gradient(38% 55% at 55% 70%, rgb(236 72 153 / .55), transparent 70%),
-    radial-gradient(40% 60% at 80% 55%, rgb(139 92 246 / .55), transparent 70%);
+    radial-gradient(38% 55% at 55% 70%, color-mix(in oklab, var(--bd-accent) 40%, var(--bd-ink)), transparent 70%),
+    radial-gradient(40% 60% at 80% 55%, color-mix(in oklab, var(--bd-accent) 55%, #fff), transparent 70%);
   filter: blur(36px); transform-origin: 50% 100%;
   animation: bd-floor calc(7s / var(--bd-speed)) cubic-bezier(.45, 0, .55, 1) infinite alternate; }
 @keyframes bd-floor { from { transform: scaleY(.86) translateX(-2%); opacity: .8 } to { transform: scaleY(1.08) translateX(2%); opacity: 1 } }
@@ -92,7 +92,7 @@ const CSS = `
 .bd[data-variant="aurora"] > .bd-layer::before, .bd[data-variant="aurora"] > .bd-layer::after { content: ""; position: absolute; width: 60%; aspect-ratio: 1; border-radius: 50%; filter: blur(60px); opacity: .5; }
 .bd[data-variant="aurora"] > .bd-layer::before { left: -8%; top: -18%; background: color-mix(in oklab, var(--bd-accent) 75%, transparent);
   animation: bd-wander-a calc(16s / var(--bd-speed)) ease-in-out infinite alternate; }
-.bd[data-variant="aurora"] > .bd-layer::after { right: -10%; bottom: -24%; background: rgb(236 72 153 / .6);
+.bd[data-variant="aurora"] > .bd-layer::after { right: -10%; bottom: -24%; background: color-mix(in oklab, var(--bd-accent) 45%, #fff);
   animation: bd-wander-b calc(19s / var(--bd-speed)) ease-in-out infinite alternate; }
 :is(.dark, [data-theme="dark"]) .bd[data-variant="aurora"] > .bd-layer::before,
 :is(.dark, [data-theme="dark"]) .bd[data-variant="aurora"] > .bd-layer::after { opacity: .32; }
@@ -104,6 +104,21 @@ const CSS = `
 :is(.dark, [data-theme="dark"]) .bd[data-variant="dither"] { --bd-surface: color-mix(in oklab, var(--bd-accent) 5%, #111114); }
 .bd-dither { position: absolute; inset: 0; width: 100%; height: 100%; display: block; color: var(--bd-accent); opacity: .5; }
 :is(.dark, [data-theme="dark"]) .bd-dither { color: color-mix(in oklab, var(--bd-accent) 58%, #fff); opacity: .36; }
+
+/* Orbs: a calm field of soft, grainy colour orbs, one hue family from the accent. Easy on glass and text. */
+.bd[data-variant="orbs"] { --bd-surface: color-mix(in oklab, var(--bd-accent) 22%, #f6f6f8); }
+:is(.dark, [data-theme="dark"]) .bd[data-variant="orbs"] { --bd-surface: color-mix(in oklab, var(--bd-accent) 12%, #0d0d10); }
+.bd[data-variant="orbs"] > .bd-layer {
+  background:
+    radial-gradient(52% 64% at 22% 30%, color-mix(in oklab, var(--bd-accent) 78%, #fff), transparent 72%),
+    radial-gradient(44% 56% at 80% 22%, color-mix(in oklab, var(--bd-accent) 35%, #ffe3c4), transparent 72%),
+    radial-gradient(54% 60% at 66% 86%, color-mix(in oklab, var(--bd-accent) 85%, #000), transparent 74%),
+    radial-gradient(40% 46% at 12% 88%, color-mix(in oklab, var(--bd-accent) 55%, #fff), transparent 72%);
+  animation: bd-orbs calc(24s / var(--bd-speed)) cubic-bezier(.45, 0, .55, 1) infinite alternate; }
+.bd[data-variant="orbs"] > .bd-layer::after { content: ""; position: absolute; inset: 0; opacity: .22; mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.6 -.3'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>"); }
+:is(.dark, [data-theme="dark"]) .bd[data-variant="orbs"] > .bd-layer { opacity: .85; }
+@keyframes bd-orbs { from { transform: scale(1) } to { transform: scale(1.12) translate(2%, -2%) } }
 
 .bd[data-paused] > .bd-layer, .bd[data-paused] > .bd-layer::before, .bd[data-paused] > .bd-layer::after { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {

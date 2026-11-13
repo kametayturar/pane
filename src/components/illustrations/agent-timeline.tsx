@@ -159,7 +159,6 @@ const CSS = `
   --atl-ink: #000;
   --atl-surface: #fff;
   --atl-accent: #0060e2;
-  --atl-green: #1fa85a;
   --atl-red: #e5484d;
   --atl-speed: 1;
   --atl-scale: 1;
@@ -179,7 +178,7 @@ const CSS = `
   font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; text-align: left; color: var(--atl-t1);
 }
 :is(.dark, [data-theme="dark"]) .atl {
-  --atl-ink: #fff; --atl-surface: #1c1c1e; --atl-accent: #4d8dff; --atl-green: #34d27b; --atl-red: #ff6369;
+  --atl-ink: #fff; --atl-surface: #1c1c1e; --atl-accent: #4d8dff; --atl-red: #ff6369;
   --atl-t1: color-mix(in oklab, var(--atl-ink) 90%, transparent);
   --atl-t2: color-mix(in oklab, var(--atl-ink) 62%, transparent);
   --atl-t3: color-mix(in oklab, var(--atl-ink) 46%, transparent);
@@ -203,10 +202,8 @@ const CSS = `
 .atl-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; color: var(--atl-accent); background: color-mix(in oklab, var(--atl-accent) 12%, transparent) }
 .atl-mark svg { width: 13px; height: 13px; stroke-width: 2.2 }
 .atl-title { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; letter-spacing: -.005em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
-.atl-status { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 10px 0 8px; border-radius: 11px; font-size: 11.5px; line-height: 22px; font-weight: 500; color: var(--atl-t2); background: var(--atl-fill) }
-.atl-status i { width: 6px; height: 6px; border-radius: 50%; background: var(--atl-t4) }
-.atl-status[data-s="run"] i { background: var(--atl-accent); animation: atl-pulse calc(1s / var(--atl-speed)) ease-in-out infinite alternate }
-.atl-status[data-s="done"] i { background: var(--atl-green) }
+.atl-status { display: inline-flex; align-items: center; height: 22px; font-size: 12px; line-height: 22px; color: var(--atl-t3) }
+.atl-status i { display: none }
 .atl-stats { position: absolute; left: 24px; right: 24px; top: 48px; height: 20px; font-size: 12.5px; color: var(--atl-t3); white-space: nowrap; overflow: hidden }
 .atl-stats > span { display: flex; gap: 8px; animation: atl-text calc(.45s / var(--atl-speed)) var(--atl-ease) backwards }
 .atl-stats b { font-weight: 500; color: var(--atl-t2); font-variant-numeric: tabular-nums }

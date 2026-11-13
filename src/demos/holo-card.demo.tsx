@@ -1,11 +1,12 @@
 import * as React from "react"
 
+import { SegmentedControl } from "@/components/ui/segmented-control"
 import { HoloCard } from "@/components/ui/holo-card"
 
 export const notes: string[] = [
   "Tilt, light and flip are springs integrated in one requestAnimationFrame loop that writes `transform` and CSS custom properties straight to the DOM – React never re-renders per frame, and the loop stops itself once every spring is at rest.",
   "The 3D lean is `perspective(900px) rotateX() rotateY()` computed from the pointer's position over the card; the light spring is softer than the tilt spring, so the sheen trails the lean a little and feels physical.",
-  "The foil is a `repeating-linear-gradient` of pastel hues with `mix-blend-mode: color-dodge`, sized 300% so `background-position` can slide it with the angle; the glare is a `radial-gradient` at the pointer with `overlay`.",
+  "The foil is a `repeating-linear-gradient` of two pastel hues with `mix-blend-mode: color-dodge`, sized 300% so `background-position` can slide it with the angle; the glare is a `radial-gradient` at the pointer with `overlay`.",
   "Glitter is a tiled SVG data URI drifting against the tilt and revealed only near the glare with a `mask-image: radial-gradient(...)` centred on the light.",
   "Flipping adds half a turn per press toward the side you pressed (`rotateY` target ±180) on an under-damped spring so it overshoots a touch; both faces use `backface-visibility: hidden`, and the hidden face is `aria-hidden`.",
 ]
@@ -38,16 +39,16 @@ function Front() {
       <svg viewBox="0 0 300 420" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} aria-hidden="true">
         <defs>
           <radialGradient id="hcd-a" cx=".25" cy=".2" r=".75">
-            <stop offset="0" stopColor="#6d5cff" stopOpacity=".95" />
-            <stop offset="1" stopColor="#6d5cff" stopOpacity="0" />
+            <stop offset="0" stopColor="#5a78c8" stopOpacity=".95" />
+            <stop offset="1" stopColor="#5a78c8" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="hcd-b" cx=".85" cy=".35" r=".6">
-            <stop offset="0" stopColor="#17d3b8" stopOpacity=".7" />
-            <stop offset="1" stopColor="#17d3b8" stopOpacity="0" />
+            <stop offset="0" stopColor="#5fb3c4" stopOpacity=".55" />
+            <stop offset="1" stopColor="#5fb3c4" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="hcd-c" cx=".5" cy=".75" r=".6">
-            <stop offset="0" stopColor="#ff8a5c" stopOpacity=".55" />
-            <stop offset="1" stopColor="#ff8a5c" stopOpacity="0" />
+            <stop offset="0" stopColor="#5a78c8" stopOpacity=".3" />
+            <stop offset="1" stopColor="#5a78c8" stopOpacity="0" />
           </radialGradient>
           <linearGradient id="hcd-fade" x1="0" y1="0" x2="0" y2="1">
             <stop offset=".4" stopColor="#090a12" stopOpacity="0" />
@@ -78,7 +79,7 @@ function Front() {
           <path d="M5 17V9a7 7 0 0 1 14 0v8M9 17v-6a3 3 0 0 1 6 0v6" />
         </svg>
       </span>
-      <span style={{ position: "absolute", top: "1.7em", right: "1.7em", padding: "0.35em 1em", borderRadius: 999, background: "#fff", color: "#111", fontSize: "1em", fontWeight: 600, letterSpacing: ".02em" }}>
+      <span style={{ position: "absolute", top: "2.1em", right: "1.9em", color: "rgb(255 255 255 / .7)", fontSize: "1.1em", fontWeight: 500 }}>
         Pro
       </span>
       <div style={{ position: "absolute", left: "2em", right: "2em", bottom: "2em", color: "#fff" }}>
@@ -102,7 +103,7 @@ function Back() {
   const n = 21
   const cells = React.useMemo(() => qrCells(n), [])
   return (
-    <div style={{ position: "absolute", inset: 0, fontSize: "calc(100cqw / 30)", background: "linear-gradient(160deg,#1d1b2b,#0b0b10 70%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.8em", color: "#fff", textAlign: "center" }}>
+    <div style={{ position: "absolute", inset: 0, fontSize: "calc(100cqw / 30)", background: "#101117", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.8em", color: "#fff", textAlign: "center" }}>
       <div style={{ padding: "1.1em", borderRadius: "1.4em", background: "#fff", boxShadow: "0 0 0 1px rgb(255 255 255 / .2)" }}>
         <svg viewBox={`0 0 ${n} ${n}`} width="13.5em" height="13.5em" shapeRendering="crispEdges" role="img" aria-label="Sample code">
           {cells.map((on, i) => (on ? <rect key={i} x={i % n} y={Math.floor(i / n)} width="1" height="1" fill="#111" /> : null))}
@@ -130,11 +131,19 @@ export default function Demo() {
         flipped={flipped}
         onFlippedChange={setFlipped}
       />
-      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[13px] text-neutral-500">
-        <label className="flex items-center gap-2">
-          Foil intensity
-          <input type="range" min={0} max={1} step={0.05} value={intensity} onChange={(e) => setIntensity(Number(e.target.value))} className="w-32" />
-        </label>
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 text-[12px] text-neutral-500 dark:text-neutral-400">
+        <SegmentedControl
+          size="sm"
+          variant="tray"
+          aria-label="Foil intensity"
+          value={String(intensity)}
+          onChange={(v) => setIntensity(Number(v))}
+          options={[
+            { value: "0", label: "Off" },
+            { value: "0.5", label: "Soft" },
+            { value: "1", label: "Full" },
+          ]}
+        />
         <span>{flipped ? "Showing the back" : "Move over the card, click to flip"}</span>
       </div>
     </div>

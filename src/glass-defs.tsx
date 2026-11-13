@@ -19,18 +19,22 @@
  */
 import * as React from "react"
 
-type Spec = { id: string; w: number; h: number; r: number; bezel: number; scale: number; soft: number }
+type Spec = { id: string; w: number; h: number; r: number; bezel: number; scale: number; soft: number; dispersion: number }
 
 /** Size classes. The displacement must not fold the backdrop over itself (which garbles text behind the rim): the profile is
- *  (1 - t)^2 across the bezel, so its slope stays below 1 while the peak shift (scale / 2) is at most about 0.6 x bezel.
+ *  (1 - t)^1.5 across the bezel, and the peak shift of the strongest channel (red: scale x (1 + dispersion) / 2) stays at or under
+ *  about 0.65 x bezel.
  *  `scale` is the displacement at the rim in px × 2 (feDisplacementMap maps ±.5 of its scale); `soft` is the
  *  blur (px) of the flat centre, which keeps text behind the glass from competing with text on it. Tooltips, dock and tab bars,
  *  menus and dialogs each have one; every card-like surface (cards, panels, sheets) shares "card". */
+/** Prism spread: red bends (1 + d) x, green 1 x, blue (1 - d) x of `scale`. Kubai's reference uses +/-15%; 8% here (12% still left a faint trace at 390px), because 15% left a faint pink/cyan dashed fringe on the top rim over the dot grid. */
+const DISPERSION = 0.08
+
 const GLASS_SPECS: Spec[] = [
-  { id: "tip", w: 128, h: 40, r: 12, bezel: 14, scale: 18, soft: 6 },
-  { id: "pill", w: 360, h: 64, r: 32, bezel: 30, scale: 40, soft: 8 },
-  { id: "menu", w: 300, h: 260, r: 20, bezel: 38, scale: 48, soft: 11 },
-  { id: "card", w: 520, h: 340, r: 28, bezel: 46, scale: 58, soft: 13 },
+  { id: "tip", w: 128, h: 40, r: 12, bezel: 14, scale: 15, soft: 2, dispersion: DISPERSION },
+  { id: "pill", w: 360, h: 64, r: 32, bezel: 34, scale: 38, soft: 2, dispersion: DISPERSION },
+  { id: "menu", w: 300, h: 260, r: 20, bezel: 40, scale: 44, soft: 3, dispersion: DISPERSION },
+  { id: "card", w: 520, h: 340, r: 28, bezel: 44, scale: 50, soft: 3, dispersion: DISPERSION },
 ]
 
 /** Paint one map: R/G hold the inward vector (128 = no shift), B holds the rim mask (255 at the rim, 0 in the centre), A is opaque. */
@@ -64,7 +68,7 @@ function paintMap({ w, h, r, bezel }: Spec): string {
       if (depth > 0 && depth < bezel) {
         const t = depth / bezel
         // A convex lens: the strongest bend at the rim, easing to nothing at the inner edge of the bezel.
-        m = (1 - t) * (1 - t) * Math.min(1, depth / 1.5)
+        m = (1 - t) ** 1.5 * Math.min(1, depth / 1.5)
       }
       let gx: number
       let gy: number
@@ -144,12 +148,12 @@ export function GlassDefs() {
             {/* The rim mask lives in the map's blue channel: move it to alpha. */}
             <feColorMatrix in="map" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 1 0 0" result="mask" />
             <feGaussianBlur in="SourceGraphic" stdDeviation={s.soft} result="soft" />
-            {/* Chromatic fringe: red, green and blue bend by slightly different amounts, so the rim splits light like a prism. */}
-            <feDisplacementMap in="SourceGraphic" in2="map" scale={s.scale} xChannelSelector="R" yChannelSelector="G" result="dR" />
+            {/* Chromatic fringe: red, green and blue bend by different amounts (dispersion +/-8%), so the rim splits light like a prism. */}
+            <feDisplacementMap in="SourceGraphic" in2="map" scale={s.scale * (1 + s.dispersion)} xChannelSelector="R" yChannelSelector="G" result="dR" />
             <feColorMatrix in="dR" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="cR" />
-            <feDisplacementMap in="SourceGraphic" in2="map" scale={s.scale * 0.96} xChannelSelector="R" yChannelSelector="G" result="dG" />
+            <feDisplacementMap in="SourceGraphic" in2="map" scale={s.scale} xChannelSelector="R" yChannelSelector="G" result="dG" />
             <feColorMatrix in="dG" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="cG" />
-            <feDisplacementMap in="SourceGraphic" in2="map" scale={s.scale * 0.92} xChannelSelector="R" yChannelSelector="G" result="dB" />
+            <feDisplacementMap in="SourceGraphic" in2="map" scale={s.scale * (1 - s.dispersion)} xChannelSelector="R" yChannelSelector="G" result="dB" />
             <feColorMatrix in="dB" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="cB" />
             <feComposite in="cR" in2="cG" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="cRG" />
             <feComposite in="cRG" in2="cB" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="lens" />

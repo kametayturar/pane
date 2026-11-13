@@ -151,13 +151,7 @@ const CSS = `
 }
 .ns-icon svg { width: 16px; height: 16px }
 .ns-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ns-t4) }
-.ns-item[data-tone="accent"] .ns-icon { color: var(--ns-accent); background: color-mix(in oklab, var(--ns-accent) 11%, transparent) }
-.ns-item[data-tone="success"] .ns-icon { color: var(--ns-ok); background: color-mix(in oklab, var(--ns-ok) 12%, transparent) }
-.ns-item[data-tone="warning"] .ns-icon { color: var(--ns-warn); background: color-mix(in oklab, var(--ns-warn) 14%, transparent) }
-.ns-item[data-tone="error"] .ns-icon { color: var(--ns-err); background: color-mix(in oklab, var(--ns-err) 12%, transparent) }
-.ns-item[data-tone="accent"] .ns-dot { background: var(--ns-accent) }
-.ns-item[data-tone="success"] .ns-dot { background: var(--ns-ok) }
-.ns-item[data-tone="warning"] .ns-dot { background: var(--ns-warn) }
+.ns-item[data-tone="error"] .ns-icon { color: var(--ns-err) }
 .ns-item[data-tone="error"] .ns-dot { background: var(--ns-err) }
 .ns-main { flex: 1; min-width: 0 }
 .ns-top { display: flex; align-items: baseline; gap: 8px }
@@ -166,7 +160,7 @@ const CSS = `
 .ns-body {
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; color: var(--ns-t2);
 }
-.ns-unread { position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--ns-accent); transition: opacity .16s }
+.ns-unread { position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--ns-t1); transition: opacity .16s }
 .ns-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px }
 .ns .ns-act {
   height: 24px; padding: 0 9px; border-radius: 6px; background: var(--ns-fill); font-size: 12px; line-height: 16px; font-weight: 500;
@@ -190,7 +184,7 @@ const CSS = `
   border-radius: 12px; box-shadow: inset 0 0 0 .5px var(--ns-line); color: var(--ns-t3);
   animation: ns-in .5s var(--ns-ease) .1s backwards;
 }
-.ns-empty svg { width: 16px; height: 16px; color: var(--ns-ok) }
+.ns-empty svg { width: 16px; height: 16px; color: var(--ns-t2) }
 
 @keyframes ns-in { from { opacity: 0; filter: blur(3px); translate: 0 -14px } }
 
@@ -217,8 +211,8 @@ const IconSpark = (
 )
 const IconWarn = (
   <svg {...svg}>
-    <path d="M8 2.8 14 13H2L8 2.8Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-    <path d="M8 6.6v2.8M8 11.3v.1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    <path d="M4.2 11V7a3.8 3.8 0 0 1 7.6 0v4l1 1.5H3.2L4.2 11Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+    <path d="M6.6 14h2.8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
   </svg>
 )
 const IconMsg = (

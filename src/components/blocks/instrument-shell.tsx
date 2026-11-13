@@ -103,7 +103,7 @@ const CSS = `
   --ish-sheet: #ffffff;
   --ish-ink: #0a0a0a;
   --ish-signal: #0060e2;
-  --ish-accent: var(--ish-signal);
+  --ish-accent: var(--ish-t1);
   --ish-surface: var(--ish-sheet);
   --ish-signal-soft: color-mix(in oklab, var(--ish-accent) 12%, transparent);
   --ish-t1: color-mix(in oklab, var(--ish-ink) 92%, transparent);
@@ -222,14 +222,15 @@ const CSS = `
 .ish-burger:hover { background: var(--ish-rule-2); color: var(--ish-ink) }
 .ish-top > nav { min-width: 0; flex: 0 1 auto }
 .ish-crumbs { display: flex; align-items: center; min-width: 0; white-space: nowrap }
-.ish-crumbs li { display: flex; align-items: center; min-width: 0 }
+.ish-crumbs li { display: flex; align-items: center; flex: none }
+.ish-crumbs li:last-child { flex: 0 1 auto; min-width: 0 }
 .ish-crumbs li + li::before { content: "/"; margin: 0 8px; font: 500 12px/1 var(--ish-mono); color: var(--ish-t4) }
 .ish-crumbs a, .ish-crumbs button, .ish-crumbs span { overflow: hidden; text-overflow: ellipsis; color: var(--ish-t2) }
 .ish-crumbs a:hover, .ish-crumbs button:hover { color: var(--ish-ink) }
 .ish-crumbs li:last-child > * { color: var(--ish-ink); font-weight: 500 }
 .ish-sp { flex: 1 1 auto }
 .ish-search {
-  display: flex; align-items: center; gap: 8px; flex: none; width: 220px; height: 30px; padding: 0 6px 0 9px; border-radius: 2px; background: var(--ish-surface);
+  display: flex; align-items: center; gap: 8px; flex: none; width: 168px; height: 30px; padding: 0 6px 0 9px; border-radius: 2px; background: var(--ish-surface);
   box-shadow: 0 0 0 1px var(--ish-rule); color: var(--ish-t3); transition: box-shadow .16s var(--ish-ease);
 }
 .ish-search:hover { box-shadow: 0 0 0 1px var(--ish-t4) }

@@ -36,14 +36,14 @@ export type IntegrationBeamProps = {
 
 const ic = { size: 28, strokeWidth: 1.8, "aria-hidden": true } as const
 const DEFAULT_LEFT: IntegrationBeamTool[] = [
-  { name: "Mail", icon: <Mail {...ic} />, color: "#ef5a3c" },
-  { name: "Chat", icon: <MessageSquare {...ic} />, color: "#22a45d" },
-  { name: "Docs", icon: <FileText {...ic} />, color: "#2f8ae6" },
+  { name: "Mail", icon: <Mail {...ic} /> },
+  { name: "Chat", icon: <MessageSquare {...ic} /> },
+  { name: "Docs", icon: <FileText {...ic} /> },
 ]
 const DEFAULT_RIGHT: IntegrationBeamTool[] = [
-  { name: "Tickets", icon: <Ticket {...ic} />, color: "#e8a317" },
-  { name: "Calendar", icon: <Calendar {...ic} />, color: "#8b5cf6" },
-  { name: "Warehouse", icon: <Database {...ic} />, color: "#14a8a0" },
+  { name: "Tickets", icon: <Ticket {...ic} /> },
+  { name: "Calendar", icon: <Calendar {...ic} /> },
+  { name: "Warehouse", icon: <Database {...ic} /> },
 ]
 
 /** A neutral four-petal mark for the product tile. */
@@ -202,7 +202,7 @@ const CSS = `
 .ib-tool:focus-visible { outline: none }
 .ib-ring {
   position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s var(--ib-ease);
-  box-shadow: 0 0 0 calc(3 * var(--u)) color-mix(in oklab, var(--ib-accent) 20%, transparent), 0 0 calc(22 * var(--u)) calc(2 * var(--u)) color-mix(in oklab, var(--ib-accent) 26%, transparent);
+  box-shadow: 0 0 0 calc(3 * var(--u)) color-mix(in oklab, var(--ib-accent) 20%, transparent);
 }
 .ib-tool:focus-visible .ib-ring { opacity: 1 }
 .ib-logo { display: grid; place-items: center; width: calc(28 * var(--u)); height: calc(28 * var(--u)); color: var(--c, var(--ib-glyph));
@@ -229,20 +229,20 @@ const CSS = `
 }
 .ib-hub-ring {
   position: absolute; inset: calc(-1 * var(--u)); border-radius: inherit; pointer-events: none; opacity: var(--ring, 0);
-  box-shadow: 0 0 0 calc(3 * var(--u)) color-mix(in oklab, var(--ib-accent) 20%, transparent), 0 0 calc(22 * var(--u)) calc(2 * var(--u)) color-mix(in oklab, var(--ib-accent) 26%, transparent);
+  box-shadow: 0 0 0 calc(3 * var(--u)) color-mix(in oklab, var(--ib-accent) 20%, transparent);
 }
 .ib-mark { display: grid; place-items: center; width: calc(36 * var(--u)); height: calc(36 * var(--u)) }
 .ib-mark > svg, .ib-mark > img { display: block; width: 100%; height: 100%; object-fit: contain }
 
 /* Status chip under the product tile */
 .ib-chip {
-  position: absolute; height: calc(26 * var(--u)); overflow: hidden; border-radius: 999px; background: var(--ib-chip); box-shadow: var(--ib-chip-shadow);
+  position: absolute; height: calc(26 * var(--u)); overflow: hidden; background: transparent;
   width: calc(var(--cw, 100) * var(--u)); transition: width .32s var(--ib-ease);
 }
 .ib-chip-in, .ib-measure { display: inline-flex; align-items: center; gap: calc(7 * var(--u)); height: 100%; padding: 0 calc(11 * var(--u)) 0 calc(10 * var(--u));
-  font-size: calc(12 * var(--u)); font-weight: 500; line-height: 1; white-space: nowrap; color: var(--ib-chip-text) }
+  font-size: calc(12 * var(--u)); line-height: 1; white-space: nowrap; color: color-mix(in oklab, var(--ib-ink) 50%, transparent) }
 .ib-measure { position: absolute; left: 0; top: 0; height: calc(26 * var(--u)); visibility: hidden; pointer-events: none }
-.ib-dot { width: calc(6 * var(--u)); height: calc(6 * var(--u)); border-radius: 50%; background: var(--ib-accent); flex: none; transition: box-shadow .3s }
+.ib-dot { display: none; width: calc(6 * var(--u)); height: calc(6 * var(--u)); border-radius: 50%; background: var(--ib-accent); flex: none; transition: box-shadow .3s }
 .ib[data-sync] .ib-dot { box-shadow: 0 0 0 calc(3 * var(--u)) color-mix(in oklab, var(--ib-accent) 20%, transparent) }
 .ib-status { display: block; animation: ib-in calc(.32s / var(--ib-speed)) var(--ib-ease) backwards }
 @keyframes ib-in { from { opacity: 0; transform: translateY(calc(6 * var(--u))); filter: blur(2px) } }

@@ -410,7 +410,8 @@ const CSS = `
 .aap :focus-visible { outline: 2px solid color-mix(in oklab, var(--aap-accent) 60%, transparent); outline-offset: 1px }
 .aap button:focus:not(:focus-visible), .aap [tabindex="-1"]:focus { outline: none }
 .aap-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
-.aap-high { color: var(--aap-bad) } .aap-med { color: var(--aap-warn) } .aap-low { color: var(--aap-ok) } .aap-ok { color: var(--aap-ok) }
+.aap-high, .aap-med, .aap-low, .aap-ok { color: var(--aap-t2) }
+.aap-high { color: var(--aap-t1) }
 
 .aap-header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 20px }
 .aap-title { font-size: 16px; font-weight: 500; line-height: 17.6px; letter-spacing: -.01em }

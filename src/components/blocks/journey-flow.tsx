@@ -191,7 +191,7 @@ const CSS = `
   --jfl-ink: rgb(var(--jfl-rgb));
   --jfl-surface: rgb(var(--jfl-surface-rgb));
   --jfl-accent: rgb(var(--jfl-accent-rgb));
-  --jfl-good: #2f9a4f;
+  --jfl-good: #1f1f22;
   --jfl-t1: color-mix(in oklab, var(--jfl-ink) 88%, transparent);
   --jfl-t2: color-mix(in oklab, var(--jfl-ink) 61%, transparent);
   --jfl-t3: color-mix(in oklab, var(--jfl-ink) 45%, transparent);
@@ -223,7 +223,7 @@ const CSS = `
   --jfl-rgb: 255 255 255;
   --jfl-surface-rgb: 28 28 30;
   --jfl-accent-rgb: 77 141 255;
-  --jfl-good: #4cc36e;
+  --jfl-good: #e8e8ea;
   --jfl-t1: color-mix(in oklab, var(--jfl-ink) 90%, transparent);
   --jfl-t2: color-mix(in oklab, var(--jfl-ink) 62%, transparent);
   --jfl-t3: color-mix(in oklab, var(--jfl-ink) 46%, transparent);

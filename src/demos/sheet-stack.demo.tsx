@@ -94,11 +94,27 @@ export default function Demo() {
   const [weekly, setWeekly] = React.useState(false)
   const [digest, setDigest] = React.useState(true)
   const [push, setPush] = React.useState(false)
+  const stageRef = React.useRef<HTMLDivElement>(null)
+  // Open Settings, then drill into the profile, so the stage shows a stack; stops once the user touches it.
+  React.useEffect(() => {
+    const root = stageRef.current
+    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    const ids: number[] = []
+    const stop = () => ids.forEach(window.clearTimeout)
+    ids.push(window.setTimeout(() => setStack(["settings"]), 600), window.setTimeout(() => setStack(["settings", "profile"]), 2600))
+    root.addEventListener("pointerdown", stop, { once: true })
+    root.addEventListener("focusin", stop, { once: true })
+    return () => {
+      stop()
+      root.removeEventListener("pointerdown", stop)
+      root.removeEventListener("focusin", stop)
+    }
+  }, [])
   const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
 
   return (
     <div className="flex w-full max-w-[720px] flex-col items-center gap-4">
-      <div className="relative h-[560px] w-full overflow-hidden rounded-[28px] bg-neutral-50 shadow-[0_0_0_1px_rgb(0_0_0/.06)] dark:bg-neutral-900 dark:shadow-[0_0_0_1px_rgb(255_255_255/.1)]">
+      <div ref={stageRef} className="relative h-[560px] w-full overflow-hidden rounded-[28px] bg-neutral-50 shadow-[0_0_0_1px_rgb(0_0_0/.06)] dark:bg-neutral-900 dark:shadow-[0_0_0_1px_rgb(255_255_255/.1)]">
         <SheetStack contained mode={mode} stack={stack} onStackChange={setStack}>
           <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
             <Avatar i={photo} size={72} label={initials} />

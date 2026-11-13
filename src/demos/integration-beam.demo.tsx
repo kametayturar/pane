@@ -5,14 +5,14 @@ import type { StudioProps } from "@/components/motion/backdrop"
 
 const ic = { size: 28, strokeWidth: 1.8 } as const
 const LEFT = [
-  { name: "Mail", icon: <Mail {...ic} />, color: "#ef5a3c" },
-  { name: "Chat", icon: <MessageSquare {...ic} />, color: "#22a45d" },
-  { name: "Docs", icon: <FileText {...ic} />, color: "#2f8ae6" },
+  { name: "Mail", icon: <Mail {...ic} /> },
+  { name: "Chat", icon: <MessageSquare {...ic} /> },
+  { name: "Docs", icon: <FileText {...ic} /> },
 ]
 const RIGHT = [
-  { name: "Tickets", icon: <Ticket {...ic} />, color: "#e8a317" },
-  { name: "Calendar", icon: <Calendar {...ic} />, color: "#8b5cf6" },
-  { name: "Warehouse", icon: <Database {...ic} />, color: "#14a8a0" },
+  { name: "Tickets", icon: <Ticket {...ic} /> },
+  { name: "Calendar", icon: <Calendar {...ic} /> },
+  { name: "Warehouse", icon: <Database {...ic} /> },
 ]
 
 export default function Demo(props: StudioProps) {

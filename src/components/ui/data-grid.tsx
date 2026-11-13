@@ -26,7 +26,7 @@ export type DataGridColumn = {
   /** Narrowest a resize can reach. */
   minWidth?: number
   /**
-   * Number, currency and percent align right and total in the footer. Select shows a tinted chip. Date reads an ISO day
+   * Number, currency and percent align right and total in the footer. Select shows plain text with a neutral dot. Date reads an ISO day
    * ("2026-01-31"). Sparkline draws a row of numbers as an inline line.
    */
   type?: DataGridColumnType
@@ -215,8 +215,8 @@ const CSS = `
 .dgd-c[data-active][data-sel] { background: var(--dgd-range) }
 .dgd-tx { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 
-.dgd-chip { display: inline-flex; align-items: center; max-width: 100%; height: 22px; padding: 0 8px; border-radius: 7px; font-size: 13px; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--dgd-t1); background: color-mix(in oklab, var(--tone) 16%, transparent) }
-.dgd-chip::before { content: ""; flex: none; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--tone) }
+.dgd-chip { display: inline-flex; align-items: center; max-width: 100%; height: 22px; padding: 0; font-size: 13px; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--dgd-t1) }
+.dgd-chip::before { content: ""; flex: none; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--dgd-t3) }
 .dgd-pbar { flex: none; width: 36px; height: 4px; margin-right: 8px; border-radius: 2px; background: var(--dgd-fill); overflow: hidden }
 .dgd-pbar i { display: block; height: 100%; border-radius: 2px; background: var(--b, var(--dgd-accent)) }
 
@@ -259,7 +259,6 @@ const FOOT = 40
 const OVER = 6
 const HEIGHTS: Record<DataGridDensity, number> = { compact: 32, standard: 40, comfortable: 48 }
 const clamp = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n))
-const TONES = ["oklch(.62 .14 255)", "oklch(.58 .17 305)", "oklch(.74 .15 75)", "oklch(.64 .12 185)", "oklch(.62 .17 25)", "oklch(.62 0 0)"]
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" })
 const dateFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })
 
@@ -914,9 +913,8 @@ export function DataGrid({
           if (col.type === "sparkline" && Array.isArray(val)) body = <Spark data={val} fmt={(x) => nf.format(Math.round(x * 10) / 10)} />
           else if (col.type === "select" && val !== null && val !== undefined) {
             const text = String(val)
-            const tone = TONES[Math.abs([...text].reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7)) % TONES.length]
             body = (
-              <span className="dgd-chip" style={{ "--tone": tone } as React.CSSProperties}>
+              <span className="dgd-chip">
                 {text}
               </span>
             )

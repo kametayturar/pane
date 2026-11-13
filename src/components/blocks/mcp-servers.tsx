@@ -104,7 +104,7 @@ export type McpServersProps = {
   servers?: McpServer[]
   /** What Add server offers. Entries whose id is already in the list read Added. */
   directory?: McpDirectoryEntry[]
-  /** Tokens of context you are willing to spend on tool definitions. Past it the bar rescales and the overflow turns amber. */
+  /** Tokens of context you are willing to spend on tool definitions. Past it the bar rescales and the overflow turns a darker ink. */
   budget?: number
   /** Heading of the card. */
   title?: string
@@ -382,8 +382,6 @@ const CSS = `
   --mcs-ink: #000;
   --mcs-surface: #fff;
   --mcs-accent: #0060e2;
-  --mcs-ok: #16803c;
-  --mcs-warn: #b06a00;
   --mcs-err: #cb3a2e;
   --mcs-t1: color-mix(in oklab, var(--mcs-ink) 88%, transparent);
   --mcs-t2: color-mix(in oklab, var(--mcs-ink) 61%, transparent);
@@ -416,8 +414,6 @@ const CSS = `
   --mcs-ink: #fff;
   --mcs-surface: #1c1c1e;
   --mcs-accent: #4d8dff;
-  --mcs-ok: #4cc77e;
-  --mcs-warn: #f0a63a;
   --mcs-err: #ff6f61;
   --mcs-t1: color-mix(in oklab, var(--mcs-ink) 90%, transparent);
   --mcs-t2: color-mix(in oklab, var(--mcs-ink) 62%, transparent);
@@ -469,13 +465,13 @@ const CSS = `
 .mcs-metertext b { font-weight: 500; color: var(--mcs-t1) }
 .mcs-dot { color: var(--mcs-t4); padding: 0 1.4px }
 .mcs-budget { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16.8px; color: var(--mcs-t3); white-space: nowrap }
-.mcs-budget[data-over] { color: var(--mcs-warn); font-weight: 500 }
+.mcs-budget[data-over] { color: var(--mcs-t1); font-weight: 500 }
 .mcs-track { position: relative; display: flex; height: 8px; border-radius: 9999px; background: color-mix(in oklab, var(--mcs-ink) 5.5%, transparent); overflow: hidden }
 .mcs-seg { position: relative; height: 100%; flex: none; padding-right: 2px; transition: width .6s var(--mcs-ease), opacity .3s var(--mcs-ease) }
 .mcs-segfill { display: block; height: 100%; border-radius: 1.5px; background: color-mix(in oklab, var(--mcs-ink) 42%, transparent); transition: background-color .25s var(--mcs-ease) }
 .mcs-track[data-hot] .mcs-segfill { background: color-mix(in oklab, var(--mcs-ink) 18%, transparent) }
 .mcs-track[data-hot] .mcs-seg[data-hot] .mcs-segfill { background: var(--mcs-t1) }
-.mcs-over { position: absolute; top: 0; bottom: 0; right: 0; background: var(--mcs-warn); border-radius: 0 9999px 9999px 0; transition: width .6s var(--mcs-ease); mix-blend-mode: normal }
+.mcs-over { position: absolute; top: 0; bottom: 0; right: 0; background: color-mix(in oklab, var(--mcs-ink) 55%, transparent); border-radius: 0 9999px 9999px 0; transition: width .6s var(--mcs-ease); mix-blend-mode: normal }
 
 /* ---- rows ---- */
 .mcs-list { padding: 0 0 8px }
@@ -498,8 +494,8 @@ const CSS = `
 .mcs-sub { display: flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16.8px; color: var(--mcs-t3); min-width: 0; white-space: nowrap }
 .mcs-status { display: inline-flex; align-items: center; gap: 5px; color: var(--mcs-t2) }
 .mcs-status svg { flex: none }
-.mcs-status[data-s="connected"] svg { color: var(--mcs-ok) }
-.mcs-status[data-s="needs-auth"] svg { color: var(--mcs-warn) }
+.mcs-status[data-s="connected"], .mcs-status[data-s="needs-auth"] { color: var(--mcs-t3) }
+.mcs-status[data-s="error"] { color: var(--mcs-err) }
 .mcs-status[data-s="error"] svg { color: var(--mcs-err) }
 .mcs-spin { animation: mcs-spin .9s linear infinite }
 @keyframes mcs-spin { to { transform: rotate(360deg) } }
@@ -527,7 +523,7 @@ const CSS = `
 .mcs-tool[data-off] .mcs-toolname { color: var(--mcs-t3) }
 .mcs-access { display: inline-flex; align-items: center; gap: 5px; width: 58px; font-size: 12px; line-height: 16.8px; color: var(--mcs-t3) }
 .mcs-access[data-a="write"] { color: var(--mcs-t2) }
-.mcs-access[data-a="write"] svg { color: var(--mcs-warn) }
+.mcs-access[data-a="write"] svg { color: var(--mcs-t1) }
 .mcs-tooltok { width: 40px; text-align: right; font-size: 12px; line-height: 16.8px; color: var(--mcs-t3) }
 
 .mcs-switch { position: relative; flex: none; width: 42px; height: 40px; display: flex; align-items: center; justify-content: flex-end }
@@ -619,12 +615,12 @@ const CSS = `
 .mcs-scopes { align-self: stretch; max-width: 360px; width: 100%; margin: 22px auto 0; text-align: left }
 .mcs-scopes p { font-size: 12px; line-height: 16.8px; color: var(--mcs-t3); margin-bottom: 8px }
 .mcs-scopes li { display: flex; gap: 10px; align-items: flex-start; padding: 4px 0; font-size: 13px; line-height: 18px }
-.mcs-scopes li svg { margin-top: 2px; color: var(--mcs-ok); flex: none }
+.mcs-scopes li svg { margin-top: 2px; color: var(--mcs-t3); flex: none }
 
 .mcs-disc { display: flex; align-items: center; gap: 12px; padding: 4px 4px 14px }
 .mcs-disctext { display: flex; flex-direction: column; min-width: 0 }
 .mcs-disclabel { font-weight: 500; display: inline-flex; align-items: center; gap: 6px }
-.mcs-disclabel svg { color: var(--mcs-ok) }
+.mcs-disclabel svg { color: var(--mcs-t3) }
 .mcs-disclabel:focus-visible { outline: 0 }
 .mcs-shimmer { position: relative }
 .mcs-shimmer::after { content: attr(data-text); position: absolute; inset: 0; color: transparent; pointer-events: none; background: linear-gradient(90deg, transparent 38%, rgb(255 255 255 / .82) 50%, transparent 62%) 0 0 / 250% 100%; -webkit-background-clip: text; background-clip: text; animation: mcs-sweep 1.6s linear infinite }
@@ -632,7 +628,7 @@ const CSS = `
 @keyframes mcs-sweep { from { background-position: 100% 0 } to { background-position: 0 0 } }
 .mcs-sheet .mcs-tool { animation: mcs-tool-in .34s var(--mcs-ease) backwards }
 @keyframes mcs-tool-in { from { opacity: 0; transform: translateY(4px) } to { opacity: 1; transform: none } }
-.mcs-err { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: color-mix(in oklab, var(--mcs-err) 8%, transparent); color: var(--mcs-t1); font-size: 13px; line-height: 18px }
+.mcs-err { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; box-shadow: inset 0 0 0 .5px var(--mcs-line); color: var(--mcs-t1); font-size: 13px; line-height: 18px }
 .mcs-err svg { color: var(--mcs-err); margin-top: 1px; flex: none }
 
 /* ---- narrow containers ---- */
@@ -1339,7 +1335,6 @@ function StatusLabel({ s, busy }: { s: ServerState; busy: boolean }) {
   if (s.status === "needs-auth")
     return (
       <span className="mcs-status" data-s="needs-auth" key="na">
-        <KeyRound size={14} strokeWidth={1.75} aria-hidden />
         Needs sign in
       </span>
     )
@@ -1352,7 +1347,6 @@ function StatusLabel({ s, busy }: { s: ServerState; busy: boolean }) {
     )
   return (
     <span className="mcs-status" data-s="connected" key="ok">
-      <CircleCheck size={14} strokeWidth={1.75} aria-hidden />
       Connected
     </span>
   )

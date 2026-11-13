@@ -115,11 +115,11 @@ const CSS = `
 .rts-strip i { display: block; height: 1em; font-style: normal }
 
 .rts-status {
-  display: inline-flex; align-items: center; gap: 8px; flex: none; height: 32px; padding: 0 14px 0 12px; border-radius: 9999px;
-  background: var(--rts-surface); box-shadow: var(--rts-shadow); font-size: 14px; line-height: 20px; color: var(--rts-t2);
-  transition: box-shadow .16s, color .16s;
+  display: inline-flex; align-items: center; gap: 8px; flex: none; height: 32px; padding: 0 4px; border-radius: 6px;
+  font-size: 13px; line-height: 20px; color: var(--rts-t3);
+  transition: color .16s;
 }
-.rts-status:hover { color: var(--rts-t1); box-shadow: 0 0 0 .5px color-mix(in oklab, var(--rts-ink) 14%, transparent), 0 1px 2px rgb(0 0 0 / .08) }
+.rts-status:hover { color: var(--rts-t1) }
 .rts-status:active { transform: scale(.97) }
 .rts-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--rts-t1) }
 .rts-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--rts-t1); animation: rts-ping 1.8s var(--rts-ease) infinite }
@@ -988,7 +988,7 @@ export function RealtimeStream({
           )}
         </p>
         <button type="button" className="rts-status" aria-pressed={paused} data-held={held ? "" : undefined} onClick={() => setPaused(!paused)}>
-          {paused ? <span className="rts-pause" aria-hidden="true" /> : <span className="rts-dot" aria-hidden="true" />}
+          {paused ? <span className="rts-pause" aria-hidden="true" /> : null}
           <span>{status}</span>
           <span className="rts-sr">{paused ? ", resume" : ", pause"}</span>
         </button>

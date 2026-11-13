@@ -10,7 +10,35 @@ export const notes = [
   "It follows the disclosure-navigation pattern, not role=\"menu\": triggers are buttons with `aria-expanded` and `aria-controls`, the links inside stay links, and Tab, arrow keys, Home/End, Escape and focus-out are handled by hand because the panel is not next to its trigger in DOM order.",
 ]
 
+
+/** Clicks the triggers inside `ref` one after another so the stage shows an open state; stops for good once the pointer or focus enters. */
+function useAutoplay(ref: React.RefObject<HTMLElement | null>, selector: string, interval = 3200) {
+  React.useEffect(() => {
+    const root = ref.current
+    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    let step = 0
+    let id = 0
+    const stop = () => window.clearTimeout(id)
+    const tick = () => {
+      const all = root.querySelectorAll<HTMLElement>(selector)
+      if (all.length) all[step % all.length].click()
+      step += 1
+      id = window.setTimeout(tick, interval)
+    }
+    id = window.setTimeout(tick, 700)
+    root.addEventListener("pointerenter", stop, { once: true })
+    root.addEventListener("focusin", stop, { once: true })
+    return () => {
+      stop()
+      root.removeEventListener("pointerenter", stop)
+      root.removeEventListener("focusin", stop)
+    }
+  }, [ref, selector, interval])
+}
+
 export default function Demo() {
+  const stageRef = React.useRef<HTMLDivElement>(null)
+  useAutoplay(stageRef, "button[data-menu]", 3400)
   const [safe, setSafe] = React.useState(false)
   const [current, setCurrent] = React.useState("products")
   const [last, setLast] = React.useState("Choose any destination in the header")
@@ -22,7 +50,7 @@ export default function Demo() {
   }
   return (
     <div className="flex w-full max-w-[960px] flex-col gap-4">
-      <div className="relative overflow-hidden rounded-[26px] border border-black/[0.07] bg-white dark:border-white/10 dark:bg-neutral-900" style={{ minHeight: 460 }}>
+      <div ref={stageRef} className="relative overflow-hidden rounded-[26px] border border-black/[0.07] bg-white dark:border-white/10 dark:bg-neutral-900" style={{ minHeight: 460 }}>
         <MegaMenuMorph current={current} showSafeArea={safe} onNavigate={go} />
         <div className="px-6 pb-10 sm:px-10" style={{ paddingTop: 48 }}>
           <h3 className="max-w-[16ch] text-[30px] font-medium leading-[1.1] tracking-[-0.03em] text-neutral-900 dark:text-neutral-50 sm:text-[38px]">Ship agents you can trust</h3>

@@ -188,7 +188,7 @@ const CSS = `
   --pst-hover: color-mix(in oklab, var(--pst-ink) 5%, transparent);
   --pst-soft: color-mix(in oklab, var(--pst-ink) 6%, transparent);
   --pst-line: color-mix(in oklab, var(--pst-ink) 9%, transparent);
-  --pst-s1: #2f6fe0; --pst-s2: #7a3fd0; --pst-s3: #d98a0b; --pst-s4: #1d9a74;
+  --pst-s1: #0a0a0a; --pst-s2: #0a0a0a; --pst-s3: #0a0a0a; --pst-s4: #0a0a0a;
   --pst-glint: rgb(255 255 255 / .85);
   --pst-pop: 0 20px 48px 0 rgb(0 0 0 / .105), 0 3px 10px 0 rgb(0 0 0 / .045);
   --pst-ease: cubic-bezier(.22, 1, .36, 1);
@@ -210,7 +210,7 @@ const CSS = `
   --pst-hover: color-mix(in oklab, var(--pst-ink) 8%, transparent);
   --pst-soft: color-mix(in oklab, var(--pst-ink) 8%, transparent);
   --pst-line: color-mix(in oklab, var(--pst-ink) 13%, transparent);
-  --pst-s1: #7aa8ff; --pst-s2: #b995ff; --pst-s3: #f2b04a; --pst-s4: #55d0a6;
+  --pst-s1: #fff; --pst-s2: #fff; --pst-s3: #fff; --pst-s4: #fff;
   --pst-glint: rgb(255 255 255 / .9);
   --pst-pop: 0 20px 48px 0 rgb(0 0 0 / .55), 0 3px 10px 0 rgb(0 0 0 / .35);
 }
@@ -235,7 +235,7 @@ const CSS = `
 .pst-chipVer { font-weight: 500 }
 .pst-chipState, .pst-effLbl { color: var(--pst-t2) }
 .pst-swap { display: inline-flex; align-items: center; gap: 6px; animation: pst-in .16s var(--pst-ease) backwards }
-.pst-dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--pst-live) }
+.pst-dot { display: none }
 .pst-chev { flex: none; color: var(--pst-t3); transition: transform .2s var(--pst-ease) }
 [aria-expanded="true"] > .pst-chev { transform: rotate(180deg) }
 .pst-mark { flex: none; display: inline-grid; place-items: center; width: 14px; height: 14px; color: var(--pst-mk, var(--pst-t1)) }
@@ -250,7 +250,7 @@ const CSS = `
 .pst-vMsg { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; line-height: 22px }
 .pst-vMeta { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px; font-size: 12px; line-height: 16.8px; color: var(--pst-t3) }
 .pst-vMeta b { font-weight: 500; color: var(--pst-t2) }
-.pst-prod { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 999px; border: 1px solid var(--pst-line); background: var(--pst-surface); color: var(--pst-t2); white-space: nowrap }
+.pst-prod { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0; color: var(--pst-t2); white-space: nowrap }
 .pst-mSep { height: 1px; margin: 6px -6px; background: var(--pst-line) }
 .pst-mAct { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 36px; padding: 0 10px; border-radius: 16px; transition: background-color .1s var(--pst-ease) }
 .pst-mAct:hover:not(:disabled), .pst-mAct:focus-visible { background: var(--pst-wash) }
@@ -285,8 +285,8 @@ const CSS = `
 .pst-edit, .pst-diff { min-height: 80px; padding: 2px 12px 6px; font-size: 14px; line-height: 23.8px; white-space: pre-wrap; overflow-wrap: anywhere; outline: none; caret-color: var(--pst-t1); border-radius: 12px }
 .pst-edit:empty::before { content: attr(data-placeholder); color: var(--pst-t3) }
 .pst-chip {
-  --c: var(--pst-s1); display: inline-block; padding: 1px 5px; border-radius: 6px; font-size: .93em; line-height: 1.4; white-space: nowrap; cursor: pointer; user-select: all;
-  color: color-mix(in oklab, var(--c) 72%, var(--pst-ink)); background: color-mix(in oklab, var(--c) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--c) 24%, transparent);
+  --c: var(--pst-s1); display: inline-block; padding: 1px 5px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em; line-height: 1.4; white-space: nowrap; cursor: pointer; user-select: all;
+  color: var(--pst-t1); background: color-mix(in oklab, var(--c) 6%, transparent); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--c) 12%, transparent);
   transition: background-color .16s var(--pst-ease), box-shadow .16s var(--pst-ease);
 }
 .pst-chip[data-t="2"] { --c: var(--pst-s2) } .pst-chip[data-t="3"] { --c: var(--pst-s3) } .pst-chip[data-t="4"] { --c: var(--pst-s4) }
@@ -376,7 +376,7 @@ const VAR_RE = /\{\{\s*([A-Za-z_]\w*)\s*\}\}/g
 const normalize = (s: string) => s.replace(VAR_RE, (_, n: string) => `{{${n}}}`)
 const varsIn = (s: string) => Array.from(s.matchAll(VAR_RE), (m) => m[1])
 const render = (s: string, values: Record<string, string>) => s.replace(VAR_RE, (_, n: string) => values[n] ?? "")
-const hueOf = (s: string) => ["#d4623a", "#0f9d7a", "#3b6cf0", "#8a5cf5", "#c0508a", "#b0872a"][[...s].reduce((a, c) => a + c.charCodeAt(0), 0) % 6]
+const hueOf = (s: string) => ["#6b6b72", "#7d7d84", "#8f8f96", "#5c5c63", "#74747b", "#85858c"][[...s].reduce((a, c) => a + c.charCodeAt(0), 0) % 6]
 const initials = (s: string) => s.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
 
 type DiffOp = { k: "eq" | "del" | "ins"; text: string }
@@ -424,9 +424,8 @@ function relative(iso: string, now: Date) {
 
 function ModelMark({ mark }: { mark?: PromptModel["mark"] }) {
   const m = mark ?? "spark"
-  const color = m === "spark" ? "#d4623a" : m === "hex" ? "#0f9d7a" : "#3b6cf0"
   const Icon = m === "spark" ? Sparkles : m === "hex" ? Hexagon : Diamond
-  return <span className="pst-mark" style={{ ["--pst-mk" as string]: color }}><Icon size={14} strokeWidth={2} aria-hidden /></span>
+  return <span className="pst-mark"><Icon size={14} strokeWidth={2} aria-hidden /></span>
 }
 
 const Swap = ({ k, children }: { k: string; children: React.ReactNode }) => <span key={k} className="pst-swap">{children}</span>

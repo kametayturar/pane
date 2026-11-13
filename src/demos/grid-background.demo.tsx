@@ -5,9 +5,6 @@ export default function Demo({ speed, paused, accent }: StudioProps) {
   return (
     <GridBackground size={48} direction="diagonal" speed={speed} paused={paused} accent={accent} className="min-h-[360px] w-full">
       <section className="mx-auto flex min-h-[360px] max-w-[460px] flex-col items-center justify-center gap-3 px-6 py-12 text-center">
-        <span className="inline-flex h-6 items-center rounded-full bg-white px-[11px] text-xs font-medium text-neutral-900 shadow-[inset_0_0_0_1px_rgb(229_229_229),0_1px_2px_rgb(0_0_0/.04)] dark:bg-[#1c1c1e] dark:text-white dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/.12)]">
-          New
-        </span>
         <h3 className="text-[32px] font-semibold leading-[1.15] tracking-[-0.03em] text-neutral-900 dark:text-white">
           Ship answers your team can trust
         </h3>

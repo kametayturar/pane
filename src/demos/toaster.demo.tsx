@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { toast, Toaster, type ToastPosition } from "@/components/ui/toaster"
+import { toast, Toaster } from "@/components/ui/toaster"
 
 export const notes: string[] = [
   "The toast store lives at module level (an array plus a Set of listeners), so `toast()` works from anywhere – no provider. The Toaster subscribes with React's `useSyncExternalStore`.",
@@ -10,15 +10,16 @@ export const notes: string[] = [
   "Auto-close timers pause while the stack is hovered or focused and resume with the time that was left. `toast.promise` creates a loading toast and then updates the same id when the promise settles.",
 ]
 
-const POSITIONS: ToastPosition[] = ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"]
 const TOASTER = "cadence-demo"
 
-const btn =
-  "h-8 rounded-lg bg-black/5 px-3 text-[13px] font-medium text-neutral-800 transition-colors hover:bg-black/10 dark:bg-white/10 dark:text-neutral-100 dark:hover:bg-white/15"
+const KINDS = [
+  ["default", "Default"],
+  ["success", "Success"],
+  ["error", "Error"],
+  ["promise", "Promise"],
+] as const
 
 export default function Demo() {
-  const [position, setPosition] = React.useState<ToastPosition>("bottom-right")
-  const [expand, setExpand] = React.useState(false)
 
   // Seed a few toasts so the stack is visible on first load.
   React.useEffect(() => {
@@ -78,54 +79,28 @@ export default function Demo() {
   }
 
   return (
-    <div className="flex w-full max-w-[720px] flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-2">
-        <button type="button" className={btn} onClick={() => run("default")}>
-          Default
-        </button>
-        <button type="button" className={btn} onClick={() => run("success")}>
-          Success
-        </button>
-        <button type="button" className={btn} onClick={() => run("error")}>
-          Error
-        </button>
-        <button type="button" className={btn} onClick={() => run("action")}>
-          With action
-        </button>
-        <button type="button" className={btn} onClick={() => run("promise")}>
-          Promise
-        </button>
-        <button type="button" className={btn} onClick={() => run("loading")}>
-          Loading
-        </button>
-        <button type="button" className={btn} onClick={() => toast.dismiss()}>
+    <div className="flex w-full max-w-[720px] flex-col items-center gap-4">
+      <div className="relative h-[380px] w-full overflow-hidden rounded-2xl bg-black/[.03] ring-1 ring-black/5 dark:bg-white/[.03] dark:ring-white/10">
+        <Toaster id={TOASTER} inline position="bottom-center" expand closeButton />
+      </div>
+      <div className="flex items-center gap-3">
+        <div role="group" aria-label="Fire a toast" className="inline-flex gap-0.5 rounded-lg bg-black/[.05] p-0.5 dark:bg-white/10">
+          {KINDS.map(([k, label]) => (
+            <button
+              key={k}
+              type="button"
+              onClick={() => run(k)}
+              className="h-7 rounded-md px-3 text-[13px] font-medium text-neutral-600 transition-[background-color,color,transform] duration-150 [transition-timing-function:cubic-bezier(.22,1,.36,1)] hover:bg-white hover:text-neutral-900 active:scale-[.97] dark:text-neutral-300 dark:hover:bg-white/15 dark:hover:text-white"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <button type="button" onClick={() => toast.dismiss()} className="text-[13px] text-neutral-500 underline-offset-2 hover:underline dark:text-neutral-400">
           Clear
         </button>
       </div>
-
-      <div className="flex flex-wrap items-center gap-2 text-[13px] text-neutral-600 dark:text-neutral-300">
-        <select
-          aria-label="Position"
-          className="h-8 rounded-lg bg-black/5 px-2 text-[13px] dark:bg-white/10"
-          value={position}
-          onChange={(e) => setPosition(e.target.value as ToastPosition)}
-        >
-          {POSITIONS.map((p) => (
-            <option key={p} value={p}>
-              {p}
-            </option>
-          ))}
-        </select>
-        <label className="flex items-center gap-1.5">
-          <input type="checkbox" checked={expand} onChange={(e) => setExpand(e.target.checked)} />
-          Always expanded
-        </label>
-        <span className="text-neutral-400">Hover the stack to expand it, drag a toast sideways to dismiss.</span>
-      </div>
-
-      <div className="relative h-[360px] overflow-hidden rounded-xl bg-black/[.03] ring-1 ring-black/5 dark:bg-white/[.03] dark:ring-white/10">
-        <Toaster id={TOASTER} inline position={position} expand={expand} closeButton />
-      </div>
+      <p className="text-[12px] text-neutral-500 dark:text-neutral-400">Drag a toast sideways to dismiss it.</p>
     </div>
   )
 }

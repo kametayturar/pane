@@ -29,7 +29,7 @@ export default function Demo() {
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-6 p-6">
-      <div className="min-h-[300px]">
+      <div className="flex min-h-[480px] flex-col">
         <div className="rounded-xl bg-white p-3 shadow-[0_0_0_.5px_rgb(0_0_0/.08),0_1px_2px_rgb(0_0_0/.06)] dark:bg-[#1c1c1e] dark:shadow-[0_0_0_.5px_rgb(255_255_255/.1)]">
           <textarea
             rows={2}
@@ -48,6 +48,7 @@ export default function Demo() {
               webSearch={search}
               onWebSearchChange={setSearch}
               side="bottom"
+              defaultOpen
             />
             <button
               type="button"
@@ -61,17 +62,16 @@ export default function Demo() {
             </button>
           </div>
         </div>
-        <p className="mt-3 text-xs opacity-60" aria-live="polite">
-          {sent ?? "Open the menu, point at a model, then try the switches. Keys: ↑ ↓ Home End Enter Esc."}
+        <p className="mt-auto pt-3 text-xs opacity-60" aria-live="polite">
+          {sent ?? "Use arrow keys to move, Enter to choose."}
         </p>
       </div>
 
       <section className="flex flex-col gap-3">
         <div>
-          <h3 className="text-sm font-medium">Opens upward, aligned to the end</h3>
-          <p className="text-xs opacity-60">Uncontrolled, side top, align end.</p>
+          <h3 className="text-sm font-medium">Opens upward</h3>
         </div>
-        <div className="flex justify-end pt-[260px]">
+        <div className="flex justify-end pt-2">
           <ModelPicker models={MODELS} side="top" align="end" defaultThinking defaultEffort="high" />
         </div>
       </section>

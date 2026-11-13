@@ -72,7 +72,7 @@ const CSS = `
 .hc-foil, .hc-glitter, .hc-glare { position: absolute; inset: 0; pointer-events: none }
 .hc-foil {
   mix-blend-mode: color-dodge; opacity: calc(.3 * var(--hc-i));
-  background: repeating-linear-gradient(118deg, oklch(.8 .05 340), oklch(.86 .045 70) 7%, oklch(.88 .045 150) 14%, oklch(.84 .045 220) 21%, oklch(.8 .05 290) 28%, oklch(.8 .05 340) 35%);
+  background: repeating-linear-gradient(118deg, oklch(.82 .045 250), oklch(.88 .035 200) 9%, oklch(.84 .04 250) 18%, oklch(.88 .035 200) 27%, oklch(.82 .045 250) 36%);
   background-size: 300% 300%; background-position: var(--hc-fx, 50%) var(--hc-fy, 50%);
 }
 .hc-glitter {

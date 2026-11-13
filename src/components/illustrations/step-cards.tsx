@@ -85,7 +85,7 @@ export const DEFAULT_STEP_CARDS: StepCardItem[] = [
   },
 ]
 
-const DEFAULT_TINTS = ["#a78bfa", "#34d399", "#a78bfa"]
+const DEFAULT_TINTS = ["var(--sk-ink)", "var(--sk-ink)", "var(--sk-ink)"]
 
 /* -------------------------------------------------------------------------- */
 /*                                  Timeline                                  */
@@ -154,8 +154,6 @@ const CSS = `
   --sk-surface: #fff;
   --sk-accent: #0060e2;
   --sk-green: #16a34a;
-  --sk-amber: #b45309;
-  --sk-amber-bg: #fef3c7;
   --sk-t1: color-mix(in oklab, var(--sk-ink) 88%, transparent);
   --sk-t2: color-mix(in oklab, var(--sk-ink) 61%, transparent);
   --sk-t3: color-mix(in oklab, var(--sk-ink) 45%, transparent);
@@ -184,8 +182,6 @@ const CSS = `
   --sk-surface: #1c1c1e;
   --sk-accent: #4d8dff;
   --sk-green: #30d158;
-  --sk-amber: #fbbf24;
-  --sk-amber-bg: rgb(251 191 36 / .14);
   --sk-t1: color-mix(in oklab, var(--sk-ink) 90%, transparent);
   --sk-t2: color-mix(in oklab, var(--sk-ink) 62%, transparent);
   --sk-t3: color-mix(in oklab, var(--sk-ink) 46%, transparent);
@@ -208,10 +204,10 @@ const CSS = `
 
 /* Scene tile with its own halftone: dots gather at the edges, the centre stays clean */
 .sk-tile {
-  --sk-tint: #a78bfa;
+  --sk-tint: var(--sk-ink);
   position: relative; isolation: isolate; overflow: hidden; display: grid; place-items: center;
   aspect-ratio: 4 / 3; padding: 14px; border-radius: 16px;
-  background: color-mix(in oklab, var(--sk-tint) 9%, var(--sk-tile-base));
+  background: color-mix(in oklab, var(--sk-tint) 4%, var(--sk-tile-base));
   box-shadow: inset 0 0 0 .5px color-mix(in oklab, var(--sk-ink) 6%, transparent);
 }
 .sk-tile::before {
@@ -231,7 +227,7 @@ const CSS = `
 /* Mini UI cards */
 .sk-card { background: var(--sk-surface); border-radius: 12px; box-shadow: var(--sk-shadow); overflow: hidden }
 .sk-card-head { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-bottom: .5px solid var(--sk-line); min-width: 0 }
-.sk-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--sk-green) }
+.sk-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--sk-t3) }
 .sk-head-title { font-weight: 600; color: var(--sk-t1); white-space: nowrap }
 .sk-head-side { margin-left: auto; font-size: 12px; color: var(--sk-t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0 }
 
@@ -275,11 +271,10 @@ const CSS = `
 
 .sk-badge-wrap { position: relative; display: inline-grid; flex: none }
 .sk-badge {
-  grid-area: 1 / 1; display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0 8px;
-  border-radius: 10px; font-size: 11.5px; line-height: 20px; font-weight: 500; white-space: nowrap;
+  grid-area: 1 / 1; display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0;
+  font-size: 12px; line-height: 20px; white-space: nowrap;
 }
-.sk-badge-amber { color: var(--sk-amber); background: var(--sk-amber-bg) }
-.sk-badge-green { color: var(--sk-green); background: color-mix(in oklab, var(--sk-green) 14%, var(--sk-surface)) }
+.sk-badge-pending, .sk-badge-green { color: var(--sk-t3) }
 
 .sk-table { padding: 4px 12px 8px; font-variant-numeric: tabular-nums }
 .sk-tr { display: grid; grid-template-columns: minmax(0, 1fr) 54px 54px; column-gap: 6px; align-items: center; min-height: 24px }
@@ -297,8 +292,8 @@ const CSS = `
 .sk-check-ico { position: relative; flex: none; width: 16px; height: 16px }
 .sk-check-ico svg { position: absolute; inset: 0; width: 16px; height: 16px; overflow: visible }
 .sk-check-ring { fill: none; stroke: color-mix(in oklab, var(--sk-ink) 18%, transparent); stroke-width: 1.2 }
-.sk-check-bg { fill: var(--sk-green); transform-origin: 8px 8px }
-.sk-check-path { fill: none; stroke: #fff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0 }
+.sk-check-bg { fill: none; transform-origin: 8px 8px }
+.sk-check-path { fill: none; stroke: var(--sk-t1); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0 }
 
 /* Motion */
 .sk-a-msg { ${anim("sk-msg")} }
@@ -375,7 +370,7 @@ export function ChatScene({
 function Badges({ pending, done }: { pending: string; done?: string }) {
   return (
     <span className="sk-badge-wrap">
-      <span className={cn("sk-badge sk-badge-amber", done && "sk-badge-a")}>{pending}</span>
+      <span className={cn("sk-badge sk-badge-pending", done && "sk-badge-a")}>{pending}</span>
       {done && <span className="sk-badge sk-badge-green sk-badge-b">{done}</span>}
     </span>
   )

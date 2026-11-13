@@ -32,6 +32,13 @@ const CHANNELS: ShareChannel[] = [
 ]
 
 export default function Demo() {
+  const stageRef = React.useRef<HTMLDivElement>(null)
+  // Start with the panel open so the stage never reads as empty.
+  React.useEffect(() => {
+    if (window.innerWidth <= 520) return
+    const t = window.setTimeout(() => stageRef.current?.querySelector<HTMLElement>("button.ss-trigger")?.click(), 500)
+    return () => window.clearTimeout(t)
+  }, [])
   const [fails, setFails] = React.useState(false)
   const [align, setAlign] = React.useState<"start" | "center" | "end">("center")
   const failsRef = React.useRef(fails)
@@ -41,7 +48,7 @@ export default function Demo() {
 
   return (
     <div className="flex w-full flex-col items-center gap-6">
-      <div className="flex min-h-[560px] w-full justify-center pt-24">
+      <div ref={stageRef} className="flex min-h-[560px] w-full justify-center pt-24">
         <ShareSheet
           key={align}
           title="Q3 launch plan"

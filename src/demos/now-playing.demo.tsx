@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { SegmentedControl } from "@/components/ui/segmented-control"
 import { NowPlaying, NowPlayingLevels, nowPlayingSampleTracks } from "@/components/ui/now-playing"
 
 export const notes = [
@@ -17,28 +18,34 @@ export default function Demo() {
   const t = nowPlayingSampleTracks[index]
   return (
     <div className="flex w-full max-w-[560px] flex-col items-center gap-6">
-      <div
-        className="flex w-full items-center justify-center rounded-3xl px-4 py-8"
-        style={{ minHeight: 480, background: "linear-gradient(160deg, color-mix(in oklab, #ffb48a 20%, transparent), color-mix(in oklab, #c79bff 18%, transparent) 55%, color-mix(in oklab, #7aa7ff 22%, transparent))" }}
-      >
-        <NowPlaying
-          index={index}
-          onIndexChange={setIndex}
-          playing={playing}
-          onPlayingChange={setPlaying}
-          expanded={expanded}
-          onExpandedChange={setExpanded}
-        />
+      <div className="flex w-full items-center justify-center rounded-3xl bg-black/[.03] px-4 py-10 dark:bg-white/[.04]" style={{ minHeight: 560 }}>
+        <div className="w-full [zoom:1.2]">
+          <NowPlaying
+            index={index}
+            onIndexChange={setIndex}
+            playing={playing}
+            onPlayingChange={setPlaying}
+            expanded={expanded}
+            onExpandedChange={setExpanded}
+          />
+        </div>
       </div>
-      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] text-neutral-600 dark:text-neutral-300">
+      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-[13px] text-neutral-600 dark:text-neutral-300">
         <span className="inline-flex items-center gap-2">
           <NowPlayingLevels playing={playing} className="text-neutral-800 dark:text-neutral-200" />
           {playing ? "Playing" : "Paused"}: {t.title}
         </span>
-        <label className="flex items-center gap-2">
-          <input type="checkbox" className="size-4 accent-neutral-900 dark:accent-white" checked={expanded} onChange={(e) => setExpanded(e.target.checked)} />
-          Full player
-        </label>
+        <SegmentedControl
+          size="sm"
+          variant="tray"
+          aria-label="Player size"
+          value={expanded ? "full" : "bar"}
+          onChange={(v) => setExpanded(v === "full")}
+          options={[
+            { value: "bar", label: "Bar" },
+            { value: "full", label: "Full player" },
+          ]}
+        />
       </div>
       <p className="text-center text-[13px] text-neutral-500 dark:text-neutral-400">Tap the bar to expand. In the full player, pull the artwork down to close, scrub the waveform, or use the arrow keys on it.</p>
     </div>

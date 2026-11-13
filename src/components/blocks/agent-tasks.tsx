@@ -279,8 +279,8 @@ function StatusGlyph({ status }: { status: AgentTaskStatus }) {
   if (status === "ready")
     return (
       <svg className="atk-ok" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-        <circle cx="7" cy="7" r="6" fill="currentColor" />
-        <path d="m4.4 7.2 1.9 1.9 3.3-3.8" stroke="#fff" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="7" cy="7" r="5.75" stroke="currentColor" strokeWidth="1.2" />
+        <path d="m4.4 7.2 1.9 1.9 3.3-3.8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     )
   if (status === "merged") return <GitMerge className="atk-merged" size={14} strokeWidth={1.8} aria-hidden />
@@ -363,9 +363,9 @@ const CSS = `
   --atk-line: oklch(.935 0 0);
   --atk-hair: oklch(.965 0 0);
   --atk-fill: oklch(.978 0 0);
-  --atk-ok: oklch(.49 .19 150);
+  --atk-ok: oklch(.46 0 0);
   --atk-bad: oklch(.54 .21 25);
-  --atk-merge: oklch(.5 .2 300);
+  --atk-merge: oklch(.46 0 0);
   --atk-btn: oklch(.33 0 0);
   --atk-btn-fg: #fff;
   --atk-glint: 255 255 255;
@@ -385,9 +385,9 @@ const CSS = `
   --atk-line: oklch(1 0 0 / .1);
   --atk-hair: oklch(1 0 0 / .06);
   --atk-fill: oklch(1 0 0 / .045);
-  --atk-ok: oklch(.78 .17 150);
+  --atk-ok: oklch(.76 0 0);
   --atk-bad: oklch(.72 .19 25);
-  --atk-merge: oklch(.76 .15 300);
+  --atk-merge: oklch(.76 0 0);
   --atk-btn: oklch(.95 0 0);
   --atk-btn-fg: oklch(.2 0 0);
   --atk-pop: 0 0 0 1px oklch(1 0 0 / .1), 0 12px 28px -6px oklch(0 0 0 / .6);
@@ -485,10 +485,10 @@ const CSS = `
 .atk-status-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 .atk-diff { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; line-height: 18px; color: var(--atk-t2); font-variant-numeric: tabular-nums }
 .atk-diff-n { display: inline-flex; gap: 6px }
-.atk-add { color: var(--atk-ok) }
+.atk-add { color: var(--atk-t1) }
 .atk-del { color: var(--atk-bad) }
 .atk-bar-diff { display: inline-flex; width: 32px; height: 4px; gap: 1px; border-radius: 9999px; overflow: hidden }
-.atk-bar-add { background: var(--atk-ok) }
+.atk-bar-add { background: color-mix(in oklab, var(--atk-ink) 55%, transparent) }
 .atk-bar-del { background: var(--atk-bad) }
 .atk-files-n { color: var(--atk-t3) }
 .atk-fact { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; line-height: 18px; color: var(--atk-t2) }

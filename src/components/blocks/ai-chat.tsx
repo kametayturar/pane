@@ -235,10 +235,10 @@ const messagesUpTo = (root: Turn | null, depth: number): AiChatMessage[] => {
 /* -------------------------------------------------------------------------- */
 
 const SAMPLE_MODELS: ChatModel[] = [
-  { id: "nova-5", name: "Nova 5", note: "Flagship for complex work", mark: "spark", color: "#d4623a" },
-  { id: "atlas-2", name: "Atlas 2 Pro", note: "Everyday writing and agents", mark: "hex", color: "#0f9d7a" },
-  { id: "sage-mini", name: "Sage Mini", note: "Fastest for quick answers", mark: "diamond", color: "#3b6cf0" },
-  { id: "orbit-1", name: "Orbit 1 Long", note: "2M tokens of context", mark: "hex", color: "#8a5cf5" },
+  { id: "nova-5", name: "Nova 5", note: "Flagship for complex work", mark: "spark" },
+  { id: "atlas-2", name: "Atlas 2 Pro", note: "Everyday writing and agents", mark: "hex" },
+  { id: "sage-mini", name: "Sage Mini", note: "Fastest for quick answers", mark: "diamond" },
+  { id: "orbit-1", name: "Orbit 1 Long", note: "2M tokens of context", mark: "hex" },
 ]
 
 const SAMPLE_SUGGESTIONS: ChatSuggestion[] = [
@@ -923,12 +923,12 @@ const AUTOPLAY = ["A payments API key leaked in a log line. How do we rotate it 
 /*                                  Helpers                                   */
 /* -------------------------------------------------------------------------- */
 
-const hues = ["#d4623a", "#0f9d7a", "#3b6cf0", "#8a5cf5", "#c0508a", "#b0872a"]
+const hues = ["#6b6b72", "#7d7d84", "#8f8f96", "#5c5c63", "#74747b", "#85858c"]
 const hueOf = (s: string) => hues[[...s].reduce((a, c) => a + c.charCodeAt(0), 0) % hues.length]
 
 function Mark({ model }: { model?: ChatModel }) {
   const m = model?.mark ?? "spark"
-  const style = { ["--ach-mk" as string]: model?.color ?? "#d4623a" }
+  const style = undefined
   if (m === "spark") return <span className="ach-mark" style={style}><Sparkles size={15} strokeWidth={2} aria-hidden /></span>
   if (m === "hex") return <span className="ach-mark" style={style}><Hexagon size={15} strokeWidth={2} aria-hidden /></span>
   if (m === "diamond") return <span className="ach-mark" style={style}><Diamond size={15} strokeWidth={2} aria-hidden /></span>

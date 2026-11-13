@@ -240,7 +240,6 @@ const CSS = `
   --spd-ink: #000;
   --spd-surface: #fff;
   --spd-accent: #0060e2;
-  --spd-green: #1fa85a;
   --spd-red: #e5484d;
   --spd-speed: 1;
   --spd-scale: 1;
@@ -259,7 +258,7 @@ const CSS = `
   font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; text-align: left; color: var(--spd-t1);
 }
 :is(.dark, [data-theme="dark"]) .spd {
-  --spd-ink: #fff; --spd-surface: #1c1c1e; --spd-accent: #4d8dff; --spd-green: #34d27b; --spd-red: #ff6369;
+  --spd-ink: #fff; --spd-surface: #1c1c1e; --spd-accent: #4d8dff; --spd-red: #ff6369;
   --spd-t1: color-mix(in oklab, var(--spd-ink) 90%, transparent);
   --spd-t2: color-mix(in oklab, var(--spd-ink) 62%, transparent);
   --spd-t3: color-mix(in oklab, var(--spd-ink) 46%, transparent);
@@ -283,10 +282,8 @@ const CSS = `
 .spd-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; color: var(--spd-accent); background: color-mix(in oklab, var(--spd-accent) 12%, transparent) }
 .spd-mark svg { width: 13px; height: 13px; stroke-width: 2.2 }
 .spd-title { flex: 1; font-size: 14px; font-weight: 500; letter-spacing: -.005em }
-.spd-status { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 10px 0 8px; border-radius: 11px; font-size: 11.5px; line-height: 22px; font-weight: 500; color: var(--spd-t2); background: var(--spd-fill) }
-.spd-status i { width: 6px; height: 6px; border-radius: 50%; background: var(--spd-t4) }
-.spd-status[data-s="draft"] i, .spd-status[data-s="verify"] i { background: var(--spd-accent); animation: spd-pulse calc(1s / var(--spd-speed)) ease-in-out infinite alternate }
-.spd-status[data-s="done"] i { background: var(--spd-green) }
+.spd-status { display: inline-flex; align-items: center; height: 22px; font-size: 12px; line-height: 22px; color: var(--spd-t3) }
+.spd-status i { display: none }
 .spd-status span { display: inline-block; animation: spd-text calc(.4s / var(--spd-speed)) var(--spd-ease) backwards }
 .spd-sub { position: absolute; left: 24px; right: 24px; top: 48px; height: 20px; font-size: 12.5px; color: var(--spd-t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .spd-rule { position: absolute; left: 0; right: 0; height: 1px; background: var(--spd-line) }
@@ -297,19 +294,19 @@ const CSS = `
 .spd-lab b { font-size: 12.5px; line-height: 16px; font-weight: 500 }
 .spd-lab em { font-style: normal; font-size: 11.5px; line-height: 16px; color: var(--spd-t3) }
 .spd-lab i { display: inline-block; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--spd-t4); vertical-align: 1px }
-.spd-lab[data-lane="target"] i { background: var(--spd-accent) }
+.spd-lab[data-lane="target"] i { background: var(--spd-t2) }
 .spd-cell { position: absolute; height: 30px; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 0 6px; border-radius: 8px; font-size: 12px; line-height: 16px; font-weight: 500;
   white-space: pre; overflow: hidden; background: var(--spd-surface); box-shadow: var(--spd-shadow); color: var(--spd-t1); animation: spd-in calc(.38s / var(--spd-speed)) var(--spd-ease) backwards }
 .spd-cell span { overflow: hidden; text-overflow: ellipsis }
 .spd-cell svg { flex: none; width: 12px; height: 12px; stroke-width: 2.6 }
-.spd-cell[data-v="ok"] svg { color: var(--spd-green) }
+.spd-cell[data-v="ok"] svg { color: var(--spd-t1) }
 .spd-cell[data-v="no"] { color: var(--spd-t3) }
 .spd-cell[data-v="no"] > span { text-decoration: line-through; text-decoration-color: var(--spd-red) }
 .spd-cell[data-v="no"] svg { color: var(--spd-red) }
 .spd-cell[data-v="drop"] { color: var(--spd-t4); background: transparent; box-shadow: 0 0 0 1px var(--spd-rail) inset; opacity: .7 }
-.spd-cell[data-v="new"] { color: var(--spd-accent); background: color-mix(in oklab, var(--spd-accent) 10%, var(--spd-surface)); box-shadow: 0 0 0 1px color-mix(in oklab, var(--spd-accent) 45%, transparent) }
+.spd-cell[data-v="new"] { color: var(--spd-t1); box-shadow: 0 0 0 1px color-mix(in oklab, var(--spd-ink) 30%, transparent) }
 .spd-cell[data-lane="draft"][data-pending] { color: var(--spd-t2) }
-.spd-cell[data-lane="draft"][data-v="ok"] { box-shadow: 0 0 0 1px color-mix(in oklab, var(--spd-green) 50%, transparent) }
+.spd-cell[data-lane="draft"][data-v="ok"] { box-shadow: 0 0 0 1px color-mix(in oklab, var(--spd-ink) 22%, transparent) }
 .spd-cell[data-lane="draft"][data-v="no"] { box-shadow: 0 0 0 1px color-mix(in oklab, var(--spd-red) 45%, transparent) }
 .spd-cell[data-lane="draft"][data-v="drop"] { opacity: .45 }
 .spd-ghost { position: absolute; height: 30px; border-radius: 8px; box-shadow: 0 0 0 1px var(--spd-line) inset; opacity: .7 }
@@ -341,10 +338,10 @@ const CSS = `
 .spd-cmp-n { flex: none; font-variant-numeric: tabular-nums; font-size: 11.5px; color: var(--spd-t4) }
 
 /* Stats */
-.spd-stats { position: absolute; left: 24px; right: 24px; top: 336px; height: 34px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px }
+.spd-stats { align-items: end; position: absolute; left: 24px; right: 24px; top: 336px; height: 34px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px }
 .spd-stat { display: flex; align-items: baseline; gap: 8px; min-width: 0 }
 .spd-stat b { font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: -.03em; font-variant-numeric: tabular-nums; color: var(--spd-t1) }
-.spd-stat:first-child b { color: var(--spd-accent) }
+.spd-stat:first-child b { font-size: 28px; line-height: 28px }
 .spd-stat em { font-style: normal; font-size: 11.5px; line-height: 14px; color: var(--spd-t3) }
 
 /* Controls */

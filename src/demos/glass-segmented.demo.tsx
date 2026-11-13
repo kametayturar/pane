@@ -2,7 +2,7 @@ import * as React from "react"
 import { Clock, Map as MapIcon, Sun } from "lucide-react"
 
 import { GlassSegmented } from "@/components/ui/glass-segmented"
-import { Scene, type SceneTone } from "./_glass-scenes"
+import { Backdrop } from "@/components/motion/backdrop"
 
 export const notes = [
   "The drop is an SVG <rect> (fill, a thin gloss and a rim stroke) that sits above the control's glass. Its x/width/y/height attributes are written straight from a requestAnimationFrame loop, so a stretch is paint only: no React render and no layout per frame.",
@@ -12,11 +12,11 @@ export const notes = [
   "Segment positions are measured with offsetLeft/offsetWidth and re-measured by a ResizeObserver; the group is a radiogroup with a roving tabindex, and reduced motion makes the drop jump instead of spring.",
 ]
 
-const SCENES: { value: SceneTone; label: string; title: string; detail: string }[] = [
-  { value: "harbor", label: "Harbor", title: "Harbor at dusk", detail: "Pier 9, east quay" },
-  { value: "tram", label: "Tram", title: "Line 28 at golden hour", detail: "Old town climb" },
-  { value: "bridge", label: "Bridge", title: "Blue hour crossing", detail: "Suspension span, north tower" },
-  { value: "coast", label: "Coast", title: "Low tide cove", detail: "Cliff path, mile 4" },
+const SCENES: { value: string; label: string; title: string; detail: string; accent: string }[] = [
+  { value: "harbor", label: "Harbor", title: "Harbor at dusk", detail: "Pier 9, east quay", accent: "#6f6bf0" },
+  { value: "tram", label: "Tram", title: "Line 28 at golden hour", detail: "Old town climb", accent: "#e08a4f" },
+  { value: "bridge", label: "Bridge", title: "Blue hour crossing", detail: "Suspension span, north tower", accent: "#3f8ae0" },
+  { value: "coast", label: "Coast", title: "Low tide cove", detail: "Cliff path, mile 4", accent: "#2fa38f" },
 ]
 
 export default function Demo() {
@@ -29,13 +29,12 @@ export default function Demo() {
       <div className="relative h-[380px] overflow-hidden rounded-[30px] bg-neutral-200 sm:h-[440px]">
         {SCENES.map((s) => (
           <div key={s.value} className="absolute inset-0 transition-opacity duration-500" style={{ opacity: s.value === tone ? 1 : 0 }}>
-            <Scene tone={s.value} seed={s.value.length * 5} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
+            <Backdrop variant="orbs" accent={s.accent} minHeight={0} style={{ height: "100%" }} />
           </div>
         ))}
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/35 to-transparent" />
-        <div className="absolute left-5 top-5 text-white">
-          <div className="text-[22px] font-medium leading-[30px] [text-shadow:0_1px_12px_rgb(0_0_0/.25)]">{scene.title}</div>
-          <div className="text-[14px] opacity-85">{scene.detail}</div>
+        <div className="absolute left-5 top-5 text-neutral-900 dark:text-white">
+          <div className="text-[22px] font-medium leading-[30px]">{scene.title}</div>
+          <div className="text-[14px] opacity-65">{scene.detail}</div>
         </div>
         <div className="absolute inset-x-4 bottom-4 flex flex-col items-stretch gap-3">
           <GlassSegmented
@@ -57,7 +56,7 @@ export default function Demo() {
                 { value: "history", label: "History", icon: <Clock />, badge: 3 },
               ]}
             />
-            <span className="hidden rounded-full bg-black/25 px-3 py-1 text-[12px] text-white backdrop-blur-md sm:block">Drag the drop, or fling it</span>
+            <span className="hidden text-[12px] text-neutral-700 dark:text-white/70 sm:block">Drag the drop, or fling it</span>
           </div>
         </div>
       </div>

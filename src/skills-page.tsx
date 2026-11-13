@@ -2,7 +2,6 @@ import * as React from "react"
 import { createPortal } from "react-dom"
 import {
   ArrowUpRight,
-  Check,
   ChevronLeft,
   ChevronRight,
   Copy,
@@ -70,7 +69,7 @@ const INTENTS = [
 ] as const
 
 type Filter = { kind: "all" } | { kind: "cat"; value: string } | { kind: "intent"; value: string }
-type Sort = "stars" | "name"
+type Sort = "featured" | "name"
 
 function formatStars(n?: number) {
   if (!n) return null
@@ -117,81 +116,37 @@ function useCopied() {
   return [copied, copy] as const
 }
 
-function InstallRow({ command, className }: { command: string; className?: string }) {
+/** Plain text copy button: swaps its label to "Copied" for a moment. No fill, no colour. */
+function CopyButton({ text, label, className, title }: { text: string; label: string; className?: string; title?: string }) {
   const [copied, copy] = useCopied()
   return (
     <button
       type="button"
-      onClick={() => copy(command)}
-      title={command}
+      onClick={() => copy(text)}
+      title={title ?? text}
       className={cn(
-        "relative z-10 flex w-full min-w-0 items-center gap-2 rounded-lg bg-neutral-950 px-3 py-2 text-left font-mono text-[11.5px] text-neutral-300 transition-colors hover:bg-neutral-800 dark:bg-white/[0.06] dark:hover:bg-white/10",
+        "relative z-10 inline-flex items-center gap-1.5 text-[12px] text-neutral-500 transition-colors duration-200 hover:text-neutral-900 active:scale-[0.97] dark:text-neutral-400 dark:hover:text-white",
         className,
       )}
     >
-      <span className="text-neutral-500">$</span>
-      <span className="min-w-0 flex-1 truncate">{command}</span>
-      {copied ? <Check className="size-3.5 shrink-0 text-emerald-400" /> : <Copy className="size-3.5 shrink-0 text-neutral-500" />}
-      <span className="sr-only">{copied ? "Copied" : "Copy install command"}</span>
+      <Copy className="size-3 shrink-0" />
+      <span>{copied ? "Copied" : label}</span>
     </button>
   )
 }
 
-function CopyBlock({ label, text, mono, prefix }: { label: string; text: string; mono?: boolean; prefix?: string }) {
-  const [copied, copy] = useCopied()
-  return (
-    <div>
-      <div className="mb-1.5 text-[11px] font-medium tracking-wide text-neutral-400 uppercase">{label}</div>
-      <button
-        type="button"
-        onClick={() => copy(text)}
-        className={cn(
-          "group flex w-full min-w-0 items-start gap-2 rounded-xl px-3.5 py-3 text-left text-[13px] leading-5 transition-colors",
-          mono
-            ? "bg-neutral-950 font-mono text-[12px] text-neutral-300 hover:bg-neutral-800 dark:bg-white/[0.06] dark:hover:bg-white/10"
-            : "bg-black/[0.035] text-neutral-700 hover:bg-black/[0.06] dark:bg-white/[0.05] dark:text-neutral-200 dark:hover:bg-white/[0.08]",
-        )}
-      >
-        {prefix && <span className="text-neutral-500 select-none">{prefix}</span>}
-        <span className="min-w-0 flex-1 break-words">{text}</span>
-        {copied ? <Check className="mt-0.5 size-3.5 shrink-0 text-emerald-500" /> : <Copy className="mt-0.5 size-3.5 shrink-0 text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-200" />}
-        <span className="sr-only">{copied ? "Copied" : `Copy ${label.toLowerCase()}`}</span>
-      </button>
-    </div>
-  )
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return <div className="mb-1.5 text-[12px] font-medium text-neutral-500 dark:text-neutral-400">{children}</div>
 }
 
 /* ----------------------------------------------------------------- bits */
 
-function StarCount({ n }: { n?: number }) {
-  const f = formatStars(n)
-  if (!f) return null
-  return (
-    <span className="flex shrink-0 items-center gap-1 text-[12px] text-neutral-400 tabular-nums">
-      <Star className="size-3" /> {f}
-    </span>
-  )
+function Meta({ children }: { children: React.ReactNode }) {
+  return <span className="text-[12px] text-neutral-500 dark:text-neutral-400">{children}</span>
 }
 
-function Chip({ children, tone = "plain" }: { children: React.ReactNode; tone?: "plain" | "amber" }) {
-  return (
-    <span
-      className={cn(
-        "rounded-full px-2 py-0.5 text-[11.5px]",
-        tone === "amber" ? "bg-amber-500/10 font-medium text-amber-700 dark:text-amber-300" : "bg-black/[0.05] text-neutral-500 dark:bg-white/10 dark:text-neutral-400",
-      )}
-    >
-      {children}
-    </span>
-  )
-}
-
-function OursBadge() {
-  return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-neutral-900 px-2 py-0.5 text-[11px] font-semibold text-white dark:bg-white dark:text-neutral-900">
-      <Sparkles className="size-3" /> Ours
-    </span>
-  )
+function repoOwner(url: string) {
+  return repoLabel(url).split("/")[0]
 }
 
 /* ----------------------------------------------------------------- card */
@@ -199,51 +154,56 @@ function OursBadge() {
 function SkillCard({ s, onOpen, featured, lab }: { s: Skill; onOpen: (id: string) => void; featured?: boolean; lab: LabIndex | null }) {
   const labExamples = lab?.skills[s.id]?.examples
   const ours = s.id === OURS_ID
+  const kind = visualOf(s)
   const before = s.before ?? ""
   const after = s.after ?? ""
+  const media =
+    labExamples?.length && lab ? (
+      <LabCardThumb examples={labExamples} prompts={lab.prompts} />
+    ) : (
+      // The generic "before" frame is only for the drawer; cards always rest on the calm "after" state.
+      <SkillVisual id={s.id} kind={kind} before={before} after={after} size={featured ? "large" : "card"} mode={kind === "slop" ? "after" : "auto"} />
+    )
   return (
     <article
       className={cn(
-        "group/card relative flex min-w-0 flex-col rounded-2xl bg-white p-3 shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.04)] transition-shadow duration-200 hover:shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_8px_24px_-8px_rgb(0_0_0/0.12)] dark:bg-white/[0.04] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)] dark:hover:shadow-[0_0_0_1px_rgb(255_255_255/0.16)]",
+        "group/card relative flex min-w-0 flex-col rounded-2xl bg-white p-3 shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.04)] transition-[box-shadow,transform] duration-200 ease-[cubic-bezier(.22,1,.36,1)] active:scale-[0.99] hover:shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_8px_24px_-8px_rgb(0_0_0/0.12)] motion-reduce:transition-none dark:bg-white/[0.03] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)] dark:hover:shadow-[0_0_0_1px_rgb(255_255_255/0.16)]",
         featured && "@3xl:grid @3xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] @3xl:gap-6 @3xl:p-4",
       )}
     >
-      {labExamples?.length && lab ? <LabCardThumb examples={labExamples} prompts={lab.prompts} /> : <SkillVisual id={s.id} kind={visualOf(s)} before={before} after={after} size={featured ? "large" : "card"} />}
-      <div className={cn("flex min-w-0 flex-1 flex-col", featured && "@3xl:py-1")}>
-        <div className="mt-3 flex items-start gap-2 @3xl:mt-0">
-          <h2 className={cn("min-w-0 flex-1 font-mono font-medium", featured ? "text-[16px]" : "truncate text-[14px]")}>
-            <button
-              type="button"
-              onClick={() => onOpen(s.id)}
-              className="text-left after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-neutral-900/40 dark:focus-visible:after:ring-white/50"
-            >
-              {s.name}
-            </button>
-          </h2>
-          {ours ? <OursBadge /> : <StarCount n={s.stars} />}
-        </div>
-        <p className={cn("mt-1 text-[13px] leading-5 text-neutral-600 dark:text-neutral-300", featured ? "" : "line-clamp-2")}>{s.does ?? s.description}</p>
-        {featured && <p className="mt-2 text-[13px] leading-5 text-neutral-500 dark:text-neutral-400">{s.description}</p>}
-        <div className={cn("mt-3 flex items-center gap-1.5", featured ? "flex-wrap" : "flex-nowrap overflow-hidden [&>span]:shrink-0")}>
-          <Chip tone="amber">{s.category}</Chip>
-          {(s.bestFor ?? []).slice(0, featured ? 4 : 1).map((t) => (
-            <Chip key={t}>{t}</Chip>
-          ))}
-        </div>
-        <div className="flex-1" />
-        <div className="mt-3 flex items-center gap-2 text-[11.5px]">
-          <span className="text-neutral-400">{s.license}</span>
-          <a
-            href={s.repo}
-            target="_blank"
-            rel="noreferrer"
-            className="relative z-10 ml-auto flex min-w-0 items-center gap-0.5 truncate text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+      {media}
+      <div className={cn("flex min-w-0 flex-1 flex-col", featured && "@3xl:justify-center @3xl:py-1")}>
+        {ours && <span className="mt-3 text-[12px] text-neutral-500 @3xl:mt-0 dark:text-neutral-400">From Pane</span>}
+        <h2 className={cn("min-w-0 font-medium tracking-[-0.01em]", ours ? "mt-1" : "mt-3 @3xl:mt-0", featured ? "text-[22px] leading-7" : "truncate text-[15px] leading-6")}>
+          <button
+            type="button"
+            onClick={() => onOpen(s.id)}
+            className="text-left after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-neutral-900/40 dark:focus-visible:after:ring-white/50"
           >
-            <span className="truncate">{repoLabel(s.repo)}</span>
+            {s.name}
+          </button>
+        </h2>
+        <p className={cn("mt-1 text-[13px] leading-5 text-neutral-600 dark:text-neutral-300", featured ? "" : "line-clamp-2")}>{s.does ?? s.description}</p>
+        <div className="mt-2 flex min-w-0 items-center gap-1.5 truncate">
+          <Meta>
+            {s.category}
+            {!featured && s.bestFor?.[0] ? ` · ${s.bestFor[0]}` : ""}
+          </Meta>
+        </div>
+        {featured && s.bestFor && s.bestFor.length > 0 && (
+          <p className="mt-4 hidden text-[13px] leading-5 text-neutral-600 @3xl:block dark:text-neutral-300">
+            <span className="text-neutral-500 dark:text-neutral-400">Best for </span>
+            {s.bestFor.join(" · ")}
+          </p>
+        )}
+        <div className={cn("flex-1", featured && "@3xl:hidden")} />
+        <div className="mt-3 flex items-center gap-3 border-t border-black/[0.06] pt-2.5 dark:border-white/[0.08]">
+          <CopyButton text={s.install} label="Copy install command" />
+          <a href={s.repo} target="_blank" rel="noreferrer" className="relative z-10 ml-auto flex min-w-0 items-center gap-0.5 text-[12px] text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
+            <span className="truncate">{repoOwner(s.repo)}</span>
             <ArrowUpRight className="size-3 shrink-0" />
           </a>
         </div>
-        <InstallRow command={s.install} className="mt-2" />
       </div>
     </article>
   )
@@ -255,7 +215,7 @@ function ModeToggle({ mode, onChange }: { mode: VisualMode; onChange: (m: Visual
   const opts: { id: VisualMode; label: React.ReactNode }[] = [
     { id: "before", label: "Before" },
     { id: "after", label: "After" },
-    { id: "auto", label: mode === "auto" ? <><Pause className="size-3" /> Playing</> : <><Play className="size-3" /> Play</> },
+    { id: "auto", label: mode === "auto" ? <><Pause className="size-3 shrink-0" /> Playing</> : <><Play className="size-3 shrink-0" /> Play</> },
   ]
   return (
     <div role="radiogroup" aria-label="Preview state" className="inline-flex rounded-full bg-black/[0.05] p-0.5 dark:bg-white/10">
@@ -267,7 +227,7 @@ function ModeToggle({ mode, onChange }: { mode: VisualMode; onChange: (m: Visual
           aria-checked={mode === o.id}
           onClick={() => onChange(o.id === "auto" && mode === "auto" ? "after" : o.id)}
           className={cn(
-            "flex h-7 items-center gap-1 rounded-full px-3 text-[12px] font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-white",
+            "flex h-7 items-center gap-1.5 rounded-full px-3 text-[12px] font-medium text-neutral-600 transition-colors hover:text-neutral-900 dark:hover:text-white",
             mode === o.id && "bg-white text-neutral-900 shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.06)] hover:text-neutral-900 dark:bg-white/15 dark:text-white dark:shadow-none",
           )}
         >
@@ -397,24 +357,29 @@ function SkillDrawer({ list, activeId, onClose, onNavigate, lab }: { list: Skill
         </div>
 
         <div className="flex-1 overflow-y-auto overscroll-contain px-5 pt-5 pb-8">
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="min-w-0 font-mono text-[20px] font-medium tracking-tight break-words">{s.name}</h2>
-            {ours && <OursBadge />}
-            <div className="ml-auto">
-              <StarCount n={s.stars} />
-            </div>
-          </div>
-          <div className="mt-2 flex flex-wrap items-center gap-1.5">
-            <Chip tone="amber">{s.category}</Chip>
-            {s.license && <Chip>{s.license}</Chip>}
+          {ours && <div className="mb-1 text-[12px] text-neutral-500 dark:text-neutral-400">From Pane</div>}
+          <h2 className="min-w-0 text-[26px] leading-8 font-medium tracking-[-0.02em] break-words">{s.name}</h2>
+          <p className="mt-2 text-[15px] leading-6 text-neutral-800 dark:text-neutral-100">{s.does ?? s.description}</p>
+          <div className="mt-2 flex flex-wrap items-center gap-x-2 text-[12px] text-neutral-500 dark:text-neutral-400">
+            <span>{s.category}</span>
+            {formatStars(s.stars) && (
+              <>
+                <span aria-hidden>·</span>
+                <span className="inline-flex items-center gap-1 tabular-nums">
+                  <Star className="size-3" /> {formatStars(s.stars)}
+                </span>
+              </>
+            )}
+            <span aria-hidden>·</span>
+            <span>{s.license ?? "No licence listed"}</span>
           </div>
 
           {hasLab && lab && <SkillInAction skillId={s.id} lab={lab} />}
 
           <div className={cn("mt-5", hasLab && "hidden")}>
             <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-2">
-              <span className="text-[11px] font-medium tracking-wide whitespace-nowrap text-neutral-400 uppercase">What it changes</span>
-              <span className="hidden text-[11.5px] text-neutral-400 sm:inline">· {VISUAL_LABEL[kind]}</span>
+              <span className="text-[12px] font-medium whitespace-nowrap text-neutral-500 dark:text-neutral-400">What it changes</span>
+              <span className="hidden text-[12px] text-neutral-500 sm:inline dark:text-neutral-400">· {VISUAL_LABEL[kind]}</span>
               <div className="ml-auto">
                 <ModeToggle mode={mode} onChange={setMode} />
               </div>
@@ -422,28 +387,23 @@ function SkillDrawer({ list, activeId, onClose, onNavigate, lab }: { list: Skill
             <SkillVisual id={s.id} kind={kind} before={s.before ?? ""} after={s.after ?? ""} size="large" mode={mode} />
           </div>
 
-          <p className="mt-5 text-[15px] leading-6 text-neutral-800 dark:text-neutral-100">{s.does ?? s.description}</p>
           {s.does && s.description.slice(0, 24).toLowerCase() !== s.does.slice(0, 24).toLowerCase() && (
-            <p className="mt-2 text-[13px] leading-5 text-neutral-500 dark:text-neutral-400">{s.description}</p>
+            <p className="mt-5 text-[13px] leading-5 text-neutral-500 dark:text-neutral-400">{s.description}</p>
           )}
 
           {s.bestFor && s.bestFor.length > 0 && (
             <div className="mt-5">
-              <div className="mb-1.5 text-[11px] font-medium tracking-wide text-neutral-400 uppercase">Best for</div>
-              <div className="flex flex-wrap gap-1.5">
-                {s.bestFor.map((t) => (
-                  <span key={t} className="rounded-full px-2.5 py-1 text-[12px] text-neutral-700 shadow-[0_0_0_1px_rgb(0_0_0/0.09)] dark:text-neutral-200 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.14)]">
-                    {t}
-                  </span>
-                ))}
-              </div>
+              <SectionLabel>Best for</SectionLabel>
+              <p className="text-[13px] leading-5 text-neutral-700 dark:text-neutral-200">{s.bestFor.join(" · ")}</p>
             </div>
           )}
 
-          <div className="mt-6 space-y-4">
-            {s.examplePrompt && <CopyBlock label="Try this prompt" text={s.examplePrompt} />}
-            <CopyBlock label="Install" text={s.install} mono prefix="$" />
-          </div>
+          {s.examplePrompt && (
+            <div className="mt-5">
+              <SectionLabel>Try this prompt</SectionLabel>
+              <p className="rounded-xl bg-black/[0.035] px-3.5 py-3 text-[13px] leading-5 text-neutral-700 dark:bg-white/[0.05] dark:text-neutral-200">{s.examplePrompt}</p>
+            </div>
+          )}
 
           <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-black/[0.06] pt-4 text-[12.5px] text-neutral-500 dark:border-white/[0.08] dark:text-neutral-400">
             <a href={skillUrl(s)} target="_blank" rel="noreferrer" className="flex items-center gap-1 font-medium text-neutral-800 hover:underline dark:text-neutral-100">
@@ -454,10 +414,14 @@ function SkillDrawer({ list, activeId, onClose, onNavigate, lab }: { list: Skill
               {repoLabel(s.repo)}
               <ArrowUpRight className="size-3" />
             </a>
-            <span>Licence: {s.license ?? "Not specified"}</span>
-            {s.source && <span className="text-neutral-400">Source: {s.source}</span>}
+            {s.source && <span>Source: {s.source}</span>}
           </div>
-          <p className="mt-3 text-[11.5px] text-neutral-400">Skills belong to their authors. Check the licence before you copy one into a project.</p>
+        </div>
+
+        <div className="flex items-center gap-4 border-t border-black/[0.06] bg-white/90 px-5 py-3 backdrop-blur dark:border-white/[0.08] dark:bg-neutral-950/90">
+          <code className="min-w-0 flex-1 truncate font-mono text-[12px] text-neutral-600 dark:text-neutral-300">$ {s.install}</code>
+          <CopyButton text={s.install} label="Copy install" className="shrink-0 text-[13px] font-medium text-neutral-800 dark:text-neutral-100" />
+          {s.examplePrompt && <CopyButton text={s.examplePrompt} label="Copy prompt" title="Copy the example prompt" className="shrink-0 text-[13px]" />}
         </div>
       </div>
     </div>,
@@ -467,26 +431,34 @@ function SkillDrawer({ list, activeId, onClose, onNavigate, lab }: { list: Skill
 
 /* ----------------------------------------------------------------- page */
 
+const PAGE = 12
+
 export function SkillsPage({ initialId }: { initialId?: string } = {}) {
   const lab = useSkillLab()
   const [filter, setFilter] = React.useState<Filter>({ kind: "all" })
   const [query, setQuery] = React.useState("")
-  const [sort, setSort] = React.useState<Sort>("stars")
+  const [sort, setSort] = React.useState<Sort>("featured")
+  const [shownN, setShownN] = React.useState<{ sig: string; n: number }>({ sig: "", n: PAGE })
   const [activeId, setActiveId] = React.useState<string | null>(() => (initialId && SKILLS.some((k) => k.id === initialId) ? initialId : null))
   const lastFocus = React.useRef<HTMLElement | null>(null)
 
-  const categories = React.useMemo(() => [...new Set(SKILLS.map((s) => s.category))], [])
   const searched = React.useMemo(() => SKILLS.filter((s) => matches(s, query.trim())), [query])
   const countFor = (cats: readonly string[]) => searched.filter((s) => cats.includes(s.category)).length
 
   const list = React.useMemo(() => {
     const cats = filter.kind === "cat" ? [filter.value] : filter.kind === "intent" ? (INTENTS.find((i) => i.id === filter.value)?.cats ?? []) : null
     const base = cats ? searched.filter((s) => (cats as readonly string[]).includes(s.category)) : searched
+    const proof = (s: Skill) => lab?.skills[s.id]?.examples.length ?? 0
     const rest = base.filter((s) => s.id !== OURS_ID)
-    rest.sort((a, b) => (sort === "stars" ? (b.stars ?? 0) - (a.stars ?? 0) || a.name.localeCompare(b.name) : a.name.localeCompare(b.name)))
+    rest.sort((a, b) => (sort === "featured" ? proof(b) - proof(a) || (b.stars ?? 0) - (a.stars ?? 0) || a.name.localeCompare(b.name) : a.name.localeCompare(b.name)))
     const ours = base.find((s) => s.id === OURS_ID)
     return ours ? [ours, ...rest] : rest
-  }, [filter, searched, sort])
+  }, [filter, searched, sort, lab])
+
+  const sig = `${JSON.stringify(filter)}|${query}|${sort}`
+  const limit = shownN.sig === sig ? shownN.n : PAGE
+  // The open skill must always be reachable in the drawer's prev/next list, even beyond the visible page.
+  const visible = list.slice(0, limit)
 
   const open = (id: string) => {
     lastFocus.current = document.activeElement as HTMLElement | null
@@ -497,24 +469,14 @@ export function SkillsPage({ initialId }: { initialId?: string } = {}) {
     lastFocus.current?.focus?.()
   }, [])
 
-  const pill = (active: boolean) =>
-    cn(
-      "h-8 rounded-full px-3 text-[12.5px] font-medium text-neutral-500 shadow-[0_0_0_1px_rgb(0_0_0/0.08)] transition-colors hover:text-neutral-900 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1)] dark:hover:text-white",
-      active && "bg-neutral-900 text-white shadow-none hover:text-white dark:bg-white dark:text-neutral-900 dark:hover:text-neutral-900",
-    )
-
   const activeIntent = filter.kind === "intent" ? INTENTS.find((i) => i.id === filter.value) : undefined
 
   return (
     <div className="@container">
       <SkillVisualStyles />
-      <div className="text-[13px] text-neutral-400">
-        Library <span className="mx-1">/</span> <span className="text-neutral-600 dark:text-neutral-300">Skills</span>
-      </div>
-      <h1 className="mt-3 text-3xl font-semibold tracking-tight">Skills</h1>
-      <p className="mt-2 max-w-2xl text-[15px] leading-6 text-neutral-500 dark:text-neutral-400">
-        Agent skills that carry taste. We ran them: the same prompts built by one agent without the skill and one following it – open a skill to compare the real pages. Each one is open
-        source; copy the install command.
+      <h1 className="text-[40px] leading-[1.05] font-medium tracking-[-0.02em]">Skills that make agents design better</h1>
+      <p className="mt-3 max-w-xl text-[15px] leading-6 text-neutral-500 dark:text-neutral-400">
+        {SKILLS.length} skills, most run twice on the same prompt: without it and with it. Open one to compare, then copy the install command.
       </p>
 
       {SKILLS.length === 0 ? (
@@ -522,10 +484,10 @@ export function SkillsPage({ initialId }: { initialId?: string } = {}) {
       ) : (
         <>
           <section className="mt-7" aria-labelledby="skills-picker">
-            <h2 id="skills-picker" className="text-[13px] font-medium text-neutral-800 dark:text-neutral-100">
+            <h2 id="skills-picker" className="sr-only">
               What do you want to improve?
             </h2>
-            <div className="mt-2.5 grid grid-cols-2 gap-2 @2xl:grid-cols-4">
+            <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [mask-image:linear-gradient(to_right,#000_calc(100%-40px),transparent)] snap-x snap-proximity @2xl:[mask-image:none] @2xl:mx-0 @2xl:grid @2xl:grid-cols-4 @2xl:overflow-visible @2xl:px-0 @2xl:pb-0 [&>button]:shrink-0 [&>button]:snap-start">
               {INTENTS.map((it) => {
                 const on = filter.kind === "intent" && filter.value === it.id
                 const Icon = it.icon
@@ -536,26 +498,21 @@ export function SkillsPage({ initialId }: { initialId?: string } = {}) {
                     aria-pressed={on}
                     onClick={() => setFilter(on ? { kind: "all" } : { kind: "intent", value: it.id })}
                     className={cn(
-                      "group flex min-w-0 items-center gap-2.5 rounded-xl p-2.5 text-left shadow-[0_0_0_1px_rgb(0_0_0/0.07)] transition-[background-color,box-shadow] hover:bg-black/[0.025] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.09)] dark:hover:bg-white/[0.04]",
+                      "group flex min-h-10 min-w-0 items-center gap-2 rounded-xl px-3 text-left text-[13px] font-medium whitespace-nowrap shadow-[0_0_0_1px_rgb(0_0_0/0.07)] transition-[background-color,box-shadow,transform] duration-200 ease-[cubic-bezier(.22,1,.36,1)] active:scale-[0.98] hover:bg-black/[0.025] @2xl:py-2.5 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.09)] dark:hover:bg-white/[0.04]",
                       on && "bg-neutral-900 text-white shadow-none hover:bg-neutral-900 dark:bg-white dark:text-neutral-900 dark:hover:bg-white",
                     )}
                   >
-                    <span className={cn("grid size-8 shrink-0 place-items-center rounded-lg bg-black/[0.05] text-neutral-600 dark:bg-white/10 dark:text-neutral-300", on && "bg-white/15 text-white dark:bg-neutral-900/10 dark:text-neutral-900")}>
-                      <Icon className="size-4" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-[13px] leading-4 font-medium @xl:truncate">{it.label}</span>
-                      <span className={cn("hidden truncate text-[11.5px] leading-4 text-neutral-400 @xl:block", on && "text-white/60 dark:text-neutral-900/60")}>{it.hint}</span>
-                    </span>
-                    <span className={cn("text-[11.5px] text-neutral-400 tabular-nums", on && "text-white/60 dark:text-neutral-900/60")}>{countFor(it.cats)}</span>
+                    <Icon className="size-4 shrink-0 text-neutral-500 max-[480px]:hidden" style={on ? { color: "inherit" } : undefined} />
+                    <span className="min-w-0 flex-1 @2xl:truncate">{it.label}</span>
+                    <span className={cn("text-[12px] font-normal text-neutral-500 tabular-nums", on && "text-white/60 dark:text-neutral-900/60")}>{countFor(it.cats)}</span>
                   </button>
                 )
               })}
             </div>
           </section>
 
-          <div className="mt-5 flex flex-wrap items-center gap-2">
-            <label className="relative min-w-[200px] flex-1">
+          <div className="mt-4">
+            <label className="relative block">
               <span className="sr-only">Search skills</span>
               <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
               <input
@@ -576,44 +533,9 @@ export function SkillsPage({ initialId }: { initialId?: string } = {}) {
                 </button>
               )}
             </label>
-            <div role="radiogroup" aria-label="Sort" className="inline-flex shrink-0 rounded-full bg-black/[0.05] p-0.5 dark:bg-white/10">
-              {([
-                ["stars", "Most stars"],
-                ["name", "A to Z"],
-              ] as const).map(([id, label]) => (
-                <button
-                  key={id}
-                  type="button"
-                  role="radio"
-                  aria-checked={sort === id}
-                  onClick={() => setSort(id)}
-                  className={cn(
-                    "h-9 rounded-full px-3.5 text-[12.5px] font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-white",
-                    sort === id && "bg-white text-neutral-900 shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.06)] dark:bg-white/15 dark:text-white dark:shadow-none",
-                  )}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
           </div>
 
-          <div className="mt-3 -mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0 [&>button]:shrink-0" role="radiogroup" aria-label="Category">
-            <button type="button" role="radio" aria-checked={filter.kind === "all"} onClick={() => setFilter({ kind: "all" })} className={pill(filter.kind === "all")}>
-              All<span className="ml-1.5 tabular-nums opacity-50">{searched.length}</span>
-            </button>
-            {categories.map((c) => {
-              const on = filter.kind === "cat" && filter.value === c
-              return (
-                <button key={c} type="button" role="radio" aria-checked={on} onClick={() => setFilter({ kind: "cat", value: c })} className={pill(on)}>
-                  {c}
-                  <span className="ml-1.5 tabular-nums opacity-50">{searched.filter((s) => s.category === c).length}</span>
-                </button>
-              )
-            })}
-          </div>
-
-          <div className="mt-4 flex items-center gap-2 text-[12.5px] text-neutral-400" aria-live="polite">
+          <div className="mt-4 flex items-center gap-3 text-[12.5px] text-neutral-500 dark:text-neutral-400" aria-live="polite">
             <span>
               {list.length} {list.length === 1 ? "skill" : "skills"}
               {activeIntent ? ` for "${activeIntent.label}"` : ""}
@@ -631,13 +553,24 @@ export function SkillsPage({ initialId }: { initialId?: string } = {}) {
                 Clear
               </button>
             )}
+            <label className="ml-auto flex items-center gap-1.5">
+              <span className="sr-only">Sort</span>
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value as Sort)}
+                className="cursor-pointer rounded-md bg-transparent py-1 pr-1 text-[12.5px] text-neutral-600 outline-none hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-neutral-900/30 dark:text-neutral-300 dark:hover:text-white [&>option]:text-neutral-900"
+              >
+                <option value="featured">Featured first</option>
+                <option value="name">A to Z</option>
+              </select>
+            </label>
           </div>
 
           {list.length === 0 ? (
             <p className="mt-10 text-sm text-neutral-400">No skill matches that. Try a broader word, or clear the filters.</p>
           ) : (
             <div className="mt-3 grid gap-3 @xl:grid-cols-2 @4xl:grid-cols-3">
-              {list.map((s) => (
+              {visible.map((s) => (
                 <div key={s.id} className={cn("contents", s.id === OURS_ID && "[&>article]:col-span-full")}>
                   <SkillCard s={s} onOpen={open} featured={s.id === OURS_ID} lab={lab} />
                 </div>
@@ -645,12 +578,25 @@ export function SkillsPage({ initialId }: { initialId?: string } = {}) {
             </div>
           )}
 
-          <p className="mt-8 text-xs text-neutral-400">
-            Curated with help from{" "}
+          {list.length > limit && (
+            <div className="mt-6 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setShownN({ sig, n: limit + PAGE })}
+                className="h-9 rounded-full px-4 text-[13px] font-medium text-neutral-700 shadow-[0_0_0_1px_rgb(0_0_0/0.1)] transition-[background-color,transform] duration-200 ease-[cubic-bezier(.22,1,.36,1)] hover:bg-black/[0.03] active:scale-[0.97] dark:text-neutral-200 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.14)] dark:hover:bg-white/[0.05]"
+              >
+                Show {Math.min(PAGE, list.length - limit)} more
+                <span className="ml-1.5 text-neutral-500 tabular-nums">{list.length - limit} left</span>
+              </button>
+            </div>
+          )}
+
+          <p className="mt-8 text-xs text-neutral-500 dark:text-neutral-400">
+            Skills belong to their authors – check each licence before you copy one. Curated with help from{" "}
             <a href="https://skill-issue.in" target="_blank" rel="noreferrer" className="underline decoration-neutral-300 underline-offset-2">
               Skill Issue
             </a>
-            . Skills belong to their authors – check each licence.
+            .
           </p>
         </>
       )}

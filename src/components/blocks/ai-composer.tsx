@@ -577,9 +577,9 @@ function prefersReducedMotion() {
 }
 
 function ModelMark({ mark }: { mark: ComposerModel["mark"] }) {
-  if (mark === "spark" || mark === undefined) return <span className="acp-mark" style={{ ["--acp-mk" as string]: "#d4623a" }}><Sparkles size={15} strokeWidth={2} aria-hidden /></span>
-  if (mark === "hex") return <span className="acp-mark" style={{ ["--acp-mk" as string]: "#0f9d7a" }}><Hexagon size={15} strokeWidth={2} aria-hidden /></span>
-  if (mark === "diamond") return <span className="acp-mark" style={{ ["--acp-mk" as string]: "#3b6cf0" }}><Diamond size={15} strokeWidth={2} aria-hidden /></span>
+  if (mark === "spark" || mark === undefined) return <span className="acp-mark"><Sparkles size={15} strokeWidth={2} aria-hidden /></span>
+  if (mark === "hex") return <span className="acp-mark"><Hexagon size={15} strokeWidth={2} aria-hidden /></span>
+  if (mark === "diamond") return <span className="acp-mark"><Diamond size={15} strokeWidth={2} aria-hidden /></span>
   return <span className="acp-mark">{mark}</span>
 }
 

@@ -83,7 +83,7 @@ const CSS = `
 
 .arg-center { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none }
 .arg-ci { display: grid; justify-items: center; gap: 2px; width: 88px }
-.arg-cv { display: flex; align-items: baseline; gap: 1px; font-size: 28px; line-height: 28px; letter-spacing: -.03em; font-variant-numeric: tabular-nums; font-weight: 400 }
+.arg-cv { display: flex; align-items: baseline; gap: 1px; font-size: 40px; line-height: 40px; letter-spacing: -.03em; font-variant-numeric: tabular-nums; font-weight: 400 }
 .arg-cu { font-size: 16px; line-height: 16px; color: var(--arg-t2); letter-spacing: -.03em }
 .arg-cl { max-width: 88px; font-size: 12px; line-height: 15px; color: var(--arg-t2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; animation: arg-in .45s var(--arg-ease) backwards }
 @keyframes arg-in { from { opacity: 0; filter: blur(3px); transform: translateY(3px) } }
@@ -125,7 +125,7 @@ const CSS = `
 /*                                   Helpers                                  */
 /* -------------------------------------------------------------------------- */
 
-const COLORS = ["oklch(60% .17 275)", "oklch(75% .15 68)", "oklch(66% .09 160)", "oklch(65% .15 10)"]
+const COLORS = ["oklch(58% .17 255)", "color-mix(in oklab, var(--arg-ink) 78%, transparent)", "color-mix(in oklab, var(--arg-ink) 52%, transparent)", "color-mix(in oklab, var(--arg-ink) 34%, transparent)"]
 
 /** Geometry of ring k (outermost = 0): tick radii, tick count and the lap radius, in the 220-unit viewBox. */
 function ringGeometry(k: number) {

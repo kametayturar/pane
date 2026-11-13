@@ -2599,6 +2599,306 @@
           "target": "components/ui/pulled-focus.tsx"
         }
       ]
+    },
+    {
+      "name": "modal",
+      "type": "registry:ui",
+      "title": "Modal",
+      "description": "A dialog that grows out of the button that opened it, dims the page and returns focus when it closes.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/modal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/modal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "A panel anchored to its trigger that flips to stay on screen and glides to the next trigger instead of closing.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/popover.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/popover.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "A label with a shortcut that waits on the first hover, then shows instantly as you slide along a toolbar.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tooltip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "A sheet that follows the finger, rubber-bands past its edge, snaps between heights and leaves at the speed you flicked it.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/drawer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/drawer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "swipe-row",
+      "type": "registry:ui",
+      "title": "Swipe Row",
+      "description": "A list row you drag to reveal actions; a long swipe or a flick commits and the list closes the gap.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/swipe-row.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/swipe-row.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hold-to-confirm",
+      "type": "registry:ui",
+      "title": "Hold to Confirm",
+      "description": "A button that fills while you hold it: the commit is slow, letting go cancels at once.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/hold-to-confirm.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/hold-to-confirm.tsx"
+        }
+      ]
+    },
+    {
+      "name": "device-frames",
+      "type": "registry:ui",
+      "title": "Device Frames",
+      "description": "Browser and phone frames for product shots that scale a fixed stage and bleed off the card edge.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/ui/device-frames.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/device-frames.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cursor-walkthrough",
+      "type": "registry:ui",
+      "title": "Cursor Walkthrough",
+      "description": "A scripted cursor that moves, clicks, types and drags through any piece and holds on the result.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/cursor-walkthrough.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/cursor-walkthrough.tsx"
+        }
+      ]
+    },
+    {
+      "name": "control-bento",
+      "type": "registry:ui",
+      "title": "Control Bento",
+      "description": "A bento of small live controls for a landing page, with one tile at a time demonstrated by a cursor.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/control-bento.tsx",
+          "type": "registry:ui",
+          "target": "components/blocks/control-bento.tsx"
+        }
+      ]
+    },
+    {
+      "name": "overlay-atlas",
+      "type": "registry:ui",
+      "title": "Overlay Atlas",
+      "description": "Modal, popover, tooltip, toast, sheet and drawer side by side in one product window, each played on hover.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/overlay-atlas.tsx",
+          "type": "registry:ui",
+          "target": "components/blocks/overlay-atlas.tsx"
+        }
+      ]
+    },
+    {
+      "name": "light-cards",
+      "type": "registry:ui",
+      "title": "Light Cards",
+      "description": "Numbered dark feature cards, each with light-painted art cropped by its edge that brightens on hover.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/blocks/light-cards.tsx",
+          "type": "registry:ui",
+          "target": "components/blocks/light-cards.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dash-ribbon",
+      "type": "registry:ui",
+      "title": "Dash Ribbon",
+      "description": "Rows of rounded dashes following a rolling wave, with a run of light traced down one row.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/dash-ribbon.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/dash-ribbon.tsx"
+        }
+      ]
+    },
+    {
+      "name": "light-form",
+      "type": "registry:ui",
+      "title": "Light Form",
+      "description": "A moth, orchid or fern drawn from hundreds of glowing strands with a chromatic fringe, breathing slowly.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/light-form.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/light-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "gouache-lake",
+      "type": "registry:ui",
+      "title": "Gouache Lake",
+      "description": "A painted hillside and its reflection drawn from brush dabs, with a small boat leaving a wake.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/gouache-lake.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/gouache-lake.tsx"
+        }
+      ]
+    },
+    {
+      "name": "golden-hills",
+      "type": "registry:ui",
+      "title": "Golden Hills",
+      "description": "Grassy hills lit by a low sun, a lone tree and a tiny walker, with cloud shadows drifting over.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/golden-hills.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/golden-hills.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hatched-skies",
+      "type": "registry:ui",
+      "title": "Hatched Skies",
+      "description": "Clouds filled with fine vertical ticks drifting behind a headline.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/hatched-skies.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/hatched-skies.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dash-burst",
+      "type": "registry:ui",
+      "title": "Dash Burst",
+      "description": "A ring of radial dashes sized by a metric around one big number, bursting outward from one sector.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/dash-burst.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/dash-burst.tsx"
+        }
+      ]
+    },
+    {
+      "name": "column-cube",
+      "type": "registry:ui",
+      "title": "Column Cube",
+      "description": "An isometric block of columns cut open to show a coloured layer, with a scan that lifts the cells it finds.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/column-cube.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/column-cube.tsx"
+        }
+      ]
+    },
+    {
+      "name": "peek-icon",
+      "type": "registry:ui",
+      "title": "Peek Icon",
+      "description": "App icons where a character peeks in at an angle over a background that says what the app does.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/peek-icon.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/peek-icon.tsx"
+        }
+      ]
+    },
+    {
+      "name": "grain-gradient",
+      "type": "registry:ui",
+      "title": "Grain Gradient",
+      "description": "A smooth gradient field – orb, ring, band or wave – with fine grain so it never bands, exportable as an image.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/motion/grain-gradient.tsx",
+          "type": "registry:ui",
+          "target": "components/motion/grain-gradient.tsx"
+        }
+      ]
     }
   ]
 }

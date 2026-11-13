@@ -75,9 +75,9 @@ export type VectorSearchProps = {
 }
 
 const ic = { strokeWidth: 1.8, "aria-hidden": true } as const
-const HELP: VectorSearchSource = { name: "Help center", icon: <LifeBuoy {...ic} />, color: "#d98a0b" }
-const API: VectorSearchSource = { name: "API docs", icon: <Terminal {...ic} />, color: "#6d5ae6" }
-const RUN: VectorSearchSource = { name: "Runbooks", icon: <BookOpen {...ic} />, color: "#0e9f8e" }
+const HELP: VectorSearchSource = { name: "Help center", icon: <LifeBuoy {...ic} /> }
+const API: VectorSearchSource = { name: "API docs", icon: <Terminal {...ic} /> }
+const RUN: VectorSearchSource = { name: "Runbooks", icon: <BookOpen {...ic} /> }
 const DEFAULT_TOPICS: VectorSearchTopic[] = [{ name: "Billing" }, { name: "Access" }, { name: "Deploys" }]
 const DEFAULT_DOCS: VectorSearchDocument[] = [
   { title: "Refund a charge", topic: 0, source: HELP },

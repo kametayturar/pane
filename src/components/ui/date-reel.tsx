@@ -85,13 +85,13 @@ export type DateReelProps = {
 
 const CSS = `
 .dre {
-  --dre-ink: oklch(.15 0 0); --dre-surface: #fff; --dre-accent: oklch(.55 .2 262); --dre-ease: cubic-bezier(.22, 1, .36, 1);
+  --dre-ink: oklch(.15 0 0); --dre-surface: #fff; --dre-accent: oklch(.15 0 0); --dre-ease: cubic-bezier(.22, 1, .36, 1);
   --dre-t2: color-mix(in oklab, var(--dre-ink) 62%, transparent); --dre-t3: color-mix(in oklab, var(--dre-ink) 42%, transparent);
   --dre-line: color-mix(in oklab, var(--dre-ink) 9%, transparent); --dre-fill: color-mix(in oklab, var(--dre-ink) 4%, transparent);
   container-type: inline-size; width: 100%; max-width: 398px; margin-inline: auto; background: var(--dre-surface); color: var(--dre-ink);
   border: 1px solid var(--dre-line); border-radius: 34px;
   font-family: var(--dre-font, Inter, InterVariable, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif); -webkit-font-smoothing: antialiased; letter-spacing: -.01em }
-:is(.dark, [data-theme="dark"]) .dre { --dre-ink: oklch(.97 0 0); --dre-surface: #171717; --dre-accent: oklch(.72 .15 262); --dre-line: color-mix(in oklab, var(--dre-ink) 12%, transparent); --dre-fill: color-mix(in oklab, var(--dre-ink) 7%, transparent) }
+:is(.dark, [data-theme="dark"]) .dre { --dre-ink: oklch(.97 0 0); --dre-surface: #171717; --dre-accent: oklch(.97 0 0); --dre-line: color-mix(in oklab, var(--dre-ink) 12%, transparent); --dre-fill: color-mix(in oklab, var(--dre-ink) 7%, transparent) }
 .dre *, .dre *::before, .dre *::after { box-sizing: border-box }
 .dre button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent }
 .dre :focus-visible { outline: 2px solid color-mix(in oklab, var(--dre-accent) 70%, transparent); outline-offset: 2px }
@@ -128,13 +128,13 @@ const CSS = `
   transition: background-color .25s var(--dre-ease), color .25s var(--dre-ease), border-color .25s var(--dre-ease), transform .2s var(--dre-ease) }
 .dre-preset:hover { color: var(--dre-ink); background: var(--dre-fill) }
 .dre-preset:active { transform: scale(.97) }
-.dre-preset[aria-pressed="true"] { color: var(--dre-ink); background: color-mix(in oklab, var(--dre-accent) 10%, transparent); border-color: color-mix(in oklab, var(--dre-accent) 40%, transparent) !important }
-.dre-confirm { position: relative; display: block; width: 100%; height: 44px; padding: 0 16px; border-radius: 9999px; background: oklch(.33 0 0); color: #fff; font-size: 14px; line-height: 19.6px; font-weight: 500;
+.dre-preset[aria-pressed="true"] { color: var(--dre-surface); background: var(--dre-ink); border-color: var(--dre-ink) !important }
+.dre button.dre-confirm { position: relative; display: block; width: 100%; height: 44px; padding: 0 16px; border-radius: 9999px; background: oklch(.15 0 0); color: #fff; font-size: 14px; line-height: 19.6px; font-weight: 500;
   transition: transform .2s var(--dre-ease), background-color .3s var(--dre-ease) }
-:is(.dark, [data-theme="dark"]) .dre-confirm { background: oklch(.95 0 0); color: oklch(.2 0 0) }
+:is(.dark, [data-theme="dark"]) .dre button.dre-confirm { background: oklch(.95 0 0); color: oklch(.2 0 0) }
 .dre-confirm:active { transform: scale(.985) }
-.dre-confirm[data-phase="error"] { background: oklch(.5 .19 25) }
-:is(.dark, [data-theme="dark"]) .dre-confirm[data-phase="error"] { background: oklch(.62 .19 25); color: #fff }
+.dre button.dre-confirm[data-phase="error"] { background: oklch(.5 .19 25) }
+:is(.dark, [data-theme="dark"]) .dre button.dre-confirm[data-phase="error"] { background: oklch(.62 .19 25); color: #fff }
 .dre-cs { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0; filter: blur(3px); transform: translateY(4px); transition: opacity .3s var(--dre-ease), filter .3s var(--dre-ease), transform .3s var(--dre-ease); pointer-events: none }
 .dre-cs[data-on] { opacity: 1; filter: none; transform: none }
 .dre-spin { animation: dre-rot .8s linear infinite }

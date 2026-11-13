@@ -3784,6 +3784,286 @@
         "background agent",
         "original"
       ]
+    },
+    "modal": {
+      "tags": [
+        "dialog",
+        "agent",
+        "approval"
+      ],
+      "keywords": [
+        "modal",
+        "dialog",
+        "confirm",
+        "lightbox",
+        "original"
+      ]
+    },
+    "popover": {
+      "tags": [
+        "menu",
+        "dialog",
+        "hover"
+      ],
+      "keywords": [
+        "popover",
+        "anchored panel",
+        "dropdown",
+        "flyout",
+        "original"
+      ]
+    },
+    "tooltip": {
+      "tags": [
+        "hover",
+        "keyboard",
+        "feedback"
+      ],
+      "keywords": [
+        "tooltip",
+        "hint",
+        "shortcut",
+        "kbd",
+        "original"
+      ]
+    },
+    "drawer": {
+      "tags": [
+        "dialog",
+        "gesture",
+        "drag"
+      ],
+      "keywords": [
+        "drawer",
+        "bottom sheet",
+        "snap points",
+        "swipe to dismiss",
+        "vaul",
+        "original"
+      ]
+    },
+    "swipe-row": {
+      "tags": [
+        "gesture",
+        "drag",
+        "feedback"
+      ],
+      "keywords": [
+        "swipe",
+        "swipe actions",
+        "archive",
+        "list row",
+        "dismiss",
+        "original"
+      ]
+    },
+    "hold-to-confirm": {
+      "tags": [
+        "button",
+        "approval",
+        "gesture"
+      ],
+      "keywords": [
+        "hold to confirm",
+        "press and hold",
+        "destructive action",
+        "confirm",
+        "original"
+      ]
+    },
+    "device-frames": {
+      "tags": [
+        "screen",
+        "marketing",
+        "landing"
+      ],
+      "keywords": [
+        "browser frame",
+        "phone mockup",
+        "device frame",
+        "product shot",
+        "faux ui",
+        "original"
+      ]
+    },
+    "cursor-walkthrough": {
+      "tags": [
+        "pointer-follow",
+        "marketing",
+        "landing"
+      ],
+      "keywords": [
+        "cursor demo",
+        "product walkthrough",
+        "faux cursor",
+        "demo animation",
+        "original"
+      ]
+    },
+    "control-bento": {
+      "tags": [
+        "marketing",
+        "landing",
+        "toggle"
+      ],
+      "keywords": [
+        "bento grid",
+        "feature grid",
+        "controls showcase",
+        "faux ui",
+        "original"
+      ]
+    },
+    "overlay-atlas": {
+      "tags": [
+        "dialog",
+        "menu",
+        "marketing"
+      ],
+      "keywords": [
+        "overlay types",
+        "modal vs popover",
+        "ui vocabulary",
+        "sheet vs drawer",
+        "original"
+      ]
+    },
+    "light-cards": {
+      "tags": [
+        "card",
+        "landing",
+        "glow"
+      ],
+      "keywords": [
+        "feature cards",
+        "dark cards",
+        "light painting",
+        "bento",
+        "original"
+      ]
+    },
+    "dash-ribbon": {
+      "tags": [
+        "background",
+        "landing",
+        "flow"
+      ],
+      "keywords": [
+        "line illustration",
+        "dashes",
+        "wave",
+        "brand illustration",
+        "original"
+      ]
+    },
+    "light-form": {
+      "tags": [
+        "glow",
+        "background",
+        "landing"
+      ],
+      "keywords": [
+        "light painting",
+        "iridescent",
+        "glow art",
+        "feature art",
+        "original"
+      ]
+    },
+    "gouache-lake": {
+      "tags": [
+        "background",
+        "landing",
+        "paper"
+      ],
+      "keywords": [
+        "painterly",
+        "gouache",
+        "landscape",
+        "generative painting",
+        "original"
+      ]
+    },
+    "golden-hills": {
+      "tags": [
+        "background",
+        "landing"
+      ],
+      "keywords": [
+        "landscape",
+        "film grain",
+        "hills",
+        "calm scene",
+        "original"
+      ]
+    },
+    "hatched-skies": {
+      "tags": [
+        "background",
+        "landing"
+      ],
+      "keywords": [
+        "line art",
+        "hatching",
+        "clouds",
+        "brand illustration",
+        "original"
+      ]
+    },
+    "dash-burst": {
+      "tags": [
+        "chart",
+        "kpi",
+        "landing"
+      ],
+      "keywords": [
+        "radial chart",
+        "burst",
+        "metric ring",
+        "dashes",
+        "original"
+      ]
+    },
+    "column-cube": {
+      "tags": [
+        "3d",
+        "diagram",
+        "landing"
+      ],
+      "keywords": [
+        "isometric",
+        "container scan",
+        "cube",
+        "security illustration",
+        "original"
+      ]
+    },
+    "peek-icon": {
+      "tags": [
+        "card",
+        "marketing"
+      ],
+      "keywords": [
+        "app icon",
+        "mascot",
+        "squircle icon",
+        "icon design",
+        "original"
+      ]
+    },
+    "grain-gradient": {
+      "tags": [
+        "gradient",
+        "background",
+        "landing"
+      ],
+      "keywords": [
+        "grainy gradient",
+        "noise gradient",
+        "mesh gradient",
+        "wallpaper",
+        "original"
+      ]
     }
   }
 }

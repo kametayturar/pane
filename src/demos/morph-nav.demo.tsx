@@ -76,7 +76,35 @@ const SEARCH = [
   { label: "Guardrails", description: "Policies and review queues", group: "Product", icon: <ShieldCheck />, href: "/guardrails", keywords: "safety" },
 ]
 
+
+/** Clicks the triggers inside `ref` one after another so the stage shows an open state; stops for good once the pointer or focus enters. */
+function useAutoplay(ref: React.RefObject<HTMLElement | null>, selector: string, interval = 3200) {
+  React.useEffect(() => {
+    const root = ref.current
+    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    let step = 0
+    let id = 0
+    const stop = () => window.clearTimeout(id)
+    const tick = () => {
+      const all = root.querySelectorAll<HTMLElement>(selector)
+      if (all.length) all[step % all.length].click()
+      step += 1
+      id = window.setTimeout(tick, interval)
+    }
+    id = window.setTimeout(tick, 700)
+    root.addEventListener("pointerenter", stop, { once: true })
+    root.addEventListener("focusin", stop, { once: true })
+    return () => {
+      stop()
+      root.removeEventListener("pointerenter", stop)
+      root.removeEventListener("focusin", stop)
+    }
+  }, [ref, selector, interval])
+}
+
 export default function Demo() {
+  const stageRef = React.useRef<HTMLDivElement>(null)
+  useAutoplay(stageRef, "button.mnv-item[aria-expanded]", 3400)
   const [compact, setCompact] = React.useState(false)
   const [width, setWidth] = React.useState<"full" | "narrow">("full")
   const [last, setLast] = React.useState("Hover a section, press search, or tab through the bar.")
@@ -84,8 +112,9 @@ export default function Demo() {
   return (
     <div className="flex w-full max-w-[760px] flex-col items-center gap-6">
       <div
+        ref={stageRef}
         className="relative w-full rounded-3xl px-3 pt-4"
-        style={{ minHeight: 440, background: "color-mix(in oklab, currentColor 3.5%, transparent)" }}
+        style={{ minHeight: 560, background: "color-mix(in oklab, currentColor 3.5%, transparent)" }}
       >
         <div className="mx-auto" style={{ maxWidth: width === "narrow" ? 360 : 740 }}>
           <MorphNav
@@ -97,6 +126,12 @@ export default function Demo() {
             compact={compact}
             onNavigate={onNavigate}
           />
+        </div>
+        <div className="mx-auto mt-32 flex max-w-[460px] flex-col gap-3 px-4 pb-16" aria-hidden>
+          <div className="h-5 w-3/5 rounded-md bg-current opacity-[0.12]" />
+          <div className="h-3 w-full rounded-md bg-current opacity-[0.09]" />
+          <div className="h-3 w-4/5 rounded-md bg-current opacity-[0.09]" />
+          <div className="mt-3 h-24 w-full rounded-xl bg-current opacity-[0.07]" />
         </div>
       </div>
       <p className="text-[13px] text-neutral-500 dark:text-neutral-400" aria-live="polite">

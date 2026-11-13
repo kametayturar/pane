@@ -173,7 +173,7 @@ type TNode = {
   path: string
 }
 
-const HUES = [250, 305, 70, 185]
+const HUES = [255, 255, 255, 255]
 const GAP = 1
 const HEAD = 22
 const clamp = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n))
@@ -470,13 +470,15 @@ export function Treemap({
         if (w2[0] > 0) widths.current.set(id, w2)
       }
       if (role === "branch") {
-        l.style.opacity = String(clamp((r.w - 36) / 16, 0, 1) * clamp((r.h - 14) / 8, 0, 1))
+        l.style.opacity = String(clamp((r.w - 36) / 16, 0, 1) * clamp((r.h - 14) / 8, 0, 1) * clamp((r.w - 16 - (w2?.[0] ?? 0)) / 8, 0, 1))
         const need = (w2?.[0] ?? 60) + (w2?.[1] ?? 40) + 34
         v.style.opacity = String(clamp((r.w - need + 10) / 12, 0, 1))
         v.style.display = ""
       } else {
-        l.style.opacity = String(clamp((r.w - 30) / 14, 0, 1) * clamp((r.h - 16) / 8, 0, 1))
-        const vv = clamp((r.w - 30) / 14, 0, 1) * clamp((r.h - 36) / 10, 0, 1)
+        const lo = clamp((r.w - 30) / 14, 0, 1) * clamp((r.h - 16) / 8, 0, 1) * clamp((r.w - 14 - (w2?.[0] ?? 0)) / 8, 0, 1)
+        l.style.opacity = String(lo)
+        // a value never shows without its name
+        const vv = Math.min(lo, clamp((r.w - 30) / 14, 0, 1) * clamp((r.h - 36) / 10, 0, 1))
         v.style.opacity = String(vv)
         v.style.display = vv <= 0.01 ? "none" : ""
       }

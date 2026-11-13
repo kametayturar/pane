@@ -112,7 +112,7 @@ const CSS = `
 .np-chip { flex: none; font: 500 10px/1 var(--np-mono); letter-spacing: .01em; color: var(--np-t2); padding: 6px 8px; border-radius: 6px; background: var(--np-fill); box-shadow: inset 0 0 0 1px var(--np-hair) }
 
 /* Left card: dithered terrain that melts into the card, then the title and the typing log. */
-.np-terrain { position: relative; flex: 1 1 auto; min-height: 280px; margin-top: -50px }
+.np-terrain { position: relative; flex: 1 1 auto; min-height: 180px; margin-top: -50px }
 .np-terrain canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; color: var(--np-dither) }
 .np-terrain::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 34%; background: linear-gradient(to bottom, transparent, var(--np-card)); pointer-events: none }
 .np-copy { position: relative; flex: none; padding: 0 22px 14px }
@@ -201,7 +201,7 @@ const smooth = (v: number) => {
 function paintTerrain(ctx: CanvasRenderingContext2D, w: number, h: number, dpr: number, t: number, color: string) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   ctx.clearRect(0, 0, w, h)
-  const cell = 3
+  const cell = 4
   const cols = Math.ceil(w / cell)
   const rows = Math.ceil(h / cell)
   const size = cell - 1
@@ -209,7 +209,7 @@ function paintTerrain(ctx: CanvasRenderingContext2D, w: number, h: number, dpr: 
   const deep = new Path2D()
   for (let gy = 0; gy < rows; gy++) {
     const v01 = (gy + 0.5) / rows
-    const fadeY = 1 - smooth((v01 - 0.38) / 0.58)
+    const fadeY = 1 - smooth((v01 - 0.04) / 0.36)
     if (fadeY <= 0.01) break
     const ny = (gy * cell) / 150 + 1.9
     for (let gx = 0; gx < cols; gx++) {
@@ -217,7 +217,7 @@ function paintTerrain(ctx: CanvasRenderingContext2D, w: number, h: number, dpr: 
       const qx = fbm(nx * 0.9 + t * 0.05, ny * 0.9 - t * 0.035, 2)
       const qy = fbm(nx * 0.9 - t * 0.04 + 5.2, ny * 0.9 + t * 0.06 + 1.3, 2)
       const f = fbm(nx + 2.8 * qx, ny + 2.8 * qy, 3)
-      const v = (f - 0.3) * 2.6 * fadeY
+      const v = (f - 0.3) * 2.2 * fadeY
       if (v > BAYER8[(gy & 7) * 8 + (gx & 7)]) (v > 0.85 ? deep : soft).rect(gx * cell, gy * cell, size, size)
     }
   }

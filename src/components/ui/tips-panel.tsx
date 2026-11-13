@@ -19,6 +19,8 @@ export type Tip = {
   doneLabel?: string
   /** Makes the action button solid (use for one tip at most). */
   primary?: boolean
+  /** Spans the full row with a larger title (use for one tip at most). */
+  featured?: boolean
   /** Called when the action is taken. */
   onAction?: (tip: Tip) => void
 }
@@ -46,7 +48,6 @@ const CSS = `
   --tp-ink: #000;
   --tp-surface: #fff;
   --tp-accent: #0060e2;
-  --tp-ok: #1a9a52;
   --tp-t1: color-mix(in oklab, var(--tp-ink) 88%, transparent);
   --tp-t2: color-mix(in oklab, var(--tp-ink) 61%, transparent);
   --tp-t3: color-mix(in oklab, var(--tp-ink) 45%, transparent);
@@ -78,7 +79,6 @@ const CSS = `
   --tp-ink: #fff;
   --tp-surface: #1c1c1e;
   --tp-accent: #4d8dff;
-  --tp-ok: #5fd394;
   --tp-t1: color-mix(in oklab, var(--tp-ink) 90%, transparent);
   --tp-t2: color-mix(in oklab, var(--tp-ink) 62%, transparent);
   --tp-t3: color-mix(in oklab, var(--tp-ink) 46%, transparent);
@@ -92,7 +92,7 @@ const CSS = `
   --tp-shadow-hover: 0 0 0 .5px rgb(255 255 255 / .16), 0 1px 2px 0 rgb(0 0 0 / .4);
 }
 .tp *, .tp *::before, .tp *::after { box-sizing: border-box }
-.tp button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer }
+:where(.tp button) { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer }
 .tp :focus-visible { outline: 2px solid color-mix(in oklab, var(--tp-accent) 60%, transparent); outline-offset: 1px }
 
 /* Header */
@@ -105,9 +105,7 @@ const CSS = `
 
 /* Body: its own width decides the column count (container query), its height caps then scrolls */
 .tp-body { container-type: inline-size; max-height: var(--tp-max-height); overflow-y: auto; scrollbar-width: thin }
-.tp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 12px; list-style: none }
-@container (max-width: 560px) { .tp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
-@container (max-width: 380px) { .tp-grid { grid-template-columns: minmax(0, 1fr) } }
+.tp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px; margin: 0; padding: 12px; list-style: none }
 
 /* Tip */
 .tp-tip {
@@ -116,6 +114,9 @@ const CSS = `
   animation: tp-in .48s var(--tp-ease) backwards;
 }
 .tp-tip[data-done] { background: var(--tp-wash) }
+.tp-tip[data-featured] { grid-column: 1 / -1; padding: 20px }
+.tp-tip[data-featured] .tp-tip-title { font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: -.01em }
+.tp-tip[data-featured] .tp-tip-text { margin-bottom: 16px; font-size: 14px; line-height: 22px; max-width: 46ch }
 .tp-tip-title { margin: 0; font-weight: 500; color: var(--tp-ink) }
 .tp-tip-text { margin: 2px 0 12px; color: var(--tp-t2) }
 .tp-tip > :last-child { margin-top: auto }
@@ -139,12 +140,12 @@ const CSS = `
 
 /* Done state */
 .tp-done {
-  display: inline-flex; align-items: center; gap: 6px; height: 28px; font-weight: 500; color: var(--tp-ok);
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; font-weight: 500; color: var(--tp-t2);
   animation: tp-pop .36s var(--tp-ease) backwards;
 }
 .tp-done svg { width: 16px; height: 16px; flex: none }
 
-.tp-foot { display: flex; justify-content: flex-end; padding: 8px; border-top: .5px solid var(--tp-line) }
+.tp-foot { display: flex; justify-content: flex-end; padding: 12px 16px; border-top: .5px solid var(--tp-line) }
 
 @keyframes tp-in { from { opacity: 0; transform: translateY(4px) } }
 @keyframes tp-pop { from { opacity: 0; transform: scale(.94) } }
@@ -166,8 +167,8 @@ export function Kbd({ children }: { children: React.ReactNode }) {
 
 const DoneIcon = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden>
-    <circle cx="8" cy="8" r="6.5" fill="currentColor" />
-    <path d="m5.6 8.1 1.7 1.7 3.2-3.4" stroke="#fff" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.2" />
+    <path d="m5.6 8.1 1.7 1.7 3.2-3.4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
@@ -217,6 +218,7 @@ export function TipsPanel({
                 key={tip.id}
                 className="tp-tip"
                 data-done={isDone || undefined}
+                data-featured={tip.featured || undefined}
                 style={{ animationDelay: `${80 + i * 50}ms` }}
               >
                 <p className="tp-tip-title">{tip.title}</p>

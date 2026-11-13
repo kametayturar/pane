@@ -15,7 +15,7 @@ export type MetricChange = {
   label: string
   /** What happened, in words: "Up 6.1% to 18.2K". */
   change: string
-  /** Colours the arrow: good = green, bad = red, neutral = grey. Defaults to neutral. */
+  /** Kept for meaning in your own data; the arrow stays in ink either way. Defaults to neutral. */
   tone?: ChangeTone
   /** Arrow direction. Defaults to "up". */
   direction?: "up" | "down" | "flat"
@@ -42,8 +42,6 @@ const CSS = `
   --cs-ink: #000;
   --cs-surface: #fff;
   --cs-accent: #0060e2;
-  --cs-good: #1a9a52;
-  --cs-bad: #e5484d;
   --cs-t1: color-mix(in oklab, var(--cs-ink) 88%, transparent);
   --cs-t2: color-mix(in oklab, var(--cs-ink) 61%, transparent);
   --cs-t3: color-mix(in oklab, var(--cs-ink) 45%, transparent);
@@ -70,8 +68,6 @@ const CSS = `
   --cs-ink: #fff;
   --cs-surface: #1c1c1e;
   --cs-accent: #4d8dff;
-  --cs-good: #3dd68c;
-  --cs-bad: #ff6b70;
   --cs-t1: color-mix(in oklab, var(--cs-ink) 90%, transparent);
   --cs-t2: color-mix(in oklab, var(--cs-ink) 62%, transparent);
   --cs-t3: color-mix(in oklab, var(--cs-ink) 46%, transparent);
@@ -95,12 +91,11 @@ const CSS = `
 .cs-label { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; color: var(--cs-t1) }
 .cs-change { display: flex; align-items: center; gap: 8px; min-width: 0; margin: 0; color: var(--cs-t2) }
 .cs-trend {
-  display: grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 5px;
-  color: var(--cs-t3); background: var(--cs-fill);
+  display: grid; place-items: center; flex: none; width: 16px; height: 16px;
+  color: var(--cs-t2);
 }
 .cs-trend svg { width: 12px; height: 12px }
-.cs-trend[data-tone="good"] { color: var(--cs-good); background: color-mix(in oklab, var(--cs-good) 8%, transparent) }
-.cs-trend[data-tone="bad"] { color: var(--cs-bad); background: color-mix(in oklab, var(--cs-bad) 8%, transparent) }
+.cs-trend[data-tone="bad"] { color: var(--cs-t1) }
 .cs-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 @media (max-width: 360px) {
   .cs-row { grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 8px 16px }
@@ -128,7 +123,7 @@ const DEFAULT_CHANGES: MetricChange[] = [
   { label: "Active users", change: "Up 6.1% to 18.2K", tone: "good", direction: "up" },
   { label: "Activation", change: "Climbed to 41%, up 3 pts", tone: "good", direction: "up" },
   { label: "Churn", change: "Down to 2.1% from 2.6%", tone: "good", direction: "down" },
-  { label: "Support tickets", change: "Up 14% to 312", tone: "bad", direction: "up" },
+  { label: "Support tickets", change: "Up 14% to 312", tone: "neutral", direction: "up" },
 ]
 
 const ListIcon = () => (
@@ -141,7 +136,7 @@ const ListIcon = () => (
 /*                               ChangeSummary                                */
 /* -------------------------------------------------------------------------- */
 
-/** A short recap of what moved since last time: one metric per row, with a coloured trend arrow. */
+/** A short recap of what moved since last time: one metric per row, with a plain trend arrow. */
 export function ChangeSummary({
   changes = DEFAULT_CHANGES,
   title = "What's changed",

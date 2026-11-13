@@ -58,8 +58,8 @@ export type PaymentFlowProps = {
 const ic = { strokeWidth: 1.75, "aria-hidden": true } as const
 const DEFAULT_NODES = {
   terminal: { label: "Checkout", meta: "Tap to pay", detail: "A card or phone is tapped on the reader", icon: <Nfc {...ic} /> },
-  processor: { label: "Payments", meta: "Processor", detail: "Checks risk and forwards the request", icon: <ShieldCheck {...ic} />, color: "#6d5ae6" },
-  network: { label: "Card network", meta: "Routing", detail: "Routes it to the bank that issued the card", icon: <Network {...ic} />, color: "#e8731a" },
+  processor: { label: "Payments", meta: "Processor", detail: "Checks risk and forwards the request", icon: <ShieldCheck {...ic} /> },
+  network: { label: "Card network", meta: "Routing", detail: "Routes it to the bank that issued the card", icon: <Network {...ic} /> },
   issuer: { label: "Bank", meta: "Card issuer", detail: "Checks the balance and holds the funds", icon: <Landmark {...ic} /> },
   merchant: { label: "Your balance", detail: "Receives the payout, minus fees", icon: <Wallet {...ic} /> },
 }
@@ -191,10 +191,10 @@ const CSS = `
 .pyf-wire { fill: none; stroke: var(--pyf-line); stroke-width: 1.25 }
 .pyf-stub { fill: none; stroke: var(--pyf-line); stroke-width: 1.25; stroke-dasharray: 2 4 }
 .pyf-lit { fill: none; stroke: var(--pyf-accent); stroke-width: 1.75; stroke-linecap: round }
-.pyf-ok-lit { fill: none; stroke: var(--pyf-ok); stroke-width: 1.75; stroke-linecap: round }
+.pyf-ok-lit { fill: none; stroke: var(--pyf-t1); stroke-width: 1.75; stroke-linecap: round }
 .pyf-port { fill: var(--pyf-surface); stroke: var(--pyf-line); stroke-width: 1.25 }
 .pyf-port[data-s="a"] { fill: var(--pyf-accent); stroke: var(--pyf-accent) }
-.pyf-port[data-s="ok"] { fill: var(--pyf-ok); stroke: var(--pyf-ok) }
+.pyf-port[data-s="ok"] { fill: var(--pyf-t1); stroke: var(--pyf-t1) }
 .pyf-node { fill: var(--pyf-surface); stroke: var(--pyf-line); stroke-width: 1.25; transition: fill .2s, stroke .2s }
 .pyf-node[data-s="a"] { fill: var(--pyf-accent); stroke: var(--pyf-accent) }
 
@@ -202,21 +202,18 @@ const CSS = `
   box-shadow: var(--pyf-shadow); transition: box-shadow .25s }
 .pyf-chip::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; border: 1px solid var(--pyf-edge); transition: border-color .25s }
 .pyf-chip[data-active]::before { border-color: color-mix(in oklab, var(--pyf-accent) 65%, transparent) }
-.pyf-chip[data-active] { box-shadow: var(--pyf-shadow), 0 6px 18px -8px color-mix(in oklab, var(--pyf-accent) 45%, transparent) }
 .pyf-mark { flex: none; display: grid; place-items: center; width: 16px; height: 16px; color: var(--ic, var(--pyf-t2)) }
 .pyf-mark > svg, .pyf-mark > img { display: block; width: 16px; height: 16px; object-fit: contain }
 .pyf-text { display: flex; flex-direction: column; min-width: 0; flex: 1 }
 .pyf-label { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: -.01em; color: var(--pyf-t1); white-space: nowrap }
 .pyf-meta { position: relative; display: flex; align-items: center; gap: 6px; height: 16px; font-size: 12px; line-height: 16px; letter-spacing: -.005em; color: var(--pyf-t3); white-space: nowrap; font-variant-numeric: tabular-nums }
-.pyf-dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--pyf-t4); transition: background .25s }
+.pyf-dot { display: none; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--pyf-t4); transition: background .25s }
 .pyf-meta[data-tone="active"] .pyf-dot { background: var(--pyf-accent) }
 .pyf-meta[data-tone="done"] .pyf-dot { background: var(--pyf-t3) }
 .pyf-meta[data-tone="ok"] { color: var(--pyf-t2) }
-.pyf-meta[data-tone="ok"] .pyf-dot { background: var(--pyf-ok) }
 .pyf-st { display: grid }
 .pyf-st > span { grid-area: 1 / 1; white-space: nowrap; transition: opacity .22s, filter .22s; opacity: 0; filter: blur(2px) }
 .pyf-st > span[data-on] { opacity: 1; filter: none }
-.pyf-meta[data-tone="ok"] .pyf-st > span[data-on] { color: var(--pyf-ok) }
 .pyf-tag { position: absolute; z-index: 6; top: calc(100% + 6px); padding: 3px 8px; border-radius: 999px; background: var(--pyf-ink); color: var(--pyf-surface);
   font-size: 12px; line-height: 14px; font-weight: 500; white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(-3px); transition: opacity .18s, transform .18s }
 .pyf-chip[data-side="l"] .pyf-tag { left: 2px }
@@ -224,9 +221,9 @@ const CSS = `
 @media (hover: hover) { .pyf-chip:hover .pyf-tag { opacity: 1; transform: none } }
 
 .pyf-pill { position: absolute; left: 0; top: 0; display: grid; place-items: center; height: 24px; padding: 0 9px; border-radius: 999px; opacity: 0;
-  background: color-mix(in oklab, var(--pyf-accent) 12%, var(--pyf-surface)); border: 1px solid color-mix(in oklab, var(--pyf-accent) 42%, transparent);
+  background: var(--pyf-surface); border: 1px solid var(--pyf-edge);
   color: var(--pyf-t1); font-size: 12px; line-height: 16px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; will-change: transform }
-.pyf-pill-ok { grid-auto-flow: column; gap: 4px; background: color-mix(in oklab, var(--pyf-ok) 13%, var(--pyf-surface)); border-color: color-mix(in oklab, var(--pyf-ok) 48%, transparent); color: var(--pyf-ok) }
+.pyf-pill-ok { grid-auto-flow: column; gap: 4px; color: var(--pyf-t1) }
 .pyf-pill-ok svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round }
 .pyf-pill-settle { width: 64px; padding: 0 }
 .pyf-pill-settle > span { grid-area: 1 / 1 }

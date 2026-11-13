@@ -66,8 +66,7 @@ const CSS = `
 .dz {
   --dz-ink: #000;
   --dz-surface: #fff;
-  --dz-accent: #0060e2;
-  --dz-ok: #139a52;
+  --dz-accent: #000;
   --dz-err: #e5484d;
   --dz-t1: color-mix(in oklab, var(--dz-ink) 88%, transparent);
   --dz-t2: color-mix(in oklab, var(--dz-ink) 61%, transparent);
@@ -91,8 +90,7 @@ const CSS = `
 :is(.dark, [data-theme="dark"]) .dz {
   --dz-ink: #fff;
   --dz-surface: #1c1c1e;
-  --dz-accent: #4d8dff;
-  --dz-ok: #3fd17f;
+  --dz-accent: #fff;
   --dz-err: #ff6369;
   --dz-t1: color-mix(in oklab, var(--dz-ink) 90%, transparent);
   --dz-t2: color-mix(in oklab, var(--dz-ink) 62%, transparent);
@@ -127,7 +125,7 @@ const CSS = `
   background: var(--dz-fill); color: var(--dz-t2); transition: transform .4s var(--dz-ease), background-color .2s, color .2s;
 }
 .dz-icon svg { width: 18px; height: 18px }
-.dz-zone[data-over="true"] .dz-icon { transform: translateY(-3px) scale(1.06); color: var(--dz-accent); background: color-mix(in oklab, var(--dz-accent) 12%, transparent) }
+.dz-zone[data-over="true"] .dz-icon { transform: translateY(-3px) scale(1.06); color: var(--dz-accent); background: color-mix(in oklab, var(--dz-accent) 8%, transparent) }
 .dz-title { position: relative; display: grid; font-weight: 500; color: var(--dz-t1) }
 .dz-title > span { grid-area: 1 / 1; transition: opacity .25s, filter .25s, transform .3s var(--dz-ease) }
 .dz-title > span:last-child { opacity: 0; filter: blur(4px); transform: translateY(3px) }
@@ -149,7 +147,6 @@ const CSS = `
   position: relative; display: flex; align-items: center; gap: 10px; margin-top: 8px; padding: 10px 8px 10px 10px;
   border-radius: 10px; background: var(--dz-surface); box-shadow: var(--dz-shadow);
 }
-.dz-card[data-status="error"] { box-shadow: 0 0 0 .5px color-mix(in oklab, var(--dz-err) 45%, transparent), 0 1px 2px 0 rgb(0 0 0 / .05) }
 .dz-ext {
   display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: 8px; background: var(--dz-fill);
   font-size: 9.5px; line-height: 1; font-weight: 600; letter-spacing: .02em; color: var(--dz-t2); text-transform: uppercase;
@@ -165,8 +162,8 @@ const CSS = `
 .dz-state { display: grid; place-items: center; flex: none; width: 20px; height: 20px }
 .dz-state svg { width: 16px; height: 16px }
 .dz-spin { animation: dz-spin .8s linear infinite; color: var(--dz-accent) }
-.dz-ok { color: var(--dz-ok); animation: dz-pop .46s var(--dz-ease) backwards }
-.dz-bad { color: var(--dz-err); animation: dz-pop .46s var(--dz-ease) backwards }
+.dz-ok { color: var(--dz-t3); animation: dz-pop .46s var(--dz-ease) backwards }
+.dz-bad { color: var(--dz-t3); animation: dz-pop .46s var(--dz-ease) backwards }
 .dz .dz-btn {
   display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 6px; color: var(--dz-t3);
   transition: background-color .16s, color .16s;

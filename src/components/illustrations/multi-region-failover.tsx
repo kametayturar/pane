@@ -232,7 +232,7 @@ const CSS = `
 .mrf-cube[data-s="down"] .mrf-f-l { fill: color-mix(in oklab, var(--mrf-err) 14%, var(--mrf-surface)) }
 .mrf-cube[data-s="down"] .mrf-f-r { fill: color-mix(in oklab, var(--mrf-err) 20%, var(--mrf-surface)) }
 .mrf-cube[data-s="down"] polygon { stroke: color-mix(in oklab, var(--mrf-err) 65%, transparent) }
-.mrf-cube[data-s="warm"] polygon { stroke: color-mix(in oklab, var(--mrf-warn) 70%, transparent) }
+.mrf-cube[data-s="warm"] polygon { stroke: color-mix(in oklab, var(--mrf-ink) 45%, transparent) }
 
 .mrf-dial-t { fill: none; stroke: var(--mrf-fill); stroke-width: 3.6 }
 .mrf-dial-a, .mrf-dial-b { fill: none; stroke-width: 3.6 }
@@ -246,13 +246,9 @@ const CSS = `
 .mrf-label { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translateX(-50%); width: 190px; pointer-events: auto }
 .mrf-name { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: -.01em; color: var(--mrf-t1); white-space: nowrap }
 .mrf-name svg, .mrf-name img { width: 14px; height: 14px; color: var(--ic, var(--mrf-t2)) }
-.mrf-status { display: inline-flex; align-items: center; gap: 6px; height: 22px; margin-top: 2px; padding: 0 9px; border-radius: 999px; background: var(--mrf-surface);
-  box-shadow: var(--mrf-shadow); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: -.005em; color: var(--mrf-t1); white-space: nowrap; font-variant-numeric: tabular-nums }
-.mrf-status i { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--mrf-t4); transition: background .25s }
-.mrf-status[data-tone="ok"] i { background: var(--mrf-ok) }
-.mrf-status[data-tone="warn"] i { background: var(--mrf-warn) }
-.mrf-status[data-tone="err"] i { background: var(--mrf-err) }
-.mrf-status[data-tone="idle"] i { background: var(--mrf-t3) }
+.mrf-status { display: inline-flex; align-items: center; gap: 6px; height: 22px; margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--mrf-t3); white-space: nowrap; font-variant-numeric: tabular-nums }
+.mrf-status i { display: none }
+.mrf-status[data-tone="err"] { color: var(--mrf-err) }
 .mrf-metric { margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--mrf-t3); white-space: nowrap; font-variant-numeric: tabular-nums }
 .mrf-split { width: 184px; margin-top: 8px }
 .mrf-split-bar { position: relative; display: block; height: 4px; border-radius: 3px; background: var(--mrf-t4); overflow: hidden }
@@ -263,11 +259,11 @@ const CSS = `
   font-size: 12px; line-height: 14px; font-weight: 500; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .18s }
 @media (hover: hover) { .mrf-label:hover .mrf-tag { opacity: 1 } }
 
-.mrf-check { position: absolute; left: 0; top: 0; z-index: 3; height: 22px; display: inline-flex; align-items: center; padding: 0 8px; border-radius: 999px; opacity: 0; background: var(--mrf-surface);
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--mrf-ok) 50%, transparent); font-size: 11px; line-height: 14px; font-weight: 500; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--mrf-t1); white-space: nowrap }
-.mrf-check[data-fail] { box-shadow: 0 0 0 1px color-mix(in oklab, var(--mrf-err) 60%, transparent); color: var(--mrf-err) }
-.mrf-503 { position: absolute; left: 0; top: 0; z-index: 3; height: 18px; display: inline-flex; align-items: center; padding: 0 6px; border-radius: 999px; opacity: 0; background: var(--mrf-surface);
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--mrf-err) 60%, transparent); color: var(--mrf-err); font-size: 10.5px; line-height: 12px; font-weight: 600; font-variant-numeric: tabular-nums }
+.mrf-check { position: absolute; left: 0; top: 0; z-index: 3; height: 22px; display: inline-flex; align-items: center; padding: 0 8px; border-radius: 999px; opacity: 0;
+  font-size: 11px; line-height: 14px; font-weight: 500; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--mrf-t1); white-space: nowrap }
+.mrf-check[data-fail] { color: var(--mrf-err) }
+.mrf-503 { position: absolute; left: 0; top: 0; z-index: 3; height: 18px; display: inline-flex; align-items: center; padding: 0 6px; border-radius: 999px; opacity: 0;
+  color: var(--mrf-err); font-size: 10.5px; line-height: 12px; font-weight: 600; font-variant-numeric: tabular-nums }
 
 .mrf-ctrl { position: absolute; left: 0; top: ${CTRL_Y}px; width: ${W}px; height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 0 0 14px }
 .mrf-pause { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 0; background: none; color: var(--mrf-t2); cursor: pointer; transition: background .15s, color .15s }
@@ -384,7 +380,7 @@ export function MultiRegionFailover({
     let aTone: string
     const warmPct = Math.round((w1 / 0.5) * 100)
     if (u < FAIL_CHECKS[0]) [aText, aTone] = down > 0 ? ["Degraded", "warn"] : ["Healthy", "ok"]
-    else if (u < FAIL_CHECKS[2]) [aText, aTone] = [`Failed checks ${u < FAIL_CHECKS[1] ? 1 : 2}/3`, "warn"]
+    else if (u < FAIL_CHECKS[2]) [aText, aTone] = [`Failed checks ${u < FAIL_CHECKS[1] ? 1 : 2}/3`, "idle"]
     else if (u < 9.9) [aText, aTone] = ["Unhealthy, draining", "err"]
     else if (u < PASS_CHECKS[0]) [aText, aTone] = ["Out of rotation", "warn"]
     else if (u < PASS_CHECKS[2]) [aText, aTone] = [`Passed checks ${u < PASS_CHECKS[1] ? 1 : 2}/3`, "warn"]
@@ -502,7 +498,7 @@ export function MultiRegionFailover({
 
     // 503 badge follows the latest failed request.
     if (errJ >= 0) {
-      put(e.badge, "s", "transform", `translate(${(errPos[0] * K).toFixed(1)}px, ${(errPos[1] * K - 26).toFixed(1)}px) translate(-50%, -100%)`)
+      put(e.badge, "s", "transform", `translate(${(errPos[0] * K + 70).toFixed(1)}px, ${(errPos[1] * K + 6).toFixed(1)}px) translate(0, -50%)`)
       put(e.badge, "s", "opacity", 1 - clamp01(errAge / DWELL))
     } else put(e.badge, "s", "opacity", 0)
 

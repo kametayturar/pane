@@ -217,7 +217,7 @@ const CSS = `
 .asp-identity { display: inline-flex; align-items: center; gap: 7px; min-width: 0 }
 .asp-name { font-weight: 500 }
 .asp-model { font-size: 12px; line-height: 16.8px; color: var(--asp-t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
-.asp-mark { flex: none; display: inline-grid; place-items: center; width: 16px; height: 16px; color: #d4623a }
+.asp-mark { flex: none; display: inline-grid; place-items: center; width: 16px; height: 16px; color: var(--asp-t1) }
 .asp-iconBtn { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; color: var(--asp-t3); transition: background-color .16s var(--asp-ease), color .16s var(--asp-ease) }
 .asp-iconBtn:hover { background: var(--asp-hover); color: var(--asp-t1) }
 .asp-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none }

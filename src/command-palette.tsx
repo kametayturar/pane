@@ -11,6 +11,7 @@ const KIND_LABEL: Record<string, string> = {
   motion: "Motion",
   screen: "Screen",
   skill: "Skill",
+  page: "Page",
   tag: "Tag",
 }
 
@@ -35,13 +36,18 @@ export function CommandPalette({ open, onClose, docs, counts }: { open: boolean;
       })),
     [counts],
   )
+  // No query: the pieces added last (the catalog lists newest at the end).
+  const latest = React.useMemo(() => docs.filter((d) => d.kind !== "skill" && d.kind !== "screen" && d.kind !== "page").slice(-6).reverse(), [docs])
   const index = React.useMemo(() => buildIndex([...docs, ...tagDocs]), [docs, tagDocs])
   const hits = React.useMemo(() => {
-    if (!query.trim()) return [...docs.filter((d) => d.kind === "screen").slice(0, 4), ...tagDocs.filter((t) => ["glass", "agent", "chart", "chat", "landing", "dither"].includes(t.tags[0]))]
-    const found = search(index, query, 30)
+    if (!query.trim()) return latest
+    const raw = search(index, query, 30)
+    // A tag-only match ("Agent Pebble: tag glass" for "gl") reads like a bug once the names already match.
+    const byName = raw.filter((h) => !h.why.startsWith("tag:"))
+    const found = byName.length >= 3 ? byName : raw
     // Tags first only when they are an exact hit; otherwise pieces lead.
     return found.sort((a, b) => (a.kind === "tag" ? (a.score > 40 ? -1 : 1) : 0) - (b.kind === "tag" ? (b.score > 40 ? -1 : 1) : 0) || b.score - a.score)
-  }, [docs, index, query, tagDocs])
+  }, [index, latest, query])
 
   const [prevQuery, setPrevQuery] = React.useState(query)
   if (prevQuery !== query) {
@@ -89,7 +95,7 @@ export function CommandPalette({ open, onClose, docs, counts }: { open: boolean;
                 setActive((a) => Math.max(a - 1, 0))
               } else if (e.key === "Enter") go(hits[active])
             }}
-            placeholder="Search components, screens, skills… try “modal”, “glass”, “pricing”"
+            placeholder="Search"
             aria-label="Search"
             role="combobox"
             aria-expanded="true"
@@ -97,10 +103,10 @@ export function CommandPalette({ open, onClose, docs, counts }: { open: boolean;
             aria-activedescendant={hits[active] ? `palette-${active}` : undefined}
             className="h-14 min-w-0 flex-1 bg-transparent text-[15px] text-neutral-900 outline-none placeholder:text-neutral-400 dark:text-white"
           />
-          <kbd className="rounded-md bg-black/[0.05] px-1.5 py-0.5 font-sans text-[11px] text-neutral-400 dark:bg-white/10">esc</kbd>
+          <kbd className="rounded-md bg-black/[0.05] px-1.5 py-0.5 font-sans text-[12px] text-neutral-400 dark:bg-white/10">esc</kbd>
         </div>
         <ul ref={listRef} id="palette-results" role="listbox" className="overflow-y-auto p-2">
-          {!query.trim() && <li className="px-3 pt-1 pb-2 text-[11.5px] font-medium tracking-wide text-neutral-400 uppercase">Jump to</li>}
+          {!query.trim() && <li className="px-3 pt-1 pb-2 text-[12px] text-neutral-400">Latest</li>}
           {hits.map((h, i) => (
             <li key={h.id} id={`palette-${i}`} role="option" aria-selected={i === active} data-index={i}>
               <a
@@ -113,13 +119,13 @@ export function CommandPalette({ open, onClose, docs, counts }: { open: boolean;
                 className={cn("flex items-center gap-3 rounded-xl px-3 py-2.5", i === active && "bg-black/[0.045] dark:bg-white/[0.07]")}
               >
                 <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-neutral-100 text-neutral-500 dark:bg-white/[0.06] dark:text-neutral-300">
-                  {h.kind === "tag" ? <Hash className="size-4" /> : h.kind === "screen" ? <ArrowUpRight className="size-4" /> : <span className="text-[11px] font-semibold">{h.title.slice(0, 2)}</span>}
+                  {h.kind === "tag" ? <Hash className="size-4" /> : h.icon ? <h.icon className="size-4" /> : <ArrowUpRight className="size-4" />}
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-2">
                     <span className="truncate text-[14px] font-medium text-neutral-900 dark:text-white">{h.title}</span>
-                    <span className="shrink-0 rounded-md bg-black/[0.04] px-1.5 py-px text-[10.5px] font-medium text-neutral-500 dark:bg-white/[0.07] dark:text-neutral-400">{KIND_LABEL[h.kind] ?? h.kind}</span>
-                    {"why" in h && typeof h.why === "string" && h.why && <span className="hidden truncate text-[11.5px] text-neutral-400 sm:inline">{h.why}</span>}
+                    {"why" in h && typeof h.why === "string" && h.why && <span className="hidden truncate text-[12px] text-neutral-400 sm:inline">{h.why}</span>}
+                    <span className="ml-auto shrink-0 pl-2 text-[12px] text-neutral-400">{KIND_LABEL[h.kind] ?? h.kind}</span>
                   </span>
                   <span className="mt-0.5 block truncate text-[12.5px] text-neutral-500 dark:text-neutral-400">{h.description}</span>
                 </span>
@@ -127,12 +133,11 @@ export function CommandPalette({ open, onClose, docs, counts }: { open: boolean;
               </a>
             </li>
           ))}
-          {query.trim() && !hits.length && <li className="px-3 py-8 text-center text-[13.5px] text-neutral-500">Nothing matches “{query}”. Try a job (“menu”, “chart”) or a material (“glass”, “dither”).</li>}
+          {query.trim() && !hits.length && <li className="px-3 py-8 text-center text-[13.5px] text-neutral-500">No results for “{query}”</li>}
         </ul>
-        <div className="flex items-center gap-4 border-t border-black/[0.06] px-4 py-2 text-[11.5px] text-neutral-400 dark:border-white/[0.08]">
+        <div className="flex items-center gap-4 border-t border-black/[0.06] px-4 py-2 text-[12px] text-neutral-400 dark:border-white/[0.08]">
           <span>↑↓ move</span>
           <span>↵ open</span>
-          <span className="ml-auto">{docs.length} pieces and skills, searchable by name, tag and synonym</span>
         </div>
       </div>
     </div>

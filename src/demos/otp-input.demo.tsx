@@ -64,18 +64,18 @@ export default function Demo() {
           onResend={() => setTries(3)}
           resendIn={30}
         />
-        <p className="mt-4 border-t border-black/5 pt-3 text-[12px] text-neutral-400 dark:border-white/10">
-          Demo code: <span className="font-medium tabular-nums text-neutral-600 dark:text-neutral-300">482 913</span>
-          {status === "success" && (
-            <button type="button" className="ml-2 underline underline-offset-2" onClick={reset}>
-              Try again
-            </button>
-          )}
-        </p>
       </div>
 
+      <p className="text-center text-[12px] text-neutral-500 dark:text-neutral-400">
+        Enter 482 913 to see it succeed.
+        {status === "success" && (
+          <button type="button" className="ml-2 underline underline-offset-2" onClick={reset}>
+            Try again
+          </button>
+        )}
+      </p>
       <div>
-        <p className="mb-2 text-[12px] font-medium text-neutral-500 dark:text-neutral-400">Invite code (letters, 8 boxes, left aligned)</p>
+        <p className="mb-2 text-[12px] text-neutral-500 dark:text-neutral-400">Invite code: letters, 8 boxes, left aligned</p>
         <OtpInput length={8} numeric={false} separator={4} label="Invite code" defaultValue="" />
       </div>
     </div>

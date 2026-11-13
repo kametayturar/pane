@@ -57,7 +57,7 @@ export default function Demo() {
   const item = group?.items.find((i) => i.id === active)
 
   return (
-    <div style={{ height: 640, maxWidth: 1180, margin: "0 auto", borderRadius: 4, overflow: "hidden", boxShadow: "0 0 0 1px rgb(128 128 128 / .3)" }}>
+    <div style={{ width: "100%", height: 640, maxWidth: 1180, margin: "0 auto", borderRadius: 4, overflow: "hidden", boxShadow: "0 0 0 1px rgb(128 128 128 / .3)" }}>
       <InstrumentShell
         product={{ name: "Meridian" }}
         nav={NAV}
@@ -67,14 +67,14 @@ export default function Demo() {
           { id: "hf", name: "Harbor & Finch", meta: "Team · 14" },
           { id: "nw", name: "Northwind Clinics", meta: "Team · 6" },
         ]}
-        breadcrumb={["Meridian", group?.label ?? "Workspace", item?.label ?? "Mission control"]}
+        breadcrumb={[group?.label ?? "Workspace", item?.label ?? "Mission control"]}
         readouts={READOUTS}
         actions={
           <>
             <button type="button" style={{ ...btn, color: "var(--ish-t2)", background: "transparent", border: 0 }}>
               Share
             </button>
-            <button type="button" style={{ ...btn, color: "var(--ish-ink)", background: "transparent", border: "1px solid var(--ish-accent)" }}>
+            <button type="button" style={{ ...btn, color: "var(--ish-ink)", background: "transparent", border: "1px solid var(--ish-t4)" }}>
               New run
             </button>
           </>

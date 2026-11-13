@@ -341,17 +341,17 @@ const TRACE = [3, 5, 9, 4, 12, 7, 3, 10, 15, 6, 4, 8, 3]
 /** Three small, original app marks for the "Connect apps" row. */
 const APP_MARKS = [
   <svg key="mail" viewBox="0 0 14 14" aria-hidden>
-    <rect width="14" height="14" rx="3.5" fill="#e5484d" />
-    <path d="M3.2 4.6 7 7.6l3.8-3" stroke="#fff" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-    <path d="M3.4 4.4h7.2v5.2H3.4z" stroke="#fff" strokeWidth="1.1" strokeLinejoin="round" fill="none" />
+    <rect width="14" height="14" rx="3.5" fill="currentColor" fillOpacity=".12" />
+    <path d="M3.2 4.6 7 7.6l3.8-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <path d="M3.4 4.4h7.2v5.2H3.4z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" fill="none" />
   </svg>,
   <svg key="chat" viewBox="0 0 14 14" aria-hidden>
-    <rect width="14" height="14" rx="3.5" fill="#6e56cf" />
-    <path d="M3.6 4.4c0-.5.4-.9.9-.9h5c.5 0 .9.4.9.9v3.2c0 .5-.4.9-.9.9H7L5 10V8.5h-.5a.9.9 0 0 1-.9-.9z" fill="#fff" />
+    <rect width="14" height="14" rx="3.5" fill="currentColor" fillOpacity=".12" />
+    <path d="M3.6 4.4c0-.5.4-.9.9-.9h5c.5 0 .9.4.9.9v3.2c0 .5-.4.9-.9.9H7L5 10V8.5h-.5a.9.9 0 0 1-.9-.9z" fill="currentColor" />
   </svg>,
   <svg key="tasks" viewBox="0 0 14 14" aria-hidden>
-    <rect width="14" height="14" rx="3.5" fill="#12a594" />
-    <path d="m4.2 7.2 1.9 1.9 3.7-4" stroke="#fff" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <rect width="14" height="14" rx="3.5" fill="currentColor" fillOpacity=".12" />
+    <path d="m4.2 7.2 1.9 1.9 3.7-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
   </svg>,
 ]
 

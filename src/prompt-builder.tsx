@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ArrowUpRight, Check, Copy, Sparkles } from "lucide-react"
+import { ArrowUpRight, Check, Copy } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -61,8 +61,8 @@ export function PromptBuilder() {
     >
       <div className="grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <div className="p-5 sm:p-6">
-          <div className="flex items-center gap-2 text-[12px] font-medium text-blue-700 dark:text-blue-300">
-            <Sparkles className="size-3.5" /> Let your agent build it
+          <div className="flex items-center gap-2 text-[12px] font-medium text-neutral-500 dark:text-neutral-400">
+            Let your agent build it
           </div>
           <h2 className="mt-2 text-[22px] leading-7 font-semibold tracking-tight">Paste one prompt, get a nicer site.</h2>
           <p className="mt-2 text-[13.5px] leading-[21px] text-neutral-500 dark:text-neutral-400">
@@ -70,7 +70,7 @@ export function PromptBuilder() {
             pieces that fit and builds them in – with your content and your brand.
           </p>
 
-          <div className="mt-5 text-[11px] font-medium tracking-wide text-neutral-400 uppercase">What do you want?</div>
+          <div className="mt-5 text-[13px] font-medium text-neutral-500 dark:text-neutral-400">What do you want?</div>
           <div className="mt-2 flex flex-wrap gap-1.5" role="radiogroup" aria-label="Goal">
             {GOALS.map((g) => (
               <button
@@ -92,7 +92,7 @@ export function PromptBuilder() {
           </div>
 
           <label className="mt-4 block">
-            <span className="text-[11px] font-medium tracking-wide text-neutral-400 uppercase">Anything specific? (optional)</span>
+            <span className="text-[13px] font-medium text-neutral-500 dark:text-neutral-400">Anything specific? (optional)</span>
             <textarea
               value={extra}
               onChange={(e) => setExtra(e.target.value)}

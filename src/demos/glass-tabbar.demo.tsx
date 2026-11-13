@@ -2,7 +2,7 @@ import * as React from "react"
 import { Bookmark, Compass, House, Search, UserRound } from "lucide-react"
 
 import { GlassTabBar } from "@/components/ui/glass-tabbar"
-import { FeedCard } from "./_glass-scenes"
+import { Backdrop, type BackdropVariant } from "@/components/motion/backdrop"
 
 export const notes = [
   "The bar is three layers: a glass material (`backdrop-filter: blur(18px) saturate(1.8) brightness(1.04)` plus stacked inset box-shadows for the rim light), a lens that moves, and the tab buttons on top. The lens is a sibling of the material, not a child, because a child of a backdrop-filter element can only see what is inside it.",
@@ -11,6 +11,27 @@ export const notes = [
   "Each tab gets `--p`, how close the lens is to it (0 to 1). The label colour is `color-mix()` between the accent and the ink by that amount and the icon scales with it, so the accent glides with the lens instead of switching at the end.",
   "Compacting listens to the scroll container with a passive listener and an accumulator that resets when the direction changes, so it shrinks after a deliberate scroll down and grows back on a short scroll up. Dragging uses pointer capture; on release the nearest tab is chosen.",
 ]
+
+const TILES: { variant: BackdropVariant; accent: string }[] = [
+  { variant: "orbs", accent: "#4f7cf0" },
+  { variant: "orbs", accent: "#e08a4f" },
+  { variant: "halftone", accent: "#2fa38f" },
+  { variant: "orbs", accent: "#7a6ff0" },
+  { variant: "orbs", accent: "#d96f8a" },
+]
+
+function FeedCard({ i, title, meta }: { i: number; title: string; meta: string }) {
+  const t = TILES[i % TILES.length]
+  return (
+    <article className="overflow-hidden rounded-[22px] bg-white shadow-[0_0_0_.5px_rgb(0_0_0/.08)] dark:bg-neutral-900 dark:shadow-[0_0_0_.5px_rgb(255_255_255/.1)]">
+      <Backdrop variant={t.variant} accent={t.accent} minHeight={150} className="!rounded-none" />
+      <div className="px-3.5 pb-3.5 pt-3">
+        <div className="text-[14px] font-medium text-neutral-900 dark:text-neutral-100">{title}</div>
+        <div className="text-[12px] text-neutral-500 dark:text-neutral-400">{meta}</div>
+      </div>
+    </article>
+  )
+}
 
 const TITLES: Record<string, string> = { home: "Today", explore: "Explore", saved: "Saved", profile: "Profile", search: "Search" }
 const POSTS = [
@@ -71,7 +92,7 @@ export default function Demo() {
       <div className="relative h-[620px] w-full max-w-[390px] overflow-hidden rounded-[40px] bg-neutral-100 shadow-[0_20px_48px_rgb(0_0_0/.14),0_0_0_1px_rgb(0_0_0/.06)] dark:bg-neutral-950">
         <div ref={scrollRef} className="absolute inset-0 overflow-y-auto overscroll-contain px-4 pb-[120px] pt-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="mb-4 px-1">
-            <div className="text-[12px] font-medium uppercase tracking-wide text-neutral-400">Thursday</div>
+            <div className="text-[12px] font-medium text-neutral-400">Thursday</div>
             <div className="text-[28px] font-semibold leading-9 tracking-tight text-neutral-900 dark:text-neutral-50">{TITLES[tab]}</div>
           </div>
           <div className="flex flex-col gap-4">

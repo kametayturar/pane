@@ -16,7 +16,7 @@ export default function Demo() {
     <div className="flex w-full max-w-[380px] flex-col gap-4">
       <NotificationStack key={String(live)} autoPlay={live} />
       <label className="flex items-center gap-2 text-[13px] text-neutral-500">
-        <input type="checkbox" checked={live} onChange={(e) => setLive(e.target.checked)} />
+        <input type="checkbox" className="accent-neutral-900 dark:accent-neutral-100" checked={live} onChange={(e) => setLive(e.target.checked)} />
         Simulate incoming notifications
       </label>
     </div>

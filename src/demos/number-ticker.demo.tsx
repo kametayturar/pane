@@ -45,8 +45,8 @@ export default function Demo(props: StudioProps) {
       <div className="mt-3 flex items-center justify-between">
         <span
           className={
-            "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium " +
-            (up ? "bg-emerald-500/12 text-emerald-700 dark:text-emerald-400" : "bg-rose-500/12 text-rose-700 dark:text-rose-400")
+            "inline-flex items-center text-xs font-medium " +
+            (up ? "text-emerald-700 dark:text-emerald-400" : "text-rose-700 dark:text-rose-400")
           }
         >
           <NumberTicker {...props} value={delta} format={{ style: "percent", maximumFractionDigits: 1, signDisplay: "exceptZero" }} locale="en-US" />

@@ -6,7 +6,7 @@ import * as React from "react"
  * GradientFloor – a blurred colour gradient that glows up from the bottom edge of a section and breathes.
  * Two layers (colour + a soft white one) rise and fall against each other.
  *
- *   <GradientFloor accent="#ff7700" className="h-96">
+ *   <GradientFloor accent="#7c8798" className="h-96">
  *     <h1>Start with a question</h1>
  *   </GradientFloor>
  */
@@ -62,15 +62,15 @@ function floorPath(t: number, layer: "color" | "light") {
 
 const CSS = `
 .gfl {
-  --gfl-accent: #ff7700;
+  --gfl-accent: #7c8798;
   --gfl-bg: transparent;
-  --gfl-light: .8;
+  --gfl-light: .35;
   position: relative; isolation: isolate; overflow: hidden; width: 100%; border-radius: inherit;
   background: var(--gfl-bg);
   font-family: var(--gfl-font, Inter, InterVariable, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
 }
-:is(.dark, [data-theme="dark"]) .gfl { --gfl-light: .22 }
+:is(.dark, [data-theme="dark"]) .gfl { --gfl-light: .1 }
 .gfl *, .gfl *::before, .gfl *::after { box-sizing: border-box }
 .gfl :focus-visible { outline: 2px solid color-mix(in oklab, var(--gfl-accent) 60%, transparent); outline-offset: 1px }
 
@@ -78,12 +78,12 @@ const CSS = `
 
 .gfl-layer { position: absolute; left: -12%; right: -12%; pointer-events: none; z-index: 0 }
 .gfl-layer svg { display: block; width: 100%; height: 100%; overflow: visible; will-change: transform }
-.gfl-layer--color { top: 20%; bottom: -34%; filter: blur(34px) saturate(1.08) }
+.gfl-layer--color { top: 20%; bottom: -34%; opacity: .28; filter: blur(34px) }
 .gfl-layer--light { top: 30%; bottom: -38%; filter: blur(26px); mix-blend-mode: plus-lighter }
 @media (prefers-reduced-motion: reduce) { .gfl *, .gfl *::before, .gfl *::after { animation: none !important; transition: none !important } }
 `
 
-const DEFAULT_REST = ["#ff0055", "#0073ff"]
+const DEFAULT_REST: string[] = []
 
 export function GradientFloor({ children, colors, accent, speed = 1, paused, className, style }: GradientFloorProps) {
   const rootRef = React.useRef<HTMLDivElement>(null)
@@ -96,7 +96,7 @@ export function GradientFloor({ children, colors, accent, speed = 1, paused, cla
   const uid = React.useId().replace(/\W/g, "")
 
   const stops = React.useMemo(() => {
-    const list = colors && colors.length >= 2 ? colors.slice(0, 5) : [accent ?? "#ff7700", ...DEFAULT_REST]
+    const list = colors && colors.length >= 2 ? colors.slice(0, 5) : [accent ?? "#7c8798", accent ?? "#7c8798", ...DEFAULT_REST]
     return list.map((c, i) => ({ c, offset: i / (list.length - 1) }))
   }, [colors, accent])
 

@@ -14,7 +14,7 @@ export type TeamInviteMember = {
   name: string
   /** Hue (0–360) of the soft gradient face. Defaults to a pleasant spread. */
   hue?: number
-  /** Show a grey "away" dot instead of the green online one. */
+  /** Show a lighter "away" dot instead of the online one. */
   away?: boolean
 }
 
@@ -75,7 +75,6 @@ const CSS = `
   --ti-t3: color-mix(in oklab, var(--ti-ink) 45%, transparent);
   --ti-t4: color-mix(in oklab, var(--ti-ink) 27%, transparent);
   --ti-line: color-mix(in oklab, var(--ti-ink) 14%, transparent);
-  --ti-green: #22c55e;
   --ti-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 1px -1px rgb(0 0 0 / .1), 0 1px 2px 0 rgb(0 0 0 / .05);
   --ti-float: 0 0 0 .5px rgb(0 0 0 / .08), 0 12px 28px -10px rgb(0 0 0 / .22), 0 1px 2px 0 rgb(0 0 0 / .06);
   --ti-ease: cubic-bezier(.22, 1, .36, 1);
@@ -91,7 +90,6 @@ const CSS = `
   --ti-t3: color-mix(in oklab, var(--ti-ink) 46%, transparent);
   --ti-t4: color-mix(in oklab, var(--ti-ink) 28%, transparent);
   --ti-line: color-mix(in oklab, var(--ti-ink) 18%, transparent);
-  --ti-green: #34d27b;
   --ti-shadow: 0 0 0 .5px rgb(255 255 255 / .1), 0 1px 2px 0 rgb(0 0 0 / .4);
   --ti-float: 0 0 0 .5px rgb(255 255 255 / .12), 0 12px 28px -10px rgb(0 0 0 / .7), 0 1px 2px 0 rgb(0 0 0 / .4);
 }
@@ -114,9 +112,9 @@ const CSS = `
 .ti-bob { animation: ti-bob calc(4.6s / var(--ti-speed)) ease-in-out infinite alternate; animation-delay: calc(var(--d, 0) * -1s) }
 @keyframes ti-bob { from { transform: translateY(-2.5px) } to { transform: translateY(2.5px) } }
 .ti-av { position: relative; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; color: #fff; font-weight: 600; font-size: 15px; letter-spacing: .01em;
-  background: radial-gradient(circle at 30% 22%, rgb(255 255 255 / .45), transparent 55%), linear-gradient(150deg, oklch(.8 .12 var(--h)), oklch(.62 .16 calc(var(--h) + 38)));
+  background: oklch(.7 .07 var(--h));
   box-shadow: 0 0 0 3px var(--ti-surface), var(--ti-shadow), inset 0 0 0 1px rgb(255 255 255 / .28); text-shadow: 0 1px 2px rgb(0 0 0 / .18) }
-.ti-dot { position: absolute; right: -2px; bottom: -2px; width: 14px; height: 14px; border-radius: 50%; background: var(--ti-green); box-shadow: 0 0 0 2.5px var(--ti-surface) }
+.ti-dot { position: absolute; right: -2px; bottom: -2px; width: 14px; height: 14px; border-radius: 50%; background: var(--ti-t3); box-shadow: 0 0 0 2.5px var(--ti-surface) }
 .ti-dot[data-away] { background: var(--ti-t4) }
 .ti-name { margin-top: 8px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--ti-t2); white-space: nowrap }
 
@@ -152,8 +150,8 @@ const CSS = `
 .ti-new .ti-av { animation: ti-land var(--ti-T) linear infinite }
 .ti-new .ti-name { animation: ti-fade-in var(--ti-T) linear infinite }
 .ti-new .ti-dot { animation: ti-dot-pop var(--ti-T) linear infinite }
-.ti-new .ti-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--ti-green); opacity: 0; animation: ti-ping var(--ti-T) ease-out infinite }
-.ti-status { margin-top: -1px; font-size: 11px; line-height: 14px; font-weight: 500; color: var(--ti-green); animation: ti-status var(--ti-T) linear infinite }
+.ti-new .ti-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--ti-t4); opacity: 0; animation: ti-ping var(--ti-T) ease-out infinite }
+.ti-status { margin-top: -1px; font-size: 11px; line-height: 14px; font-weight: 400; color: var(--ti-t3); animation: ti-status var(--ti-T) linear infinite }
 @keyframes ti-land {
   0%, 43% { opacity: 0; transform: scale(.55) }
   46% { opacity: 1; transform: scale(1.14); animation-timing-function: ease-out }
@@ -183,7 +181,7 @@ const CSS = `
 }
 .ti-cursor { position: absolute; left: 0; top: 0; width: 0; height: 0; transform: ${at(CHIP, 24, 14)}; animation: ti-cursor var(--ti-T) linear infinite; pointer-events: none }
 .ti-cursor svg { position: absolute; left: -3px; top: -2px; width: 22px; height: 22px; filter: drop-shadow(0 2px 3px rgb(0 0 0 / .3)); animation: ti-press var(--ti-T) linear infinite; transform-origin: 3px 2px }
-.ti-cursor b { position: absolute; left: 14px; top: 16px; height: 20px; padding: 0 8px; border-radius: 10px; background: var(--ti-accent); color: #fff; font-size: 11px; line-height: 20px; font-weight: 500 }
+.ti-cursor b { position: absolute; left: 14px; top: 16px; height: 20px; padding: 0; color: var(--ti-t2); font-size: 11px; line-height: 20px; font-weight: 500 }
 @keyframes ti-cursor {
   0% { opacity: 0; transform: ${at({ x: 500, y: 392 })} }
   6% { opacity: 1; transform: ${at({ x: 480, y: 388 })}; animation-timing-function: cubic-bezier(.3, 0, .2, 1) }
@@ -300,7 +298,7 @@ export function TeamInvite({
         </div>
         <div className="ti-cursor">
           <svg viewBox="0 0 22 22">
-            <path d="M3 2 L3 17 L7.2 13.2 L10 19.6 L12.8 18.4 L10.1 12.2 L15.8 12 Z" fill="var(--ti-accent)" stroke="#fff" strokeWidth="1.6" strokeLinejoin="round" />
+            <path d="M3 2 L3 17 L7.2 13.2 L10 19.6 L12.8 18.4 L10.1 12.2 L15.8 12 Z" fill="var(--ti-ink)" stroke="var(--ti-surface)" strokeWidth="1.6" strokeLinejoin="round" />
           </svg>
           <b>You</b>
         </div>

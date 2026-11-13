@@ -45,7 +45,7 @@ const CSS = `
   --gc-ly: 0;
   --gc-ease: cubic-bezier(.22, 1, .36, 1);
   --gc-sky-top: color-mix(in oklab, var(--gc-accent) 52%, #fff);
-  --gc-sky-bottom: color-mix(in oklab, var(--gc-accent) 16%, #fff);
+  --gc-sky-bottom: color-mix(in oklab, var(--gc-ink) 5%, #fff);
   --gc-eye: color-mix(in oklab, var(--gc-accent) 22%, #0b1030);
   position: relative; width: 100%; max-width: ${W}px; aspect-ratio: ${W} / ${H};
   font-family: var(--gc-font, Inter, InterVariable, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
@@ -55,7 +55,7 @@ const CSS = `
   --gc-ink: #fff;
   --gc-accent: #7c9cff;
   --gc-sky-top: color-mix(in oklab, var(--gc-accent) 34%, #0a0c16);
-  --gc-sky-bottom: color-mix(in oklab, var(--gc-accent) 10%, #0a0c16);
+  --gc-sky-bottom: color-mix(in oklab, var(--gc-ink) 7%, #0a0a0c);
 }
 .gc *, .gc *::before, .gc *::after { box-sizing: border-box }
 .gc button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer }
@@ -65,9 +65,9 @@ const CSS = `
 
 /* Sky */
 .gc-sky { position: absolute; inset: 0; border-radius: 28px; overflow: hidden;
-  background: linear-gradient(180deg, var(--gc-sky-top), var(--gc-sky-bottom));
+  background: var(--gc-sky-bottom);
   box-shadow: inset 0 0 0 .5px color-mix(in oklab, var(--gc-ink) 8%, transparent) }
-.gc-sky::before, .gc-sky::after { content: ""; position: absolute; border-radius: 50%; filter: blur(26px); background: rgb(255 255 255 / .5) }
+.gc-sky::before, .gc-sky::after { content: ""; position: absolute; border-radius: 50%; filter: blur(26px); background: transparent }
 .gc-sky::before { width: 220px; height: 90px; left: -50px; bottom: 26px; animation: gc-drift calc(18s / var(--gc-speed)) ease-in-out infinite alternate }
 .gc-sky::after { width: 190px; height: 70px; right: -40px; top: 34px; opacity: .7; animation: gc-drift calc(23s / var(--gc-speed)) ease-in-out infinite alternate-reverse }
 :is(.dark, [data-theme="dark"]) .gc-sky::before, :is(.dark, [data-theme="dark"]) .gc-sky::after { background: color-mix(in oklab, var(--gc-accent) 40%, transparent) }
@@ -76,13 +76,13 @@ const CSS = `
 /* Halo and ground shadow (outside the floating body so they stay put) */
 .gc-halo { position: absolute; left: 50px; top: 40px; width: 380px; height: 280px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, color-mix(in oklab, var(--gc-accent) 52%, transparent), transparent);
-  filter: blur(14px); animation: gc-breathe calc(4.4s / var(--gc-speed)) ease-in-out infinite alternate }
+  filter: blur(14px); display: none; animation: gc-breathe calc(4.4s / var(--gc-speed)) ease-in-out infinite alternate }
 .gc[data-variant="frost"] .gc-halo { background: radial-gradient(closest-side, rgb(255 255 255 / .55), transparent); opacity: .7 }
 @keyframes gc-breathe { from { opacity: .55; transform: scale(.94) } to { opacity: 1; transform: scale(1.04) } }
 .gc-ground { position: absolute; left: 140px; top: 306px; width: 200px; height: 18px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, color-mix(in oklab, var(--gc-ink) 22%, transparent), transparent);
   animation: gc-ground calc(4.8s / var(--gc-speed)) ease-in-out infinite alternate }
-.gc[data-variant="glow"] .gc-ground { background: radial-gradient(closest-side, color-mix(in oklab, var(--gc-accent) 38%, transparent), transparent) }
+
 @keyframes gc-ground { from { transform: scaleX(1); opacity: .9 } to { transform: scaleX(.78); opacity: .5 } }
 
 /* The click target is the cloud itself */
@@ -101,7 +101,7 @@ const CSS = `
 }
 .gc-lean { width: 100%; height: 100%; transform-origin: 50% 80%; transform: rotate(calc(var(--gc-lx) * .3deg)) translateX(calc(var(--gc-lx) * .5px)); transition: transform .5s var(--gc-ease) }
 .gc-svg { display: block; width: 100%; height: 100%; overflow: visible }
-.gc[data-variant="glow"] .gc-svg { filter: drop-shadow(0 0 16px color-mix(in oklab, var(--gc-accent) 60%, transparent)) }
+.gc[data-variant="glow"] .gc-svg { filter: none }
 .gc[data-variant="frost"] .gc-svg { filter: drop-shadow(0 16px 16px color-mix(in oklab, var(--gc-accent) 34%, transparent)) }
 .gc[data-variant="frost"]:not([data-sky]) .gc-svg { filter: drop-shadow(0 0 .5px color-mix(in oklab, var(--gc-ink) 30%, transparent)) drop-shadow(0 12px 14px color-mix(in oklab, var(--gc-accent) 30%, transparent)) }
 
@@ -123,8 +123,7 @@ const CSS = `
 .gc-pop[data-go] .gc-eye-l, .gc-pop[data-go] .gc-eye-cut-l { animation: gc-happy calc(.95s / var(--gc-speed)) var(--gc-ease) }
 @keyframes gc-wink { 0% { transform: scale(1, 1) } 14%, 78% { transform: scale(1.25, .12) } 100% { transform: scale(1, 1) } }
 @keyframes gc-happy { 0% { transform: scale(1, 1) } 14%, 78% { transform: scale(1.06, 1.16) } 100% { transform: scale(1, 1) } }
-.gc-cheek { fill: color-mix(in oklab, var(--gc-accent) 30%, #ff9ec0); opacity: .55; transition: opacity .3s }
-.gc-pop[data-go] .gc-cheek { opacity: .95 }
+.gc-cheek { display: none; opacity: 0; transition: opacity .3s }
 
 /* Little stars that pop out when poked */
 .gc-spark { position: absolute; left: 50%; top: 40%; width: 14px; height: 14px; margin: -7px 0 0 -7px; opacity: 0; pointer-events: none; color: #fff }
@@ -288,13 +287,13 @@ export function GlowCloud({ variant = "glow", sky, speed = 1, paused, accent, la
                     <linearGradient id={`${gid}-fill`} gradientUnits="userSpaceOnUse" x1="0" y1="28" x2="0" y2="150">
                       {variant === "glow" ? (
                         <>
-                          <stop offset="0" style={{ stopColor: "color-mix(in oklab, var(--gc-accent) 38%, #fff)" }} />
-                          <stop offset="1" style={{ stopColor: "color-mix(in oklab, var(--gc-accent) 82%, #fff)" }} />
+                          <stop offset="0" style={{ stopColor: "color-mix(in oklab, var(--gc-ink) 6%, #fff)" }} />
+                          <stop offset="1" style={{ stopColor: "color-mix(in oklab, var(--gc-ink) 14%, #fff)" }} />
                         </>
                       ) : (
                         <>
                           <stop offset="0" stopColor="#fff" />
-                          <stop offset="1" style={{ stopColor: "color-mix(in oklab, var(--gc-accent) 14%, #fff)" }} />
+                          <stop offset="1" style={{ stopColor: "color-mix(in oklab, var(--gc-ink) 6%, #fff)" }} />
                         </>
                       )}
                     </linearGradient>
@@ -325,7 +324,7 @@ export function GlowCloud({ variant = "glow", sky, speed = 1, paused, accent, la
                       </g>
                       <g clipPath={`url(#${gid}-clip)`}>
                         <ellipse cx="86" cy="62" rx="70" ry="44" fill={`url(#${gid}-sheen)`} />
-                        <ellipse cx="120" cy="170" rx="120" ry="34" fill="var(--gc-accent)" opacity=".28" />
+                        <ellipse cx="120" cy="170" rx="120" ry="34" fill="var(--gc-ink)" opacity=".06" />
                       </g>
                       <path d={CLOUD} fill="none" stroke={`url(#${gid}-rim)`} strokeWidth="2" />
                       {eyes(false)}
@@ -335,7 +334,7 @@ export function GlowCloud({ variant = "glow", sky, speed = 1, paused, accent, la
                       <path d={CLOUD} fill={`url(#${gid}-fill)`} fillOpacity=".96" />
                       <g clipPath={`url(#${gid}-clip)`}>
                         <ellipse cx="84" cy="60" rx="70" ry="40" fill={`url(#${gid}-sheen)`} />
-                        <ellipse cx="130" cy="168" rx="120" ry="30" fill="var(--gc-accent)" opacity=".16" />
+                        <ellipse cx="130" cy="168" rx="120" ry="30" fill="var(--gc-ink)" opacity=".05" />
                       </g>
                       <path d={CLOUD} fill="none" stroke={`url(#${gid}-rim)`} strokeWidth="1.5" />
                     </g>

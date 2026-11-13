@@ -74,7 +74,6 @@ const CSS = `
   --pr-ink: #000;
   --pr-surface: #fff;
   --pr-accent: #0060e2;
-  --pr-amber: #a85a00;
   --pr-danger: #d92d20;
   --pr-t1: color-mix(in oklab, var(--pr-ink) 88%, transparent);
   --pr-t2: color-mix(in oklab, var(--pr-ink) 61%, transparent);
@@ -93,7 +92,6 @@ const CSS = `
   --pr-ink: #fff;
   --pr-surface: #1c1c1e;
   --pr-accent: #4d8dff;
-  --pr-amber: #f5a524;
   --pr-danger: #ff6b60;
   --pr-t1: color-mix(in oklab, var(--pr-ink) 90%, transparent);
   --pr-t2: color-mix(in oklab, var(--pr-ink) 62%, transparent);
@@ -129,10 +127,10 @@ const CSS = `
 .pr-target svg { flex: none; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round }
 .pr-target span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 .pr-tag {
-  flex: none; display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; font-size: 11px; font-weight: 500; line-height: 1;
-  color: var(--pr-amber); background: color-mix(in oklab, var(--pr-amber) 12%, transparent);
+  flex: none; display: inline-flex; align-items: center; gap: 5px; height: 20px; font-size: 12px; font-weight: 400; line-height: 16px; color: var(--pr-t3);
 }
-.pr-tag[data-risk="destructive"] { color: var(--pr-danger); background: color-mix(in oklab, var(--pr-danger) 11%, transparent) }
+.pr-tag svg { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round }
+.pr-tag[data-risk="destructive"] { color: var(--pr-danger) }
 
 .pr-reason { margin: 10px 0 0 38px; padding: 1px 0 1px 10px; border-left: 2px solid var(--pr-line); color: var(--pr-t2) }
 
@@ -477,6 +475,9 @@ export function PermissionRequest(props: PermissionRequestProps) {
                   </div>
                   {risk !== "safe" && (
                     <span className="pr-tag" data-risk={risk}>
+                      <svg viewBox="0 0 16 16" aria-hidden="true">
+                        <path d="M8 1.75 2.75 3.5v4c0 3 2.1 5.4 5.25 6.75 3.15-1.35 5.25-3.75 5.25-6.75v-4L8 1.75Z" />
+                      </svg>
                       {risk === "destructive" ? "Destructive" : "Risky"}
                     </span>
                   )}

@@ -20,7 +20,7 @@ function useTimer() {
 }
 
 const row = "flex flex-wrap items-center justify-center gap-3"
-const caption = "mb-3 text-center text-[11px] font-medium uppercase tracking-wide text-neutral-400"
+const caption = "mb-3 text-center text-[12px] font-medium text-neutral-400"
 
 export default function Demo() {
   const later = useTimer()

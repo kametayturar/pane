@@ -49,7 +49,6 @@ const CSS = `
   --pm-ink: #000;
   --pm-surface: #fff;
   --pm-accent: #0060e2;
-  --pm-rose: #e11d48;
   --pm-t1: color-mix(in oklab, var(--pm-ink) 88%, transparent);
   --pm-t2: color-mix(in oklab, var(--pm-ink) 61%, transparent);
   --pm-t3: color-mix(in oklab, var(--pm-ink) 45%, transparent);
@@ -70,7 +69,6 @@ const CSS = `
   --pm-ink: #fff;
   --pm-surface: #1c1c1e;
   --pm-accent: #4d8dff;
-  --pm-rose: #fb7185;
   --pm-t1: color-mix(in oklab, var(--pm-ink) 90%, transparent);
   --pm-t2: color-mix(in oklab, var(--pm-ink) 62%, transparent);
   --pm-t3: color-mix(in oklab, var(--pm-ink) 46%, transparent);
@@ -105,8 +103,7 @@ const CSS = `
 .pm-item:hover .pm-icon, .pm-item:focus-visible .pm-icon { color: var(--pm-t1) }
 .pm-label { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 .pm-badge {
-  flex: none; height: 18px; padding: 0 6px; border-radius: 5px; background: color-mix(in oklab, var(--pm-rose) 8%, transparent);
-  font-size: 11px; font-weight: 500; line-height: 18px; color: var(--pm-rose);
+  flex: none; font-size: 12px; line-height: 18px; color: var(--pm-t3); font-variant-numeric: tabular-nums;
 }
 
 /* Setup progress */
@@ -117,7 +114,7 @@ const CSS = `
 .pm-track { display: block; height: 4px; margin-top: 8px; overflow: hidden; border-radius: 2px; background: var(--pm-line) }
 .pm-fill {
   display: block; width: 100%; height: 100%; border-radius: 2px; transform-origin: left;
-  background: color-mix(in oklab, var(--pm-accent) 76.5%, transparent);
+  background: color-mix(in oklab, var(--pm-ink) 70%, transparent);
   transition: scale .9s var(--pm-ease) .15s;
 }
 .pm .pm-next {
@@ -182,7 +179,7 @@ const ArrowRight = () => (
 const DEFAULT_ITEMS: ProfileMenuItem[] = [
   { id: "settings", label: "Settings", icon: <SettingsIcon /> },
   { id: "docs", label: "Docs", icon: <DocsIcon /> },
-  { id: "apps", label: "Apps", icon: <AppsIcon />, badge: "New" },
+  { id: "apps", label: "Apps", icon: <AppsIcon />, badge: "3" },
   { id: "logout", label: "Logout", icon: <LogoutIcon /> },
 ]
 

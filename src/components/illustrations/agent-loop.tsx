@@ -226,7 +226,6 @@ const CSS = `
   --agl-ink: #000;
   --agl-surface: #fff;
   --agl-accent: #0060e2;
-  --agl-green: #1fa85a;
   --agl-red: #e5484d;
   --agl-speed: 1;
   --agl-scale: 1;
@@ -245,7 +244,7 @@ const CSS = `
   font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; text-align: left; color: var(--agl-t1);
 }
 :is(.dark, [data-theme="dark"]) .agl {
-  --agl-ink: #fff; --agl-surface: #1c1c1e; --agl-accent: #4d8dff; --agl-green: #34d27b; --agl-red: #ff6369;
+  --agl-ink: #fff; --agl-surface: #1c1c1e; --agl-accent: #4d8dff; --agl-red: #ff6369;
   --agl-t1: color-mix(in oklab, var(--agl-ink) 90%, transparent);
   --agl-t2: color-mix(in oklab, var(--agl-ink) 62%, transparent);
   --agl-t3: color-mix(in oklab, var(--agl-ink) 46%, transparent);
@@ -264,16 +263,12 @@ const CSS = `
 
 /* Header */
 .agl-head { position: absolute; left: 24px; right: 24px; top: 20px; display: flex; align-items: center; gap: 10px; height: 24px }
-.agl-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; color: var(--agl-accent);
-  background: color-mix(in oklab, var(--agl-accent) 12%, transparent) }
+.agl-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; color: var(--agl-t2);
+  background: var(--agl-fill) }
 .agl-mark svg { width: 13px; height: 13px; stroke-width: 2.2 }
 .agl-title { flex: 1; font-size: 14px; font-weight: 500; letter-spacing: -.005em }
-.agl-status { position: relative; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 10px 0 8px; border-radius: 11px;
-  font-size: 11.5px; line-height: 22px; font-weight: 500; color: var(--agl-t2); background: var(--agl-fill) }
-.agl-status i { width: 6px; height: 6px; border-radius: 50%; background: var(--agl-t4); transition: background-color .3s }
-.agl-status[data-s="run"] i { background: var(--agl-accent); animation: agl-pulse calc(1s / var(--agl-speed)) ease-in-out infinite alternate }
-.agl-status[data-s="done"] i { background: var(--agl-green) }
-.agl-status[data-s="stop"] i { background: var(--agl-t3) }
+.agl-status { position: relative; display: inline-flex; align-items: center; height: 22px; font-size: 12px; line-height: 22px; color: var(--agl-t3) }
+.agl-status i { display: none }
 .agl-cap { position: absolute; left: 24px; right: 24px; top: 48px; height: 20px; font-size: 12.5px; color: var(--agl-t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .agl-cap span { display: block; overflow: hidden; text-overflow: ellipsis; animation: agl-text calc(.5s / var(--agl-speed)) var(--agl-ease) backwards }
 .agl-rule { position: absolute; left: 0; right: 0; top: 80px; height: 1px; background: var(--agl-line) }
@@ -285,11 +280,11 @@ const CSS = `
 .agl-track { stroke: var(--agl-rail); stroke-width: 2 }
 .agl-chev { stroke: var(--agl-t4); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
 .agl-trail { stroke: var(--agl-accent); stroke-width: 3; stroke-linecap: round; opacity: 0 }
-.agl-done { stroke: var(--agl-green); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: ${CIRC.toFixed(1)}; stroke-dashoffset: ${CIRC.toFixed(1)}; opacity: 0 }
+.agl-done { stroke: var(--agl-t2); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: ${CIRC.toFixed(1)}; stroke-dashoffset: ${CIRC.toFixed(1)}; opacity: 0 }
 .agl[data-done] .agl-done { opacity: 1; stroke-dashoffset: 0; transition: stroke-dashoffset calc(1.1s / var(--agl-speed)) cubic-bezier(.5, 0, .2, 1) }
 .agl[data-done="stop"] .agl-done { stroke: var(--agl-t3) }
 .agl-head-dot { fill: var(--agl-accent) }
-.agl-head-glow { fill: color-mix(in oklab, var(--agl-accent) 22%, transparent) }
+.agl-head-glow { fill: none }
 .agl-hd { transition: opacity .3s }
 .agl[data-done] .agl-hd, .agl[data-done] .agl-trail { opacity: 0 !important }
 
@@ -298,10 +293,10 @@ const CSS = `
 .agl-node { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center;
   color: var(--agl-t3); background: var(--agl-surface); box-shadow: 0 0 0 1px var(--agl-rail), 0 1px 2px rgb(0 0 0 / .05); transition: color .35s, background-color .35s, box-shadow .35s }
 .agl-node svg { width: 19px; height: 19px; stroke-width: 1.8 }
-.agl-st[data-on] .agl-node { color: #fff; background: var(--agl-accent); box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), 0 0 0 1px color-mix(in oklab, var(--agl-accent) 80%, #000), 0 8px 18px -6px color-mix(in oklab, var(--agl-accent) 60%, transparent);
+.agl-st[data-on] .agl-node { color: #fff; background: var(--agl-accent); box-shadow: 0 0 0 1px color-mix(in oklab, var(--agl-accent) 80%, #000);
   animation: agl-settle calc(.6s / var(--agl-speed)) var(--agl-ease) }
 .agl-st[data-on] .agl-node::after { content: ""; position: absolute; inset: 0; border-radius: inherit; animation: agl-ring calc(.9s / var(--agl-speed)) var(--agl-ease) }
-.agl[data-done="ok"] .agl-node { color: var(--agl-green) }
+.agl[data-done="ok"] .agl-node { color: var(--agl-t1) }
 .agl-lab { position: absolute; left: -70px; width: 140px; text-align: center; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--agl-t3); transition: color .35s }
 .agl-lab[data-side="top"] { top: -46px }
 .agl-lab[data-side="bot"] { top: 29px }
@@ -326,7 +321,7 @@ const CSS = `
   animation: agl-in calc(.45s / var(--agl-speed)) var(--agl-ease) backwards }
 .agl-sum b { font-weight: 500; color: var(--agl-t2) }
 .agl-sum svg { flex: none; width: 12px; height: 12px; stroke-width: 2.4 }
-.agl-sum[data-ok="true"] svg { color: var(--agl-green) }
+.agl-sum[data-ok="true"] svg { color: var(--agl-t1) }
 .agl-sum[data-ok="false"] svg { color: var(--agl-red) }
 .agl-sum span { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis }
 .agl-row { position: relative; flex: none; display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 6px 10px 6px 8px; border-radius: 10px; background: var(--agl-surface); box-shadow: var(--agl-shadow);
@@ -335,7 +330,7 @@ const CSS = `
 .agl-row[data-kind="call"]::before { content: ""; position: absolute; right: 100%; top: 50%; width: 22px; height: 1.5px; margin-right: 4px; border-radius: 1px; background: linear-gradient(90deg, transparent, var(--agl-accent)); transform-origin: 100% 50%; animation: agl-pin calc(.6s / var(--agl-speed)) var(--agl-ease) backwards }
 .agl-ic { position: relative; flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; color: var(--agl-t2); background: var(--agl-fill) }
 .agl-ic svg { width: 13px; height: 13px; stroke-width: 2 }
-.agl-row[data-kind="call"] .agl-ic { color: var(--agl-accent); background: color-mix(in oklab, var(--agl-accent) 11%, transparent) }
+.agl-row[data-kind="call"] .agl-ic { color: var(--agl-t1) }
 .agl-tx { flex: 1; min-width: 0 }
 .agl-tx b { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; font-size: 12.5px; line-height: 16px; font-weight: 500; overflow: hidden }
 .agl-tx em { display: block; font-style: normal; font-size: 11px; line-height: 14px; color: var(--agl-t3); overflow: hidden; white-space: nowrap; text-overflow: ellipsis }
@@ -343,10 +338,10 @@ const CSS = `
 .agl-res { position: relative; flex: none; width: 18px; height: 18px }
 .agl-res > * { position: absolute; inset: 0; margin: auto; transition: opacity .25s, transform .4s var(--agl-ease) }
 .agl-spin { width: 13px; height: 13px; border-radius: 50%; border: 1.8px solid var(--agl-rail); border-top-color: var(--agl-accent); animation: agl-rot calc(.8s / var(--agl-speed)) linear infinite }
-.agl-ok, .agl-no { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; color: #fff; opacity: 0; transform: scale(.5) }
-.agl-ok { background: var(--agl-green) }
-.agl-no { background: var(--agl-red) }
-.agl-ok svg, .agl-no svg { width: 11px; height: 11px; stroke-width: 3 }
+.agl-ok, .agl-no { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; opacity: 0; transform: scale(.5) }
+.agl-ok { color: var(--agl-t1) }
+.agl-no { color: var(--agl-red) }
+.agl-ok svg, .agl-no svg { width: 14px; height: 14px; stroke-width: 1.8 }
 .agl-row[data-state="ok"] .agl-spin, .agl-row[data-state="fail"] .agl-spin { opacity: 0; transform: scale(.5) }
 .agl-row[data-state="ok"] .agl-ok, .agl-row[data-state="fail"] .agl-no { opacity: 1; transform: none }
 .agl-row[data-kind="context"] .agl-res { display: none }

@@ -79,6 +79,8 @@ import {
   FileDiff,
   Scale,
   Wand2,
+  Clapperboard,
+  Plug,
   ListTodo,
   SquareMousePointer,
   Filter,
@@ -131,6 +133,18 @@ import {
   ArrowRightLeft,
   GitMerge,
   BellDot,
+  ArrowLeftRight,
+  Box,
+  Cat,
+  Flower2,
+  GalleryVerticalEnd,
+  Hand,
+  Layers2,
+  MessageSquareDashed,
+  MousePointer2,
+  Sailboat,
+  Smartphone,
+  WavesHorizontal,
 } from "lucide-react"
 
 import { Backdrop, BACKDROP_VARIANTS, type BackdropVariant, type StudioProps } from "@/components/motion/backdrop"
@@ -154,6 +168,11 @@ const SCREENS: Record<string, React.ComponentType<ScreenProps>> = {
 import { cn } from "@/lib/utils"
 import { PromptBuilder } from "@/prompt-builder"
 import { SKILLS, SkillsPage } from "@/skills-page"
+const StudioApp = React.lazy(() => import("@/studio/studio-page"))
+const McpPage = React.lazy(() => import("@/mcp-page"))
+/** Pieces with a Studio spec (src/studio/pieces/<slug>.studio.ts) get an "Open in Studio" link. */
+const STUDIO_SLUGS = new Set(Object.keys(import.meta.glob("./studio/pieces/*.studio.ts*")).map((k) => k.replace(/^.*\//, "").replace(/\.studio\.tsx?$/, "")))
+const isStudioSlug = (s: string) => s === "studio" || s.startsWith("studio/") || s.startsWith("studio?")
 import { CommandPalette } from "@/command-palette"
 import { Landing } from "@/landing"
 import { buildIndex, keywordsFor, related, search, tagsFor, type SearchDoc } from "@/search"
@@ -187,9 +206,9 @@ const DEMO_FILES = import.meta.glob("./demos/*.demo.tsx") as Record<string, () =
 
 type Spec = Omit<Entry, "kind" | "load" | "demo">
 const ui = (s: Spec): Entry => ({ ...s, kind: "ui" })
-const ill = (s: Spec): Entry => ({ ...s, kind: "illustrations", isNew: true })
-const mo = (s: Spec): Entry => ({ ...s, kind: "motion", isNew: true })
-const bl = (s: Spec): Entry => ({ ...s, kind: "blocks", isNew: true })
+const ill = (s: Spec): Entry => ({ ...s, kind: "illustrations" })
+const mo = (s: Spec): Entry => ({ ...s, kind: "motion" })
+const bl = (s: Spec): Entry => ({ ...s, kind: "blocks" })
 
 const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
   {
@@ -211,6 +230,27 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
     ],
   },
   {
+    label: "Overlays",
+    entries: [
+      ui({ slug: "modal", name: "Modal", exportName: "Modal", icon: AppWindow, isNew: true, description: "A dialog that grows out of the button that opened it, dims the page and returns focus when it closes." }),
+      ui({ slug: "popover", name: "Popover", exportName: "Popover", icon: MessageSquareDashed, isNew: true, description: "A panel anchored to its trigger that flips to stay on screen and glides to the next trigger instead of closing." }),
+      ui({ slug: "tooltip", name: "Tooltip", exportName: "Tooltip", icon: MessageSquareText, isNew: true, description: "A label with a shortcut that waits on the first hover, then shows instantly as you slide along a toolbar." }),
+      ui({ slug: "drawer", name: "Drawer", exportName: "Drawer", icon: PanelBottom, isNew: true, description: "A sheet that follows the finger, rubber-bands past its edge, snaps between heights and leaves at the speed you flicked it." }),
+      ui({ slug: "swipe-row", name: "Swipe Row", exportName: "SwipeRow", icon: ArrowLeftRight, isNew: true, description: "A list row you drag to reveal actions; a long swipe or a flick commits and the list closes the gap." }),
+      ui({ slug: "hold-to-confirm", name: "Hold to Confirm", exportName: "HoldToConfirm", icon: Hand, isNew: true, description: "A button that fills while you hold it: the commit is slow, letting go cancels at once." }),
+    ],
+  },
+  {
+    label: "Stage",
+    entries: [
+      ui({ slug: "device-frames", name: "Device Frames", exportName: "DeviceFrames", icon: Smartphone, isNew: true, description: "Browser and phone frames for product shots that scale a fixed stage and bleed off the card edge." }),
+      mo({ slug: "cursor-walkthrough", name: "Cursor Walkthrough", exportName: "CursorWalkthrough", icon: MousePointer2, isNew: true, description: "A scripted cursor that moves, clicks, types and drags through any piece and holds on the result." }),
+      bl({ slug: "control-bento", name: "Control Bento", exportName: "ControlBento", icon: LayoutGrid, isNew: true, description: "A bento of small live controls for a landing page, with one tile at a time demonstrated by a cursor." }),
+      bl({ slug: "overlay-atlas", name: "Overlay Atlas", exportName: "OverlayAtlas", icon: Layers2, isNew: true, description: "Modal, popover, tooltip, toast, sheet and drawer side by side in one product window, each played on hover." }),
+      bl({ slug: "light-cards", name: "Light Cards", exportName: "LightCards", icon: GalleryVerticalEnd, isNew: true, description: "Numbered dark feature cards, each with light-painted art cropped by its edge that brightens on hover." }),
+    ],
+  },
+  {
     label: "Chat",
     entries: [
       ui({ slug: "ai-answer", name: "AI Answer", icon: MessageSquareText, description: "Streamed answer with source cards, citation previews, copy, stop, feedback and follow-ups." }),
@@ -223,7 +263,7 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
       ui({ slug: "tool-call-card", name: "Tool Call Card", icon: Wrench, isNew: true, description: "One tool call with its arguments, a live status and the result folded in." }),
       ui({ slug: "approval-card", name: "Approval Card", icon: ShieldCheck, isNew: true, description: "An action the agent wants to take, waiting for you to approve or deny." }),
       ui({ slug: "permission-request", name: "Permission Request", icon: KeyRound, isNew: true, description: "An app asks for access – scopes, once or always, and a clear deny." }),
-      ui({ slug: "reaction-bar", name: "Reaction Bar", icon: Smile, isNew: true, description: "Emoji reactions that pop, count up and show who reacted." }),
+      ui({ slug: "reaction-bar", name: "Reaction Bar", icon: Smile, isNew: true, description: "Reactions that count up and show who reacted." }),
       ui({ slug: "email-draft", name: "Email Draft", icon: Mail, isNew: true, description: "An AI-drafted email you can review, tweak and send." }),
       ui({ slug: "comment-thread", name: "Comment Thread", icon: MessagesSquare, isNew: true, description: "A threaded discussion with replies, mentions and resolve." }),
     ],
@@ -350,6 +390,14 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
   {
     label: "Illustrations",
     entries: [
+      ill({ slug: "dash-ribbon", name: "Dash Ribbon", exportName: "DashRibbon", icon: WavesHorizontal, isNew: true, description: "Rows of rounded dashes following a rolling wave, with a run of light traced down one row." }),
+      ill({ slug: "light-form", name: "Light Form", exportName: "LightForm", icon: Flower2, isNew: true, description: "A moth, orchid or fern drawn from hundreds of glowing strands with a chromatic fringe, breathing slowly." }),
+      ill({ slug: "gouache-lake", name: "Gouache Lake", exportName: "GouacheLake", icon: Sailboat, isNew: true, description: "A painted hillside and its reflection drawn from brush dabs, with a small boat leaving a wake." }),
+      ill({ slug: "golden-hills", name: "Golden Hills", exportName: "GoldenHills", icon: Mountain, isNew: true, description: "Grassy hills lit by a low sun, a lone tree and a tiny walker, with cloud shadows drifting over." }),
+      ill({ slug: "hatched-skies", name: "Hatched Skies", exportName: "HatchedSkies", icon: Cloud, isNew: true, description: "Clouds filled with fine vertical ticks drifting behind a headline." }),
+      ill({ slug: "dash-burst", name: "Dash Burst", exportName: "DashBurst", icon: Sun, isNew: true, description: "A ring of radial dashes sized by a metric around one big number, bursting outward from one sector." }),
+      ill({ slug: "column-cube", name: "Column Cube", exportName: "ColumnCube", icon: Box, isNew: true, description: "An isometric block of columns cut open to show a coloured layer, with a scan that lifts the cells it finds." }),
+      ill({ slug: "peek-icon", name: "Peek Icon", exportName: "PeekIcon", icon: Cat, isNew: true, description: "App icons where a character peeks in at an angle over a background that says what the app does." }),
       ill({ slug: "neural-panels", name: "Neural Panels", exportName: "NeuralPanels", icon: BrainCircuit, backdrops: ["plain", "grid", "aurora", "dither"], description: "Dithered terrain and a particle brain in calm editorial cards, with a typing log." }),
       ill({ slug: "telemetry-board", name: "Telemetry Board", exportName: "TelemetryBoard", icon: Activity, backdrops: ["plain", "grid", "aurora"], description: "Dithered art bleeding past editorial panels, ticking telemetry and a glass vitals card." }),
       ill({ slug: "integration-beam", name: "Integration Beam", exportName: "IntegrationBeam", icon: Cable, description: "Your product between the tools it connects, with light pulses along curved beams." }),
@@ -372,6 +420,7 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
   {
     label: "Motion",
     entries: [
+      mo({ slug: "grain-gradient", name: "Grain Gradient", exportName: "GrainGradient", icon: Blend, isNew: true, description: "A smooth gradient field \u2013 orb, ring, band or wave \u2013 with fine grain so it never bands, exportable as an image." }),
       mo({ slug: "dither-field", name: "Dither Field", exportName: "DitherField", icon: Grip, backdrops: ["plain"], description: "A flowing noise field drawn as ordered-dither dots – a living background." }),
       mo({ slug: "text-reveal", name: "Text Reveal", exportName: "TextReveal", icon: Type, description: "Text that arrives word by word, each fading out of a soft blur." }),
       mo({ slug: "blur-crossfade", name: "Blur Crossfade", exportName: "BlurCrossfade", icon: Blend, description: "Swap content through a soft blur while the box glides to its new size." }),
@@ -431,7 +480,6 @@ const GROUPS = RAW_GROUPS.map((g) => ({
 
 const ALL = GROUPS.flatMap((g) => g.entries)
 const PAGES = ALL.filter((e) => e.kind !== "screen")
-const COUNT = (k: Kind) => ALL.filter((e) => e.kind === k).length
 const SITE = "https://paneui.vercel.app"
 
 // Search documents for every piece and skill (tags from src/data/tags.json).
@@ -448,6 +496,7 @@ const DOCS: SearchDoc[] = [
     tags: tagsFor(e.slug),
     keywords: keywordsFor(e.slug),
     extra: e.exportName,
+    icon: e.icon,
   })),
   ...SKILLS.map((k) => ({
     id: `skill:${k.id}`,
@@ -459,6 +508,8 @@ const DOCS: SearchDoc[] = [
     tags: [],
     keywords: [k.category, ...(k.bestFor ? String(k.bestFor).split(/[ ,]+/).slice(0, 8) : [])],
   })),
+  { id: "page:studio", href: "#/studio", title: "Studio", kind: "page", group: "Pages", description: "Tune any piece and export PNG, SVG, video or GIF.", tags: [], keywords: ["export", "png", "svg", "gif", "webm", "video", "gradient", "editor", "make"], icon: Clapperboard },
+  { id: "page:mcp", href: "#/mcp", title: "MCP", kind: "page", group: "Pages", description: "Connect Pane to your coding agent over MCP.", tags: [], keywords: ["model context protocol", "agent", "claude", "cursor", "server", "install"], icon: Plug },
 ]
 const TAG_COUNTS: Record<string, number> = {}
 for (const d of DOCS) for (const t of d.tags) TAG_COUNTS[t] = (TAG_COUNTS[t] ?? 0) + 1
@@ -557,10 +608,31 @@ function useStyle() {
   return [style, setStyle] as const
 }
 
+/** Flat line glyphs for the three styles: filled, half filled, ringed. */
+function StyleGlyph({ id }: { id: StyleId }) {
+  return (
+    <svg viewBox="0 0 16 16" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.25" aria-hidden>
+      {id === "classic" && <circle cx="8" cy="8" r="6" fill="currentColor" />}
+      {id === "mono" && (
+        <>
+          <circle cx="8" cy="8" r="6" />
+          <path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" />
+        </>
+      )}
+      {id === "glass" && (
+        <>
+          <circle cx="8" cy="8" r="6" />
+          <circle cx="8" cy="8" r="2.5" />
+        </>
+      )}
+    </svg>
+  )
+}
+
 function StylePicker({ style, setStyle }: { style: StyleId; setStyle: (s: StyleId) => void }) {
   return (
     <div className="mx-3 mb-4">
-      <div className="mb-1.5 px-1 text-[11.5px] font-medium tracking-wide text-neutral-400 uppercase">Style</div>
+      <div className="mb-1.5 px-1 text-[12px] text-neutral-400">Style</div>
       <div className="grid grid-cols-3 gap-1 rounded-xl bg-black/[0.04] p-[3px] dark:bg-white/[0.06]" role="radiogroup" aria-label="Style">
         {STYLE_OPTIONS.map((o) => (
 
@@ -571,11 +643,11 @@ function StylePicker({ style, setStyle }: { style: StyleId; setStyle: (s: StyleI
             aria-checked={style === o.id}
             onClick={() => setStyle(o.id)}
             className={cn(
-              "flex flex-col items-center gap-1 rounded-[9px] py-1.5 text-[11px] font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-white",
+              "flex flex-col items-center gap-1 rounded-[9px] py-1.5 text-[12px] font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-white",
               style === o.id && "bg-white text-neutral-900 shadow-[0_1px_2px_rgb(0_0_0/0.08),0_0_0_0.5px_rgb(0_0_0/0.06)] dark:bg-white/10 dark:text-white",
             )}
           >
-            <span className="size-4 rounded-full shadow-[inset_0_0_0_1px_rgb(0_0_0/0.12)]" style={{ background: o.swatch }} aria-hidden />
+            <StyleGlyph id={o.id} />
             {o.label}
           </button>
         ))}
@@ -638,13 +710,9 @@ function Sidebar({ slug, dark, toggleDark, style, setStyle, onPick, onSearch }: 
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-2.5 px-3 pt-5 pb-4">
-        <a href="#/" onClick={onPick} className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight">
+        <a href="#/" onClick={onPick} aria-label="Pane home" className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight">
           <Logo />
           Pane
-        </a>
-        <span className="rounded-md bg-black/[0.05] px-1.5 py-0.5 text-[10.5px] font-medium text-neutral-500 dark:bg-white/10 dark:text-neutral-400">v0.1</span>
-        <a href="#/" onClick={onPick} className="text-[12px] text-neutral-400 transition-colors hover:text-neutral-700 dark:hover:text-neutral-200">
-          Home
         </a>
         <IconButton label="Toggle dark mode" onClick={toggleDark} className="ml-auto">
           {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
@@ -669,11 +737,11 @@ function Sidebar({ slug, dark, toggleDark, style, setStyle, onPick, onSearch }: 
               onPick?.()
             }
           }}
-          placeholder="Search…"
+          placeholder="Search"
           aria-label="Search components"
           className="min-w-0 flex-1 bg-transparent text-neutral-900 outline-none placeholder:text-neutral-400 dark:text-white"
         />
-        <button type="button" onClick={onSearch} title="Search everything (⌘K)" className="rounded-md bg-black/[0.05] px-1.5 font-sans text-[10.5px] text-neutral-400 transition-colors hover:text-neutral-700 dark:bg-white/10 dark:hover:text-neutral-200">
+        <button type="button" onClick={onSearch} title="Search everything (⌘K)" className="rounded-md bg-black/[0.05] px-1.5 font-sans text-[12px] text-neutral-400 transition-colors hover:text-neutral-700 dark:bg-white/10 dark:hover:text-neutral-200">
           ⌘K
         </button>
       </label>
@@ -692,9 +760,9 @@ function Sidebar({ slug, dark, toggleDark, style, setStyle, onPick, onSearch }: 
         </a>
         {groups.map((g) => (
           <div key={g.label} className="mt-5">
-            <div className="mb-1 flex items-center justify-between px-2 text-[11.5px] font-medium tracking-wide text-neutral-400 uppercase">
+            <div className="mb-1 flex items-center justify-between px-2 text-[12px] font-medium text-neutral-500">
               {g.label}
-              <span className="font-normal tabular-nums normal-case">{g.entries.length}</span>
+              <span className="font-normal text-neutral-400 tabular-nums">{g.entries.length}</span>
             </div>
             <ul className="flex flex-col gap-px">
               {g.entries.map((e) => {
@@ -702,10 +770,9 @@ function Sidebar({ slug, dark, toggleDark, style, setStyle, onPick, onSearch }: 
                 return (
                   <li key={e.slug}>
                     <a href={`#/${e.slug}`} onClick={onPick} aria-current={active ? "page" : undefined} className={cn(navItem, active && navActive)}>
-                      {active && <span className="absolute top-1.5 bottom-1.5 -left-3 w-[2px] rounded-full bg-blue-600 dark:bg-blue-400" aria-hidden />}
+                      {active && <span className="absolute top-1.5 bottom-1.5 -left-3 w-[2px] rounded-full bg-neutral-900/70 dark:bg-white/70" aria-hidden />}
                       <e.icon className={cn("size-4 shrink-0", active ? "text-neutral-900 dark:text-white" : "text-neutral-400")} />
                       <span className="truncate">{e.name}</span>
-                      {e.isNew && <span className="ml-auto rounded-full bg-blue-500/10 px-1.5 text-[10px] font-medium text-blue-600 dark:text-blue-400">New</span>}
                       {e.kind === "screen" && <ArrowUpRight className="ml-auto size-3.5 opacity-40" />}
                     </a>
                   </li>
@@ -714,42 +781,42 @@ function Sidebar({ slug, dark, toggleDark, style, setStyle, onPick, onSearch }: 
             </ul>
           </div>
         ))}
-        {!groups.length && <p className="px-2 pt-4 text-[13px] text-neutral-400">Nothing matches “{query}”.</p>}
+        {!groups.length && <p className="px-2 pt-4 text-[13px] text-neutral-400">No results for “{query}”</p>}
+        <div className="mt-5">
+          <div className="mb-1 px-2 text-[12px] font-medium text-neutral-500">Make</div>
+          <a href="#/studio" onClick={onPick} aria-current={isStudioSlug(slug) ? "page" : undefined} className={cn(navItem, isStudioSlug(slug) && navActive)}>
+            <Clapperboard className="size-4 text-neutral-400" />
+            Studio
+          </a>
+        </div>
         {SKILLS.length > 0 && (
           <div className="mt-5">
-            <div className="mb-1 px-2 text-[11.5px] font-medium tracking-wide text-neutral-400 uppercase">For your agent</div>
+            <div className="mb-1 px-2 text-[12px] font-medium text-neutral-500">For your agent</div>
             <a href="#/skills" onClick={onPick} aria-current={slug === "skills" ? "page" : undefined} className={cn(navItem, slug === "skills" && navActive)}>
               <Wand2 className="size-4 text-neutral-400" />
               Skills
-              <span className="ml-auto text-[11.5px] text-neutral-400 tabular-nums">{SKILLS.length}</span>
+              <span className="ml-auto text-[12px] text-neutral-400 tabular-nums">{SKILLS.length}</span>
+            </a>
+            <a href="#/mcp" onClick={onPick} aria-current={slug === "mcp" ? "page" : undefined} className={cn(navItem, slug === "mcp" && navActive)}>
+              <Plug className="size-4 text-neutral-400" />
+              MCP
             </a>
           </div>
         )}
       </nav>
 
-      <div className="border-t border-black/[0.06] px-5 py-4 text-xs text-neutral-400 dark:border-white/[0.06]">
-        <a href="https://github.com/kametayturar/pane" target="_blank" rel="noreferrer" className="hover:text-neutral-700 dark:hover:text-neutral-200">
+      <div className="border-t border-black/[0.06] px-5 py-4 text-[12px] text-neutral-400 dark:border-white/[0.06]">
+        v0.1 <span className="mx-1.5">·</span> MIT <span className="mx-1.5">·</span>
+        <a href="https://github.com/kametayturar/pane" target="_blank" rel="noreferrer" className="transition-colors hover:text-neutral-700 dark:hover:text-neutral-200">
           GitHub ↗
         </a>
-        <span className="mx-1.5">·</span>
-        MIT
-        <p className="mt-1.5 leading-4">
-          Inspired by{" "}
-          <a href="https://www.affectui.com" target="_blank" rel="noreferrer" className="underline decoration-neutral-300 underline-offset-2 hover:text-neutral-700 dark:decoration-neutral-600 dark:hover:text-neutral-200">
-            affectUI
-          </a>{" "}
-          and{" "}
-          <a href="https://uiarc.dev" target="_blank" rel="noreferrer" className="underline decoration-neutral-300 underline-offset-2 hover:text-neutral-700 dark:decoration-neutral-600 dark:hover:text-neutral-200">
-            Arc UI
-          </a>
-        </p>
       </div>
     </div>
   )
 }
 
 const navItem =
-  "relative flex items-center gap-2.5 rounded-lg px-2 py-[7px] text-[13.5px] text-neutral-600 transition-colors hover:bg-black/[0.04] hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
+  "relative flex items-center gap-2.5 rounded-lg px-2 py-[7px] text-[13px] text-neutral-600 transition-colors hover:bg-black/[0.04] hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
 const navActive = "bg-black/[0.05] font-medium text-neutral-900 dark:bg-white/[0.08] dark:text-white"
 
 /* Pages -------------------------------------------------------------------- */
@@ -767,7 +834,26 @@ const FEATURED: Feature[] = [
   { slug: "voice-orb", span: "xl:col-span-2", width: 620, tag: "Component" },
   { slug: "sunburst", span: "xl:col-span-2", width: 760, align: "top", tag: "Chart" },
   { slug: "approval-card", span: "xl:col-span-2", width: 480, align: "top", tag: "Agents" },
+  { slug: "overlay-atlas", span: "md:col-span-2 xl:col-span-4", width: 900, align: "top", tag: "Overlays" },
+  { slug: "drawer", span: "xl:col-span-2", width: 460, align: "top", tag: "Overlays" },
+  { slug: "gouache-lake", span: "xl:col-span-2", width: 760, variant: "plain", tag: "Art" },
+  { slug: "golden-hills", span: "xl:col-span-2", width: 640, variant: "plain", tag: "Art" },
+  { slug: "light-form", span: "xl:col-span-2", width: 560, variant: "plain", tag: "Art" },
 ]
+
+/** Browse by interaction: each chip filters the overview by a tag from src/data/tags.json. */
+const INTERACTIONS = [
+  { label: "Hover", tag: "hover" },
+  { label: "Scroll", tag: "scroll" },
+  { label: "Drag", tag: "drag" },
+  { label: "Gesture", tag: "gesture" },
+  { label: "Keyboard", tag: "keyboard" },
+  { label: "Streaming", tag: "streaming" },
+  { label: "Glass", tag: "glass" },
+  { label: "Dither", tag: "dither" },
+  { label: "3D", tag: "3d" },
+]
+const INTERACTION_COUNTS: Record<string, number> = Object.fromEntries(INTERACTIONS.map((i) => [i.tag, ALL.filter((e) => tagsFor(e.slug).includes(i.tag)).length]))
 
 function Home({ group }: { group?: string }) {
   React.useEffect(() => {
@@ -775,14 +861,11 @@ function Home({ group }: { group?: string }) {
     const id = window.setTimeout(() => document.getElementById(`group-${group}`)?.scrollIntoView({ block: "start" }), 60)
     return () => window.clearTimeout(id)
   }, [group])
-  const stats = [
-    [COUNT("ui"), "components"],
-    [COUNT("illustrations"), "illustrations"],
-    [COUNT("motion"), "motion effects"],
-    [COUNT("blocks"), "blocks"],
-    [COUNT("screen"), "screens"],
-    [SKILLS.length, "skills"],
-  ].filter(([n]) => n)
+  const [interaction, setInteraction] = React.useState<string | null>(null)
+  const filtered = interaction ? INTERACTIONS.find((i) => i.tag === interaction) : undefined
+  const shownGroups = filtered
+    ? GROUPS.map((g) => ({ ...g, entries: g.entries.filter((e) => tagsFor(e.slug).includes(filtered.tag)) })).filter((g) => g.entries.length)
+    : GROUPS
   const featured = FEATURED.flatMap((f) => {
     const entry = ALL.find((e) => e.slug === f.slug)
     return entry?.demo ? [{ ...f, entry }] : []
@@ -792,15 +875,12 @@ function Home({ group }: { group?: string }) {
   return (
     <div>
       <section className="pt-2">
-        <div className="inline-flex flex-wrap items-center gap-1.5 rounded-full bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-700 dark:text-blue-300">
-          <Sparkles className="size-3" /> {stats.map(([n, l]) => `${n} ${l}`).join(" · ")}
-        </div>
-        <h1 className="mt-5 max-w-3xl text-4xl leading-[1.05] font-semibold tracking-[-0.03em] sm:text-[56px]">
-          A taste library for <span className="text-neutral-400 dark:text-neutral-500">AI products.</span>
-        </h1>
-        <p className="mt-4 max-w-xl text-[15.5px] leading-6 text-neutral-500 dark:text-neutral-400">
-          Components, illustrations, motion and the agent skills behind them. One file each, calm motion, dark mode built in, installable with the
-          shadcn CLI.
+        <h1 className="max-w-4xl text-4xl text-balance leading-[1.05] font-semibold tracking-[-0.03em] sm:text-[56px]">One-file React pieces for AI products</h1>
+        <p className="mt-4 max-w-xl text-[16px] leading-6 text-neutral-500 dark:text-neutral-400">
+          Components, illustrations, motion and agent skills. Copy a file or install with the shadcn CLI.
+        </p>
+        <p className="mt-3 text-[13px] text-neutral-400 tabular-nums">
+          {ALL.length} pieces <span className="mx-1">·</span> {SKILLS.length} skills
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
           {[
@@ -837,7 +917,28 @@ function Home({ group }: { group?: string }) {
         <PromptBuilder />
       </div>
 
-      {featured.length > 0 && (
+      <nav className="mt-12 flex flex-wrap items-baseline gap-x-1 gap-y-1" aria-label="Browse by interaction">
+        <span className="mr-2 text-[13px] text-neutral-400">Browse by interaction</span>
+        {INTERACTIONS.map((i) => {
+          const on = interaction === i.tag
+          return (
+            <button
+              key={i.tag}
+              type="button"
+              aria-pressed={on}
+              onClick={() => setInteraction(on ? null : i.tag)}
+              className={cn(
+                "rounded-md px-2 py-1 text-[13px] transition-[color,background-color,transform] duration-150 ease-[cubic-bezier(.22,1,.36,1)] active:scale-[0.97]",
+                on ? "bg-black/[0.05] font-medium text-neutral-900 dark:bg-white/10 dark:text-white" : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white",
+              )}
+            >
+              {i.label} <span className="text-neutral-400 tabular-nums">{INTERACTION_COUNTS[i.tag]}</span>
+            </button>
+          )
+        })}
+      </nav>
+
+      {!filtered && featured.length > 0 && (
         <section className="mt-12" aria-label="Featured">
           <div className="grid auto-rows-[300px] gap-3 md:grid-cols-2 xl:auto-rows-[268px] xl:grid-cols-6">
             {featured.map((f) => (
@@ -845,27 +946,28 @@ function Home({ group }: { group?: string }) {
                 key={f.slug}
                 href={`#/${f.slug}`}
                 className={cn(
-                  "group relative overflow-hidden rounded-3xl bg-white shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.04)] transition-shadow hover:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_18px_40px_-20px_rgb(0_0_0/0.3)] dark:bg-neutral-900 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)]",
+                  "group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.04)] transition-shadow hover:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_18px_40px_-20px_rgb(0_0_0/0.3)] dark:bg-neutral-900 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)]",
                   f.span,
                 )}
               >
-                <LivePreview
-                  Demo={f.entry.demo!}
-                  width={f.width}
-                  align={f.align ?? "center"}
-                  variant={f.variant ?? "dots"}
-                  accent={f.accent}
-                  replay={f.entry.kind === "ui" || f.entry.kind === "blocks" ? 13000 : undefined}
-                  className="absolute inset-0"
-                />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-neutral-900 dark:via-neutral-900/80" />
-                <div className="absolute inset-x-4 bottom-4 flex items-end gap-3">
+                <div className="relative min-h-0 flex-1 overflow-hidden">
+                  <LivePreview
+                    Demo={f.entry.demo!}
+                    width={f.width}
+                    align={f.align ?? "center"}
+                    variant={f.variant ?? "dots"}
+                    accent={f.accent}
+                    replay={f.entry.kind === "ui" || f.entry.kind === "blocks" ? 13000 : undefined}
+                    className="absolute inset-0"
+                  />
+                </div>
+                <div className="flex shrink-0 items-center gap-3 border-t border-black/[0.06] bg-white px-4 py-3 dark:border-white/[0.08] dark:bg-neutral-900">
                   <div className="min-w-0">
-                    <div className="text-[11px] font-medium tracking-wide text-neutral-400 uppercase">{f.tag}</div>
-                    <div className="mt-0.5 text-[16px] font-semibold tracking-tight">{f.entry.name}</div>
+                    <div className="text-[12px] text-neutral-400">{f.tag}</div>
+                    <div className="mt-0.5 text-[15px] font-semibold tracking-tight">{f.entry.name}</div>
                     <p className="mt-0.5 line-clamp-1 max-w-md text-[13px] text-neutral-500 dark:text-neutral-400">{f.entry.description}</p>
                   </div>
-                  <span className="ml-auto grid size-9 shrink-0 place-items-center rounded-full bg-neutral-900 text-white transition-transform group-hover:-translate-y-0.5 dark:bg-white dark:text-neutral-900">
+                  <span className="ml-auto grid size-8 shrink-0 place-items-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">
                     <ArrowUpRight className="size-4" />
                   </span>
                 </div>
@@ -875,10 +977,10 @@ function Home({ group }: { group?: string }) {
         </section>
       )}
 
-      <MeridianShowcase />
+      {!filtered && <MeridianShowcase />}
 
-      {GROUPS.map((g) => (
-        <section key={g.label} id={`group-${g.label}`} className="mt-16 scroll-mt-20">
+      {shownGroups.map((g) => (
+        <section key={g.label} id={`group-${g.label}`} className={cn("scroll-mt-20", filtered ? "mt-8" : "mt-16")}>
           <div className="mb-4 flex items-baseline gap-2">
             <h2 className="text-[20px] font-semibold tracking-tight">{g.label}</h2>
             <span className="text-[13px] text-neutral-400 tabular-nums">{g.entries.length}</span>
@@ -915,7 +1017,7 @@ function MeridianShowcase() {
     <section className="mt-12" aria-label="Meridian screens">
       <div className="mb-4 flex flex-wrap items-end gap-x-4 gap-y-1">
         <div>
-          <div className="font-mono text-[11px] tracking-[0.08em] text-neutral-400 uppercase">Ours · Meridian</div>
+          <div className="text-[12px] text-neutral-400">Meridian</div>
           <h2 className="mt-1 text-[34px] leading-[1.05] font-normal tracking-[-0.01em]" style={{ fontFamily: '"Instrument Serif", Georgia, serif' }}>
             Eight screens, <em>one</em> product.
           </h2>
@@ -927,12 +1029,12 @@ function MeridianShowcase() {
       </div>
       <div className="grid gap-3 lg:grid-cols-4">
         <a href={`#/${lead.slug}`} className="group relative overflow-hidden rounded-3xl shadow-[0_0_0_1px_rgb(0_0_0/0.08)] lg:col-span-2 lg:row-span-2 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.09)]">
-          <ScreenThumb slug={lead.slug} className="aspect-[16/10] h-full w-full transition-transform duration-500 group-hover:scale-[1.01]" />
+          <ScreenThumb slug={lead.slug} className="aspect-[16/10] h-full w-full" />
           <ScreenLabel entry={lead} />
         </a>
         {rest.map((e) => (
           <a key={e.slug} href={`#/${e.slug}`} className="group relative overflow-hidden rounded-2xl shadow-[0_0_0_1px_rgb(0_0_0/0.08)] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.09)]">
-            <ScreenThumb slug={e.slug} className="aspect-[16/10] w-full transition-transform duration-500 group-hover:scale-[1.02]" />
+            <ScreenThumb slug={e.slug} className="aspect-[16/10] w-full" />
             <ScreenLabel entry={e} small />
           </a>
         ))}
@@ -944,7 +1046,7 @@ function MeridianShowcase() {
           }}
           className="flex aspect-[16/10] flex-col justify-between rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgb(0_0_0/0.08)] transition-colors hover:bg-neutral-50 dark:bg-white/[0.04] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.09)] dark:hover:bg-white/[0.06]"
         >
-          <span className="font-mono text-[10.5px] tracking-[0.08em] uppercase opacity-60">The kit · 10 pieces</span>
+          <span className="text-[12px] opacity-60">The kit · 10 pieces</span>
           <span className="text-[22px] leading-6" style={{ fontFamily: '"Instrument Serif", Georgia, serif' }}>
             Shell, forms, tables, readouts, <em>provenance</em> and more
           </span>
@@ -977,7 +1079,7 @@ function EntryCard({ entry: e, wide }: { entry: Entry; wide?: boolean }) {
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       className={cn(
-        "gallery-card group flex flex-col rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.04)] transition-[box-shadow,transform] hover:-translate-y-px hover:shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_12px_28px_-14px_rgb(0_0_0/0.25)] dark:bg-white/[0.04] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)]",
+        "gallery-card group flex flex-col rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.04)] transition-shadow duration-150 ease-[cubic-bezier(.22,1,.36,1)] [@media(hover:hover)]:hover:shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_8px_20px_-14px_rgb(0_0_0/0.25)] dark:bg-white/[0.04] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)]",
         wide && "sm:col-span-2 xl:row-span-2",
       )}
     >
@@ -986,8 +1088,7 @@ function EntryCard({ entry: e, wide }: { entry: Entry; wide?: boolean }) {
           <e.icon className="size-4" />
         </span>
         <span className={cn("font-medium", wide ? "text-[15px]" : "text-[14px]")}>{e.name}</span>
-        {e.isNew && <span className="rounded-full bg-blue-500/10 px-1.5 text-[10px] font-medium text-blue-600 dark:text-blue-400">New</span>}
-        <ArrowUpRight className="ml-auto size-4 text-neutral-300 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:text-neutral-600" />
+        <ArrowUpRight className="ml-auto size-4 text-neutral-300 dark:text-neutral-600" />
       </div>
       <p className="mt-2.5 text-[13px] leading-5 text-neutral-500 dark:text-neutral-400">{e.description}</p>
       {e.kind === "screen" && MERIDIAN.includes(e.slug) && (
@@ -1027,7 +1128,7 @@ function CodeBlock({ title, code, maxHeight = 640 }: { title: React.ReactNode; c
       <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-2.5 font-mono text-xs text-neutral-400">
         <span className="min-w-0 truncate">{title}</span>
         <IconButton label={copied ? "Copied" : "Copy"} className="size-7 text-neutral-400 hover:bg-white/10 hover:text-white" onClick={() => code && copy(code)}>
-          {copied ? <Check className="size-3.5 text-emerald-400" /> : <Copy className="size-3.5" />}
+          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
         </IconButton>
       </div>
       <pre className="overflow-auto p-4 font-mono text-[12px] leading-5" style={{ maxHeight }}>
@@ -1077,14 +1178,22 @@ function PageHeader({ entry, section }: { entry: Entry; section: string }) {
       </div>
       <h1 className="mt-3 text-3xl font-semibold tracking-tight">{entry.name}</h1>
       <p className="mt-2 max-w-2xl text-[15px] leading-6 text-neutral-500 dark:text-neutral-400">{entry.description}</p>
+      {STUDIO_SLUGS.has(entry.slug) && (
+        <a href={`#/studio/${entry.slug}`} className="mt-3 inline-flex items-center gap-1.5 text-[13px] text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white">
+          <Clapperboard className="size-3.5" /> Open in Studio <ArrowUpRight className="size-3" />
+        </a>
+      )}
       {tagsFor(entry.slug).length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Tags">
-          {tagsFor(entry.slug).map((t) => (
-            <a key={t} href={`#/tag/${t}`} className="rounded-full px-2.5 py-0.5 text-[12px] text-neutral-500 shadow-[0_0_0_1px_rgb(0_0_0/0.08)] transition-colors hover:text-neutral-900 hover:shadow-[0_0_0_1px_rgb(0_0_0/0.18)] dark:text-neutral-400 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1)] dark:hover:text-white">
-              #{t}
-            </a>
+        <p className="mt-3 text-[12px] text-neutral-400" aria-label="Tags">
+          {tagsFor(entry.slug).map((t, n) => (
+            <React.Fragment key={t}>
+              {n > 0 && ", "}
+              <a href={`#/tag/${t}`} className="transition-colors hover:text-neutral-900 dark:hover:text-white">
+                {t}
+              </a>
+            </React.Fragment>
           ))}
-        </div>
+        </p>
       )}
     </>
   )
@@ -1103,10 +1212,10 @@ function Related({ entry }: { entry: Entry }) {
             <span className="flex items-center gap-2">
               <e.icon className="size-4 text-neutral-400" />
               <span className="truncate text-[13.5px] font-medium">{e.name}</span>
-              <ArrowUpRight className="ml-auto size-3.5 text-neutral-300 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:text-neutral-600" />
+              <ArrowUpRight className="ml-auto size-3.5 text-neutral-300 dark:text-neutral-600" />
             </span>
             <span className="mt-1.5 line-clamp-2 block text-[12.5px] leading-[18px] text-neutral-500 dark:text-neutral-400">{e.description.replace(/^Instrument · /, "")}</span>
-            <span className="mt-2 block truncate text-[11px] text-neutral-400">{KIND_GROUP[e.slug]}</span>
+            <span className="mt-2 block truncate text-[12px] text-neutral-400">{KIND_GROUP[e.slug]}</span>
           </a>
         ))}
       </div>
@@ -1114,22 +1223,53 @@ function Related({ entry }: { entry: Entry }) {
   )
 }
 
-/** Every piece with one tag, across groups. */
+/** Every piece with one tag, across groups. A near miss ("agents" for "agent") redirects; a true miss lists the biggest tags. */
 function TagPage({ tag }: { tag: string }) {
-  const items = ALL.filter((e) => tagsFor(e.slug).includes(tag))
+  const known = (t: string) => TAG_COUNTS[t] > 0
+  const slug = tag.trim().toLowerCase()
+  const alias = known(slug) ? slug : [slug.replace(/s$/, ""), slug.replace(/-/g, ""), slug.replace(/\s+/g, "-")].find(known)
+  React.useEffect(() => {
+    if (alias && alias !== tag) window.location.replace(`#/tag/${alias}`)
+  }, [alias, tag])
+  const items = alias ? ALL.filter((e) => tagsFor(e.slug).includes(alias)) : []
+  const top = Object.entries(TAG_COUNTS).sort((a, b) => b[1] - a[1]).slice(0, 8)
   return (
     <div>
       <div className="text-[13px] text-neutral-400">
-        <a href="#/browse" className="hover:text-neutral-700 dark:hover:text-neutral-200">Overview</a> <span className="mx-1">/</span> Tag
+        <a href="#/browse" className="hover:text-neutral-700 dark:hover:text-neutral-200">Overview</a> <span className="mx-1">/</span> Tags <span className="mx-1">/</span>{" "}
+        <span className="text-neutral-600 dark:text-neutral-300">{tag}</span>
       </div>
-      <h1 className="mt-3 text-3xl font-semibold tracking-tight">#{tag}</h1>
-      <p className="mt-2 text-[15px] text-neutral-500 dark:text-neutral-400">{items.length} pieces across {new Set(items.map((e) => KIND_GROUP[e.slug])).size} groups.</p>
+      <h1 className="mt-3 text-3xl font-semibold tracking-tight">{tag}</h1>
+      {items.length > 0 ? (
+        <p className="mt-2 text-[15px] text-neutral-500 dark:text-neutral-400">{items.length} pieces across {new Set(items.map((e) => KIND_GROUP[e.slug])).size} groups</p>
+      ) : (
+        <div className="mt-2 text-[15px] text-neutral-500 dark:text-neutral-400">
+          <p>No tag called {tag}. Try one of these:</p>
+          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[13px]">
+            {top.map(([t, n]) => (
+              <a key={t} href={`#/tag/${t}`} className="transition-colors hover:text-neutral-900 dark:hover:text-white">
+                {t} <span className="text-neutral-400 tabular-nums">{n}</span>
+              </a>
+            ))}
+          </p>
+        </div>
+      )}
       <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {items.map((e) => (
           <EntryCard key={e.slug} entry={e} />
         ))}
       </div>
-      {!items.length && <p className="mt-6 text-[14px] text-neutral-500">No pieces have this tag yet.</p>}
+    </div>
+  )
+}
+
+function NotFound({ slug }: { slug: string }) {
+  return (
+    <div>
+      <h1 className="text-3xl font-semibold tracking-tight">Not found</h1>
+      <p className="mt-2 text-[15px] text-neutral-500 dark:text-neutral-400">
+        Nothing at <span className="font-mono text-[13px]">#/{slug}</span>. It may have been renamed. <a href="#/browse" className="underline decoration-neutral-300 underline-offset-2 hover:text-neutral-900 dark:decoration-neutral-600 dark:hover:text-white">Browse everything</a>
+      </p>
     </div>
   )
 }
@@ -1150,7 +1290,7 @@ function Tabs({ tab, setTab }: { tab: "preview" | "code"; setTab: (t: "preview" 
           aria-selected={tab === id}
           onClick={() => setTab(id)}
           className={cn(
-            "flex h-8 items-center gap-1.5 rounded-[9px] px-3 text-[13px] font-medium text-neutral-500 transition-colors",
+            "flex h-8 items-center gap-1.5 rounded-[9px] px-3 text-[13px] font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-white",
             tab === id && "bg-white text-neutral-900 shadow-[0_1px_2px_rgb(0_0_0/0.08),0_0_0_0.5px_rgb(0_0_0/0.06)] dark:bg-white/10 dark:text-white",
           )}
         >
@@ -1165,15 +1305,17 @@ function Tabs({ tab, setTab }: { tab: "preview" | "code"; setTab: (t: "preview" 
 function InstallButton({ slugs }: { slugs: string[] }) {
   const [copied, copy] = useCopied()
   const cmd = `npx shadcn@latest add ${slugs.map((s) => `${SITE}/r/${s}.json`).join(" ")}`
+  const shown = `npx shadcn@latest add ${SITE}/r/${slugs[0]}.json`.replace("https://", "")
   return (
     <button
       type="button"
       onClick={() => copy(cmd)}
-      title={cmd}
-      className="ml-auto flex h-9 min-w-0 items-center gap-2 rounded-xl bg-neutral-900 px-3 font-mono text-xs text-neutral-200 transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-200"
+      title="Copy install command"
+      className="flex h-10 w-full min-w-0 items-center gap-2 rounded-xl px-3 font-mono text-[12px] text-neutral-500 shadow-[0_0_0_1px_rgb(0_0_0/0.08)] transition-[color,box-shadow,transform] duration-150 ease-[cubic-bezier(.22,1,.36,1)] hover:text-neutral-900 hover:shadow-[0_0_0_1px_rgb(0_0_0/0.18)] active:scale-[0.99] sm:ml-auto sm:w-auto sm:max-w-[min(100%,560px)] dark:text-neutral-400 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1)] dark:hover:text-white"
     >
-      <span className="truncate">npx shadcn add …/{slugs[0]}.json</span>
-      {copied ? <Check className="size-3.5 shrink-0 text-emerald-400 dark:text-emerald-600" /> : <Copy className="size-3.5 shrink-0" />}
+      <span className="truncate">{shown}</span>
+      {slugs.length > 1 && <span className="shrink-0 font-sans text-neutral-400">+ backdrop</span>}
+      {copied ? <Check className="size-3.5 shrink-0" /> : <Copy className="size-3.5 shrink-0" />}
     </button>
   )
 }
@@ -1186,7 +1328,7 @@ function PrevNext({ entry }: { entry: Entry }) {
     <div className="mt-10 grid grid-cols-2 gap-3">
       {prev ? (
         <a href={`#/${prev.slug}`} className="group rounded-xl px-4 py-3 shadow-[0_0_0_1px_rgb(0_0_0/0.06)] transition-colors hover:bg-black/[0.02] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)] dark:hover:bg-white/[0.03]">
-          <span className="flex items-center gap-1 text-xs text-neutral-400">
+          <span className="flex items-center gap-1 text-[12px] text-neutral-400">
             <ArrowLeft className="size-3" /> Previous
           </span>
           <span className="text-[14px] font-medium">{prev.name}</span>
@@ -1196,7 +1338,7 @@ function PrevNext({ entry }: { entry: Entry }) {
       )}
       {next && (
         <a href={`#/${next.slug}`} className="group rounded-xl px-4 py-3 text-right shadow-[0_0_0_1px_rgb(0_0_0/0.06)] transition-colors hover:bg-black/[0.02] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)] dark:hover:bg-white/[0.03]">
-          <span className="flex items-center justify-end gap-1 text-xs text-neutral-400">
+          <span className="flex items-center justify-end gap-1 text-[12px] text-neutral-400">
             Next <ArrowRight className="size-3" />
           </span>
           <span className="text-[14px] font-medium">{next.name}</span>
@@ -1221,7 +1363,7 @@ function ComponentPage({ entry }: { entry: Entry }) {
 
       <div className="mt-3">
         {tab === "preview" ? (
-          <div className="demo-stage relative flex min-h-[460px] justify-center overflow-hidden rounded-2xl px-4 py-12 sm:px-10">
+          <div className="demo-stage relative flex min-h-[320px] justify-center overflow-hidden rounded-2xl px-4 py-10 sm:min-h-[380px] sm:px-10">
             <IconButton label="Replay demo" onClick={() => setRun((r) => r + 1)} className="absolute top-3 right-3 bg-white/70 backdrop-blur dark:bg-white/5">
               <RotateCw className="size-4" />
             </IconButton>
@@ -1250,6 +1392,7 @@ const BACKDROP_LABELS: Record<BackdropVariant, string> = {
   floor: "Floor",
   aurora: "Aurora",
   dither: "Dither",
+  orbs: "Orbs",
 }
 
 const ACCENTS = [
@@ -1292,7 +1435,7 @@ function useStudio() {
 function Seg<T extends string | number>({ label, value, options, onChange }: { label: string; value: T; options: { id: T; label: React.ReactNode; title?: string }[]; onChange: (v: T) => void }) {
   return (
     <div className="flex min-w-0 flex-col gap-1.5">
-      <span className="px-0.5 text-[11px] font-medium tracking-wide text-neutral-400 uppercase">{label}</span>
+      <span className="px-0.5 text-[12px] font-medium text-neutral-400">{label}</span>
       <div className="flex flex-wrap gap-0.5 rounded-xl bg-black/[0.04] p-[3px] dark:bg-white/[0.06]" role="radiogroup" aria-label={label}>
         {options.map((o) => (
           <button
@@ -1320,7 +1463,7 @@ function StudioBar({ studio, set, onReplay, allowed }: { studio: Studio; set: (p
     <div className="flex flex-wrap items-end gap-x-5 gap-y-3">
       {allowed.length > 1 && <Seg label="Background" value={studio.variant} onChange={(variant) => set({ variant })} options={allowed.map((v) => ({ id: v, label: BACKDROP_LABELS[v] }))} />}
       <div className="flex flex-col gap-1.5">
-        <span className="px-0.5 text-[11px] font-medium tracking-wide text-neutral-400 uppercase">Accent</span>
+        <span className="px-0.5 text-[12px] font-medium text-neutral-400">Accent</span>
         <div className="flex h-[34px] items-center gap-1.5 px-0.5" role="radiogroup" aria-label="Accent">
           {ACCENTS.map((a) => (
             <button
@@ -1484,6 +1627,9 @@ export default function App() {
 
   return (
     <div className="min-h-dvh md:flex">
+      <a href="#main" onClick={(e) => { e.preventDefault(); document.getElementById("main")?.focus() }} className="sr-only z-50 rounded-lg bg-white px-3 py-2 text-[13px] text-neutral-900 shadow-[0_0_0_1px_rgb(0_0_0/0.1)] focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
+        Skip to content
+      </a>
       {/* Desktop sidebar */}
       <aside className="gallery-side sticky top-0 hidden h-dvh w-[264px] shrink-0 border-r border-black/[0.06] bg-neutral-50/80 md:block dark:border-white/[0.06] dark:bg-white/[0.015]">
         <Sidebar slug={slug} dark={dark} toggleDark={toggleDark} style={style} setStyle={setStyle} onSearch={() => setPaletteOpen(true)} />
@@ -1494,9 +1640,14 @@ export default function App() {
         <a href="#/" className="flex items-center gap-2 font-semibold tracking-tight">
           <Logo /> Pane
         </a>
-        <IconButton label={menuOpen ? "Close menu" : "Open menu"} onClick={() => setMenuOpen((o) => !o)}>
-          {menuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
-        </IconButton>
+        <div className="flex items-center">
+          <IconButton label="Search" onClick={() => setPaletteOpen(true)} className="size-10">
+            <Search className="size-4" />
+          </IconButton>
+          <IconButton label={menuOpen ? "Close menu" : "Open menu"} onClick={() => setMenuOpen((o) => !o)} className="size-10">
+            {menuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+          </IconButton>
+        </div>
       </header>
       {menuOpen && (
         <div className="fixed inset-0 z-40 md:hidden">
@@ -1507,9 +1658,9 @@ export default function App() {
         </div>
       )}
 
-      <main className="min-w-0 flex-1 px-4 py-8 sm:px-8 md:px-12 md:py-12">
+      <main id="main" tabIndex={-1} className="min-w-0 outline-none flex-1 px-4 py-8 sm:px-8 md:px-12 md:py-12">
         {palette}
-        <div className="mx-auto max-w-5xl">{slug === "skills" || slug.startsWith("skills/") ? <SkillsPage initialId={slug.startsWith("skills/") ? decodeURIComponent(slug.slice(7)) : undefined} /> : slug.startsWith("tag/") ? <TagPage tag={decodeURIComponent(slug.slice(4))} /> : entry?.demo ? entry.kind === "ui" || entry.kind === "blocks" ? <ComponentPage key={entry.slug} entry={entry} /> : <StudioPage key={entry.slug} entry={entry} /> : <Home group={slug.startsWith("browse/") ? decodeURIComponent(slug.slice(7)) : undefined} />}</div>
+        <div className={cn("mx-auto", isStudioSlug(slug) ? "max-w-none" : "max-w-5xl")}>{isStudioSlug(slug) ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><StudioApp /></React.Suspense> : slug === "mcp" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><McpPage /></React.Suspense> : slug === "skills" || slug.startsWith("skills/") ? <SkillsPage initialId={slug.startsWith("skills/") ? decodeURIComponent(slug.slice(7)) : undefined} /> : slug.startsWith("tag/") ? <TagPage tag={decodeURIComponent(slug.slice(4))} /> : entry?.demo ? entry.kind === "ui" || entry.kind === "blocks" ? <ComponentPage key={entry.slug} entry={entry} /> : <StudioPage key={entry.slug} entry={entry} /> : slug && slug !== "browse" && !slug.startsWith("browse/") ? <NotFound slug={slug} /> : <Home group={slug.startsWith("browse/") ? decodeURIComponent(slug.slice(7)) : undefined} />}</div>
       </main>
     </div>
   )

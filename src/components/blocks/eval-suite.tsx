@@ -274,9 +274,9 @@ function buildSample() {
 
 const SAMPLE = buildSample()
 
-const nova = <Cpu size={13} strokeWidth={1.75} style={{ color: "#c2562f" }} />
-const atlas = <Cpu size={13} strokeWidth={1.75} style={{ color: "#3b6fd6" }} />
-const sage = <Cpu size={13} strokeWidth={1.75} style={{ color: "#2f8a64" }} />
+const nova = <Cpu size={13} strokeWidth={1.75} style={{ color: "var(--evs-t2)" }} />
+const atlas = <Cpu size={13} strokeWidth={1.75} style={{ color: "var(--evs-t2)" }} />
+const sage = <Cpu size={13} strokeWidth={1.75} style={{ color: "var(--evs-t2)" }} />
 
 const SAMPLE_SUITE: EvalSuiteData = {
   name: "Support agent",
@@ -308,8 +308,8 @@ const CSS = `
   --evs-ink: #000;
   --evs-surface: #fff;
   --evs-accent: #0060e2;
-  --evs-ok: #16803c;
-  --evs-warn: #b06a00;
+  --evs-ok: color-mix(in oklab, var(--evs-ink) 72%, transparent);
+  --evs-warn: color-mix(in oklab, var(--evs-ink) 55%, transparent);
   --evs-err: #cb3a2e;
   --evs-t1: color-mix(in oklab, var(--evs-ink) 88%, transparent);
   --evs-t2: color-mix(in oklab, var(--evs-ink) 61%, transparent);
@@ -340,8 +340,8 @@ const CSS = `
   --evs-ink: #fff;
   --evs-surface: #1c1c1e;
   --evs-accent: #4d8dff;
-  --evs-ok: #4cc77e;
-  --evs-warn: #f0a63a;
+  --evs-ok: color-mix(in oklab, var(--evs-ink) 72%, transparent);
+  --evs-warn: color-mix(in oklab, var(--evs-ink) 55%, transparent);
   --evs-err: #ff6f61;
   --evs-t1: color-mix(in oklab, var(--evs-ink) 90%, transparent);
   --evs-t2: color-mix(in oklab, var(--evs-ink) 62%, transparent);
@@ -445,9 +445,9 @@ const CSS = `
 .evs-cell[data-clickable] { cursor: pointer }
 .evs-cell svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transform: scale(.4); opacity: 0; transition: transform .28s var(--evs-ease), opacity .2s var(--evs-ease) }
 .evs-cell[data-o] svg { transform: scale(1); opacity: 1 }
-.evs-cell[data-o="pass"] { background: color-mix(in oklab, var(--evs-ok) 15%, var(--evs-surface)); color: var(--evs-ok) }
-.evs-cell[data-o="fail"] { background: color-mix(in oklab, var(--evs-err) 11%, var(--evs-surface)); color: var(--evs-err) }
-.evs-cell[data-o="error"] { background: color-mix(in oklab, var(--evs-warn) 15%, var(--evs-surface)); color: var(--evs-warn) }
+.evs-cell[data-o="pass"] { background: color-mix(in oklab, var(--evs-ink) 5%, var(--evs-surface)); color: var(--evs-ok) }
+.evs-cell[data-o="fail"] { background: color-mix(in oklab, var(--evs-ink) 14%, var(--evs-surface)); color: var(--evs-ink) }
+.evs-cell[data-o="error"] { background: color-mix(in oklab, var(--evs-ink) 5%, var(--evs-surface)); color: var(--evs-warn); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--evs-ink) 22%, transparent) }
 .evs-cell[data-strong] { background: var(--evs-err); color: #fff }
 .evs-cell[data-flight] { animation: evs-breathe 1s ease-in-out infinite }
 .evs-cell[data-hl] { box-shadow: 0 0 0 2px var(--evs-surface), 0 0 0 3.5px var(--evs-t2) }
@@ -479,9 +479,9 @@ const CSS = `
 .evs-trans { display: inline-flex; align-items: center; gap: 4px; flex: none; color: var(--evs-t3) }
 .evs-mini { display: grid; place-items: center; width: 14px; height: 14px; border-radius: 4px; background: var(--evs-fill2) }
 .evs-mini svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round }
-.evs-mini[data-o="pass"] { background: color-mix(in oklab, var(--evs-ok) 15%, var(--evs-surface)); color: var(--evs-ok) }
-.evs-mini[data-o="fail"] { background: color-mix(in oklab, var(--evs-err) 11%, var(--evs-surface)); color: var(--evs-err) }
-.evs-mini[data-o="error"] { background: color-mix(in oklab, var(--evs-warn) 15%, var(--evs-surface)); color: var(--evs-warn) }
+.evs-mini[data-o="pass"] { background: color-mix(in oklab, var(--evs-ink) 5%, var(--evs-surface)); color: var(--evs-ok) }
+.evs-mini[data-o="fail"] { background: color-mix(in oklab, var(--evs-ink) 14%, var(--evs-surface)); color: var(--evs-ink) }
+.evs-mini[data-o="error"] { background: color-mix(in oklab, var(--evs-ink) 5%, var(--evs-surface)); color: var(--evs-warn); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--evs-ink) 22%, transparent) }
 .evs-mini[data-strong] { background: var(--evs-err); color: #fff }
 .evs-mini[data-o="none"] { background: none; box-shadow: inset 0 0 0 1px var(--evs-t4) }
 .evs-rowtitle { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
@@ -515,14 +515,14 @@ const CSS = `
 .evs-panetitle { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; min-width: 0 }
 .evs-panetitle span { font-weight: 400; color: var(--evs-t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .evs-otag { display: inline-flex; align-items: center; gap: 3px; height: 22px; padding: 0 8px 0 5px; border-radius: 9999px; font-size: 12px; font-weight: 500; flex: none }
-.evs-otag[data-o="pass"] { color: var(--evs-ok); background: color-mix(in oklab, var(--evs-ok) 12%, transparent) }
-.evs-otag[data-o="fail"] { color: var(--evs-err); background: color-mix(in oklab, var(--evs-err) 11%, transparent) }
-.evs-otag[data-o="error"] { color: var(--evs-warn); background: color-mix(in oklab, var(--evs-warn) 13%, transparent) }
+.evs-otag[data-o="pass"] { color: var(--evs-ok); background: color-mix(in oklab, var(--evs-ink) 6%, transparent) }
+.evs-otag[data-o="fail"] { color: var(--evs-ink); background: color-mix(in oklab, var(--evs-ink) 10%, transparent) }
+.evs-otag[data-o="error"] { color: var(--evs-warn); background: color-mix(in oklab, var(--evs-ink) 6%, transparent) }
 .evs-otag svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
 .evs-panebody { padding: 10px 12px 12px; font-size: 14px; line-height: 21.7px }
 .evs-panebody del, .evs-panebody ins { text-decoration: none; border-radius: 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone }
 .evs-panebody del { background: color-mix(in oklab, var(--evs-err) 14%, transparent) }
-.evs-panebody ins { background: color-mix(in oklab, var(--evs-ok) 17%, transparent) }
+.evs-panebody ins { background: color-mix(in oklab, var(--evs-ink) 10%, transparent); text-decoration: none }
 .evs-judge { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 16px }
 .evs-judgehead { color: var(--evs-t2) }
 .evs-judgebody { display: flex; flex-direction: column; gap: 12px; min-width: 0 }
@@ -538,7 +538,7 @@ const CSS = `
 .evs-rationale { color: var(--evs-t2); font-size: 14px; line-height: 21.7px }
 .evs-actions { display: flex; gap: 8px; padding-left: 100px; align-items: center; min-height: 36px; flex-wrap: wrap }
 .evs-confirm { display: inline-flex; align-items: center; gap: 8px; color: var(--evs-t2); outline-offset: 4px; animation: evs-up .3s var(--evs-ease) backwards }
-.evs-confirm svg { color: var(--evs-ok) }
+.evs-confirm svg { color: var(--evs-t2) }
 .evs-spin { animation: evs-spin .9s linear infinite }
 @keyframes evs-spin { to { transform: rotate(360deg) } }
 
@@ -1184,11 +1184,10 @@ export function EvalSuite({
                 )}
               </>
             ) : (
-              <span className="evs-empty">Not run yet</span>
+              <span className="evs-empty">— not run</span>
             )}
           </div>
           <div className="evs-baseline">
-            <span className="evs-gkey" aria-hidden />
             <span>
               {suite.baseline.version} scored {baselineRate.toFixed(1)}%
             </span>

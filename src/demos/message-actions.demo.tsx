@@ -41,7 +41,7 @@ export default function Demo() {
             How does Relay retry failed webhooks?
           </p>
           <div className="mb-1.5 flex items-center gap-1.5 text-[12px] leading-4 text-neutral-500 dark:text-neutral-400">
-            <span className="size-2 rounded-[2px] bg-indigo-500" aria-hidden />
+            <span className="grid size-4 place-items-center rounded-full text-[9px] font-medium text-neutral-600 shadow-[0_0_0_.5px_rgb(0_0_0/.12)] dark:text-neutral-300 dark:shadow-[0_0_0_.5px_rgb(255_255_255/.16)]" aria-hidden>O</span>
             Orbit 2
           </div>
           <MessageText version={version}>{text}</MessageText>
@@ -59,7 +59,7 @@ export default function Demo() {
         </div>
       </div>
       <p className="px-1 text-[12px] text-neutral-500 dark:text-neutral-400" aria-live="polite">
-        onFeedback → {log}
+        {log}
       </p>
     </div>
   )

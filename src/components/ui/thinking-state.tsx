@@ -53,7 +53,7 @@ const CSS = `
 .ths {
   --ths-ink: #000;
   --ths-surface: #fff;
-  --ths-accent: #0060e2;
+  --ths-accent: #000;
   --ths-t1: color-mix(in oklab, var(--ths-ink) 88%, transparent);
   --ths-t2: color-mix(in oklab, var(--ths-ink) 61%, transparent);
   --ths-t3: color-mix(in oklab, var(--ths-ink) 45%, transparent);
@@ -82,7 +82,7 @@ const CSS = `
 :is(.dark, [data-theme="dark"]) .ths {
   --ths-ink: #fff;
   --ths-surface: #1c1c1e;
-  --ths-accent: #4d8dff;
+  --ths-accent: #fff;
   --ths-t1: color-mix(in oklab, var(--ths-ink) 90%, transparent);
   --ths-t2: color-mix(in oklab, var(--ths-ink) 62%, transparent);
   --ths-t3: color-mix(in oklab, var(--ths-ink) 46%, transparent);
@@ -199,7 +199,7 @@ a.ths-source:hover { background: color-mix(in oklab, var(--ths-surface), var(--t
 /* Final tick */
 .ths-check { width: 16px; height: 16px; animation: ths-pop .46s var(--ths-ease) backwards }
 .ths-check circle { fill: var(--ths-accent) }
-.ths-check path { stroke: #fff; stroke-width: 1.4; stroke-dasharray: 9; animation: ths-draw .36s var(--ths-ease) .18s backwards }
+.ths-check path { stroke: var(--ths-surface); stroke-width: 1.4; stroke-dasharray: 9; animation: ths-draw .36s var(--ths-ease) .18s backwards }
 
 @keyframes ths-in { from { opacity: 0; filter: blur(3px); transform: translateY(6px) } }
 @keyframes ths-line { from { transform: scaleY(0) } }

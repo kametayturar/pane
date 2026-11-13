@@ -110,6 +110,35 @@ lines += [
     "",
 ]
 Path("public/llms.txt").write_text("\n".join(lines))
+
+# The catalog the Pane MCP server (api/mcp.ts) searches. Sources stay in public/r/<slug>.json and are fetched on demand.
+TAGFILE = json.loads(Path("src/data/tags.json").read_text())
+catalog = {
+    "site": SITE,
+    "pieces": [
+        {
+            "slug": slug,
+            "name": name,
+            "kind": KIND[kind],
+            "group": label,
+            "description": desc.replace("\\'", "'"),
+            "tags": TAGS.get(slug, {}).get("tags", []),
+            "keywords": TAGS.get(slug, {}).get("keywords", []),
+            "file": f"{FOLDER[kind]}/{slug}.tsx",
+            "inRegistry": slug in registry,
+        }
+        for label, rows in groups
+        for kind, slug, name, desc in rows
+    ],
+    "synonyms": TAGFILE.get("synonyms", {}),
+    "vocab": TAGFILE.get("vocab", []),
+    "skills": [
+        {k: s.get(k) for k in ("id", "name", "description", "category", "repo", "path", "install", "bestFor", "examplePrompt", "license")}
+        for s in json.loads(Path("src/data/skills.json").read_text())
+    ],
+}
+Path("api").mkdir(exist_ok=True)
+Path("api/_catalog.json").write_text(json.dumps(catalog, ensure_ascii=False, separators=(",", ":")) + "\n")
 Path("public/skills").mkdir(parents=True, exist_ok=True)
 # The Pane skill: a catalog snapshot inside it, and the whole skill published on the site for agents to read.
 Path("skills/pane/references/catalog.md").write_text("\n".join(lines))

@@ -253,10 +253,7 @@ const CSS = `
   animation: tst-pop .46s var(--tst-ease) backwards;
 }
 .tst-icon svg { width: 16px; height: 16px }
-.tst-item[data-type="success"] .tst-icon { color: var(--tst-ok) }
 .tst-item[data-type="error"] .tst-icon { color: var(--tst-err) }
-.tst-item[data-type="warning"] .tst-icon { color: var(--tst-warn) }
-.tst-item[data-type="info"] .tst-icon { color: var(--tst-accent) }
 .tst-spin { animation: tst-spin .8s linear infinite; transform-origin: 50% 50% }
 .tst-text { flex: 1; min-width: 0 }
 .tst-text[data-swap] { animation: tst-swap .42s var(--tst-ease) backwards }

@@ -19,7 +19,7 @@ export default function Demo() {
     setLog((items) => [{ id: nextId.current++, text }, ...items].slice(0, 5))
 
   return (
-    <div className="mx-auto flex w-full max-w-[560px] flex-col gap-5 py-6">
+    <div className="mx-auto flex w-full max-w-[560px] flex-col gap-3 py-2">
       <ChatComposer
         key={run}
         placeholder="Ask the support desk assistant..."
@@ -35,7 +35,7 @@ export default function Demo() {
       />
 
       <div className="flex items-start justify-between gap-4 text-[12px] leading-4 text-neutral-500 dark:text-neutral-400">
-        <ul className="min-h-20 space-y-1.5" aria-label="Event log">
+        <ul className="min-h-8 space-y-1.5" aria-label="Event log">
           {log.length === 0 ? (
             <li>Try the mic, the model picker, Connect apps or Request approval.</li>
           ) : (

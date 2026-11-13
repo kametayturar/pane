@@ -30,9 +30,9 @@ export type UsageMeterProps = {
   period?: string
   /** `bar` is a continuous track, `segments` a row of 20 blocks. */
   variant?: "bar" | "segments"
-  /** Fraction (0–1) at which a meter turns to the warning colour. */
+  /** Fraction (0–1) at which a meter gets a quiet "Running low" note. */
   warnAt?: number
-  /** Fraction (0–1) at which a meter turns to the critical colour. */
+  /** Fraction (0–1) at which a meter reads "Almost out". */
   criticalAt?: number
   /** Simulate usage climbing, so the thresholds can be seen. */
   autoPlay?: boolean
@@ -53,7 +53,6 @@ const CSS = `
   --um-ink: #000;
   --um-surface: #fff;
   --um-accent: #0060e2;
-  --um-warn: #d98100;
   --um-err: #e5484d;
   --um-t1: color-mix(in oklab, var(--um-ink) 88%, transparent);
   --um-t2: color-mix(in oklab, var(--um-ink) 61%, transparent);
@@ -63,6 +62,7 @@ const CSS = `
   --um-line: color-mix(in oklab, var(--um-ink) 6%, transparent);
   --um-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 1px -1px rgb(0 0 0 / .1), 0 1px 2px 0 rgb(0 0 0 / .05);
   --um-ease: cubic-bezier(.22, 1, .36, 1);
+  --um-ink-bar: color-mix(in oklab, var(--um-ink) 72%, transparent);
   position: relative;
   width: 100%;
   max-width: 420px;
@@ -80,7 +80,6 @@ const CSS = `
   --um-ink: #fff;
   --um-surface: #1c1c1e;
   --um-accent: #4d8dff;
-  --um-warn: #f5a524;
   --um-err: #ff6369;
   --um-t1: color-mix(in oklab, var(--um-ink) 90%, transparent);
   --um-t2: color-mix(in oklab, var(--um-ink) 62%, transparent);
@@ -96,7 +95,7 @@ const CSS = `
 
 .um-head { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-bottom: .5px solid var(--um-line) }
 .um-title { font-weight: 500; color: var(--um-t1) }
-.um-plan { height: 18px; padding: 0 6px; border-radius: 9px; background: var(--um-fill); font-size: 11px; line-height: 18px; font-weight: 500; color: var(--um-t2) }
+.um-plan { font-size: 12px; color: var(--um-t3) }
 .um-period { margin-left: auto; font-size: 12px; color: var(--um-t3); font-variant-numeric: tabular-nums }
 .um .um-up {
   height: 26px; padding: 0 10px; border-radius: 6px; background: var(--um-fill); font-size: 12px; line-height: 16px; font-weight: 500;
@@ -115,12 +114,11 @@ const CSS = `
 .um-label { font-weight: 500; color: var(--um-t1) }
 .um-num { font-variant-numeric: tabular-nums; color: var(--um-t2); white-space: nowrap }
 .um-num b { font-weight: 500; color: var(--um-t1) }
-.um-row[data-level="warn"] .um-num b { color: var(--um-warn) }
-.um-row[data-level="critical"] .um-num b { color: var(--um-err) }
+.um-row[data-full] .um-num b { color: var(--um-err) }
 
 .um-track { position: relative; height: 6px; margin: 8px 0 6px; border-radius: 3px; background: var(--um-fill); overflow: hidden }
 .um-fillbar {
-  display: block; width: 100%; height: 100%; border-radius: 3px; background: var(--um-c, var(--um-accent));
+  display: block; width: 100%; height: 100%; border-radius: 3px; background: var(--um-c, var(--um-ink-bar));
   transform-origin: left; transform: scaleX(var(--um-p, 0));
   transition: transform .9s var(--um-ease), background-color .4s;
   animation: um-grow 1.1s var(--um-ease) backwards;
@@ -130,16 +128,16 @@ const CSS = `
   border-radius: 1.5px; background: var(--um-fill);
   transition: background-color .3s calc(var(--n) * 14ms), transform .4s calc(var(--n) * 14ms) var(--um-ease);
 }
-.um-seg i[data-on] { background: var(--um-c, var(--um-accent)) }
-.um-row[data-level="warn"] { --um-c: var(--um-warn) }
-.um-row[data-level="critical"] { --um-c: var(--um-err) }
+.um-seg i[data-on] { background: var(--um-c, var(--um-ink-bar)) }
+.um-row[data-full] { --um-c: var(--um-err) }
 
 .um-foot { display: flex; align-items: center; gap: 8px; min-height: 16px; font-size: 12px; line-height: 16px; color: var(--um-t3) }
-.um-badge { margin-left: auto; font-weight: 500; color: var(--um-c, var(--um-t2)); animation: um-in .4s var(--um-ease) backwards }
+.um-badge { margin-left: auto; color: var(--um-t2); animation: um-in .4s var(--um-ease) backwards }
 
+.um-row[data-level="critical"] .um-badge { color: var(--um-t1) }
+.um-row[data-full] .um-badge { color: var(--um-err) }
 .um-alert {
-  display: flex; align-items: center; gap: 10px; margin: 0 8px 8px; padding: 10px 10px 10px 12px; border-radius: 8px;
-  background: color-mix(in oklab, var(--um-err) 8%, transparent); color: var(--um-t1); animation: um-in .5s var(--um-ease) backwards;
+  display: flex; align-items: center; gap: 10px; border-top: .5px solid var(--um-line); padding: 12px 16px; color: var(--um-t1); animation: um-in .5s var(--um-ease) backwards;
 }
 .um-alert svg { flex: none; width: 16px; height: 16px; color: var(--um-err) }
 .um-alert span { flex: 1; min-width: 0 }
@@ -257,7 +255,7 @@ export function UsageMeter({
           const pct = Math.round(p * 100)
           const lit = Math.round(p * SEGMENTS)
           return (
-            <li key={item.id} className="um-row" data-level={lvl} style={{ animationDelay: `${i * 70}ms` }}>
+            <li key={item.id} className="um-row" data-level={lvl} data-full={p >= 1 ? "" : undefined} style={{ animationDelay: `${i * 70}ms` }}>
               <div className="um-top">
                 <span className="um-label" id={`um-${item.id}`}>
                   {item.label}

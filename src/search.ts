@@ -1,5 +1,7 @@
 // Library-wide search: every piece, screen and skill, ranked across names, tags, synonyms and descriptions.
 // Tags and synonyms live in src/data/tags.json (generated once, edited by hand).
+import type * as React from "react"
+
 import TAGS from "@/data/tags.json"
 
 export type SearchDoc = {
@@ -12,6 +14,7 @@ export type SearchDoc = {
   tags: string[]
   keywords: string[]
   extra?: string
+  icon?: React.ComponentType<{ className?: string }>
 }
 
 export type SearchHit = SearchDoc & { score: number; why: string }

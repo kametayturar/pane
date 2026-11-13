@@ -97,7 +97,8 @@ const CSS = `
 .ss *, .ss *::before, .ss *::after { box-sizing: border-box }
 :where(.ss) :is(button, input) { font: inherit; color: inherit; margin: 0 }
 :where(.ss) button { background: none; border: 0; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation }
-.ss :focus-visible { outline: 2px solid color-mix(in oklab, var(--ss-accent) 60%, transparent); outline-offset: 1px }
+.ss-face:focus { outline: 0 }
+.ss :focus-visible { outline: 2px solid var(--ss-t3); outline-offset: 1px }
 .ss[data-open="true"] { z-index: 60 }
 .ss-ghost { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 12px; font-weight: 500; visibility: hidden; white-space: nowrap }
 .ss-ghost svg { width: 16px; height: 16px }
@@ -199,7 +200,7 @@ const CSS = `
 @media (hover: hover) and (pointer: fine) { .ss-person:hover { background: var(--ss-fill) } }
 .ss-avwrap { position: relative; width: 40px; height: 40px; border-radius: 50%; transition: box-shadow .25s var(--ss-ease) }
 .ss-person[aria-pressed="true"] .ss-avwrap { box-shadow: 0 0 0 2px var(--ss-surface), 0 0 0 4px var(--ss-btn) }
-.ss-av { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; font-size: 14px; font-weight: 600; color: #fff; letter-spacing: .01em; user-select: none; flex: none }
+.ss-av { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; font-size: 14px; font-weight: 600; color: var(--ss-t2); background: var(--ss-fill); box-shadow: inset 0 0 0 1px var(--ss-line); letter-spacing: .01em; user-select: none; flex: none }
 .ss-av img { width: 100%; height: 100%; object-fit: cover; display: block }
 .ss-badge { position: absolute; right: -4px; bottom: -4px; width: 6px; height: 6px; border-radius: 50%; background: var(--ss-btn); color: var(--ss-btn-fg); box-shadow: 0 0 0 2px var(--ss-surface); display: grid; place-items: center; opacity: 0; transform: scale(.4); transition: opacity .2s, transform .35s var(--ss-ease), width .3s var(--ss-ease), height .3s var(--ss-ease) }
 .ss-badge svg { width: 10px; height: 10px; stroke-width: 3 }
@@ -321,13 +322,7 @@ const CopyIcon = () => (
 /*                                   Helpers                                  */
 /* -------------------------------------------------------------------------- */
 
-function hue(id: string) {
-  let h = 0
-  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0
-  return h % 360
-}
 function Avatar({ person, className }: { person: SharePerson; className?: string }) {
-  const h = hue(person.id + person.name)
   const initials = person.name
     .split(/\s+/)
     .map((w) => w[0])
@@ -338,7 +333,6 @@ function Avatar({ person, className }: { person: SharePerson; className?: string
     <span
       className={cn("ss-av", className)}
       aria-hidden="true"
-      style={person.avatar ? undefined : { background: `linear-gradient(145deg, oklch(.72 .13 ${h}), oklch(.55 .16 ${(h + 40) % 360}))` }}
     >
       {person.avatar ? <img src={person.avatar} alt="" width={40} height={40} /> : initials}
     </span>
@@ -790,13 +784,14 @@ function FaceShell({ entry, onSize, children, labelId }: { entry: FaceEntry; onS
   React.useEffect(() => {
     if (!current) return
     const el = ref.current
-    const t = requestAnimationFrame(() => el?.querySelector<HTMLElement>(entry.view === "panel" ? "[data-autofocus]" : "[data-done]")?.focus({ preventScroll: true }))
+    const t = requestAnimationFrame(() => (entry.view === "panel" ? el : el?.querySelector<HTMLElement>("[data-done]"))?.focus({ preventScroll: true }))
     return () => cancelAnimationFrame(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <div
       ref={ref}
+      tabIndex={entry.view === "panel" ? -1 : undefined}
       className={cn("ss-face", entry.view === "panel" ? "ss-panel" : "ss-sentface")}
       role={current ? "dialog" : undefined}
       aria-labelledby={current && entry.view === "panel" ? labelId : undefined}

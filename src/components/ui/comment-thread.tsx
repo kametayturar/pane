@@ -207,19 +207,11 @@ const CSS = `
 /*                                   Pieces                                   */
 /* -------------------------------------------------------------------------- */
 
-/** The default gradient avatar for an assistant. */
+/** The default neutral avatar for an assistant. */
 export function AssistantMark() {
-  const id = React.useId()
   return (
     <svg viewBox="0 0 24 24" aria-hidden>
-      <defs>
-        <linearGradient id={`${id}-fill`} x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#5b9dff" />
-          <stop offset=".5" stopColor="#2f6bff" />
-          <stop offset="1" stopColor="#8b5cf6" />
-        </linearGradient>
-      </defs>
-      <circle cx="12" cy="12" r="12" fill={`url(#${id}-fill)`} />
+      <circle cx="12" cy="12" r="3.5" fill="currentColor" />
     </svg>
   )
 }

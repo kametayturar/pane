@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { ControlCenter, type ControlCenterState } from "@/components/ui/control-center"
-import { Scene } from "./_glass-scenes"
+import { Backdrop } from "@/components/motion/backdrop"
 
 export const notes = [
   "A tile grows into its detail sheet with one spring: the sheet is an absolutely positioned rect whose left/top/width/height are interpolated between the tile's box (measured with getBoundingClientRect relative to the panel) and the panel's inner box, stepped in a requestAnimationFrame loop. The sheet's content is fixed-size and clipped, so it is revealed rather than squished; the grid behind goes `inert` and recedes.",
@@ -19,7 +19,9 @@ export default function Demo() {
   return (
     <div className="flex w-full max-w-[640px] flex-col items-center gap-3">
       <div className="relative flex h-[560px] w-full items-center justify-center overflow-hidden rounded-[30px] bg-neutral-200 px-4">
-        <Scene tone="harbor" seed={21} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
+        <div className="absolute inset-0">
+          <Backdrop variant="orbs" accent="#7a6ff0" minHeight={0} style={{ height: "100%" }} />
+        </div>
         <ControlCenter
           onStateChange={setState}
           people={[
@@ -28,7 +30,7 @@ export default function Demo() {
           ]}
         />
       </div>
-      <p className="max-w-full truncate px-1 font-mono text-[11px] text-neutral-500 dark:text-neutral-400">
+      <p className="max-w-full truncate px-1 text-[12px] text-neutral-500 dark:text-neutral-400">
         {state ? `volume ${state.volume}% · text ${state.textSize}% · notifications ${state.notifications ? "on" : "off"} · focus ${state.focus ? `until ${state.focus.until}` : "off"}` : "onStateChange fires on every change, including each step of a drag"}
       </p>
     </div>

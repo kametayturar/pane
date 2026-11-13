@@ -74,6 +74,23 @@
 - **Steer Swap** (`steer-swap`, component) – Redirect a running agent: tap the other option and it grows into the headline while the old one shrinks into the row it left, with nothing lost. Tags: agent, toggle, text-effect, feedback. File: `components/ui/steer-swap.tsx`. Install: `node add.mjs steer-swap`
 - **Pulled Focus** (`pulled-focus`, component) – Back from a break: finished work folds into one small row and the one thing that needs you swells into the headline. Tags: agent, notification, text-effect, feedback. File: `components/ui/pulled-focus.tsx`. Install: `node add.mjs pulled-focus`
 
+## Overlays
+
+- **Modal** (`modal`, component) – A dialog that grows out of the button that opened it, dims the page and returns focus when it closes. Tags: dialog, agent, approval. File: `components/ui/modal.tsx`. Install: `node add.mjs modal`
+- **Popover** (`popover`, component) – A panel anchored to its trigger that flips to stay on screen and glides to the next trigger instead of closing. Tags: menu, dialog, hover. File: `components/ui/popover.tsx`. Install: `node add.mjs popover`
+- **Tooltip** (`tooltip`, component) – A label with a shortcut that waits on the first hover, then shows instantly as you slide along a toolbar. Tags: hover, keyboard, feedback. File: `components/ui/tooltip.tsx`. Install: `node add.mjs tooltip`
+- **Drawer** (`drawer`, component) – A sheet that follows the finger, rubber-bands past its edge, snaps between heights and leaves at the speed you flicked it. Tags: dialog, gesture, drag. File: `components/ui/drawer.tsx`. Install: `node add.mjs drawer`
+- **Swipe Row** (`swipe-row`, component) – A list row you drag to reveal actions; a long swipe or a flick commits and the list closes the gap. Tags: gesture, drag, feedback. File: `components/ui/swipe-row.tsx`. Install: `node add.mjs swipe-row`
+- **Hold to Confirm** (`hold-to-confirm`, component) – A button that fills while you hold it: the commit is slow, letting go cancels at once. Tags: button, approval, gesture. File: `components/ui/hold-to-confirm.tsx`. Install: `node add.mjs hold-to-confirm`
+
+## Stage
+
+- **Device Frames** (`device-frames`, component) – Browser and phone frames for product shots that scale a fixed stage and bleed off the card edge. Tags: screen, marketing, landing. File: `components/ui/device-frames.tsx`. Install: `node add.mjs device-frames`
+- **Cursor Walkthrough** (`cursor-walkthrough`, motion effect) – A scripted cursor that moves, clicks, types and drags through any piece and holds on the result. Tags: pointer-follow, marketing, landing. File: `components/motion/cursor-walkthrough.tsx`. Install: `node add.mjs cursor-walkthrough`
+- **Control Bento** (`control-bento`, block) – A bento of small live controls for a landing page, with one tile at a time demonstrated by a cursor. Tags: marketing, landing, toggle. File: `components/blocks/control-bento.tsx`. Install: `node add.mjs control-bento`
+- **Overlay Atlas** (`overlay-atlas`, block) – Modal, popover, tooltip, toast, sheet and drawer side by side in one product window, each played on hover. Tags: dialog, menu, marketing. File: `components/blocks/overlay-atlas.tsx`. Install: `node add.mjs overlay-atlas`
+- **Light Cards** (`light-cards`, block) – Numbered dark feature cards, each with light-painted art cropped by its edge that brightens on hover. Tags: card, landing, glow. File: `components/blocks/light-cards.tsx`. Install: `node add.mjs light-cards`
+
 ## Chat
 
 - **AI Answer** (`ai-answer`, component) – Streamed answer with source cards, citation previews, copy, stop, feedback and follow-ups. Tags: card, chat, feedback, retrieval, sources, streaming, text-effect. File: `components/ui/ai-answer.tsx`. Install: `node add.mjs ai-answer`
@@ -86,7 +103,7 @@
 - **Tool Call Card** (`tool-call-card`, component) – One tool call with its arguments, a live status and the result folded in. Tags: agent, card, chat, loading, progress, tool-call. File: `components/ui/tool-call-card.tsx`. Install: `node add.mjs tool-call-card`
 - **Approval Card** (`approval-card`, component) – An action the agent wants to take, waiting for you to approve or deny. Tags: agent, approval, button, card, chat, feedback. File: `components/ui/approval-card.tsx`. Install: `node add.mjs approval-card`
 - **Permission Request** (`permission-request`, component) – An app asks for access – scopes, once or always, and a clear deny. Tags: agent, approval, button, card, dialog, toggle. File: `components/ui/permission-request.tsx`. Install: `node add.mjs permission-request`
-- **Reaction Bar** (`reaction-bar`, component) – Emoji reactions that pop, count up and show who reacted. Tags: button, chat, feedback, hover, social-proof, toggle. File: `components/ui/reaction-bar.tsx`. Install: `node add.mjs reaction-bar`
+- **Reaction Bar** (`reaction-bar`, component) – Reactions that count up and show who reacted. Tags: button, chat, feedback, hover, social-proof, toggle. File: `components/ui/reaction-bar.tsx`. Install: `node add.mjs reaction-bar`
 - **Email Draft** (`email-draft`, component) – An AI-drafted email you can review, tweak and send. Tags: agent, card, chat, form, input, prompt. File: `components/ui/email-draft.tsx`. Install: `node add.mjs email-draft`
 - **Comment Thread** (`comment-thread`, component) – A threaded discussion with replies, mentions and resolve. Tags: card, chat, comment, hover, input, social-proof. File: `components/ui/comment-thread.tsx`. Install: `node add.mjs comment-thread`
 
@@ -193,6 +210,14 @@
 
 ## Illustrations
 
+- **Dash Ribbon** (`dash-ribbon`, illustration) – Rows of rounded dashes following a rolling wave, with a run of light traced down one row. Tags: background, landing, flow. File: `components/illustrations/dash-ribbon.tsx`. Install: `node add.mjs dash-ribbon`
+- **Light Form** (`light-form`, illustration) – A moth, orchid or fern drawn from hundreds of glowing strands with a chromatic fringe, breathing slowly. Tags: glow, background, landing. File: `components/illustrations/light-form.tsx`. Install: `node add.mjs light-form`
+- **Gouache Lake** (`gouache-lake`, illustration) – A painted hillside and its reflection drawn from brush dabs, with a small boat leaving a wake. Tags: background, landing, paper. File: `components/illustrations/gouache-lake.tsx`. Install: `node add.mjs gouache-lake`
+- **Golden Hills** (`golden-hills`, illustration) – Grassy hills lit by a low sun, a lone tree and a tiny walker, with cloud shadows drifting over. Tags: background, landing. File: `components/illustrations/golden-hills.tsx`. Install: `node add.mjs golden-hills`
+- **Hatched Skies** (`hatched-skies`, illustration) – Clouds filled with fine vertical ticks drifting behind a headline. Tags: background, landing. File: `components/illustrations/hatched-skies.tsx`. Install: `node add.mjs hatched-skies`
+- **Dash Burst** (`dash-burst`, illustration) – A ring of radial dashes sized by a metric around one big number, bursting outward from one sector. Tags: chart, kpi, landing. File: `components/illustrations/dash-burst.tsx`. Install: `node add.mjs dash-burst`
+- **Column Cube** (`column-cube`, illustration) – An isometric block of columns cut open to show a coloured layer, with a scan that lifts the cells it finds. Tags: 3d, diagram, landing. File: `components/illustrations/column-cube.tsx`. Install: `node add.mjs column-cube`
+- **Peek Icon** (`peek-icon`, illustration) – App icons where a character peeks in at an angle over a background that says what the app does. Tags: card, marketing. File: `components/illustrations/peek-icon.tsx`. Install: `node add.mjs peek-icon`
 - **Neural Panels** (`neural-panels`, illustration) – Dithered terrain and a particle brain in calm editorial cards, with a typing log. Tags: 3d, agent, card, dither, landing, particles, streaming. File: `components/illustrations/neural-panels.tsx`. Install: `node add.mjs neural-panels`
 - **Telemetry Board** (`telemetry-board`, illustration) – Dithered art bleeding past editorial panels, ticking telemetry and a glass vitals card. Tags: card, dashboard, dither, glass, kpi, observability, realtime. File: `components/illustrations/telemetry-board.tsx`. Install: `node add.mjs telemetry-board`
 - **Integration Beam** (`integration-beam`, illustration) – Your product between the tools it connects, with light pulses along curved beams. Tags: diagram, flow, glow, landing, marketing. File: `components/illustrations/integration-beam.tsx`. Install: `node add.mjs integration-beam`
@@ -213,6 +238,7 @@
 
 ## Motion
 
+- **Grain Gradient** (`grain-gradient`, motion effect) – A smooth gradient field \u2013 orb, ring, band or wave \u2013 with fine grain so it never bands, exportable as an image. Tags: gradient, background, landing. File: `components/motion/grain-gradient.tsx`. Install: `node add.mjs grain-gradient`
 - **Dither Field** (`dither-field`, motion effect) – A flowing noise field drawn as ordered-dither dots – a living background. Tags: background, dither, gradient, hero, landing, particles. File: `components/motion/dither-field.tsx`. Install: `node add.mjs dither-field`
 - **Text Reveal** (`text-reveal`, motion effect) – Text that arrives word by word, each fading out of a soft blur. Tags: hero, landing, marketing, scroll, streaming, text-effect. File: `components/motion/text-reveal.tsx`. Install: `node add.mjs text-reveal`
 - **Blur Crossfade** (`blur-crossfade`, motion effect) – Swap content through a soft blur while the box glides to its new size. Tags: card, feedback, morph, tabs, text-effect. File: `components/motion/blur-crossfade.tsx`. Install: `node add.mjs blur-crossfade`

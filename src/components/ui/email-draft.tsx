@@ -128,9 +128,9 @@ const CSS = `
 .ed-id, .ed-amount { font-size: 15px; font-weight: 500; line-height: 24px; color: var(--ed-ink) }
 .ed-amount { margin-left: auto; font-variant-numeric: tabular-nums }
 .ed-chip, .ed-badge {
-  padding: 2px 6px; border-radius: 5px; font-size: 12px; font-weight: 500; line-height: 16px; white-space: nowrap;
+  padding: 0; font-size: 12px; font-weight: 500; line-height: 16px; white-space: nowrap;
 }
-.ed-chip { color: var(--ed-warn); background: var(--ed-warn-bg) }
+.ed-chip { color: var(--ed-t3) }
 .ed-account { font-size: 12px; line-height: 16px; color: var(--ed-t2) }
 
 /* The middle section follows its content's height; it clips only while it is moving */
@@ -207,7 +207,7 @@ const CSS = `
 /* Receipt */
 .ed-receipt { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 16px; color: var(--ed-t2) }
 .ed-receipt-icon { display: grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 6px; color: var(--ed-t3); background: var(--ed-fill) }
-.ed-receipt-icon[data-tone="ok"] { color: var(--ed-good); background: color-mix(in oklab, var(--ed-good) 8%, transparent) }
+.ed-receipt-icon[data-tone="ok"] { color: var(--ed-t2); background: var(--ed-fill) }
 .ed-receipt-icon svg { width: 14px; height: 14px }
 .ed-receipt-text { min-width: 0; flex: 1 }
 .ed-receipt-text b { font-weight: 500; color: var(--ed-ink) }
@@ -217,8 +217,8 @@ const CSS = `
 /* Last row: it stays put while the middle changes */
 .ed-foot { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 10px 10px 10px 16px; border-top: .5px solid var(--ed-line) }
 .ed-agent { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-.ed-badge { color: var(--ed-good); background: color-mix(in oklab, var(--ed-good) 8%, transparent); animation: ed-fade .26s var(--ed-ease) backwards }
-.ed-badge[data-tone="muted"] { color: var(--ed-t3); background: var(--ed-fill) }
+.ed-badge { color: var(--ed-t3); animation: ed-fade .26s var(--ed-ease) backwards }
+.ed-badge[data-tone="muted"] { color: var(--ed-t4) }
 .ed-buttons { display: flex; gap: 8px; margin-left: auto }
 .ed .ed-btn {
   display: flex; align-items: center; justify-content: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 6px;
@@ -366,7 +366,7 @@ export function EmailDraft({
   reference = "INV-2047",
   account = "Halcyon Robotics",
   amount = "$2,400",
-  status = "Overdue 3 days",
+  status = "3 days overdue",
   agent = "Billing agent",
   contacts = DEFAULT_CONTACTS,
   attachment = "Invoice-2047.pdf",

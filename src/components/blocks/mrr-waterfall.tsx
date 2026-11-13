@@ -133,8 +133,8 @@ const BARS = [
   { id: "start", label: "Start", short: "Start", name: "Starting MRR" },
   { id: "new", label: "New", short: "New", name: "New business" },
   { id: "expansion", label: "Expansion", short: "Expand", name: "Expansion" },
-  { id: "reactivation", label: "Reactivation", short: "React.", name: "Reactivation" },
-  { id: "contraction", label: "Contraction", short: "Contr.", name: "Contraction" },
+  { id: "reactivation", label: "Revived", short: "Revived", name: "Reactivation" },
+  { id: "contraction", label: "Downsell", short: "Downsell", name: "Contraction" },
   { id: "churn", label: "Churn", short: "Churn", name: "Churn" },
   { id: "end", label: "End", short: "End", name: "Ending MRR" },
 ] as const
@@ -192,7 +192,7 @@ const CSS = `
   --mwf-ink: rgb(var(--mwf-rgb));
   --mwf-surface: rgb(var(--mwf-surface-rgb));
   --mwf-accent: rgb(var(--mwf-accent-rgb));
-  --mwf-up: #1f8f44;
+  --mwf-up: color-mix(in oklab, var(--mwf-ink) 42%, transparent);
   --mwf-down: #c8322b;
   --mwf-total: color-mix(in oklab, var(--mwf-ink) 84%, transparent);
   --mwf-t1: color-mix(in oklab, var(--mwf-ink) 88%, transparent);
@@ -222,7 +222,7 @@ const CSS = `
   --mwf-rgb: 255 255 255;
   --mwf-surface-rgb: 28 28 30;
   --mwf-accent-rgb: 77 141 255;
-  --mwf-up: #3fb866;
+  --mwf-up: color-mix(in oklab, var(--mwf-ink) 46%, transparent);
   --mwf-down: #f0645a;
   --mwf-total: color-mix(in oklab, var(--mwf-ink) 78%, transparent);
   --mwf-t1: color-mix(in oklab, var(--mwf-ink) 90%, transparent);
@@ -259,7 +259,7 @@ const CSS = `
 .mwf-label { font-size: 12px; line-height: 16px; color: var(--mwf-t3) }
 .mwf-big { display: block; font-size: 30px; line-height: 36px; font-weight: 500; letter-spacing: -.02em }
 .mwf-delta { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--mwf-t3) }
-.mwf-delta b { font-weight: 500; color: var(--mwf-up) }
+.mwf-delta b { font-weight: 500; color: var(--mwf-ink) }
 .mwf-delta[data-down] b { color: var(--mwf-down) }
 .mwf-kpis { display: flex }
 .mwf-kpi { padding: 0 20px; border-left: 1px solid var(--mwf-line) }

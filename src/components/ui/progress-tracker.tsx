@@ -46,8 +46,8 @@ const CSS = `
 .pt {
   --pt-ink: #000;
   --pt-surface: #fff;
-  --pt-accent: #0060e2;
-  --pt-accent-a: rgb(0 96 226 / .765);
+  --pt-accent: #000;
+  --pt-accent-a: rgb(0 0 0 / .86);
   --pt-t1: color-mix(in oklab, var(--pt-ink) 88%, transparent);
   --pt-t3: color-mix(in oklab, var(--pt-ink) 45%, transparent);
   --pt-t4: color-mix(in oklab, var(--pt-ink) 27%, transparent);
@@ -75,8 +75,8 @@ const CSS = `
 :is(.dark, [data-theme="dark"]) .pt {
   --pt-ink: #fff;
   --pt-surface: #1c1c1e;
-  --pt-accent: #4d8dff;
-  --pt-accent-a: #4d8dff;
+  --pt-accent: #fff;
+  --pt-accent-a: rgb(255 255 255 / .9);
   --pt-t1: color-mix(in oklab, var(--pt-ink) 90%, transparent);
   --pt-t3: color-mix(in oklab, var(--pt-ink) 46%, transparent);
   --pt-t4: color-mix(in oklab, var(--pt-ink) 28%, transparent);
@@ -124,7 +124,7 @@ const CSS = `
   background: transparent; box-shadow: inset 0 0 0 1px var(--pt-ring);
   transition: background-color .22s var(--pt-ease), box-shadow .22s var(--pt-ease);
 }
-.pt-check svg { display: block; width: 12px; height: 12px; overflow: hidden; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round }
+.pt-check svg { display: block; width: 12px; height: 12px; overflow: hidden; fill: none; stroke: var(--pt-surface); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round }
 .pt-check path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .12s ease-in }
 .pt-step[aria-checked="true"] .pt-check {
   background: var(--pt-accent-a); box-shadow: inset 0 0 0 1px transparent; animation: pt-pop .56s var(--pt-ease);

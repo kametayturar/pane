@@ -30,7 +30,7 @@ const DECISIONS: Decision[] = [
 
 export const notes = [
   "Rows fold away with the grid-rows trick: the row is display: grid and its track animates from 1fr to 0fr, which CSS can transition (height: auto it cannot). The inner box has min-height: 0 and overflow: hidden so it can shrink to nothing.",
-  "The flow is a small state machine in a few lines of React: answers (id to choice), gone (ids already folded) and opened (which folded rows were opened). Picking an answer shows the green confirmation, and a setTimeout of ~1.2s then marks the row gone and opens the next collapsed one; every timer is cleared on unmount.",
+  "The flow is a small state machine in a few lines of React: answers (id to choice), gone (ids already folded) and opened (which folded rows were opened). Picking an answer shows a quiet confirmation, and a setTimeout of ~1.2s then marks the row gone and opens the next collapsed one; every timer is cleared on unmount.",
   "Folded and finished rows get the HTML inert attribute, so their buttons cannot be focused or clicked and screen readers skip them while the animation plays.",
   "The heading is aria-live=\"polite\" and its text span uses key={count}, so React remounts it, which both replays the small slide-in animation and makes assistive tech announce the new count.",
 ]
@@ -47,7 +47,7 @@ export default function Demo() {
       />
       <div className="flex items-start justify-between gap-3 text-[12px] text-neutral-500">
         <ul className="min-h-[3.5rem] space-y-0.5">
-          {log.length === 0 ? <li>Answer a decision to see onDecide fire.</li> : log.map((l, i) => <li key={i}>{l}</li>)}
+          {log.length === 0 ? <li>Answer a decision to see it resolve.</li> : log.map((l, i) => <li key={i}>{l}</li>)}
         </ul>
         <button
           type="button"

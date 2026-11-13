@@ -190,9 +190,7 @@ const CSS = `
 .sr-bars > span:nth-child(1) { height: 5px }
 .sr-bars > span:nth-child(2) { height: 8px }
 .sr-bars > span:nth-child(3) { height: 11px }
-.sr [data-level="1"] > span[data-on] { background: var(--sr-warn) }
-.sr [data-level="2"] > span[data-on] { background: var(--sr-accent-a) }
-.sr [data-level="3"] > span[data-on] { background: var(--sr-ok) }
+.sr [data-level] > span[data-on] { background: var(--sr-t2) }
 .sr [data-level="0"] > span:first-child { background: var(--sr-t4) }
 
 .sr-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; min-width: 0 }
@@ -213,7 +211,7 @@ const CSS = `
 
 .sr-done {
   display: inline-flex; align-items: center; gap: 6px; min-width: 0; height: 28px; padding: 0 10px 0 8px; border-radius: 6px;
-  background: var(--sr-ok-bg); font-weight: 500; color: var(--sr-ok); animation: sr-swap .3s var(--sr-ease) backwards;
+  font-weight: 500; color: var(--sr-t2); animation: sr-swap .3s var(--sr-ease) backwards;
 }
 .sr-done svg { width: 16px; height: 16px; flex: none }
 .sr-done-text { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis }

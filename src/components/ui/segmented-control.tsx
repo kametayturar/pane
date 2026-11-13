@@ -14,9 +14,9 @@ export type SegmentOption = {
   label?: React.ReactNode
   /** 14px icon shown before the label. */
   icon?: React.ReactNode
-  /** A small number chip after the label, e.g. unread items. Changing it blurs the new number in. */
+  /** A quiet number after the label, e.g. unread items. Changing it blurs the new number in. */
   count?: number
-  /** A short highlighted tag after the label, e.g. "Save 20%". */
+  /** A short muted note after the label, e.g. "Save 20%". */
   badge?: React.ReactNode
   disabled?: boolean
   /** Accessible name for icon-only options. */
@@ -157,14 +157,11 @@ const CSS = `
 .sc-icon svg { width: 14px; height: 14px }
 .sc-opt[data-active] .sc-icon, .sc-opt:hover .sc-icon { color: var(--sc-t1) }
 .sc-count {
-  display: inline-grid; place-items: center; flex: none; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 5px;
-  background: var(--sc-fill); color: var(--sc-t2); font-size: 11px; font-weight: 500; line-height: 16px; font-variant-numeric: tabular-nums;
+  display: inline-grid; place-items: center; flex: none; min-width: 12px; height: 16px;
+  color: var(--sc-t3); font-size: 12px; font-weight: 400; line-height: 16px; font-variant-numeric: tabular-nums;
 }
 .sc-count > span { animation: sc-blur .3s var(--sc-ease) backwards }
-.sc-badge {
-  flex: none; height: 16px; padding: 0 5px; border-radius: 5px; font-size: 11px; font-weight: 500; line-height: 16px;
-  background: color-mix(in oklab, var(--sc-accent) 12%, transparent); color: var(--sc-accent);
-}
+.sc-badge { flex: none; height: 16px; font-size: 12px; font-weight: 400; line-height: 16px; color: var(--sc-t3) }
 .sc[data-size="sm"] .sc-opt[data-icon-only] { padding: 0 6px }
 
 @keyframes sc-blur { from { opacity: 0; filter: blur(3px); transform: translateY(3px) } }

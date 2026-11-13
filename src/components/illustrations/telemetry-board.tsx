@@ -13,7 +13,7 @@ export type TelemetryBoardProps = {
   speed?: number
   /** Freeze all motion on the current frame. */
   paused?: boolean
-  /** Colour of the dots, the logo and the vitals numbers (any CSS colour). Defaults to slate dots with a blue vitals card. */
+  /** Colour of the dots, the logo and the vitals numbers (any CSS colour). Defaults to slate dots with an ink vitals card. */
   accent?: string
   /** Accessible description of the scene. */
   label?: string
@@ -52,7 +52,7 @@ const CSS = `
   --tb-ink: #000;
   --tb-surface: #fff;
   --tb-dot: #6b7aa1;
-  --tb-accent: #2f66e8;
+  --tb-accent: color-mix(in oklab, var(--tb-ink) 82%, transparent);
   --tb-ease: cubic-bezier(.22, 1, .36, 1);
   --tb-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
   --tb-t1: color-mix(in oklab, var(--tb-ink) 78%, transparent);
@@ -64,10 +64,11 @@ const CSS = `
   font-family: var(--tb-font, Inter, InterVariable, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
   font-size: 13px; line-height: 18px; color: var(--tb-t1); -webkit-font-smoothing: antialiased;
 }
-:is(.dark, [data-theme="dark"]) .tb { --tb-ink: #fff; --tb-surface: #19191d; --tb-dot: #a3b2dc; --tb-accent: #6f9bff; }
+:is(.dark, [data-theme="dark"]) .tb { --tb-ink: #fff; --tb-surface: #19191d; --tb-dot: #a3b2dc; }
 .tb *, .tb *::before, .tb *::after { box-sizing: border-box }
 .tb-stage { position: absolute; left: 0; top: 0; width: ${W}px; height: ${H}px; transform-origin: 0 0; transform: scale(var(--tb-scale)) }
-.tb-art { position: absolute; left: 0; top: 0; width: ${W}px; height: ${H}px; display: block; pointer-events: none; color: var(--tb-art, var(--tb-dot)) }
+.tb-art { position: absolute; left: 0; top: 0; width: ${W}px; height: ${H}px; display: block; pointer-events: none; color: var(--tb-art, var(--tb-dot));
+  clip-path: path("M40 30h262v480H40ZM314 30h366v236H314ZM314 274h366v236H314Z") }
 
 /* Editorial panels: flat white sheets with a hairline shadow. */
 .tb-panel { position: absolute; background: var(--tb-surface); border-radius: 2px;
@@ -99,21 +100,21 @@ const CSS = `
 :is(.dark, [data-theme="dark"]) .tb-vc { background: linear-gradient(160deg, rgb(48 50 60 / .6), rgb(28 29 36 / .42));
   box-shadow: 0 0 0 .5px rgb(255 255 255 / .12), inset 0 1px 0 rgb(255 255 255 / .1), 0 18px 36px -14px rgb(0 0 0 / .7) }
 .tb-vc-head { display: flex; justify-content: space-between; align-items: flex-start }
-.tb-vc-title { font-size: 12.5px; line-height: 16px; color: var(--tb-accent); font-weight: 450 }
-.tb-chip { margin-top: 1px; padding: 0 6px; border-radius: 9px; font-family: var(--tb-mono); font-size: 8px; line-height: 15px; color: var(--tb-accent);
-  background: color-mix(in oklab, var(--tb-accent) 10%, transparent); box-shadow: 0 0 0 .5px color-mix(in oklab, var(--tb-accent) 28%, transparent) }
+.tb-vc-title { font-size: 12.5px; line-height: 16px; color: var(--tb-t1); font-weight: 450 }
+.tb-chip { margin-top: 1px; padding: 0 6px; border-radius: 9px; font-family: var(--tb-mono); font-size: 8px; line-height: 15px;
+  color: var(--tb-t2); padding: 0; margin-top: 2px }
 .tb-num { display: flex; justify-content: center; margin-top: 8px; color: var(--tb-accent) }
 .tb-dg-row { display: inline-flex; gap: 7px }
 .tb-dg { display: grid; grid-template-rows: repeat(7, 4px); grid-auto-flow: column; grid-template-columns: repeat(5, 4px); gap: 2px }
 .tb-dg i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .13; transform: scale(.6);
   transition: opacity .5s var(--tb-ease) var(--d, 0ms), transform .5s var(--tb-ease) var(--d, 0ms) }
 .tb-dg i[data-on] { opacity: 1; transform: scale(1) }
-.tb-cap { margin-top: 8px; text-align: center; font-size: 9.5px; line-height: 13px; font-weight: 500; color: var(--tb-accent) }
+.tb-cap { margin-top: 8px; text-align: center; font-size: 9.5px; line-height: 13px; font-weight: 500; color: var(--tb-t2) }
 .tb-ruler { position: relative; height: 28px; margin: 8px 2px 0 }
 .tb-tick { position: absolute; bottom: 10px; width: 1px; margin-left: -.5px; height: var(--h, 5px); border-radius: 1px; background: var(--tb-line); transition: height .5s var(--tb-ease) }
 .tb-tick[data-major] { background: color-mix(in oklab, var(--tb-ink) 30%, transparent) }
 .tb-needle { position: absolute; bottom: 10px; width: 2px; margin-left: -1px; height: 20px; border-radius: 2px; background: var(--tb-accent); left: var(--p, 0%); transition: left .6s var(--tb-ease) }
-.tb-needle::before { content: ""; position: absolute; left: 50%; top: -3px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--tb-accent); box-shadow: 0 0 0 2.5px color-mix(in oklab, var(--tb-accent) 20%, transparent) }
+.tb-needle::before { content: ""; position: absolute; left: 50%; top: -3px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--tb-accent); }
 .tb-lab { position: absolute; bottom: -2px; transform: translateX(-50%); font-family: var(--tb-mono); font-size: 7px; line-height: 9px; color: var(--tb-t3) }
 .tb-stats { display: flex; justify-content: space-between; margin-top: 9px; padding-top: 8px; border-top: .5px solid var(--tb-line) }
 .tb-stat-v { font-size: 18px; line-height: 21px; font-weight: 300; color: var(--tb-accent); font-variant-numeric: tabular-nums }
@@ -275,7 +276,7 @@ function boardArt(): string {
   parts.push(`<g>${fern(rnd, [-70, 500, 10, 360, 70, 220, 236, 96], 0.86, 0.8)}</g>`)
   parts.push(`<g>${fern(rnd, [-30, 520, 110, 400, 150, 290, 272, 190], 0.5, 0.3)}</g>`)
   // Top right panel: a dragonfly, nearly the size of the panel.
-  parts.push(`<g transform="translate(510 146) rotate(-9) scale(.44)">${dragonfly(rnd)}</g>`)
+  parts.push(`<g transform="translate(490 168) rotate(-9) scale(.36)">${dragonfly(rnd)}</g>`)
   // Bottom right panel: branching tree growing in from the right edge.
   const t: string[] = []
   tree(rnd, 790, 540, (-168 * Math.PI) / 180, 98, 13, 7, t)
@@ -833,9 +834,6 @@ export function TelemetryBoard({
         </div>
 
         {/* Top right panel */}
-        <div style={{ position: "absolute", left: 334, top: 48 }}>
-          <RingMark size={26} />
-        </div>
         <div className="tb-mono tb-up tb-fade" style={{ position: "absolute", right: 58, top: 50, textAlign: "right", "--i": 1 } as React.CSSProperties}>
           {eyebrow[0]}
           <br />

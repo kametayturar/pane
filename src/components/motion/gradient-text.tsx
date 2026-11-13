@@ -3,17 +3,17 @@
 import * as React from "react"
 
 /**
- * GradientText – letters cut from a liquid, ever-flowing gradient.
- * The colours come from `accent` (hue-shifted neighbours) or an explicit `colors` list.
+ * GradientText (Ink Sweep) – letters whose ink brightness drifts across them, one neutral colour, no hue.
+ * Use it on a single phrase. Pass `colors` only when a brand truly needs hue.
  *
- *   <GradientText as="h1" accent="#7c3aed">Make something people remember</GradientText>
+ *   <GradientText as="h1">Make something people remember</GradientText>
  */
 
 export type GradientTextProps = {
   children?: React.ReactNode
   /** Element to render. Default "span". */
   as?: React.ElementType
-  /** Base colour; the other stops are hue-shifted from it. Any CSS colour. */
+  /** Optional tint for the ink (any CSS colour). Default is neutral ink. */
   accent?: string
   /** Explicit gradient stops. Overrides the colours derived from `accent`. */
   colors?: string[]
@@ -27,45 +27,35 @@ export type GradientTextProps = {
 
 const CSS = `
 .gt {
-  --gt-accent: #0060e2;
   --gt-speed: 1;
-  /* Fallback stops for engines without relative colour syntax. */
-  --gt-c1: var(--gt-accent);
-  --gt-c2: color-mix(in oklab, var(--gt-accent) 55%, #ff4fa3);
-  --gt-c3: color-mix(in oklab, var(--gt-accent) 55%, #19c6ff);
-  --gt-c4: color-mix(in oklab, var(--gt-accent) 60%, #ffffff);
+  /* Ink sweep: one neutral ink, its own brightness travels across the letters. */
+  --gt-ink: 0 0 0;
+  --gt-c1: rgb(var(--gt-ink) / .92);
+  --gt-c2: rgb(var(--gt-ink) / .4);
+  --gt-c3: rgb(var(--gt-ink) / .72);
+  --gt-c4: rgb(var(--gt-ink) / .34);
   display: inline-block; max-width: 100%;
   padding-bottom: .1em; margin-bottom: -.1em;
   color: var(--gt-c1);
 }
-@supports (color: oklch(from red l c h)) {
-  .gt {
-    --gt-c2: oklch(from var(--gt-accent) calc(l + .06) c calc(h + 55));
-    --gt-c3: oklch(from var(--gt-accent) calc(l + .1) c calc(h - 50));
-    --gt-c4: oklch(from var(--gt-accent) calc(l + .18) calc(c * .85) calc(h + 20));
-  }
-}
-:is(.dark, [data-theme="dark"]) .gt { --gt-accent: #4d8dff }
+:is(.dark, [data-theme="dark"]) .gt { --gt-ink: 255 255 255 }
 .gt, .gt *, .gt *::before, .gt *::after { box-sizing: border-box }
 
 @supports ((background-clip: text) or (-webkit-background-clip: text)) {
   .gt {
     --gt-stops: var(--gt-c1), var(--gt-c2), var(--gt-c3), var(--gt-c4), var(--gt-c1);
     color: transparent; -webkit-text-fill-color: transparent;
-    background-image:
-      radial-gradient(60% 140% at 50% 0%, rgb(255 255 255 / .5), transparent 70%),
-      linear-gradient(100deg, var(--gt-stops));
-    background-size: 150% 100%, 200% 100%;
-    background-repeat: repeat-x, repeat-x;
+    background-image: linear-gradient(100deg, var(--gt-stops));
+    background-size: 200% 100%;
+    background-repeat: repeat-x;
     -webkit-background-clip: text; background-clip: text;
-    animation: gt-flow calc(7s / var(--gt-speed)) linear infinite;
+    animation: gt-flow calc(7s / var(--gt-speed)) cubic-bezier(.22, 1, .36, 1) infinite;
   }
 }
-/* Two layers at different speeds make the colour swim instead of scrolling: the glint drifts the other way
-   (and wraps) while the colour field travels exactly one tile, so the loop is seamless. */
+/* The ink field travels exactly one tile, so the loop is seamless. */
 @keyframes gt-flow {
-  from { background-position: 300% 0, 0% 0 }
-  to { background-position: 0% 0, 200% 0 }
+  from { background-position: 0% 0 }
+  to { background-position: 200% 0 }
 }
 
 .gt[data-paused] { animation-play-state: paused }
@@ -80,7 +70,12 @@ const CSS = `
 
 export function GradientText({ children, as: As = "span", accent, colors, speed = 1, paused, className, style }: GradientTextProps) {
   const rootStyle = { ...style, "--gt-speed": speed } as Record<string, unknown>
-  if (accent) rootStyle["--gt-accent"] = accent
+  if (accent) {
+    rootStyle["--gt-c1"] = accent
+    rootStyle["--gt-c3"] = `color-mix(in oklab, ${accent} 70%, transparent)`
+    rootStyle["--gt-c2"] = `color-mix(in oklab, ${accent} 38%, transparent)`
+    rootStyle["--gt-c4"] = `color-mix(in oklab, ${accent} 32%, transparent)`
+  }
   if (colors && colors.length > 0) {
     const list = colors.length === 1 ? [colors[0], colors[0]] : colors
     rootStyle["--gt-stops"] = [...list, list[0]].join(", ")

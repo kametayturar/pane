@@ -201,9 +201,9 @@ const rect = (x: number, y: number, w: number, h: number, r = 0): P => ({ x, y, 
 /* ----------------------------------------------------------------- slop -> crafted page */
 
 const SLOP_VARIANTS = [
-  { h1: "Build with", h2: "less noise.", emoji: ["🚀", "⚡", "🔒"], tag: "NEW · v2", cta: "Start free" },
-  { h1: "Calm tools for", h2: "serious work.", emoji: ["🎯", "💡", "🔥"], tag: "BETA", cta: "Get started" },
-  { h1: "Make it feel", h2: "crafted.", emoji: ["✨", "🌈", "💎"], tag: "2026", cta: "See how" },
+  { h1: "Build with", h2: "less noise.", emoji: ["●", "▲", "■"], tag: "v2", cta: "Start free" },
+  { h1: "Calm tools for", h2: "serious work.", emoji: ["◆", "●", "▲"], tag: "Beta", cta: "Get started" },
+  { h1: "Make it feel", h2: "crafted.", emoji: ["■", "◆", "●"], tag: "2026", cta: "See how" },
 ]
 
 function SlopScene({ id, seed }: { id: string; seed: number }) {
@@ -248,14 +248,14 @@ function SlopScene({ id, seed }: { id: string; seed: number }) {
         <E key={x} k="rect" st={[{ ...rect(x, 18, 16, 4, 2), fill: "var(--v-mute)", op: 0 }, { op: 0.55 }]} dl={300 + i * 40} />
       ))}
       <E k="rect" st={[{ ...rect(9, 32, 302, 1, 0), fill: "var(--v-line)", op: 0 }, { op: 1 }]} dl={300} />
-      <E k="rect" st={[{ ...rect(24, 40, 48, 13, 6.5), fill: "var(--v-accent)", op: 0 }, { op: 0.14 }]} dl={340} />
-      <E k="text" st={[{ x: 31, y: 49.2, fs: 6.6, fw: 650, fill: "var(--v-accent)", op: 0 }, { op: 1 }]} dl={380}>
+      <E k="rect" st={[{ ...rect(24, 40, 48, 13, 6.5), fill: "transparent", stroke: "var(--v-line)", sw: 1, op: 0 }, { op: 1 }]} dl={340} />
+      <E k="text" st={[{ x: 31, y: 49.2, fs: 6.6, fw: 600, fill: "var(--v-mute)", op: 0 }, { op: 1 }]} dl={380}>
         {v.tag}
       </E>
 
       {/* headline */}
       <E k="text" st={[{ x: 160, y: 46, fs: 15, fw: 800, op: 1 }, { x: 150, y: 40, op: 0 }]} textAnchor="middle" fill={g("g2")}>
-        ✨ Unleash the Power of AI ✨
+        Unleash the Power of AI
       </E>
       <E k="text" st={[{ x: 24, y: 72, fs: 16, fw: 650, fill: "var(--v-ink)", op: 0 }, { op: 1 }]} dl={420}>
         {v.h1}
@@ -269,7 +269,7 @@ function SlopScene({ id, seed }: { id: string; seed: number }) {
       {/* cta */}
       <E k="rect" st={[{ ...rect(106, 80, 108, 24, 12), fill: g("g3"), stroke: "#f0abfc", sw: 3, op: 1 }, { ...rect(24, 116, 62, 16, 6), fill: "var(--v-ink)", stroke: "transparent", sw: 0 }]} dl={200} />
       <E k="text" st={[{ x: 160, y: 95.5, fs: 8.5, fw: 700, fill: "#a21caf", op: 1 }, { x: 55, y: 127, fill: "var(--v-surface)", op: 0 }]} textAnchor="middle" dl={200}>
-        Get Started 🚀
+        Get Started
       </E>
       <E k="text" st={[{ x: 55, y: 127, fs: 7.5, fw: 600, fill: "var(--v-surface)", op: 0 }, { op: 1 }]} textAnchor="middle" dl={460}>
         {v.cta}
@@ -288,7 +288,7 @@ function SlopScene({ id, seed }: { id: string; seed: number }) {
           <E k="text" st={[{ x: c.c[0], y: c.c[1] + 5, fs: 16, op: 1 }, { x: cardX[i] + 14, y: 156, op: 0 }]} textAnchor="middle" dl={200 + i * 50}>
             {c.e}
           </E>
-          <E k="circle" st={[{ x: cardX[i] + 12, y: 152, r: 5, fill: "var(--v-accent)", op: 0 }, { op: 0.9 }]} dl={500 + i * 50} />
+          <E k="circle" st={[{ x: cardX[i] + 12, y: 152, r: 5, fill: "var(--v-ink)", op: 0 }, { op: 0.55 }]} dl={500 + i * 50} />
           <E k="rect" st={[{ ...rect(cardX[i] + 24, 147, 44, 3.5, 1.75), fill: "var(--v-ink)", op: 0 }, { op: 0.85 }]} dl={520 + i * 50} />
           <E k="rect" st={[{ ...rect(cardX[i] + 24, 154, 30, 3, 1.5), fill: "var(--v-mute)", op: 0 }, { op: 0.45 }]} dl={540 + i * 50} />
         </React.Fragment>
@@ -341,14 +341,14 @@ function MotionScene({ seed }: { seed: number }) {
       <rect x="20" y="132" width="172" height="2" rx="1" fill="var(--v-line)" />
       <g className="sv-lane">
         <g className="sv-ball sv-ball-ease">
-          <circle cx="29" cy="133" r="9" fill="var(--v-accent)" />
+          <circle cx="29" cy="133" r="9" fill="var(--v-ink)" />
         </g>
       </g>
       {/* curve graph */}
       <rect x="206" y="22" width="100" height="136" rx="8" fill="var(--v-soft)" />
       <path d="M216 138 H296 M216 138 V58" stroke="var(--v-line)" strokeWidth="1" fill="none" />
       <path d="M216 138 L296 58" stroke="var(--v-mute)" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-      <path d={bezier(cv.c[0], cv.c[1], cv.c[2], cv.c[3])} stroke="var(--v-accent)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d={bezier(cv.c[0], cv.c[1], cv.c[2], cv.c[3])} stroke="var(--v-ink)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
       <text x="216" y="151" fontSize="6" fill="var(--v-mute)">
         time
       </text>
@@ -363,7 +363,7 @@ function MotionScene({ seed }: { seed: number }) {
         </g>
         <g className="sv-gdot-x">
           <g className="sv-gdot-y sv-gdot-y-ease">
-            <circle cx="216" cy="138" r="3.6" fill="var(--v-accent)" />
+            <circle cx="216" cy="138" r="3.6" fill="var(--v-ink)" />
           </g>
         </g>
       </g>
@@ -738,7 +738,7 @@ function CopyScene({ before, after }: { before: string; after: string }) {
   return (
     <div className="absolute inset-2 flex flex-col justify-center gap-3 rounded-[10px] bg-[var(--v-surface)] px-[6%] py-3 shadow-[0_0_0_1px_var(--v-line)]">
       <div>
-        <div className="mb-1 text-[10px] font-semibold tracking-wide text-[var(--v-bad)] uppercase">Without</div>
+        <div className="mb-1 text-[11px] font-medium text-[var(--v-mute)]">Without</div>
         <p className="text-[length:clamp(12px,3.6cqw,16px)] leading-snug text-[var(--v-ink2)]">
           {bw.map((w, i) => (
             <span
@@ -746,7 +746,7 @@ function CopyScene({ before, after }: { before: string; after: string }) {
               className="mr-[0.28em] inline-block"
               style={{
                 color: fin ? "var(--v-mute)" : undefined,
-                backgroundImage: "linear-gradient(var(--v-bad),var(--v-bad))",
+                backgroundImage: "linear-gradient(var(--v-mute),var(--v-mute))",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "0 58%",
                 backgroundSize: fin ? "100% 1.6px" : "0% 1.6px",
@@ -760,7 +760,7 @@ function CopyScene({ before, after }: { before: string; after: string }) {
       </div>
       <div className="h-px bg-[var(--v-line)]" />
       <div>
-        <div className="mb-1 text-[10px] font-semibold tracking-wide text-[var(--v-good)] uppercase">With the skill</div>
+        <div className="mb-1 text-[11px] font-medium text-[var(--v-ink2)]">With the skill</div>
         <p className="min-h-[1.4em] text-[length:clamp(13px,4.2cqw,19px)] leading-snug font-semibold tracking-tight text-[var(--v-ink)]">
           {aw.map((w, i) => (
             <span
@@ -887,26 +887,19 @@ export function SkillVisual({
       </div>
       {kind !== "copy" && (
         <div className={cn("mt-2 space-y-1", size === "large" ? "text-[13px] leading-5" : "text-[12px] leading-[18px]")}>
-          <CaptionRow active={!isAfter} tone="bad" label="Before" text={before} clamp={size === "card"} />
-          <CaptionRow active={isAfter} tone="good" label="After" text={after} clamp={size === "card"} />
+          <CaptionRow active={!isAfter} label="Before" text={before} clamp={size === "card"} />
+          <CaptionRow active={isAfter} label="After" text={after} clamp={size === "card"} />
         </div>
       )}
     </div>
   )
 }
 
-function CaptionRow({ active, tone, label, text, clamp }: { active: boolean; tone: "bad" | "good"; label: string; text: string; clamp: boolean }) {
+function CaptionRow({ active, label, text, clamp }: { active: boolean; label: string; text: string; clamp: boolean }) {
   return (
-    <div className={cn("flex items-start gap-2 transition-opacity duration-500", active ? "opacity-100" : "opacity-45")}>
-      <span
-        className={cn(
-          "mt-[3px] inline-flex h-[15px] w-[46px] shrink-0 items-center justify-center gap-1 rounded-full text-[9.5px] font-semibold tracking-wide uppercase",
-          tone === "bad" ? "bg-rose-500/10 text-rose-600 dark:text-rose-300" : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
-        )}
-      >
-        {label}
-      </span>
-      <span title={clamp ? text : undefined} className={cn("min-w-0 flex-1 text-neutral-600 dark:text-neutral-300", clamp && "truncate")}>{text}</span>
+    <div className={cn("flex flex-col items-start gap-0 transition-opacity duration-500 min-[420px]:flex-row min-[420px]:gap-2", active ? "opacity-100" : "opacity-70")}>
+      <span className="w-[42px] shrink-0 text-[12px] font-medium text-neutral-600 dark:text-neutral-300">{label}</span>
+      <span title={clamp ? text : undefined} className={cn("min-w-0 flex-1 text-neutral-700 dark:text-neutral-200", clamp && "truncate")}>{text}</span>
     </div>
   )
 }

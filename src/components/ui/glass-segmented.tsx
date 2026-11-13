@@ -101,7 +101,7 @@ const CSS = `
 .gsg-seg:disabled { opacity: .4; cursor: default }
 .gsg-seg:focus-visible { outline: 2px solid color-mix(in oklab, var(--gsg-accent) 70%, transparent); outline-offset: -1px }
 .gsg-seg svg { width: 16px; height: 16px; flex: none }
-.gsg-badge { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; font-size: 11px; line-height: 18px; text-align: center; color: #fff; background: var(--gsg-accent); font-variant-numeric: tabular-nums }
+.gsg-badge { min-width: 12px; font-size: 12px; line-height: 18px; text-align: center; opacity: .6; font-variant-numeric: tabular-nums }
 
 @media (prefers-reduced-transparency: reduce) {
   .gsg { -webkit-backdrop-filter: none; backdrop-filter: none; background: color-mix(in oklab, #f1f1f4 96%, transparent) }

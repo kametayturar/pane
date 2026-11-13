@@ -28,7 +28,7 @@ export type DecisionInboxProps = {
   decisions?: Decision[]
   /** Called when someone picks an answer. */
   onDecide?: (decision: Decision, answer: DecisionAnswer) => void
-  /** How long the green confirmation stays before the row folds away, in ms. */
+  /** How long the confirmation stays before the row folds away, in ms. */
   confirmMs?: number
   /** Text shown when nothing is left. */
   emptyText?: string
@@ -91,10 +91,7 @@ const CSS = `
   display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px;
   border-bottom: .5px solid var(--di-line); font-weight: 500; color: var(--di-t1);
 }
-.di-glyph { flex: none; width: 16px; height: 16px; color: var(--di-warn); animation: di-pop .36s var(--di-ease) backwards }
-.di-glyph[data-state="clear"] { color: var(--di-good) }
-.di-glyph .di-cut { stroke: #fff }
-.di-glyph .di-cut-dot { fill: #fff }
+.di-glyph { flex: none; width: 16px; height: 16px; color: var(--di-t3); animation: di-pop .36s var(--di-ease) backwards }
 .di-head-text { animation: di-in .32s var(--di-ease) backwards }
 
 /* A row folds away by animating its grid track from 1fr to 0fr */
@@ -133,9 +130,8 @@ const CSS = `
 .di .di-btn--primary { background: var(--di-t1); color: var(--di-surface); box-shadow: none }
 .di .di-btn--primary:hover { background: color-mix(in oklab, var(--di-ink) 78%, transparent) }
 
-.di-done { display: flex; align-items: center; gap: 6px; height: 28px; font-weight: 500; color: var(--di-good); animation: di-in .36s var(--di-ease) backwards }
+.di-done { display: flex; align-items: center; gap: 6px; height: 28px; font-weight: 500; color: var(--di-t2); animation: di-in .36s var(--di-ease) backwards }
 .di-done svg { width: 16px; height: 16px; animation: di-pop .36s var(--di-ease) backwards }
-.di-done .di-cut { stroke: #fff }
 
 .di-empty { margin: 0; padding: 14px 16px; color: var(--di-t3); animation: di-in .32s var(--di-ease) backwards }
 
@@ -170,17 +166,15 @@ const DEFAULT_DECISIONS: Decision[] = [
 ]
 
 const Warn = () => (
-  <svg className="di-glyph" viewBox="0 0 16 16" aria-hidden>
-    <path d="M6.7 2.3a1.5 1.5 0 0 1 2.6 0l5.4 9.4A1.5 1.5 0 0 1 13.4 14H2.6a1.5 1.5 0 0 1-1.3-2.3Z" fill="currentColor" />
-    <path className="di-cut" d="M8 5.8v3.2" strokeWidth="1.4" strokeLinecap="round" fill="none" />
-    <circle className="di-cut-dot" cx="8" cy="11.3" r="0.8" />
+  <svg className="di-glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M2.5 9.5 4 3.5h8l1.5 6v3h-11z" />
+    <path d="M2.5 9.5h3.2a2.3 2.3 0 0 0 4.6 0h3.2" />
   </svg>
 )
 
 const Tick = ({ className, state }: { className?: string; state?: string }) => (
-  <svg className={className} data-state={state} viewBox="0 0 16 16" aria-hidden>
-    <circle cx="8" cy="8" r="6.5" fill="currentColor" />
-    <path className="di-cut" d="m5.3 8.2 1.8 1.8 3.6-3.8" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+  <svg className={className} data-state={state} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="m3.5 8.4 3 3 6-6.4" />
   </svg>
 )
 
@@ -188,7 +182,7 @@ const Tick = ({ className, state }: { className?: string; state?: string }) => (
 /*                                DecisionInbox                               */
 /* -------------------------------------------------------------------------- */
 
-/** Open decisions with two quick answers each. An answered row confirms in green, folds away and opens the next one. */
+/** Open decisions with two quick answers each. An answered row confirms in muted text, folds away and opens the next one. */
 export function DecisionInbox({
   decisions = DEFAULT_DECISIONS,
   onDecide,

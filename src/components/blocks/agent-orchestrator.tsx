@@ -633,7 +633,7 @@ function StreamText({ text, stream }: { text: string; stream: boolean }) {
   )
 }
 
-/** One line of output. While it streams it glides left under a soft edge so the newest words stay in view; settled lines rest at the start. */
+/** One line of output. Long lines end in an ellipsis. */
 function Ticker({ text, live }: { text: string; live: boolean }) {
   const box = React.useRef<HTMLSpanElement>(null)
   const inner = React.useRef<HTMLSpanElement>(null)
@@ -641,10 +641,10 @@ function Ticker({ text, live }: { text: string; live: boolean }) {
     const b = box.current
     const i = inner.current
     if (!b || !i) return
-    const over = live ? Math.max(0, i.scrollWidth - b.clientWidth) : 0
-    i.style.transform = over ? `translateX(${-over}px)` : ""
-    b.dataset.over = over ? "1" : ""
-  }, [live])
+    // Long lines end in an ellipsis; the start of the line always stays readable.
+    i.style.transform = ""
+    b.dataset.over = ""
+  }, [])
   React.useLayoutEffect(() => {
     place()
     const b = box.current
@@ -677,14 +677,14 @@ const CSS = `
   --aor-line: oklch(.935 0 0);
   --aor-wire: oklch(.82 0 0);
   --aor-fill: oklch(.978 0 0);
-  --aor-ok: oklch(.49 .19 150);
+  --aor-ok: oklch(.3 0 0);
   --aor-bad: oklch(.54 .21 25);
   --aor-btn: oklch(.33 0 0);
   --aor-btn-fg: #fff;
-  --aor-s1: oklch(.58 .15 250);
-  --aor-s2: oklch(.5 .19 307);
-  --aor-s3: oklch(.72 .18 74);
-  --aor-s4: oklch(.58 .17 175);
+  --aor-s1: oklch(.25 0 0);
+  --aor-s2: oklch(.42 0 0);
+  --aor-s3: oklch(.58 0 0);
+  --aor-s4: oklch(.72 0 0);
   --aor-glint: 255 255 255;
   --aor-ease: cubic-bezier(.22, 1, .36, 1);
   position: relative; container-type: inline-size; container-name: aor; width: 100%; max-width: 1080px; margin-inline: auto;
@@ -702,14 +702,14 @@ const CSS = `
   --aor-line: oklch(1 0 0 / .1);
   --aor-wire: oklch(1 0 0 / .22);
   --aor-fill: oklch(1 0 0 / .045);
-  --aor-ok: oklch(.78 .17 150);
+  --aor-ok: oklch(.9 0 0);
   --aor-bad: oklch(.72 .19 25);
   --aor-btn: oklch(.95 0 0);
   --aor-btn-fg: oklch(.2 0 0);
-  --aor-s1: oklch(.72 .14 250);
-  --aor-s2: oklch(.72 .17 307);
-  --aor-s3: oklch(.82 .16 80);
-  --aor-s4: oklch(.76 .15 175);
+  --aor-s1: oklch(.94 0 0);
+  --aor-s2: oklch(.8 0 0);
+  --aor-s3: oklch(.66 0 0);
+  --aor-s4: oklch(.52 0 0);
   --aor-glint: 255 255 255;
 }
 .aor *, .aor *::before, .aor *::after { box-sizing: border-box }
@@ -796,7 +796,6 @@ const CSS = `
 .aor-ticker { display: block; overflow: hidden; white-space: nowrap; min-width: 0 }
 .aor-ticker[data-over="1"] { -webkit-mask-image: linear-gradient(90deg, transparent, #000 18px); mask-image: linear-gradient(90deg, transparent, #000 18px) }
 .aor-ticker-in { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis }
-.aor-ticker[data-live] .aor-ticker-in { display: inline-block; max-width: none; overflow: visible; transition: transform .22s linear }
 .aor-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; line-height: 18px; color: var(--aor-t3) }
 .aor-metrics { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums }
 .aor-sep { width: 2px; height: 2px; border-radius: 50%; background: currentColor }

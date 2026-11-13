@@ -1,5 +1,15 @@
 import { ThinkingState, type ThinkingStep } from "@/components/ui/thinking-state"
-import { ICONS } from "./_icons"
+
+const mono = (letter: string) => (
+  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden className="text-neutral-500 dark:text-neutral-400">
+    <rect x=".5" y=".5" width="15" height="15" rx="4" fill="none" stroke="currentColor" strokeOpacity=".35" />
+    <text x="8" y="11.2" textAnchor="middle" fontSize="9" fontWeight="500" fill="currentColor" fontFamily="inherit">{letter}</text>
+  </svg>
+)
+const ICONS = {
+  notion: mono("N"), slack: mono("S"), appstore: mono("A"), wiki: mono("W"),
+  sensor: mono("T"), ads: mono("G"), linear: mono("L"),
+}
 
 const STEPS: ThinkingStep[] = [
   {

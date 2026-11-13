@@ -63,7 +63,7 @@ const DEFAULT_SUBTASKS: ProjectFlowSubtask[] = [
   { title: "Build and test", note: "Ship behind a flag on Friday", role: { name: "Engineer", person: "Jonas" } },
 ]
 
-const PALETTE = ["#8b5cf6", "#f59e0b", "#10b981", "#ec4899", "#06b6d4"]
+const PALETTE = ["var(--pf-t2)"]
 
 /* -------------------------------------------------------------------------- */
 /*                                   Layout                                   */
@@ -134,7 +134,7 @@ const CSS = `
 }
 .pf-root {
   left: ${ROOT.x}px; width: ${ROOT.w}px; height: ${ROOT.h}px; flex-direction: column; justify-content: space-between; padding: 12px 14px; border-radius: 14px;
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--pf-accent) 38%, transparent), var(--pf-float), 0 0 32px -6px color-mix(in oklab, var(--pf-accent) 35%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--pf-accent) 38%, transparent), var(--pf-float);
 }
 .pf-eyebrow { display: flex; align-items: center; gap: 6px; font-size: 10.5px; line-height: 14px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--pf-t3) }
 .pf-eyebrow i { width: 6px; height: 6px; border-radius: 2px; background: var(--pf-accent) }
@@ -151,16 +151,16 @@ const CSS = `
 .pf-role { left: ${ROLE.x}px; width: ${ROLE.w}px; height: ${ROLE.h}px; align-items: center; gap: 8px; padding: 0 10px 0 9px; border-radius: 11px }
 .pf-avatar {
   display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; font-size: 11px; font-weight: 600; line-height: 1;
-  color: var(--c); background: color-mix(in oklab, var(--c) 16%, transparent); box-shadow: inset 0 0 0 .5px color-mix(in oklab, var(--c) 40%, transparent);
+  color: var(--pf-t2); background: var(--pf-fill); box-shadow: inset 0 0 0 .5px var(--pf-line);
 }
 .pf-who { flex: 1; min-width: 0; display: flex; flex-direction: column }
 .pf-role-name { font-size: 12px; line-height: 16px; font-weight: 500; color: var(--pf-t1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .pf-person { font-size: 11px; line-height: 14px; color: var(--pf-t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .pf-tick {
-  flex: none; display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; color: #fff; background: #22a06b;
+  flex: none; display: grid; place-items: center; width: 16px; height: 16px; color: var(--pf-t1);
   animation: pf-pop calc(.5s / var(--pf-speed, 1)) var(--pf-ease) backwards;
 }
-.pf-tick svg { width: 10px; height: 10px }
+.pf-tick svg { width: 14px; height: 14px }
 
 /* Lines draw from their start; a pulse then travels along each branch */
 .pf-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible }

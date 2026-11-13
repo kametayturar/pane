@@ -14,5 +14,5 @@ export const notes = [
   "The ripple is one keyframe animation shared by every tile; the only thing that differs is `animation-delay`, set to the tile's normalised distance from the centre × part of the cycle. A wave appears without a single line of JS running per frame.",
   "The distance is stretched vertically (dy × 1.25) so the wave front looks round on a grid whose rows are closer together than its columns.",
   "A radial-gradient `mask-image` on the wall fades the outer tiles to nothing, so the grid has no hard edge on any backdrop.",
-  "Tinted tiles set a --tint variable and mix it with color-mix(): the wash, the glyph colour and the ring all derive from that one value.",
+  "A tile can still take a tint prop; the default wall stays neutral and only the lit tile uses the accent.",
 ]

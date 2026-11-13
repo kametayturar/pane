@@ -17,7 +17,7 @@ export type ApprovalCardProps = {
   title?: string
   /** One line of context below the title; truncates. */
   description?: React.ReactNode
-  /** Tinted badge in the header (gray, amber, red); leave out to hide it. */
+  /** Quiet risk label with a shield icon in the header; leave out to hide it. */
   risk?: ApprovalRisk
   /** Icon in the 32px header tile; SVGs get a 16px stroke style. Defaults to a shield. */
   icon?: React.ReactNode
@@ -37,7 +37,7 @@ export type ApprovalCardProps = {
   onDeny?: (info: { reason: "user" | "timeout" }) => void
   /** Shows an Edit button before Deny. */
   onEdit?: () => void
-  /** Seconds until the request expires – quiet "Expires in 0:42" text, amber in the last 10 seconds, paused while hovered or focused. */
+  /** Seconds until the request expires – quiet "Expires in 0:42" text, full ink in the last 10 seconds, paused while hovered or focused. */
   expiresIn?: number
   /** Called when the countdown runs out, right before `onDeny({ reason: "timeout" })`. */
   onExpire?: () => void
@@ -65,7 +65,6 @@ const CSS = `
   --apc-ink: #000;
   --apc-surface: #fff;
   --apc-accent: #0060e2;
-  --apc-amber: #a85a00;
   --apc-danger: #d92d20;
   --apc-t1: color-mix(in oklab, var(--apc-ink) 88%, transparent);
   --apc-t2: color-mix(in oklab, var(--apc-ink) 61%, transparent);
@@ -85,7 +84,6 @@ const CSS = `
   --apc-ink: #fff;
   --apc-surface: #1c1c1e;
   --apc-accent: #4d8dff;
-  --apc-amber: #f5a524;
   --apc-danger: #ff6b60;
   --apc-t1: color-mix(in oklab, var(--apc-ink) 90%, transparent);
   --apc-t2: color-mix(in oklab, var(--apc-ink) 62%, transparent);
@@ -122,11 +120,11 @@ const CSS = `
 .apc-title { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 500; line-height: 20px; color: var(--apc-ink) }
 .apc-desc { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; line-height: 16px; color: var(--apc-t3) }
 .apc-risk {
-  flex: none; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; white-space: nowrap;
-  font-size: 12px; font-weight: 500; line-height: 16px; color: var(--apc-t2); background: var(--apc-fill2);
+  flex: none; display: inline-flex; align-items: center; height: 22px; white-space: nowrap;
+  gap: 5px; font-size: 12px; font-weight: 400; line-height: 16px; color: var(--apc-t3);
 }
-.apc-risk[data-risk="medium"] { color: var(--apc-amber); background: color-mix(in oklab, var(--apc-amber) 12%, transparent) }
-.apc-risk[data-risk="high"] { color: var(--apc-danger); background: color-mix(in oklab, var(--apc-danger) 11%, transparent) }
+.apc-risk svg { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round }
+.apc-risk[data-risk="high"] { color: var(--apc-t2) }
 
 /* Preview */
 .apc-preview { margin-top: 12px; padding: 4px 12px; border-radius: 8px; background: var(--apc-fill); box-shadow: inset 0 0 0 .5px var(--apc-line) }
@@ -180,7 +178,7 @@ const CSS = `
 
 /* Countdown */
 .apc-clock { font-size: 12px; line-height: 16px; color: var(--apc-t3); font-variant-numeric: tabular-nums; white-space: nowrap; transition: color .2s }
-.apc-clock[data-urgent] { color: var(--apc-amber) }
+.apc-clock[data-urgent] { color: var(--apc-ink) }
 .apc-clock[data-paused]::after { content: " · paused" }
 
 /* Resolved row */
@@ -516,8 +514,13 @@ export function ApprovalCard(props: ApprovalCardProps) {
                   </div>
                   {risk && (
                     <span className="apc-risk" data-risk={risk}>
-                      {RISK_LABEL[risk]}
-                      <span className="apc-risk-word">&nbsp;risk</span>
+                      <svg viewBox="0 0 16 16" aria-hidden="true">
+                        <path d="M8 1.75 2.75 3.5v4c0 3 2.1 5.4 5.25 6.75 3.15-1.35 5.25-3.75 5.25-6.75v-4L8 1.75Z" />
+                      </svg>
+                      <span>
+                        {RISK_LABEL[risk]}
+                        <span className="apc-risk-word"> risk</span>
+                      </span>
                     </span>
                   )}
                 </div>

@@ -1,7 +1,6 @@
 import * as React from "react"
 
 import { AIAnswer, type AnswerSource } from "@/components/ui/ai-answer"
-import { ICONS } from "./_icons"
 
 const SOURCES: AnswerSource[] = [
   {
@@ -9,42 +8,36 @@ const SOURCES: AnswerSource[] = [
     title: "Japan launch – timeline and owners",
     href: "https://notion.so",
     snippet: "Target: second half of May. Review build ready 6 May. Owners: Kenji (store listing), Ana (pricing), Lee (ads).",
-    icon: ICONS.notion,
   },
   {
     name: "Slack",
     title: "#launch-jp – store listing status",
     href: "https://slack.com",
     snippet: "Kenji: \u201cScreenshots are localized. The description still needs a native review – our agency is booked out from June.\u201d",
-    icon: ICONS.slack,
   },
   {
     name: "Wikipedia",
     title: "Golden Week – holidays in Japan",
     href: "https://en.wikipedia.org/wiki/Golden_Week_(Japan)",
     snippet: "Golden Week runs from 29 April to 5 May and is one of the busiest holiday periods of the year in Japan.",
-    icon: ICONS.wiki,
   },
   {
     name: "App Store Connect",
     title: "Price tiers – Japanese yen",
     href: "https://appstoreconnect.apple.com",
     snippet: "Suggested tier for $4.99: ¥800 per month. Nearby tiers: ¥480, ¥600, ¥700.",
-    icon: ICONS.appstore,
   },
   {
     name: "Sensor Tower",
     title: "Top productivity apps in Japan – pricing",
     href: "https://sensortower.com",
     snippet: "Median monthly price of the top 20 paid productivity apps in Japan: ¥500. Only 3 charge more than ¥700.",
-    icon: ICONS.sensor,
   },
   {
     name: "Google Ads",
     title: "Cost per install by week – JP, last year",
     href: "https://ads.google.com",
     snippet: "CPI peaked at ¥410 during Golden Week and fell to ¥260 by the third week of May.",
-    icon: ICONS.ads,
   },
 ]
 
@@ -152,7 +145,7 @@ export default function Demo() {
         onCopy={() => track("copied to clipboard")}
       />
       <div className="w-full max-w-[640px] font-mono text-xs text-neutral-500">
-        {log.length ? log.map((l, i) => <div key={i}>→ {l}</div>) : <div>Try copy, 👍/👎, stop or a follow-up.</div>}
+        {log.length ? log.map((l, i) => <div key={i}>→ {l}</div>) : <div>Try copy, feedback, stop or a follow-up.</div>}
       </div>
     </div>
   )

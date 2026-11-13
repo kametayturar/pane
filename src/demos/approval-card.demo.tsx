@@ -81,7 +81,7 @@ export default function Demo() {
           onDeny={() => setB("denied")}
           preview={
             <div className="flex items-center gap-2 text-[12px] leading-4">
-              <span className="rounded bg-red-500/10 px-1.5 py-0.5 font-mono text-red-600 dark:text-red-400">−€1,200.00</span>
+              <span className="font-mono text-red-600 dark:text-red-400">−€1,200.00</span>
               <span className="text-neutral-500 dark:text-neutral-400">from Globex Ltd · card ending 4417</span>
             </div>
           }

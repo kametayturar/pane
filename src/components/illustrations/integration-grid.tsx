@@ -65,19 +65,7 @@ const BASE_ITEMS: IntegrationGridItem[] = [
   g(Target, "Goals"), g(Webhook, "Hooks"), g(Workflow, "Flows"),
 ]
 
-// A handful of tinted tiles, spread through the wall.
-const TINTS: Record<number, string> = {
-  3: "var(--ig-accent)",
-  9: "#12a150",
-  14: "#e8590c",
-  22: "var(--ig-accent)",
-  29: "#8e5cf0",
-  36: "#12a150",
-  43: "#e8590c",
-  50: "#8e5cf0",
-}
-
-const DEFAULT_ITEMS: IntegrationGridItem[] = BASE_ITEMS.map((it, i) => (TINTS[i] ? { ...it, tint: TINTS[i] } : it))
+const DEFAULT_ITEMS: IntegrationGridItem[] = BASE_ITEMS
 
 /* -------------------------------------------------------------------------- */
 /*                                   Helpers                                  */
@@ -172,7 +160,7 @@ const CSS = `
 /* Soft light travelling with the ripple */
 .ig-bloom {
   position: absolute; left: ${W / 2 - 210}px; top: ${H / 2 - 210}px; width: 420px; height: 420px; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(closest-side, color-mix(in oklab, var(--ig-accent) 16%, transparent), transparent);
+  background: none;
   animation: ig-bloom var(--ig-cycle) ease-out infinite;
 }
 @keyframes ig-bloom { 0% { opacity: .9; transform: scale(.2) } 55%, 100% { opacity: 0; transform: scale(1.5) } }
@@ -200,7 +188,7 @@ const CSS = `
   9% {
     transform: scale(1.12); color: var(--ig-accent);
     background-color: color-mix(in oklab, var(--ig-accent) 14%, var(--ig-surface));
-    box-shadow: 0 0 0 1px color-mix(in oklab, var(--ig-accent) 45%, transparent), 0 8px 20px -6px color-mix(in oklab, var(--ig-accent) 45%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--ig-accent) 45%, transparent);
   }
 }
 .ig-tile[data-tint] { --rest: var(--tint) }
@@ -208,8 +196,8 @@ const CSS = `
 /* Hub */
 .ig-hub {
   display: grid; place-items: center; width: 100%; height: 100%; border-radius: 15px; color: #fff; position: relative;
-  background: linear-gradient(160deg, color-mix(in oklab, var(--ig-accent) 80%, #fff), var(--ig-accent) 55%, color-mix(in oklab, var(--ig-accent) 82%, #000));
-  box-shadow: 0 0 0 .5px color-mix(in oklab, var(--ig-accent) 70%, #000), inset 0 1px 0 rgb(255 255 255 / .4), 0 10px 22px -8px color-mix(in oklab, var(--ig-accent) 70%, transparent);
+  background: var(--ig-accent);
+  box-shadow: 0 0 0 .5px color-mix(in oklab, var(--ig-accent) 70%, #000);
 }
 .ig-hub::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;

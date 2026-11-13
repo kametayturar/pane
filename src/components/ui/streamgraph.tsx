@@ -68,12 +68,12 @@ const CSS = `
   --stg-ink: #000;
   --stg-surface: #fff;
   --stg-accent: #0060e2;
-  --stg-s0: oklch(.62 .14 255);
-  --stg-s1: oklch(.5 .18 305);
-  --stg-s2: oklch(.76 .15 75);
-  --stg-s3: oklch(.64 .12 185);
-  --stg-s4: oklch(.7 0 0);
-  --stg-s5: oklch(.84 0 0);
+  --stg-s0: oklch(.5 .15 255);
+  --stg-s1: oklch(.62 .13 255);
+  --stg-s2: oklch(.72 .1 255);
+  --stg-s3: oklch(.8 .07 255);
+  --stg-s4: oklch(.87 .04 255);
+  --stg-s5: oklch(.92 .02 255);
   --stg-lt: #fff;
   --stg-t1: color-mix(in oklab, var(--stg-ink) 88%, transparent);
   --stg-t2: color-mix(in oklab, var(--stg-ink) 61%, transparent);
@@ -103,12 +103,12 @@ const CSS = `
   --stg-ink: #fff;
   --stg-surface: #1c1c1e;
   --stg-accent: #4d8dff;
-  --stg-s0: oklch(.7 .13 255);
-  --stg-s1: oklch(.64 .16 305);
-  --stg-s2: oklch(.78 .14 75);
-  --stg-s3: oklch(.72 .11 185);
-  --stg-s4: oklch(.6 0 0);
-  --stg-s5: oklch(.45 0 0);
+  --stg-s0: oklch(.76 .12 255);
+  --stg-s1: oklch(.66 .12 255);
+  --stg-s2: oklch(.57 .1 255);
+  --stg-s3: oklch(.49 .08 255);
+  --stg-s4: oklch(.42 .06 255);
+  --stg-s5: oklch(.36 .04 255);
   --stg-lt: rgb(0 0 0 / .78);
   --stg-t1: color-mix(in oklab, var(--stg-ink) 90%, transparent);
   --stg-t2: color-mix(in oklab, var(--stg-ink) 62%, transparent);
@@ -405,7 +405,7 @@ export function Streamgraph({
         }
         const w = ss[i]!.label.length * 6.1 + 10
         const x = clamp((bj / (N - 1)) * W, w / 2, W - w / 2)
-        const fit = dl ? clamp((best - 17) / 6, 0, 1) : 0
+        const fit = dl ? clamp((best - 26) / 6, 0, 1) : 0
         t.setAttribute("x", x.toFixed(1))
         t.setAttribute("y", ((lp[bj]! + hp[bj]!) / 2 + 3.8).toFixed(1))
         t.style.opacity = String(fit)

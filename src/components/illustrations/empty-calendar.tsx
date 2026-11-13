@@ -60,8 +60,7 @@ const CSS = `
 .ec-card { fill: var(--ec-card); stroke: var(--ec-card-line); stroke-width: .5; }
 .ec-drop { flood-opacity: var(--ec-shadow); }
 .ec-title { fill: var(--ec-title); font-size: 13px; font-weight: 500; }
-.ec-badge { fill: var(--ec-badge); }
-.ec-badge-text { fill: var(--ec-badge-ink); font-size: 9px; font-weight: 600; letter-spacing: .06em; text-anchor: middle; }
+.ec-badge-text { fill: var(--ec-btn-ink); font-size: 10px; font-weight: 400; text-anchor: end; }
 .ec-bar { fill: var(--ec-bar-a); animation: ec-shimmer calc(2.4s / var(--ec-speed)) ease-in-out infinite; }
 .ec-btn { fill: var(--ec-btn); stroke: var(--ec-card-line); stroke-width: .5; }
 .ec-btn-ink { fill: none; stroke: var(--ec-btn-ink); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
@@ -124,7 +123,7 @@ export function EmptyCalendar({
   accent,
   label = "Stacked calendar cards marked empty, with a disabled join button",
   title = "This week",
-  badge = "EMPTY",
+  badge = "No events",
   action = "Join call",
   className,
 }: EmptyCalendarProps) {
@@ -183,8 +182,7 @@ export function EmptyCalendar({
                 {title}
               </text>
               <g transform="translate(218 34)">
-                <rect className="ec-badge" width="46" height="18" rx="5" />
-                <text className="ec-badge-text" x="23" y="12.5">
+                <text className="ec-badge-text" x="46" y="12.5">
                   {badge}
                 </text>
               </g>

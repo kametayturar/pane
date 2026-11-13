@@ -15,7 +15,7 @@ export default function Demo() {
         reference="INV-2047"
         account="Halcyon Robotics"
         amount="$2,400"
-        status="Overdue 3 days"
+        status="3 days overdue"
         agent="Billing agent"
         contacts={[
           { name: "Priya Nair", email: "priya@halcyon.io" },

@@ -34,7 +34,7 @@ export type ReactionBarProps = {
 const CSS = `
 .rb {
   --rb-ink: #000;
-  --rb-accent: #0060e2;
+  --rb-accent: #000;
   --rb-t1: color-mix(in oklab, var(--rb-ink) 88%, transparent);
   --rb-t2: color-mix(in oklab, var(--rb-ink) 61%, transparent);
   --rb-t3: color-mix(in oklab, var(--rb-ink) 45%, transparent);
@@ -53,7 +53,7 @@ const CSS = `
 }
 :is(.dark, [data-theme="dark"]) .rb {
   --rb-ink: #fff;
-  --rb-accent: #4d8dff;
+  --rb-accent: #fff;
   --rb-t1: color-mix(in oklab, var(--rb-ink) 90%, transparent);
   --rb-t2: color-mix(in oklab, var(--rb-ink) 62%, transparent);
   --rb-t3: color-mix(in oklab, var(--rb-ink) 46%, transparent);
@@ -71,9 +71,9 @@ const CSS = `
 }
 .rb .rb-btn:hover { background: var(--rb-hover); color: var(--rb-t1) }
 .rb .rb-btn[aria-pressed="true"] {
-  background: color-mix(in oklab, var(--rb-accent) 5%, transparent);
-  color: color-mix(in oklab, var(--rb-accent) 76.5%, transparent);
-  box-shadow: inset 0 0 0 .5px color-mix(in oklab, var(--rb-accent) 35%, transparent);
+  background: color-mix(in oklab, var(--rb-ink) 6%, transparent);
+  color: var(--rb-t1);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--rb-ink) 55%, transparent);
 }
 .rb-icon { display: grid; place-items: center; flex: none; width: 16px; height: 16px; color: var(--rb-t3); transition: color .16s }
 .rb .rb-btn:hover .rb-icon { color: var(--rb-t1) }

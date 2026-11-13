@@ -17,7 +17,7 @@ export default function Demo() {
     { id: "settings", label: "Workspace settings", icon: <SettingsIcon />, onSelect: () => setLast("Opened workspace settings") },
     { id: "billing", label: "Billing and usage", icon: <BillingIcon />, onSelect: () => setLast("Opened billing") },
     { id: "docs", label: "API docs", icon: <DocsIcon />, onSelect: () => setLast("Opened API docs") },
-    { id: "apps", label: "Integrations", icon: <AppsIcon />, badge: "3 new", onSelect: () => setLast("Opened integrations") },
+    { id: "apps", label: "Integrations", icon: <AppsIcon />, badge: "3", onSelect: () => setLast("Opened integrations") },
     { id: "logout", label: "Sign out", icon: <LogoutIcon />, onSelect: () => setLast("Signed out") },
   ]
 

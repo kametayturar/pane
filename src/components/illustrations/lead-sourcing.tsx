@@ -133,7 +133,7 @@ const CSS = `
   animation: lsr-run var(--lsr-cycle) cubic-bezier(.5, 0, .3, 1) infinite backwards; animation-delay: var(--lsr-delay, 0s);
 }
 .lsr-shine { stroke-width: 2.5 }
-.lsr-glow { stroke-width: 9; opacity: .35; filter: blur(4px) }
+.lsr-glow { stroke-width: 9; opacity: 0; filter: blur(4px) }
 .lsr-b { --lsr-delay: calc(var(--lsr-cycle) * .38) }
 @keyframes lsr-run {
   0% { stroke-dashoffset: .14; opacity: 0 }
@@ -175,14 +175,14 @@ const CSS = `
   animation: lsr-in calc(.9s / var(--lsr-speed)) var(--lsr-ease) backwards; animation-delay: .24s }
 .lsr-ai-glow {
   position: absolute; inset: -46px; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(closest-side, color-mix(in oklab, var(--lsr-accent) 30%, transparent), transparent);
+  display: none;
   animation: lsr-glow var(--lsr-cycle) ease-in-out infinite;
 }
 @keyframes lsr-glow { 0%, 20% { opacity: .25; transform: scale(.85) } 34% { opacity: 1; transform: scale(1.05) } 70%, 100% { opacity: .25; transform: scale(.85) } }
 .lsr-ai-tile {
   position: relative; display: grid; place-items: center; width: 92px; height: 92px; border-radius: 28px; color: #fff;
-  background: linear-gradient(160deg, color-mix(in oklab, var(--lsr-accent) 80%, #fff), var(--lsr-accent) 55%, color-mix(in oklab, var(--lsr-accent) 82%, #000));
-  box-shadow: 0 0 0 .5px color-mix(in oklab, var(--lsr-accent) 70%, #000), inset 0 1px 0 rgb(255 255 255 / .45), 0 16px 32px -12px color-mix(in oklab, var(--lsr-accent) 70%, transparent);
+  background: var(--lsr-accent);
+  box-shadow: 0 0 0 .5px color-mix(in oklab, var(--lsr-accent) 70%, #000);
   animation: lsr-bump var(--lsr-cycle) var(--lsr-ease) infinite;
 }
 .lsr-ai-tile svg { width: 36px; height: 36px }
@@ -190,14 +190,12 @@ const CSS = `
 
 /* Status pill under the AI tile */
 .lsr-pill {
-  position: absolute; left: ${AI.x}px; top: ${AI.y + 76}px; width: 142px; height: 26px; translate: -50% 0; border-radius: 13px;
-  background: var(--lsr-surface); box-shadow: var(--lsr-shadow); overflow: hidden;
+  position: absolute; left: ${AI.x}px; top: ${AI.y + 76}px; width: 142px; height: 26px; translate: -50% 0; overflow: hidden;
 }
 .lsr-step {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--lsr-t2);
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--lsr-t3);
   opacity: 0; animation: lsr-step var(--lsr-cycle) var(--lsr-ease) infinite; animation-delay: calc(var(--lsr-cycle) * var(--lsr-k) * .3333 - var(--lsr-cycle) * .04);
 }
-.lsr-step::before { content: ""; width: 5px; height: 5px; margin-right: 7px; border-radius: 50%; background: var(--lsr-accent) }
 @keyframes lsr-step {
   0% { opacity: 0; transform: translateY(5px); filter: blur(3px) }
   6%, 28% { opacity: 1; transform: none; filter: none }

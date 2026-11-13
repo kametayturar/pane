@@ -1,6 +1,6 @@
 # Pane
 
-**152 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
+**172 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
 answers with sources, agents you can approve and steer, tactile controls, real glass, and animated scenes for your
 landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 
@@ -62,6 +62,27 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 | [**Steer Swap**](https://paneui.vercel.app/#/steer-swap) · [source](src/components/ui/steer-swap.tsx) | Redirect a running agent: tap the other option and it grows into the headline while the old one shrinks into the row it left, with nothing lost. | `agent` `toggle` `text-effect` `feedback` |
 | [**Pulled Focus**](https://paneui.vercel.app/#/pulled-focus) · [source](src/components/ui/pulled-focus.tsx) | Back from a break: finished work folds into one small row and the one thing that needs you swells into the headline. | `agent` `notification` `text-effect` `feedback` |
 
+### Overlays
+
+| Piece | What it does | Tags |
+| --- | --- | --- |
+| [**Modal**](https://paneui.vercel.app/#/modal) · [source](src/components/ui/modal.tsx) | A dialog that grows out of the button that opened it, dims the page and returns focus when it closes. | `dialog` `agent` `approval` |
+| [**Popover**](https://paneui.vercel.app/#/popover) · [source](src/components/ui/popover.tsx) | A panel anchored to its trigger that flips to stay on screen and glides to the next trigger instead of closing. | `menu` `dialog` `hover` |
+| [**Tooltip**](https://paneui.vercel.app/#/tooltip) · [source](src/components/ui/tooltip.tsx) | A label with a shortcut that waits on the first hover, then shows instantly as you slide along a toolbar. | `hover` `keyboard` `feedback` |
+| [**Drawer**](https://paneui.vercel.app/#/drawer) · [source](src/components/ui/drawer.tsx) | A sheet that follows the finger, rubber-bands past its edge, snaps between heights and leaves at the speed you flicked it. | `dialog` `gesture` `drag` |
+| [**Swipe Row**](https://paneui.vercel.app/#/swipe-row) · [source](src/components/ui/swipe-row.tsx) | A list row you drag to reveal actions; a long swipe or a flick commits and the list closes the gap. | `gesture` `drag` `feedback` |
+| [**Hold to Confirm**](https://paneui.vercel.app/#/hold-to-confirm) · [source](src/components/ui/hold-to-confirm.tsx) | A button that fills while you hold it: the commit is slow, letting go cancels at once. | `button` `approval` `gesture` |
+
+### Stage
+
+| Piece | What it does | Tags |
+| --- | --- | --- |
+| [**Device Frames**](https://paneui.vercel.app/#/device-frames) · [source](src/components/ui/device-frames.tsx) | Browser and phone frames for product shots that scale a fixed stage and bleed off the card edge. | `screen` `marketing` `landing` |
+| [**Cursor Walkthrough**](https://paneui.vercel.app/#/cursor-walkthrough) · [source](src/components/motion/cursor-walkthrough.tsx) | A scripted cursor that moves, clicks, types and drags through any piece and holds on the result. | `pointer-follow` `marketing` `landing` |
+| [**Control Bento**](https://paneui.vercel.app/#/control-bento) · [source](src/components/blocks/control-bento.tsx) | A bento of small live controls for a landing page, with one tile at a time demonstrated by a cursor. | `marketing` `landing` `toggle` |
+| [**Overlay Atlas**](https://paneui.vercel.app/#/overlay-atlas) · [source](src/components/blocks/overlay-atlas.tsx) | Modal, popover, tooltip, toast, sheet and drawer side by side in one product window, each played on hover. | `dialog` `menu` `marketing` |
+| [**Light Cards**](https://paneui.vercel.app/#/light-cards) · [source](src/components/blocks/light-cards.tsx) | Numbered dark feature cards, each with light-painted art cropped by its edge that brightens on hover. | `card` `landing` `glow` |
+
 ### Chat
 
 | Piece | What it does | Tags |
@@ -76,7 +97,7 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 | [**Tool Call Card**](https://paneui.vercel.app/#/tool-call-card) · [source](src/components/ui/tool-call-card.tsx) | One tool call with its arguments, a live status and the result folded in. | `agent` `card` `chat` `loading` |
 | [**Approval Card**](https://paneui.vercel.app/#/approval-card) · [source](src/components/ui/approval-card.tsx) | An action the agent wants to take, waiting for you to approve or deny. | `agent` `approval` `button` `card` |
 | [**Permission Request**](https://paneui.vercel.app/#/permission-request) · [source](src/components/ui/permission-request.tsx) | An app asks for access – scopes, once or always, and a clear deny. | `agent` `approval` `button` `card` |
-| [**Reaction Bar**](https://paneui.vercel.app/#/reaction-bar) · [source](src/components/ui/reaction-bar.tsx) | Emoji reactions that pop, count up and show who reacted. | `button` `chat` `feedback` `hover` |
+| [**Reaction Bar**](https://paneui.vercel.app/#/reaction-bar) · [source](src/components/ui/reaction-bar.tsx) | Reactions that count up and show who reacted. | `button` `chat` `feedback` `hover` |
 | [**Email Draft**](https://paneui.vercel.app/#/email-draft) · [source](src/components/ui/email-draft.tsx) | An AI-drafted email you can review, tweak and send. | `agent` `card` `chat` `form` |
 | [**Comment Thread**](https://paneui.vercel.app/#/comment-thread) · [source](src/components/ui/comment-thread.tsx) | A threaded discussion with replies, mentions and resolve. | `card` `chat` `comment` `hover` |
 
@@ -199,6 +220,14 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 
 | Piece | What it does | Tags |
 | --- | --- | --- |
+| [**Dash Ribbon**](https://paneui.vercel.app/#/dash-ribbon) · [source](src/components/illustrations/dash-ribbon.tsx) | Rows of rounded dashes following a rolling wave, with a run of light traced down one row. | `background` `landing` `flow` |
+| [**Light Form**](https://paneui.vercel.app/#/light-form) · [source](src/components/illustrations/light-form.tsx) | A moth, orchid or fern drawn from hundreds of glowing strands with a chromatic fringe, breathing slowly. | `glow` `background` `landing` |
+| [**Gouache Lake**](https://paneui.vercel.app/#/gouache-lake) · [source](src/components/illustrations/gouache-lake.tsx) | A painted hillside and its reflection drawn from brush dabs, with a small boat leaving a wake. | `background` `landing` `paper` |
+| [**Golden Hills**](https://paneui.vercel.app/#/golden-hills) · [source](src/components/illustrations/golden-hills.tsx) | Grassy hills lit by a low sun, a lone tree and a tiny walker, with cloud shadows drifting over. | `background` `landing` |
+| [**Hatched Skies**](https://paneui.vercel.app/#/hatched-skies) · [source](src/components/illustrations/hatched-skies.tsx) | Clouds filled with fine vertical ticks drifting behind a headline. | `background` `landing` |
+| [**Dash Burst**](https://paneui.vercel.app/#/dash-burst) · [source](src/components/illustrations/dash-burst.tsx) | A ring of radial dashes sized by a metric around one big number, bursting outward from one sector. | `chart` `kpi` `landing` |
+| [**Column Cube**](https://paneui.vercel.app/#/column-cube) · [source](src/components/illustrations/column-cube.tsx) | An isometric block of columns cut open to show a coloured layer, with a scan that lifts the cells it finds. | `3d` `diagram` `landing` |
+| [**Peek Icon**](https://paneui.vercel.app/#/peek-icon) · [source](src/components/illustrations/peek-icon.tsx) | App icons where a character peeks in at an angle over a background that says what the app does. | `card` `marketing` |
 | [**Neural Panels**](https://paneui.vercel.app/#/neural-panels) · [source](src/components/illustrations/neural-panels.tsx) | Dithered terrain and a particle brain in calm editorial cards, with a typing log. | `3d` `agent` `card` `dither` |
 | [**Telemetry Board**](https://paneui.vercel.app/#/telemetry-board) · [source](src/components/illustrations/telemetry-board.tsx) | Dithered art bleeding past editorial panels, ticking telemetry and a glass vitals card. | `card` `dashboard` `dither` `glass` |
 | [**Integration Beam**](https://paneui.vercel.app/#/integration-beam) · [source](src/components/illustrations/integration-beam.tsx) | Your product between the tools it connects, with light pulses along curved beams. | `diagram` `flow` `glow` `landing` |
@@ -221,6 +250,7 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 
 | Piece | What it does | Tags |
 | --- | --- | --- |
+| [**Grain Gradient**](https://paneui.vercel.app/#/grain-gradient) · [source](src/components/motion/grain-gradient.tsx) | A smooth gradient field \u2013 orb, ring, band or wave \u2013 with fine grain so it never bands, exportable as an image. | `gradient` `background` `landing` |
 | [**Dither Field**](https://paneui.vercel.app/#/dither-field) · [source](src/components/motion/dither-field.tsx) | A flowing noise field drawn as ordered-dither dots – a living background. | `background` `dither` `gradient` `hero` |
 | [**Text Reveal**](https://paneui.vercel.app/#/text-reveal) · [source](src/components/motion/text-reveal.tsx) | Text that arrives word by word, each fading out of a soft blur. | `hero` `landing` `marketing` `scroll` |
 | [**Blur Crossfade**](https://paneui.vercel.app/#/blur-crossfade) · [source](src/components/motion/blur-crossfade.tsx) | Swap content through a soft blur while the box glides to its new size. | `card` `feedback` `morph` `tabs` |

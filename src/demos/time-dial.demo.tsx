@@ -25,14 +25,25 @@ const CITIES_24: TimeDialCity[] = [
 
 export default function Demo() {
   const [t, setT] = React.useState(21 * 60)
+  const [alt, setAlt] = React.useState(false)
   return (
     <div className="mx-auto flex w-full max-w-[760px] flex-col gap-10 px-4 py-6">
       <div className="rounded-[34px] border border-black/[.07] bg-neutral-50 p-5 dark:border-white/10 dark:bg-white/[.03] sm:p-8">
         <TimeDial cities={CITIES} value={t} onValueChange={setT} weekday={1} label="Call time" />
       </div>
-      <div className="mx-auto w-full max-w-[420px] rounded-[34px] border border-black/[.07] bg-neutral-50 p-5 dark:border-white/10 dark:bg-white/[.03]">
-        <TimeDial cities={CITIES_24} defaultValue={8 * 60} hourCycle={24} workingHours={[480, 1020]} weekday={3} label="Handover time" />
-      </div>
+      <button
+        type="button"
+        onClick={() => setAlt((a) => !a)}
+        aria-pressed={alt}
+        className="mx-auto text-[13px] text-neutral-500 underline-offset-4 hover:text-neutral-900 hover:underline dark:hover:text-neutral-100"
+      >
+        {alt ? "Hide the 24-hour variant" : "Show the 24-hour variant"}
+      </button>
+      {alt && (
+        <div className="mx-auto w-full max-w-[420px] rounded-[34px] border border-black/[.07] bg-neutral-50 p-5 dark:border-white/10 dark:bg-white/[.03]">
+          <TimeDial cities={CITIES_24} defaultValue={8 * 60} hourCycle={24} workingHours={[480, 1020]} weekday={3} label="Handover time" />
+        </div>
+      )}
     </div>
   )
 }

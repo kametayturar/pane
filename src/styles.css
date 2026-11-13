@@ -201,6 +201,15 @@ html[data-style="mono"] .chr {
   --chr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .cbn {
+  --cbn-ink: #000;
+  --cbn-surface: #fff;
+  --cbn-accent: #111;
+  --cbn-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --cbn-ease: cubic-bezier(.2, .9, .1, 1);
+  --cbn-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .cgx {
   --cgx-ink: #000;
   --cgx-surface: #fff;
@@ -277,6 +286,14 @@ html[data-style="mono"] .kb {
   --kb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .lcd {
+  --lcd-ink: #000;
+  --lcd-accent: #111;
+  --lcd-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --lcd-ease: cubic-bezier(.2, .9, .1, 1);
+  --lcd-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .lm {
   --lm-ink: #000;
   --lm-accent: #111;
@@ -316,6 +333,13 @@ html[data-style="mono"] .mwf {
   --mwf-accent: #111;
   --mwf-ease: cubic-bezier(.2, .9, .1, 1);
   --mwf-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .ovl {
+  --ovl-ink: #000;
+  --ovl-accent: #111;
+  --ovl-ease: cubic-bezier(.2, .9, .1, 1);
+  --ovl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .pst {
@@ -381,12 +405,36 @@ html[data-style="mono"] .atl {
   --atl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .ccb {
+  --ccb-ink: #000;
+  --ccb-surface: #fff;
+  --ccb-accent: #111;
+  --ccb-ease: cubic-bezier(.2, .9, .1, 1);
+  --ccb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .cf {
   --cf-ink: #000;
   --cf-surface: #fff;
   --cf-accent: #111;
   --cf-ease: cubic-bezier(.2, .9, .1, 1);
   --cf-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .dbu {
+  --dbu-ink: #000;
+  --dbu-surface: #fff;
+  --dbu-accent: #111;
+  --dbu-ease: cubic-bezier(.2, .9, .1, 1);
+  --dbu-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .drb {
+  --drb-ink: #000;
+  --drb-surface: #fff;
+  --drb-accent: #111;
+  --drb-ease: cubic-bezier(.2, .9, .1, 1);
+  --drb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .dtf {
@@ -444,6 +492,33 @@ html[data-style="mono"] .gk {
   --gk-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .ghl {
+  --ghl-ink: #000;
+  --ghl-surface: #fff;
+  --ghl-accent: #111;
+  --ghl-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --ghl-ease: cubic-bezier(.2, .9, .1, 1);
+  --ghl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .gq {
+  --gq-ink: #000;
+  --gq-surface: #fff;
+  --gq-accent: #111;
+  --gq-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --gq-ease: cubic-bezier(.2, .9, .1, 1);
+  --gq-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .hsk {
+  --hsk-ink: #000;
+  --hsk-surface: #fff;
+  --hsk-accent: #111;
+  --hsk-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --hsk-ease: cubic-bezier(.2, .9, .1, 1);
+  --hsk-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .ib {
   --ib-ink: #000;
   --ib-accent: #111;
@@ -484,6 +559,15 @@ html[data-style="mono"] .lsr {
   --lsr-float: 0 0 0 1px rgb(0 0 0 / .2), 4px 4px 0 0 rgb(0 0 0 / .08);
   --lsr-ease: cubic-bezier(.2, .9, .1, 1);
   --lsr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lfm {
+  --lfm-ink: #000;
+  --lfm-surface: #fff;
+  --lfm-accent: #111;
+  --lfm-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --lfm-ease: cubic-bezier(.2, .9, .1, 1);
+  --lfm-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .lc {
@@ -536,6 +620,14 @@ html[data-style="mono"] .pyf {
   --pyf-accent: #111;
   --pyf-shadow: 0 0 0 1px rgb(0 0 0 / .14);
   --pyf-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .pki {
+  --pki-ink: #000;
+  --pki-surface: #fff;
+  --pki-accent: #111;
+  --pki-ease: cubic-bezier(.2, .9, .1, 1);
+  --pki-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .ps {
@@ -644,6 +736,15 @@ html[data-style="mono"] .bx {
   --bx-ease: cubic-bezier(.2, .9, .1, 1);
 }
 
+html[data-style="mono"] .cwk {
+  --cwk-ink: #000;
+  --cwk-surface: #fff;
+  --cwk-accent: #111;
+  --cwk-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --cwk-ease: cubic-bezier(.2, .9, .1, 1);
+  --cwk-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .df {
   --df-accent: #111;
 }
@@ -658,7 +759,16 @@ html[data-style="mono"] .gfl {
 }
 
 html[data-style="mono"] .gt {
-  --gt-accent: #111;
+  --gt-ink: #000;
+}
+
+html[data-style="mono"] .gnr {
+  --gnr-ink: #000;
+  --gnr-surface: #fff;
+  --gnr-accent: #111;
+  --gnr-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --gnr-ease: cubic-bezier(.2, .9, .1, 1);
+  --gnr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .gb {
@@ -963,6 +1073,14 @@ html[data-style="mono"] .di {
   --di-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .dfr {
+  --dfr-ink: #000;
+  --dfr-surface: #fff;
+  --dfr-accent: #111;
+  --dfr-ease: cubic-bezier(.2, .9, .1, 1);
+  --dfr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .dkm {
   --dkm-ink: #000;
   --dkm-surface: #fff;
@@ -976,6 +1094,15 @@ html[data-style="mono"] .dmn {
   --dmn-ink: #000;
   --dmn-accent: #111;
   --dmn-ease: cubic-bezier(.2, .9, .1, 1);
+}
+
+html[data-style="mono"] .drw {
+  --drw-ink: #000;
+  --drw-surface: #fff;
+  --drw-accent: #111;
+  --drw-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --drw-ease: cubic-bezier(.2, .9, .1, 1);
+  --drw-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .dz {
@@ -1088,6 +1215,15 @@ html[data-style="mono"] .gvw {
   --gvw-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .hcn {
+  --hcn-ink: #000;
+  --hcn-surface: #fff;
+  --hcn-accent: #111;
+  --hcn-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --hcn-ease: cubic-bezier(.2, .9, .1, 1);
+  --hcn-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .hc {
   --hc-ink: #000;
   --hc-accent: #111;
@@ -1168,6 +1304,15 @@ html[data-style="mono"] .ma {
   --ma-float: 0 0 0 1px rgb(0 0 0 / .2), 4px 4px 0 0 rgb(0 0 0 / .08);
   --ma-ease: cubic-bezier(.2, .9, .1, 1);
   --ma-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .mdl {
+  --mdl-ink: #000;
+  --mdl-surface: #fff;
+  --mdl-accent: #111;
+  --mdl-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --mdl-ease: cubic-bezier(.2, .9, .1, 1);
+  --mdl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .mnv {
@@ -1259,6 +1404,15 @@ html[data-style="mono"] .plw {
   --plw-shadow: 0 0 0 1px rgb(0 0 0 / .14);
   --plw-ease: cubic-bezier(.2, .9, .1, 1);
   --plw-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .pvr {
+  --pvr-ink: #000;
+  --pvr-surface: #fff;
+  --pvr-accent: #111;
+  --pvr-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --pvr-ease: cubic-bezier(.2, .9, .1, 1);
+  --pvr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .pm {
@@ -1503,6 +1657,15 @@ html[data-style="mono"] .sbu {
   --sbu-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .swr {
+  --swr-ink: #000;
+  --swr-surface: #fff;
+  --swr-accent: #111;
+  --swr-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --swr-ease: cubic-bezier(.2, .9, .1, 1);
+  --swr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .tks {
   --tks-ink: #000;
   --tks-surface: #fff;
@@ -1562,6 +1725,15 @@ html[data-style="mono"] .tlh {
   --tlh-shadow: 0 0 0 1px rgb(0 0 0 / .14);
   --tlh-ease: cubic-bezier(.2, .9, .1, 1);
   --tlh-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .tlt {
+  --tlt-ink: #000;
+  --tlt-surface: #fff;
+  --tlt-accent: #111;
+  --tlt-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --tlt-ease: cubic-bezier(.2, .9, .1, 1);
+  --tlt-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"] .itp {
@@ -2009,6 +2181,15 @@ html[data-style="mono"].dark .chr {
   --chr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .cbn {
+  --cbn-ink: #fff;
+  --cbn-surface: #0a0a0a;
+  --cbn-accent: #f2f2f2;
+  --cbn-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --cbn-ease: cubic-bezier(.2, .9, .1, 1);
+  --cbn-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .cgx {
   --cgx-ink: #fff;
   --cgx-surface: #0a0a0a;
@@ -2085,6 +2266,14 @@ html[data-style="mono"].dark .kb {
   --kb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .lcd {
+  --lcd-ink: #fff;
+  --lcd-accent: #f2f2f2;
+  --lcd-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --lcd-ease: cubic-bezier(.2, .9, .1, 1);
+  --lcd-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .lm {
   --lm-ink: #fff;
   --lm-accent: #f2f2f2;
@@ -2124,6 +2313,13 @@ html[data-style="mono"].dark .mwf {
   --mwf-accent: #f2f2f2;
   --mwf-ease: cubic-bezier(.2, .9, .1, 1);
   --mwf-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .ovl {
+  --ovl-ink: #fff;
+  --ovl-accent: #f2f2f2;
+  --ovl-ease: cubic-bezier(.2, .9, .1, 1);
+  --ovl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .pst {
@@ -2189,12 +2385,36 @@ html[data-style="mono"].dark .atl {
   --atl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .ccb {
+  --ccb-ink: #fff;
+  --ccb-surface: #0a0a0a;
+  --ccb-accent: #f2f2f2;
+  --ccb-ease: cubic-bezier(.2, .9, .1, 1);
+  --ccb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .cf {
   --cf-ink: #fff;
   --cf-surface: #0a0a0a;
   --cf-accent: #f2f2f2;
   --cf-ease: cubic-bezier(.2, .9, .1, 1);
   --cf-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .dbu {
+  --dbu-ink: #fff;
+  --dbu-surface: #0a0a0a;
+  --dbu-accent: #f2f2f2;
+  --dbu-ease: cubic-bezier(.2, .9, .1, 1);
+  --dbu-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .drb {
+  --drb-ink: #fff;
+  --drb-surface: #0a0a0a;
+  --drb-accent: #f2f2f2;
+  --drb-ease: cubic-bezier(.2, .9, .1, 1);
+  --drb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .dtf {
@@ -2252,6 +2472,33 @@ html[data-style="mono"].dark .gk {
   --gk-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .ghl {
+  --ghl-ink: #fff;
+  --ghl-surface: #0a0a0a;
+  --ghl-accent: #f2f2f2;
+  --ghl-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --ghl-ease: cubic-bezier(.2, .9, .1, 1);
+  --ghl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .gq {
+  --gq-ink: #fff;
+  --gq-surface: #0a0a0a;
+  --gq-accent: #f2f2f2;
+  --gq-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --gq-ease: cubic-bezier(.2, .9, .1, 1);
+  --gq-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .hsk {
+  --hsk-ink: #fff;
+  --hsk-surface: #0a0a0a;
+  --hsk-accent: #f2f2f2;
+  --hsk-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --hsk-ease: cubic-bezier(.2, .9, .1, 1);
+  --hsk-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .ib {
   --ib-ink: #fff;
   --ib-accent: #f2f2f2;
@@ -2292,6 +2539,15 @@ html[data-style="mono"].dark .lsr {
   --lsr-float: 0 0 0 1px rgb(255 255 255 / .22), 4px 4px 0 0 rgb(255 255 255 / .06);
   --lsr-ease: cubic-bezier(.2, .9, .1, 1);
   --lsr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lfm {
+  --lfm-ink: #fff;
+  --lfm-surface: #0a0a0a;
+  --lfm-accent: #f2f2f2;
+  --lfm-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --lfm-ease: cubic-bezier(.2, .9, .1, 1);
+  --lfm-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .lc {
@@ -2344,6 +2600,14 @@ html[data-style="mono"].dark .pyf {
   --pyf-accent: #f2f2f2;
   --pyf-shadow: 0 0 0 1px rgb(255 255 255 / .16);
   --pyf-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .pki {
+  --pki-ink: #fff;
+  --pki-surface: #0a0a0a;
+  --pki-accent: #f2f2f2;
+  --pki-ease: cubic-bezier(.2, .9, .1, 1);
+  --pki-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .ps {
@@ -2452,6 +2716,15 @@ html[data-style="mono"].dark .bx {
   --bx-ease: cubic-bezier(.2, .9, .1, 1);
 }
 
+html[data-style="mono"].dark .cwk {
+  --cwk-ink: #fff;
+  --cwk-surface: #0a0a0a;
+  --cwk-accent: #f2f2f2;
+  --cwk-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --cwk-ease: cubic-bezier(.2, .9, .1, 1);
+  --cwk-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .df {
   --df-accent: #f2f2f2;
 }
@@ -2466,7 +2739,16 @@ html[data-style="mono"].dark .gfl {
 }
 
 html[data-style="mono"].dark .gt {
-  --gt-accent: #f2f2f2;
+  --gt-ink: #fff;
+}
+
+html[data-style="mono"].dark .gnr {
+  --gnr-ink: #fff;
+  --gnr-surface: #0a0a0a;
+  --gnr-accent: #f2f2f2;
+  --gnr-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --gnr-ease: cubic-bezier(.2, .9, .1, 1);
+  --gnr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .gb {
@@ -2771,6 +3053,14 @@ html[data-style="mono"].dark .di {
   --di-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .dfr {
+  --dfr-ink: #fff;
+  --dfr-surface: #0a0a0a;
+  --dfr-accent: #f2f2f2;
+  --dfr-ease: cubic-bezier(.2, .9, .1, 1);
+  --dfr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .dkm {
   --dkm-ink: #fff;
   --dkm-surface: #0a0a0a;
@@ -2784,6 +3074,15 @@ html[data-style="mono"].dark .dmn {
   --dmn-ink: #fff;
   --dmn-accent: #f2f2f2;
   --dmn-ease: cubic-bezier(.2, .9, .1, 1);
+}
+
+html[data-style="mono"].dark .drw {
+  --drw-ink: #fff;
+  --drw-surface: #0a0a0a;
+  --drw-accent: #f2f2f2;
+  --drw-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --drw-ease: cubic-bezier(.2, .9, .1, 1);
+  --drw-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .dz {
@@ -2896,6 +3195,15 @@ html[data-style="mono"].dark .gvw {
   --gvw-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .hcn {
+  --hcn-ink: #fff;
+  --hcn-surface: #0a0a0a;
+  --hcn-accent: #f2f2f2;
+  --hcn-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --hcn-ease: cubic-bezier(.2, .9, .1, 1);
+  --hcn-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .hc {
   --hc-ink: #fff;
   --hc-accent: #f2f2f2;
@@ -2976,6 +3284,15 @@ html[data-style="mono"].dark .ma {
   --ma-float: 0 0 0 1px rgb(255 255 255 / .22), 4px 4px 0 0 rgb(255 255 255 / .06);
   --ma-ease: cubic-bezier(.2, .9, .1, 1);
   --ma-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .mdl {
+  --mdl-ink: #fff;
+  --mdl-surface: #0a0a0a;
+  --mdl-accent: #f2f2f2;
+  --mdl-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --mdl-ease: cubic-bezier(.2, .9, .1, 1);
+  --mdl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .mnv {
@@ -3067,6 +3384,15 @@ html[data-style="mono"].dark .plw {
   --plw-shadow: 0 0 0 1px rgb(255 255 255 / .16);
   --plw-ease: cubic-bezier(.2, .9, .1, 1);
   --plw-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .pvr {
+  --pvr-ink: #fff;
+  --pvr-surface: #0a0a0a;
+  --pvr-accent: #f2f2f2;
+  --pvr-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --pvr-ease: cubic-bezier(.2, .9, .1, 1);
+  --pvr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .pm {
@@ -3311,6 +3637,15 @@ html[data-style="mono"].dark .sbu {
   --sbu-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .swr {
+  --swr-ink: #fff;
+  --swr-surface: #0a0a0a;
+  --swr-accent: #f2f2f2;
+  --swr-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --swr-ease: cubic-bezier(.2, .9, .1, 1);
+  --swr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"].dark .tks {
   --tks-ink: #fff;
   --tks-surface: #0a0a0a;
@@ -3370,6 +3705,15 @@ html[data-style="mono"].dark .tlh {
   --tlh-shadow: 0 0 0 1px rgb(255 255 255 / .16);
   --tlh-ease: cubic-bezier(.2, .9, .1, 1);
   --tlh-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .tlt {
+  --tlt-ink: #fff;
+  --tlt-surface: #0a0a0a;
+  --tlt-accent: #f2f2f2;
+  --tlt-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --tlt-ease: cubic-bezier(.2, .9, .1, 1);
+  --tlt-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .itp {
@@ -3630,17 +3974,17 @@ html[data-style="glass"] {
   --pane-solid: #fff;
   --pane-glint: rgb(255 255 255 / .95);
   --pane-shadow: inset 0 0 0 .5px rgb(255 255 255 / .7), 0 0 0 .5px rgb(30 40 90 / .11), 0 1px 3px rgb(30 40 90 / .08);
-  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .4), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / 1), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .55), inset 5px 5px 12px -5px rgb(255 255 255 / .85), inset -5px -5px 12px -5px rgb(255 255 255 / .4), inset 0 0 26px -6px rgb(255 255 255 / .5), 0 0 0 .5px rgb(30 40 90 / .14), 0 2px 6px rgb(30 40 90 / .1), 0 18px 44px -14px rgb(30 40 100 / .36);
-  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .46), inset 2px 2px 0 -.5px rgb(255 255 255 / 1), inset -2px -2px 0 -.5px rgb(255 255 255 / .62), inset 7px 7px 14px -6px rgb(255 255 255 / .9), inset -7px -7px 14px -6px rgb(255 255 255 / .45), inset 0 0 32px -6px rgb(255 255 255 / .55), 0 0 0 .5px rgb(30 40 90 / .16), 0 3px 8px rgb(30 40 90 / .1), 0 26px 56px -14px rgb(30 40 100 / .42);
+  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .4), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / 1), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .55), inset 5px 5px 12px -5px rgb(255 255 255 / .85), inset -5px -5px 12px -5px rgb(255 255 255 / .4), inset 0 0 26px -6px rgb(255 255 255 / .22), inset 3px 3px 0 -2px rgb(255 255 255 / .35), inset -3px -3px 0 -2px rgb(255 255 255 / .18), 0 0 0 .5px rgb(30 40 90 / .14), 0 2px 6px rgb(30 40 90 / .1), 0 18px 44px -14px rgb(30 40 100 / .36);
+  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .46), inset 2px 2px 0 -.5px rgb(255 255 255 / 1), inset -2px -2px 0 -.5px rgb(255 255 255 / .62), inset 7px 7px 14px -6px rgb(255 255 255 / .9), inset -7px -7px 14px -6px rgb(255 255 255 / .45), inset 0 0 32px -6px rgb(255 255 255 / .26), inset 3px 3px 0 -2px rgb(255 255 255 / .38), inset -3px -3px 0 -2px rgb(255 255 255 / .2), 0 0 0 .5px rgb(30 40 90 / .16), 0 3px 8px rgb(30 40 90 / .1), 0 26px 56px -14px rgb(30 40 100 / .42);
   --pane-tint: rgb(255 255 255 / .95);
   --pane-tint-float: rgb(255 255 255 / .97);
   --pane-tint-nested: rgb(255 255 255 / .95);
   --pane-tint-over: rgb(255 255 255 / .97);
   --pane-sheen: none;
-  --pane-t1: color-mix(in oklab, var(--pane-ink) 94%, transparent);
-  --pane-t2: color-mix(in oklab, var(--pane-ink) 78%, transparent);
-  --pane-t3: color-mix(in oklab, var(--pane-ink) 66%, transparent);
-  --pane-t4: color-mix(in oklab, var(--pane-ink) 52%, transparent);
+  --pane-t1: color-mix(in oklab, var(--pane-ink) 96%, transparent);
+  --pane-t2: color-mix(in oklab, var(--pane-ink) 84%, transparent);
+  --pane-t3: color-mix(in oklab, var(--pane-ink) 72%, transparent);
+  --pane-t4: color-mix(in oklab, var(--pane-ink) 58%, transparent);
   --page-bg: #e8ebf8;
   --stage-bg: transparent;
   --stage-dot: transparent;
@@ -3654,17 +3998,17 @@ html[data-style="glass"].dark {
   --pane-solid: #222227;
   --pane-glint: rgb(255 255 255 / .9);
   --pane-shadow: inset 0 0 0 .5px rgb(255 255 255 / .16), 0 0 0 .5px rgb(0 0 0 / .5), 0 1px 3px rgb(0 0 0 / .4);
-  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .14), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / .62), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .24), inset 5px 5px 12px -5px rgb(255 255 255 / .3), inset -5px -5px 12px -5px rgb(255 255 255 / .12), inset 0 0 26px -8px rgb(255 255 255 / .16), 0 0 0 .5px rgb(0 0 0 / .6), 0 2px 6px rgb(0 0 0 / .3), 0 20px 46px -14px rgb(0 0 0 / .7);
-  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .18), inset 2px 2px 0 -.5px rgb(255 255 255 / .7), inset -2px -2px 0 -.5px rgb(255 255 255 / .28), inset 7px 7px 14px -6px rgb(255 255 255 / .34), inset -7px -7px 14px -6px rgb(255 255 255 / .14), inset 0 0 32px -8px rgb(255 255 255 / .18), 0 0 0 .5px rgb(0 0 0 / .65), 0 3px 8px rgb(0 0 0 / .35), 0 28px 58px -14px rgb(0 0 0 / .78);
+  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .14), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / .62), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .24), inset 5px 5px 12px -5px rgb(255 255 255 / .3), inset -5px -5px 12px -5px rgb(255 255 255 / .12), inset 0 0 26px -8px rgb(255 255 255 / .08), inset 3px 3px 0 -2px rgb(255 255 255 / .2), inset -3px -3px 0 -2px rgb(255 255 255 / .1), 0 0 0 .5px rgb(0 0 0 / .6), 0 2px 6px rgb(0 0 0 / .3), 0 20px 46px -14px rgb(0 0 0 / .7);
+  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .18), inset 2px 2px 0 -.5px rgb(255 255 255 / .7), inset -2px -2px 0 -.5px rgb(255 255 255 / .28), inset 7px 7px 14px -6px rgb(255 255 255 / .34), inset -7px -7px 14px -6px rgb(255 255 255 / .14), inset 0 0 32px -8px rgb(255 255 255 / .09), inset 3px 3px 0 -2px rgb(255 255 255 / .22), inset -3px -3px 0 -2px rgb(255 255 255 / .11), 0 0 0 .5px rgb(0 0 0 / .65), 0 3px 8px rgb(0 0 0 / .35), 0 28px 58px -14px rgb(0 0 0 / .78);
   --pane-tint: rgb(32 32 38 / .96);
   --pane-tint-float: rgb(38 38 45 / .97);
   --pane-tint-nested: rgb(34 34 40 / .96);
   --pane-tint-over: rgb(38 38 45 / .97);
   --pane-sheen: none;
-  --pane-t1: color-mix(in oklab, var(--pane-ink) 94%, transparent);
-  --pane-t2: color-mix(in oklab, var(--pane-ink) 76%, transparent);
-  --pane-t3: color-mix(in oklab, var(--pane-ink) 62%, transparent);
-  --pane-t4: color-mix(in oklab, var(--pane-ink) 48%, transparent);
+  --pane-t1: color-mix(in oklab, var(--pane-ink) 96%, transparent);
+  --pane-t2: color-mix(in oklab, var(--pane-ink) 80%, transparent);
+  --pane-t3: color-mix(in oklab, var(--pane-ink) 68%, transparent);
+  --pane-t4: color-mix(in oklab, var(--pane-ink) 54%, transparent);
   --page-bg: #07070f;
   --stage-bg: transparent;
   --stage-dot: transparent;
@@ -3873,6 +4217,15 @@ html[data-style="glass"] .chr {
   --chr-font: var(--pane-font);
 }
 
+html[data-style="glass"] .cbn {
+  --cbn-ink: var(--pane-ink);
+  --cbn-surface: var(--pane-solid);
+  --cbn-accent: var(--pane-accent);
+  --cbn-shadow: var(--pane-shadow);
+  --cbn-ease: var(--pane-ease);
+  --cbn-font: var(--pane-font);
+}
+
 html[data-style="glass"] .cgx {
   --cgx-ink: var(--pane-ink);
   --cgx-surface: var(--pane-solid);
@@ -3949,6 +4302,14 @@ html[data-style="glass"] .kb {
   --kb-font: var(--pane-font);
 }
 
+html[data-style="glass"] .lcd {
+  --lcd-ink: var(--pane-ink);
+  --lcd-accent: var(--pane-accent);
+  --lcd-shadow: var(--pane-shadow);
+  --lcd-ease: var(--pane-ease);
+  --lcd-font: var(--pane-font);
+}
+
 html[data-style="glass"] .lm {
   --lm-ink: var(--pane-ink);
   --lm-accent: var(--pane-accent);
@@ -3988,6 +4349,13 @@ html[data-style="glass"] .mwf {
   --mwf-accent: var(--pane-accent);
   --mwf-ease: var(--pane-ease);
   --mwf-font: var(--pane-font);
+}
+
+html[data-style="glass"] .ovl {
+  --ovl-ink: var(--pane-ink);
+  --ovl-accent: var(--pane-accent);
+  --ovl-ease: var(--pane-ease);
+  --ovl-font: var(--pane-font);
 }
 
 html[data-style="glass"] .pst {
@@ -4053,12 +4421,36 @@ html[data-style="glass"] .atl {
   --atl-font: var(--pane-font);
 }
 
+html[data-style="glass"] .ccb {
+  --ccb-ink: var(--pane-ink);
+  --ccb-surface: var(--pane-solid);
+  --ccb-accent: var(--pane-accent);
+  --ccb-ease: var(--pane-ease);
+  --ccb-font: var(--pane-font);
+}
+
 html[data-style="glass"] .cf {
   --cf-ink: var(--pane-ink);
   --cf-surface: var(--pane-solid);
   --cf-accent: var(--pane-accent);
   --cf-ease: var(--pane-ease);
   --cf-font: var(--pane-font);
+}
+
+html[data-style="glass"] .dbu {
+  --dbu-ink: var(--pane-ink);
+  --dbu-surface: var(--pane-solid);
+  --dbu-accent: var(--pane-accent);
+  --dbu-ease: var(--pane-ease);
+  --dbu-font: var(--pane-font);
+}
+
+html[data-style="glass"] .drb {
+  --drb-ink: var(--pane-ink);
+  --drb-surface: var(--pane-solid);
+  --drb-accent: var(--pane-accent);
+  --drb-ease: var(--pane-ease);
+  --drb-font: var(--pane-font);
 }
 
 html[data-style="glass"] .dtf {
@@ -4116,6 +4508,33 @@ html[data-style="glass"] .gk {
   --gk-font: var(--pane-font);
 }
 
+html[data-style="glass"] .ghl {
+  --ghl-ink: var(--pane-ink);
+  --ghl-surface: var(--pane-solid);
+  --ghl-accent: var(--pane-accent);
+  --ghl-shadow: var(--pane-shadow);
+  --ghl-ease: var(--pane-ease);
+  --ghl-font: var(--pane-font);
+}
+
+html[data-style="glass"] .gq {
+  --gq-ink: var(--pane-ink);
+  --gq-surface: var(--pane-solid);
+  --gq-accent: var(--pane-accent);
+  --gq-shadow: var(--pane-shadow);
+  --gq-ease: var(--pane-ease);
+  --gq-font: var(--pane-font);
+}
+
+html[data-style="glass"] .hsk {
+  --hsk-ink: var(--pane-ink);
+  --hsk-surface: var(--pane-solid);
+  --hsk-accent: var(--pane-accent);
+  --hsk-shadow: var(--pane-shadow);
+  --hsk-ease: var(--pane-ease);
+  --hsk-font: var(--pane-font);
+}
+
 html[data-style="glass"] .ib {
   --ib-ink: var(--pane-ink);
   --ib-accent: var(--pane-accent);
@@ -4156,6 +4575,15 @@ html[data-style="glass"] .lsr {
   --lsr-float: var(--pane-shadow);
   --lsr-ease: var(--pane-ease);
   --lsr-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lfm {
+  --lfm-ink: var(--pane-ink);
+  --lfm-surface: var(--pane-solid);
+  --lfm-accent: var(--pane-accent);
+  --lfm-shadow: var(--pane-shadow);
+  --lfm-ease: var(--pane-ease);
+  --lfm-font: var(--pane-font);
 }
 
 html[data-style="glass"] .lc {
@@ -4208,6 +4636,14 @@ html[data-style="glass"] .pyf {
   --pyf-accent: var(--pane-accent);
   --pyf-shadow: var(--pane-shadow);
   --pyf-font: var(--pane-font);
+}
+
+html[data-style="glass"] .pki {
+  --pki-ink: var(--pane-ink);
+  --pki-surface: var(--pane-solid);
+  --pki-accent: var(--pane-accent);
+  --pki-ease: var(--pane-ease);
+  --pki-font: var(--pane-font);
 }
 
 html[data-style="glass"] .ps {
@@ -4316,6 +4752,15 @@ html[data-style="glass"] .bx {
   --bx-ease: var(--pane-ease);
 }
 
+html[data-style="glass"] .cwk {
+  --cwk-ink: var(--pane-ink);
+  --cwk-surface: var(--pane-solid);
+  --cwk-accent: var(--pane-accent);
+  --cwk-shadow: var(--pane-shadow);
+  --cwk-ease: var(--pane-ease);
+  --cwk-font: var(--pane-font);
+}
+
 html[data-style="glass"] .df {
   --df-accent: var(--pane-accent);
 }
@@ -4330,7 +4775,16 @@ html[data-style="glass"] .gfl {
 }
 
 html[data-style="glass"] .gt {
-  --gt-accent: var(--pane-accent);
+  --gt-ink: var(--pane-ink);
+}
+
+html[data-style="glass"] .gnr {
+  --gnr-ink: var(--pane-ink);
+  --gnr-surface: var(--pane-solid);
+  --gnr-accent: var(--pane-accent);
+  --gnr-shadow: var(--pane-shadow);
+  --gnr-ease: var(--pane-ease);
+  --gnr-font: var(--pane-font);
 }
 
 html[data-style="glass"] .gb {
@@ -4635,6 +5089,14 @@ html[data-style="glass"] .di {
   --di-font: var(--pane-font);
 }
 
+html[data-style="glass"] .dfr {
+  --dfr-ink: var(--pane-ink);
+  --dfr-surface: var(--pane-solid);
+  --dfr-accent: var(--pane-accent);
+  --dfr-ease: var(--pane-ease);
+  --dfr-font: var(--pane-font);
+}
+
 html[data-style="glass"] .dkm {
   --dkm-ink: var(--pane-ink);
   --dkm-surface: var(--pane-solid);
@@ -4648,6 +5110,15 @@ html[data-style="glass"] .dmn {
   --dmn-ink: var(--pane-ink);
   --dmn-accent: var(--pane-accent);
   --dmn-ease: var(--pane-ease);
+}
+
+html[data-style="glass"] .drw {
+  --drw-ink: var(--pane-ink);
+  --drw-surface: var(--pane-solid);
+  --drw-accent: var(--pane-accent);
+  --drw-shadow: var(--pane-shadow);
+  --drw-ease: var(--pane-ease);
+  --drw-font: var(--pane-font);
 }
 
 html[data-style="glass"] .dz {
@@ -4760,6 +5231,15 @@ html[data-style="glass"] .gvw {
   --gvw-font: var(--pane-font);
 }
 
+html[data-style="glass"] .hcn {
+  --hcn-ink: var(--pane-ink);
+  --hcn-surface: var(--pane-solid);
+  --hcn-accent: var(--pane-accent);
+  --hcn-shadow: var(--pane-shadow);
+  --hcn-ease: var(--pane-ease);
+  --hcn-font: var(--pane-font);
+}
+
 html[data-style="glass"] .hc {
   --hc-ink: var(--pane-ink);
   --hc-accent: var(--pane-accent);
@@ -4840,6 +5320,15 @@ html[data-style="glass"] .ma {
   --ma-float: var(--pane-shadow);
   --ma-ease: var(--pane-ease);
   --ma-font: var(--pane-font);
+}
+
+html[data-style="glass"] .mdl {
+  --mdl-ink: var(--pane-ink);
+  --mdl-surface: var(--pane-solid);
+  --mdl-accent: var(--pane-accent);
+  --mdl-shadow: var(--pane-shadow);
+  --mdl-ease: var(--pane-ease);
+  --mdl-font: var(--pane-font);
 }
 
 html[data-style="glass"] .mnv {
@@ -4931,6 +5420,15 @@ html[data-style="glass"] .plw {
   --plw-shadow: var(--pane-shadow);
   --plw-ease: var(--pane-ease);
   --plw-font: var(--pane-font);
+}
+
+html[data-style="glass"] .pvr {
+  --pvr-ink: var(--pane-ink);
+  --pvr-surface: var(--pane-solid);
+  --pvr-accent: var(--pane-accent);
+  --pvr-shadow: var(--pane-shadow);
+  --pvr-ease: var(--pane-ease);
+  --pvr-font: var(--pane-font);
 }
 
 html[data-style="glass"] .pm {
@@ -5175,6 +5673,15 @@ html[data-style="glass"] .sbu {
   --sbu-font: var(--pane-font);
 }
 
+html[data-style="glass"] .swr {
+  --swr-ink: var(--pane-ink);
+  --swr-surface: var(--pane-solid);
+  --swr-accent: var(--pane-accent);
+  --swr-shadow: var(--pane-shadow);
+  --swr-ease: var(--pane-ease);
+  --swr-font: var(--pane-font);
+}
+
 html[data-style="glass"] .tks {
   --tks-ink: var(--pane-ink);
   --tks-surface: var(--pane-solid);
@@ -5234,6 +5741,15 @@ html[data-style="glass"] .tlh {
   --tlh-shadow: var(--pane-shadow);
   --tlh-ease: var(--pane-ease);
   --tlh-font: var(--pane-font);
+}
+
+html[data-style="glass"] .tlt {
+  --tlt-ink: var(--pane-ink);
+  --tlt-surface: var(--pane-solid);
+  --tlt-accent: var(--pane-accent);
+  --tlt-shadow: var(--pane-shadow);
+  --tlt-ease: var(--pane-ease);
+  --tlt-font: var(--pane-font);
 }
 
 html[data-style="glass"] .itp {
@@ -5429,11 +5945,24 @@ html[data-style="glass"] .cb {
   --cb-t3: var(--pane-t3);
 }
 
+html[data-style="glass"] .cbn {
+  --cbn-t1: var(--pane-t1);
+  --cbn-t2: var(--pane-t2);
+  --cbn-t3: var(--pane-t3);
+  --cbn-t4: var(--pane-t4);
+}
+
 html[data-style="glass"] .cc {
   --cc-t1: var(--pane-t1);
   --cc-t2: var(--pane-t2);
   --cc-t3: var(--pane-t3);
   --cc-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .ccb {
+  --ccb-t1: var(--pane-t1);
+  --ccb-t2: var(--pane-t2);
+  --ccb-t3: var(--pane-t3);
 }
 
 html[data-style="glass"] .ccn {
@@ -5483,6 +6012,13 @@ html[data-style="glass"] .cw {
   --cw-t4: var(--pane-t4);
 }
 
+html[data-style="glass"] .dbu {
+  --dbu-t1: var(--pane-t1);
+  --dbu-t2: var(--pane-t2);
+  --dbu-t3: var(--pane-t3);
+  --dbu-t4: var(--pane-t4);
+}
+
 html[data-style="glass"] .dc {
   --dc-t1: var(--pane-t1);
   --dc-t2: var(--pane-t2);
@@ -5495,6 +6031,13 @@ html[data-style="glass"] .dex {
   --dex-t2: var(--pane-t2);
   --dex-t3: var(--pane-t3);
   --dex-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .dfr {
+  --dfr-t1: var(--pane-t1);
+  --dfr-t2: var(--pane-t2);
+  --dfr-t3: var(--pane-t3);
+  --dfr-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .dgd {
@@ -5516,9 +6059,22 @@ html[data-style="glass"] .dkm {
   --dkm-t3: var(--pane-t3);
 }
 
+html[data-style="glass"] .drb {
+  --drb-t1: var(--pane-t1);
+  --drb-t2: var(--pane-t2);
+  --drb-t3: var(--pane-t3);
+}
+
 html[data-style="glass"] .dre {
   --dre-t2: var(--pane-t2);
   --dre-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .drw {
+  --drw-t1: var(--pane-t1);
+  --drw-t2: var(--pane-t2);
+  --drw-t3: var(--pane-t3);
+  --drw-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .dz {
@@ -5575,10 +6131,28 @@ html[data-style="glass"] .gcd {
   --gcd-t2: var(--pane-t2);
 }
 
+html[data-style="glass"] .ghl {
+  --ghl-t1: var(--pane-t1);
+  --ghl-t2: var(--pane-t2);
+  --ghl-t3: var(--pane-t3);
+}
+
 html[data-style="glass"] .gmn {
   --gmn-t1: var(--pane-t1);
   --gmn-t2: var(--pane-t2);
   --gmn-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .gnr {
+  --gnr-t1: var(--pane-t1);
+  --gnr-t2: var(--pane-t2);
+  --gnr-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .gq {
+  --gq-t1: var(--pane-t1);
+  --gq-t2: var(--pane-t2);
+  --gq-t3: var(--pane-t3);
 }
 
 html[data-style="glass"] .gsg {
@@ -5588,6 +6162,18 @@ html[data-style="glass"] .gsg {
 
 html[data-style="glass"] .gtb {
   --gtb-t1: var(--pane-t1);
+}
+
+html[data-style="glass"] .hcn {
+  --hcn-t1: var(--pane-t1);
+  --hcn-t2: var(--pane-t2);
+  --hcn-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .hsk {
+  --hsk-t1: var(--pane-t1);
+  --hsk-t2: var(--pane-t2);
+  --hsk-t3: var(--pane-t3);
 }
 
 html[data-style="glass"] .iac {
@@ -5828,6 +6414,12 @@ html[data-style="glass"] .kb {
   --kb-t4: var(--pane-t4);
 }
 
+html[data-style="glass"] .lfm {
+  --lfm-t1: var(--pane-t1);
+  --lfm-t2: var(--pane-t2);
+  --lfm-t3: var(--pane-t3);
+}
+
 html[data-style="glass"] .lm {
   --lm-t1: var(--pane-t1);
   --lm-t3: var(--pane-t3);
@@ -5870,6 +6462,13 @@ html[data-style="glass"] .mcs {
   --mcs-t2: var(--pane-t2);
   --mcs-t3: var(--pane-t3);
   --mcs-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .mdl {
+  --mdl-t1: var(--pane-t1);
+  --mdl-t2: var(--pane-t2);
+  --mdl-t3: var(--pane-t3);
+  --mdl-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .mgm {
@@ -5950,11 +6549,24 @@ html[data-style="glass"] .otp {
   --otp-t4: var(--pane-t4);
 }
 
+html[data-style="glass"] .ovl {
+  --ovl-t1: var(--pane-t1);
+  --ovl-t2: var(--pane-t2);
+  --ovl-t3: var(--pane-t3);
+  --ovl-t4: var(--pane-t4);
+}
+
 html[data-style="glass"] .pgc {
   --pgc-t1: var(--pane-t1);
   --pgc-t2: var(--pane-t2);
   --pgc-t3: var(--pane-t3);
   --pgc-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .pki {
+  --pki-t1: var(--pane-t1);
+  --pki-t2: var(--pane-t2);
+  --pki-t3: var(--pane-t3);
 }
 
 html[data-style="glass"] .plf {
@@ -5998,6 +6610,26 @@ html[data-style="glass"] .pt {
   --pt-t1: var(--pane-t1);
   --pt-t3: var(--pane-t3);
   --pt-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .pvr {
+  --pvr-t1: var(--pane-t1);
+  --pvr-t2: var(--pane-t2);
+  --pvr-t3: var(--pane-t3);
+  --pvr-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .pvr-pn {
+  --pvr-t1: var(--pane-t1);
+  --pvr-t2: var(--pane-t2);
+  --pvr-t3: var(--pane-t3);
+  --pvr-t4: var(--pane-t4);
+  --pvr-ink: var(--pane-ink);
+  --pvr-surface: var(--pane-solid);
+  --pvr-accent: var(--pane-accent);
+  --pvr-shadow: var(--pane-shadow);
+  --pvr-ease: var(--pane-ease);
+  --pvr-font: var(--pane-font);
 }
 
 html[data-style="glass"] .rb {
@@ -6126,6 +6758,12 @@ html[data-style="glass"] .swp {
   --swp-t2: var(--pane-t2);
   --swp-t3: var(--pane-t3);
   --swp-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .swr {
+  --swr-t1: var(--pane-t1);
+  --swr-t2: var(--pane-t2);
+  --swr-t3: var(--pane-t3);
 }
 
 html[data-style="glass"] .tcc {
@@ -6458,6 +7096,12 @@ html[data-style="glass"] .iwb-btn.ink { color: var(--pane-solid) }
 html[data-style="glass"] .iwb-sa .acc { color: var(--pane-solid) }
 html[data-style="glass"] .iwb-send { color: var(--pane-solid) }
 
+/* permission-request on Glass: AA for the destructive tag and the key hint */
+html[data-style="glass"]:not(.dark) .pr { --pr-danger: #b42318 }
+html[data-style="glass"] .pr-allow .pr-kbd { color: rgb(255 255 255 / .95) }
+html[data-style="glass"].dark .pr:not([data-risk="destructive"]) .pr-allow .pr-kbd { color: rgb(0 0 0 / .9); background: rgb(0 0 0 / .08) }
+
+
 /* Glass surfaces: a translucent tint, a specular rim and a shadow. No ::before, no isolation, no blend modes. */
 html[data-style="glass"] :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .twt-window, .ufc, .um, .wa) { background-color: var(--pane-tint); background-image: var(--pane-sheen); box-shadow: var(--pane-card) }
 html[data-style="glass"] :is(.aap-pop, .ach-menu, .acp-menu, .aia-tip, .al-pop, .arr-chip-pop, .arr-tip, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .cgx-tip, .chr-tip, .dex-menu, .dkm-bar, .ed-menu, .fnl-tip, .iac-menu, .icd-pop, .idb-menu, .idb-tip, .iel-menu, .ifi-menu, .ifi-pop, .ifi-tip, .ifm-pop, .imc-menu, .imc-tip, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .itt-tl-bar, .iwb-menu, .jfl-tip, .kb-pop, .mgm-sheet, .mp-pop, .mwf-tip, .pst-menu, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .ss-sheet, .stg-tip, .ths-tip, .trm-tip, .tw-dialog, .ufc-tip) { background-color: var(--pane-tint-float); background-image: var(--pane-sheen); box-shadow: var(--pane-pop) }
@@ -6469,17 +7113,17 @@ html[data-style="glass"] {
   --pane-solid: #fff;
   --pane-glint: rgb(255 255 255 / .95);
   --pane-shadow: inset 0 0 0 .5px rgb(255 255 255 / .7), 0 0 0 .5px rgb(30 40 90 / .11), 0 1px 3px rgb(30 40 90 / .08);
-  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .4), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / 1), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .55), inset 5px 5px 12px -5px rgb(255 255 255 / .85), inset -5px -5px 12px -5px rgb(255 255 255 / .4), inset 0 0 26px -6px rgb(255 255 255 / .5), 0 0 0 .5px rgb(30 40 90 / .14), 0 2px 6px rgb(30 40 90 / .1), 0 18px 44px -14px rgb(30 40 100 / .36);
-  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .46), inset 2px 2px 0 -.5px rgb(255 255 255 / 1), inset -2px -2px 0 -.5px rgb(255 255 255 / .62), inset 7px 7px 14px -6px rgb(255 255 255 / .9), inset -7px -7px 14px -6px rgb(255 255 255 / .45), inset 0 0 32px -6px rgb(255 255 255 / .55), 0 0 0 .5px rgb(30 40 90 / .16), 0 3px 8px rgb(30 40 90 / .1), 0 26px 56px -14px rgb(30 40 100 / .42);
-  --pane-tint: rgb(255 255 255 / .46);
-  --pane-tint-float: rgb(255 255 255 / .42);
+  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .4), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / 1), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .55), inset 5px 5px 12px -5px rgb(255 255 255 / .85), inset -5px -5px 12px -5px rgb(255 255 255 / .4), inset 0 0 26px -6px rgb(255 255 255 / .22), inset 3px 3px 0 -2px rgb(255 255 255 / .35), inset -3px -3px 0 -2px rgb(255 255 255 / .18), 0 0 0 .5px rgb(30 40 90 / .14), 0 2px 6px rgb(30 40 90 / .1), 0 18px 44px -14px rgb(30 40 100 / .36);
+  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .46), inset 2px 2px 0 -.5px rgb(255 255 255 / 1), inset -2px -2px 0 -.5px rgb(255 255 255 / .62), inset 7px 7px 14px -6px rgb(255 255 255 / .9), inset -7px -7px 14px -6px rgb(255 255 255 / .45), inset 0 0 32px -6px rgb(255 255 255 / .26), inset 3px 3px 0 -2px rgb(255 255 255 / .38), inset -3px -3px 0 -2px rgb(255 255 255 / .2), 0 0 0 .5px rgb(30 40 90 / .16), 0 3px 8px rgb(30 40 90 / .1), 0 26px 56px -14px rgb(30 40 100 / .42);
+  --pane-tint: rgb(255 255 255 / .40);
+  --pane-tint-float: rgb(255 255 255 / .38);
   --pane-tint-nested: rgb(255 255 255 / .76);
   --pane-tint-over: rgb(255 255 255 / .94);
   --pane-sheen: linear-gradient(135deg, rgb(255 255 255 / .55) 0%, rgb(255 255 255 / .1) 30%, rgb(255 255 255 / 0) 56%, rgb(255 255 255 / .28) 100%);
-  --pane-t1: color-mix(in oklab, var(--pane-ink) 94%, transparent);
-  --pane-t2: color-mix(in oklab, var(--pane-ink) 78%, transparent);
-  --pane-t3: color-mix(in oklab, var(--pane-ink) 66%, transparent);
-  --pane-t4: color-mix(in oklab, var(--pane-ink) 52%, transparent);
+  --pane-t1: color-mix(in oklab, var(--pane-ink) 96%, transparent);
+  --pane-t2: color-mix(in oklab, var(--pane-ink) 84%, transparent);
+  --pane-t3: color-mix(in oklab, var(--pane-ink) 72%, transparent);
+  --pane-t4: color-mix(in oklab, var(--pane-ink) 58%, transparent);
 }
 html[data-style="glass"].dark {
   --pane-ink: #fff;
@@ -6487,39 +7131,49 @@ html[data-style="glass"].dark {
   --pane-solid: #222227;
   --pane-glint: rgb(255 255 255 / .9);
   --pane-shadow: inset 0 0 0 .5px rgb(255 255 255 / .16), 0 0 0 .5px rgb(0 0 0 / .5), 0 1px 3px rgb(0 0 0 / .4);
-  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .14), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / .62), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .24), inset 5px 5px 12px -5px rgb(255 255 255 / .3), inset -5px -5px 12px -5px rgb(255 255 255 / .12), inset 0 0 26px -8px rgb(255 255 255 / .16), 0 0 0 .5px rgb(0 0 0 / .6), 0 2px 6px rgb(0 0 0 / .3), 0 20px 46px -14px rgb(0 0 0 / .7);
-  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .18), inset 2px 2px 0 -.5px rgb(255 255 255 / .7), inset -2px -2px 0 -.5px rgb(255 255 255 / .28), inset 7px 7px 14px -6px rgb(255 255 255 / .34), inset -7px -7px 14px -6px rgb(255 255 255 / .14), inset 0 0 32px -8px rgb(255 255 255 / .18), 0 0 0 .5px rgb(0 0 0 / .65), 0 3px 8px rgb(0 0 0 / .35), 0 28px 58px -14px rgb(0 0 0 / .78);
-  --pane-tint: rgb(20 20 30 / .54);
-  --pane-tint-float: rgb(22 22 32 / .5);
+  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .14), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / .62), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .24), inset 5px 5px 12px -5px rgb(255 255 255 / .3), inset -5px -5px 12px -5px rgb(255 255 255 / .12), inset 0 0 26px -8px rgb(255 255 255 / .08), inset 3px 3px 0 -2px rgb(255 255 255 / .2), inset -3px -3px 0 -2px rgb(255 255 255 / .1), 0 0 0 .5px rgb(0 0 0 / .6), 0 2px 6px rgb(0 0 0 / .3), 0 20px 46px -14px rgb(0 0 0 / .7);
+  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .18), inset 2px 2px 0 -.5px rgb(255 255 255 / .7), inset -2px -2px 0 -.5px rgb(255 255 255 / .28), inset 7px 7px 14px -6px rgb(255 255 255 / .34), inset -7px -7px 14px -6px rgb(255 255 255 / .14), inset 0 0 32px -8px rgb(255 255 255 / .09), inset 3px 3px 0 -2px rgb(255 255 255 / .22), inset -3px -3px 0 -2px rgb(255 255 255 / .11), 0 0 0 .5px rgb(0 0 0 / .65), 0 3px 8px rgb(0 0 0 / .35), 0 28px 58px -14px rgb(0 0 0 / .78);
+  --pane-tint: rgb(20 20 28 / .48);
+  --pane-tint-float: rgb(22 22 30 / .46);
   --pane-tint-nested: rgb(22 22 30 / .84);
   --pane-tint-over: rgb(28 28 36 / .95);
   --pane-sheen: linear-gradient(135deg, rgb(255 255 255 / .16) 0%, rgb(255 255 255 / .03) 32%, rgb(255 255 255 / 0) 58%, rgb(255 255 255 / .07) 100%);
-  --pane-t1: color-mix(in oklab, var(--pane-ink) 94%, transparent);
-  --pane-t2: color-mix(in oklab, var(--pane-ink) 76%, transparent);
-  --pane-t3: color-mix(in oklab, var(--pane-ink) 62%, transparent);
-  --pane-t4: color-mix(in oklab, var(--pane-ink) 48%, transparent);
+  --pane-t1: color-mix(in oklab, var(--pane-ink) 96%, transparent);
+  --pane-t2: color-mix(in oklab, var(--pane-ink) 80%, transparent);
+  --pane-t3: color-mix(in oklab, var(--pane-ink) 68%, transparent);
+  --pane-t4: color-mix(in oklab, var(--pane-ink) 54%, transparent);
 }
-html[data-style="glass"] :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .twt-window, .ufc, .um, .wa) { -webkit-backdrop-filter: blur(22px) saturate(2); backdrop-filter: blur(22px) saturate(2) }
-html[data-style="glass"] :is(.aap-pop, .ach-menu, .acp-menu, .aia-tip, .al-pop, .arr-chip-pop, .arr-tip, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .cgx-tip, .chr-tip, .dex-menu, .dkm-bar, .ed-menu, .fnl-tip, .iac-menu, .icd-pop, .idb-menu, .idb-tip, .iel-menu, .ifi-menu, .ifi-pop, .ifi-tip, .ifm-pop, .imc-menu, .imc-tip, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .itt-tl-bar, .iwb-menu, .jfl-tip, .kb-pop, .mgm-sheet, .mp-pop, .mwf-tip, .pst-menu, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .ss-sheet, .stg-tip, .ths-tip, .trm-tip, .tw-dialog, .ufc-tip) { -webkit-backdrop-filter: blur(26px) saturate(2.1); backdrop-filter: blur(26px) saturate(2.1) }
-html[data-style="glass"].dark :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .twt-window, .ufc, .um, .wa) { -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8) }
-html[data-style="glass"].dark :is(.aap-pop, .ach-menu, .acp-menu, .aia-tip, .al-pop, .arr-chip-pop, .arr-tip, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .cgx-tip, .chr-tip, .dex-menu, .dkm-bar, .ed-menu, .fnl-tip, .iac-menu, .icd-pop, .idb-menu, .idb-tip, .iel-menu, .ifi-menu, .ifi-pop, .ifi-tip, .ifm-pop, .imc-menu, .imc-tip, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .itt-tl-bar, .iwb-menu, .jfl-tip, .kb-pop, .mgm-sheet, .mp-pop, .mwf-tip, .pst-menu, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .ss-sheet, .stg-tip, .ths-tip, .trm-tip, .tw-dialog, .ufc-tip) { -webkit-backdrop-filter: blur(26px) saturate(1.9); backdrop-filter: blur(26px) saturate(1.9) }
+html[data-style="glass"] :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .twt-window, .ufc, .um, .wa) { -webkit-backdrop-filter: blur(16px) saturate(1.8); backdrop-filter: blur(16px) saturate(1.8) }
+html[data-style="glass"] :is(.aap-pop, .ach-menu, .acp-menu, .aia-tip, .al-pop, .arr-chip-pop, .arr-tip, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .cgx-tip, .chr-tip, .dex-menu, .dkm-bar, .ed-menu, .fnl-tip, .iac-menu, .icd-pop, .idb-menu, .idb-tip, .iel-menu, .ifi-menu, .ifi-pop, .ifi-tip, .ifm-pop, .imc-menu, .imc-tip, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .itt-tl-bar, .iwb-menu, .jfl-tip, .kb-pop, .mgm-sheet, .mp-pop, .mwf-tip, .pst-menu, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .ss-sheet, .stg-tip, .ths-tip, .trm-tip, .tw-dialog, .ufc-tip) { -webkit-backdrop-filter: blur(18px) saturate(1.8); backdrop-filter: blur(18px) saturate(1.8) }
+html[data-style="glass"].dark :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .twt-window, .ufc, .um, .wa) { -webkit-backdrop-filter: blur(16px) saturate(1.7); backdrop-filter: blur(16px) saturate(1.7) }
+html[data-style="glass"].dark :is(.aap-pop, .ach-menu, .acp-menu, .aia-tip, .al-pop, .arr-chip-pop, .arr-tip, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .cgx-tip, .chr-tip, .dex-menu, .dkm-bar, .ed-menu, .fnl-tip, .iac-menu, .icd-pop, .idb-menu, .idb-tip, .iel-menu, .ifi-menu, .ifi-pop, .ifi-tip, .ifm-pop, .imc-menu, .imc-tip, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .itt-tl-bar, .iwb-menu, .jfl-tip, .kb-pop, .mgm-sheet, .mp-pop, .mwf-tip, .pst-menu, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .ss-sheet, .stg-tip, .ths-tip, .trm-tip, .tw-dialog, .ufc-tip) { -webkit-backdrop-filter: blur(18px) saturate(1.7); backdrop-filter: blur(18px) saturate(1.7) }
+html[data-style="glass"][data-refract] {
+  --pane-tint: rgb(255 255 255 / .24);
+  --pane-tint-float: rgb(255 255 255 / .22);
+  --pane-sheen: linear-gradient(135deg, rgb(255 255 255 / .4) 0%, rgb(255 255 255 / .06) 30%, rgb(255 255 255 / 0) 56%, rgb(255 255 255 / .18) 100%);
+}
+html[data-style="glass"].dark[data-refract] {
+  --pane-tint: rgb(20 20 24 / .32);
+  --pane-tint-float: rgb(22 22 26 / .3);
+  --pane-sheen: linear-gradient(135deg, rgb(255 255 255 / .12) 0%, rgb(255 255 255 / .02) 32%, rgb(255 255 255 / 0) 58%, rgb(255 255 255 / .05) 100%);
+}
 }
 
-html[data-style="glass"][data-refract] :is(.aia-tip, .arr-tip, .cgx-tip, .chr-tip, .fnl-tip, .idb-tip, .ifi-tip, .imc-tip, .jfl-tip, .mwf-tip, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .stg-tip, .ths-tip, .trm-tip, .ufc-tip) { -webkit-backdrop-filter: url(#pane-glass-tip-l) saturate(1.8) brightness(1.05); backdrop-filter: url(#pane-glass-tip-l) saturate(1.8) brightness(1.05) }
+html[data-style="glass"][data-refract] :is(.aia-tip, .arr-tip, .cgx-tip, .chr-tip, .fnl-tip, .idb-tip, .ifi-tip, .imc-tip, .jfl-tip, .mwf-tip, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .stg-tip, .ths-tip, .trm-tip, .ufc-tip) { -webkit-backdrop-filter: url(#pane-glass-tip-l) saturate(1.8) brightness(1.06); backdrop-filter: url(#pane-glass-tip-l) saturate(1.8) brightness(1.06) }
 
-html[data-style="glass"][data-refract] :is(.aap-pop, .ach-menu, .acp-menu, .al-pop, .arr-chip-pop, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .dex-menu, .ed-menu, .iac-menu, .icd-pop, .idb-menu, .iel-menu, .ifi-menu, .ifi-pop, .ifm-pop, .imc-menu, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .iwb-menu, .kb-pop, .mp-pop, .pst-menu) { -webkit-backdrop-filter: url(#pane-glass-menu-l) saturate(1.8) brightness(1.05); backdrop-filter: url(#pane-glass-menu-l) saturate(1.8) brightness(1.05) }
+html[data-style="glass"][data-refract] :is(.aap-pop, .ach-menu, .acp-menu, .al-pop, .arr-chip-pop, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .dex-menu, .ed-menu, .iac-menu, .icd-pop, .idb-menu, .iel-menu, .ifi-menu, .ifi-pop, .ifm-pop, .imc-menu, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .iwb-menu, .kb-pop, .mp-pop, .pst-menu) { -webkit-backdrop-filter: url(#pane-glass-menu-l) saturate(1.8) brightness(1.06); backdrop-filter: url(#pane-glass-menu-l) saturate(1.8) brightness(1.06) }
 
-html[data-style="glass"][data-refract] :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-sheet, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .ss-sheet, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .tw-dialog, .twt-window, .ufc, .um, .wa) { -webkit-backdrop-filter: url(#pane-glass-card-l) saturate(1.8) brightness(1.05); backdrop-filter: url(#pane-glass-card-l) saturate(1.8) brightness(1.05) }
+html[data-style="glass"][data-refract] :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-sheet, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .ss-sheet, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .tw-dialog, .twt-window, .ufc, .um, .wa) { -webkit-backdrop-filter: url(#pane-glass-card-l) saturate(1.8) brightness(1.06); backdrop-filter: url(#pane-glass-card-l) saturate(1.8) brightness(1.06) }
 
-html[data-style="glass"][data-refract] :is(.dkm-bar, .itt-tl-bar) { -webkit-backdrop-filter: url(#pane-glass-pill-l) saturate(1.8) brightness(1.05); backdrop-filter: url(#pane-glass-pill-l) saturate(1.8) brightness(1.05) }
+html[data-style="glass"][data-refract] :is(.dkm-bar, .itt-tl-bar) { -webkit-backdrop-filter: url(#pane-glass-pill-l) saturate(1.8) brightness(1.06); backdrop-filter: url(#pane-glass-pill-l) saturate(1.8) brightness(1.06) }
 
-html[data-style="glass"].dark[data-refract] :is(.aia-tip, .arr-tip, .cgx-tip, .chr-tip, .fnl-tip, .idb-tip, .ifi-tip, .imc-tip, .jfl-tip, .mwf-tip, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .stg-tip, .ths-tip, .trm-tip, .ufc-tip) { -webkit-backdrop-filter: url(#pane-glass-tip-d) saturate(1.7) brightness(1.12); backdrop-filter: url(#pane-glass-tip-d) saturate(1.7) brightness(1.12) }
+html[data-style="glass"].dark[data-refract] :is(.aia-tip, .arr-tip, .cgx-tip, .chr-tip, .fnl-tip, .idb-tip, .ifi-tip, .imc-tip, .jfl-tip, .mwf-tip, .rbc-tip, .rdg-tip, .rdr-tip, .rtr-tip, .rts-tip, .rvg-tip, .sbu-tip, .sky-tip, .stg-tip, .ths-tip, .trm-tip, .ufc-tip) { -webkit-backdrop-filter: url(#pane-glass-tip-d) saturate(1.6) brightness(.8); backdrop-filter: url(#pane-glass-tip-d) saturate(1.6) brightness(.8) }
 
-html[data-style="glass"].dark[data-refract] :is(.aap-pop, .ach-menu, .acp-menu, .al-pop, .arr-chip-pop, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .dex-menu, .ed-menu, .iac-menu, .icd-pop, .idb-menu, .iel-menu, .ifi-menu, .ifi-pop, .ifm-pop, .imc-menu, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .iwb-menu, .kb-pop, .mp-pop, .pst-menu) { -webkit-backdrop-filter: url(#pane-glass-menu-d) saturate(1.7) brightness(1.12); backdrop-filter: url(#pane-glass-menu-d) saturate(1.7) brightness(1.12) }
+html[data-style="glass"].dark[data-refract] :is(.aap-pop, .ach-menu, .acp-menu, .al-pop, .arr-chip-pop, .atk-menu, .atr-pop, .cb-pop, .cc-menu-panel, .dex-menu, .ed-menu, .iac-menu, .icd-pop, .idb-menu, .iel-menu, .ifi-menu, .ifi-pop, .ifm-pop, .imc-menu, .ird-menu, .ish-menu, .itt-menu, .itt-pop, .iwb-menu, .kb-pop, .mp-pop, .pst-menu) { -webkit-backdrop-filter: url(#pane-glass-menu-d) saturate(1.6) brightness(.8); backdrop-filter: url(#pane-glass-menu-d) saturate(1.6) brightness(.8) }
 
-html[data-style="glass"].dark[data-refract] :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-sheet, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .ss-sheet, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .tw-dialog, .twt-window, .ufc, .um, .wa) { -webkit-backdrop-filter: url(#pane-glass-card-d) saturate(1.7) brightness(1.12); backdrop-filter: url(#pane-glass-card-d) saturate(1.7) brightness(1.12) }
+html[data-style="glass"].dark[data-refract] :is(.aap, .ach, .ach-card, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .al-card, .amy, .aor, .apc-card, .apl, .arr, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-panel, .cc-body, .cc-discard, .cgx, .chr, .cm-card, .cs, .ct, .cw, .dex, .dgd-card, .di, .dre, .dz-card, .ed, .evs, .fm, .fnl, .iac-panel, .ias-card, .ibs, .icd, .idb-card, .iel-panel, .ifb-card, .ifi-card, .ifo-panel, .ihe-frame, .ils-card, .imc-panel, .imc-rail, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-scard, .irs-card, .irz-card, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .iwb-sheet, .jfl, .kb, .mar, .mgm-sheet, .mgm-surface, .mm-card, .mt__card, .mwf, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pt, .rbc, .rdg, .rdr, .rts, .rvg, .sbu, .sk-card, .sks-panel, .sky, .sr, .ss-sheet, .st-card, .stg, .tcc, .ths, .tl, .tp, .trm, .tst-card, .tw, .tw-dialog, .twt-window, .ufc, .um, .wa) { -webkit-backdrop-filter: url(#pane-glass-card-d) saturate(1.6) brightness(.8); backdrop-filter: url(#pane-glass-card-d) saturate(1.6) brightness(.8) }
 
-html[data-style="glass"].dark[data-refract] :is(.dkm-bar, .itt-tl-bar) { -webkit-backdrop-filter: url(#pane-glass-pill-d) saturate(1.7) brightness(1.12); backdrop-filter: url(#pane-glass-pill-d) saturate(1.7) brightness(1.12) }
+html[data-style="glass"].dark[data-refract] :is(.dkm-bar, .itt-tl-bar) { -webkit-backdrop-filter: url(#pane-glass-pill-d) saturate(1.6) brightness(.8); backdrop-filter: url(#pane-glass-pill-d) saturate(1.6) brightness(.8) }
 
 
 html[data-style="glass"] :is(.aap, .aap-pop, .ach, .ach-card, .ach-menu, .acp-menu, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .aia-tip, .al-card, .al-pop, .amy, .aor, .apc-card, .apl, .arr, .arr-chip-pop, .arr-tip, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-menu, .atk-panel, .atr-pop, .cb-pop, .cc-body, .cc-discard, .cc-menu-panel, .cgx, .cgx-tip, .chr, .chr-tip, .cm-card, .cs, .ct, .cw, .dex, .dex-menu, .dgd-card, .di, .dkm-bar, .dre, .dz-card, .ed, .ed-menu, .evs, .fm, .fnl, .fnl-tip, .iac-menu, .iac-panel, .ias-card, .ibs, .icd, .icd-pop, .idb-card, .idb-menu, .idb-tip, .iel-menu, .iel-panel, .ifb-card, .ifi-card, .ifi-menu, .ifi-pop, .ifi-tip, .ifm-pop, .ifo-panel, .ihe-frame, .ils-card, .imc-menu, .imc-panel, .imc-rail, .imc-tip, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-menu, .ird-scard, .irs-card, .irz-card, .ish-menu, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .itt-menu, .itt-pop, .itt-tl-bar, .iwb-menu, .iwb-sheet, .jfl, .jfl-tip, .kb, .kb-pop, .mar, .mgm-sheet, .mgm-surface, .mm-card, .mp-pop, .mt__card, .mwf, .mwf-tip, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pst-menu, .pt, .rbc, .rbc-tip, .rdg, .rdg-tip, .rdr, .rdr-tip, .rtr-tip, .rts, .rts-tip, .rvg, .rvg-tip, .sbu, .sbu-tip, .sk-card, .sks-panel, .sky, .sky-tip, .sr, .ss-sheet, .st-card, .stg, .stg-tip, .tcc, .ths, .ths-tip, .tl, .tp, .trm, .trm-tip, .tst-card, .tw, .tw-dialog, .twt-window, .ufc, .ufc-tip, .um, .wa) :is(.aap, .aap-pop, .ach, .ach-card, .ach-menu, .acp-menu, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .aia-tip, .al-card, .al-pop, .amy, .aor, .apc-card, .apl, .arr, .arr-chip-pop, .arr-tip, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-menu, .atk-panel, .atr-pop, .cb-pop, .cc-body, .cc-discard, .cc-menu-panel, .cgx, .cgx-tip, .chr, .chr-tip, .cm-card, .cs, .ct, .cw, .dex, .dex-menu, .dgd-card, .di, .dkm-bar, .dre, .dz-card, .ed, .ed-menu, .evs, .fm, .fnl, .fnl-tip, .iac-menu, .iac-panel, .ias-card, .ibs, .icd, .icd-pop, .idb-card, .idb-menu, .idb-tip, .iel-menu, .iel-panel, .ifb-card, .ifi-card, .ifi-menu, .ifi-pop, .ifi-tip, .ifm-pop, .ifo-panel, .ihe-frame, .ils-card, .imc-menu, .imc-panel, .imc-rail, .imc-tip, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-menu, .ird-scard, .irs-card, .irz-card, .ish-menu, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .itt-menu, .itt-pop, .itt-tl-bar, .iwb-menu, .iwb-sheet, .jfl, .jfl-tip, .kb, .kb-pop, .mar, .mgm-sheet, .mgm-surface, .mm-card, .mp-pop, .mt__card, .mwf, .mwf-tip, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pst-menu, .pt, .rbc, .rbc-tip, .rdg, .rdg-tip, .rdr, .rdr-tip, .rtr-tip, .rts, .rts-tip, .rvg, .rvg-tip, .sbu, .sbu-tip, .sk-card, .sks-panel, .sky, .sky-tip, .sr, .ss-sheet, .st-card, .stg, .stg-tip, .tcc, .ths, .ths-tip, .tl, .tp, .trm, .trm-tip, .tst-card, .tw, .tw-dialog, .twt-window, .ufc, .ufc-tip, .um, .wa) { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background-color: var(--pane-tint-nested) }
@@ -6534,17 +7188,17 @@ html[data-style="glass"] {
   --pane-solid: #fff;
   --pane-glint: rgb(255 255 255 / .95);
   --pane-shadow: inset 0 0 0 .5px rgb(255 255 255 / .7), 0 0 0 .5px rgb(30 40 90 / .11), 0 1px 3px rgb(30 40 90 / .08);
-  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .4), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / 1), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .55), inset 5px 5px 12px -5px rgb(255 255 255 / .85), inset -5px -5px 12px -5px rgb(255 255 255 / .4), inset 0 0 26px -6px rgb(255 255 255 / .5), 0 0 0 .5px rgb(30 40 90 / .14), 0 2px 6px rgb(30 40 90 / .1), 0 18px 44px -14px rgb(30 40 100 / .36);
-  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .46), inset 2px 2px 0 -.5px rgb(255 255 255 / 1), inset -2px -2px 0 -.5px rgb(255 255 255 / .62), inset 7px 7px 14px -6px rgb(255 255 255 / .9), inset -7px -7px 14px -6px rgb(255 255 255 / .45), inset 0 0 32px -6px rgb(255 255 255 / .55), 0 0 0 .5px rgb(30 40 90 / .16), 0 3px 8px rgb(30 40 90 / .1), 0 26px 56px -14px rgb(30 40 100 / .42);
+  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .4), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / 1), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .55), inset 5px 5px 12px -5px rgb(255 255 255 / .85), inset -5px -5px 12px -5px rgb(255 255 255 / .4), inset 0 0 26px -6px rgb(255 255 255 / .22), inset 3px 3px 0 -2px rgb(255 255 255 / .35), inset -3px -3px 0 -2px rgb(255 255 255 / .18), 0 0 0 .5px rgb(30 40 90 / .14), 0 2px 6px rgb(30 40 90 / .1), 0 18px 44px -14px rgb(30 40 100 / .36);
+  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .46), inset 2px 2px 0 -.5px rgb(255 255 255 / 1), inset -2px -2px 0 -.5px rgb(255 255 255 / .62), inset 7px 7px 14px -6px rgb(255 255 255 / .9), inset -7px -7px 14px -6px rgb(255 255 255 / .45), inset 0 0 32px -6px rgb(255 255 255 / .26), inset 3px 3px 0 -2px rgb(255 255 255 / .38), inset -3px -3px 0 -2px rgb(255 255 255 / .2), 0 0 0 .5px rgb(30 40 90 / .16), 0 3px 8px rgb(30 40 90 / .1), 0 26px 56px -14px rgb(30 40 100 / .42);
   --pane-tint: rgb(255 255 255 / .95);
   --pane-tint-float: rgb(255 255 255 / .97);
   --pane-tint-nested: rgb(255 255 255 / .95);
   --pane-tint-over: rgb(255 255 255 / .97);
   --pane-sheen: none;
-  --pane-t1: color-mix(in oklab, var(--pane-ink) 94%, transparent);
-  --pane-t2: color-mix(in oklab, var(--pane-ink) 78%, transparent);
-  --pane-t3: color-mix(in oklab, var(--pane-ink) 66%, transparent);
-  --pane-t4: color-mix(in oklab, var(--pane-ink) 52%, transparent);
+  --pane-t1: color-mix(in oklab, var(--pane-ink) 96%, transparent);
+  --pane-t2: color-mix(in oklab, var(--pane-ink) 84%, transparent);
+  --pane-t3: color-mix(in oklab, var(--pane-ink) 72%, transparent);
+  --pane-t4: color-mix(in oklab, var(--pane-ink) 58%, transparent);
 }
 html[data-style="glass"].dark {
   --pane-ink: #fff;
@@ -6552,17 +7206,17 @@ html[data-style="glass"].dark {
   --pane-solid: #222227;
   --pane-glint: rgb(255 255 255 / .9);
   --pane-shadow: inset 0 0 0 .5px rgb(255 255 255 / .16), 0 0 0 .5px rgb(0 0 0 / .5), 0 1px 3px rgb(0 0 0 / .4);
-  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .14), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / .62), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .24), inset 5px 5px 12px -5px rgb(255 255 255 / .3), inset -5px -5px 12px -5px rgb(255 255 255 / .12), inset 0 0 26px -8px rgb(255 255 255 / .16), 0 0 0 .5px rgb(0 0 0 / .6), 0 2px 6px rgb(0 0 0 / .3), 0 20px 46px -14px rgb(0 0 0 / .7);
-  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .18), inset 2px 2px 0 -.5px rgb(255 255 255 / .7), inset -2px -2px 0 -.5px rgb(255 255 255 / .28), inset 7px 7px 14px -6px rgb(255 255 255 / .34), inset -7px -7px 14px -6px rgb(255 255 255 / .14), inset 0 0 32px -8px rgb(255 255 255 / .18), 0 0 0 .5px rgb(0 0 0 / .65), 0 3px 8px rgb(0 0 0 / .35), 0 28px 58px -14px rgb(0 0 0 / .78);
+  --pane-card: inset 0 0 0 1px rgb(255 255 255 / .14), inset 1.5px 1.5px 0 -.5px rgb(255 255 255 / .62), inset -1.5px -1.5px 0 -.5px rgb(255 255 255 / .24), inset 5px 5px 12px -5px rgb(255 255 255 / .3), inset -5px -5px 12px -5px rgb(255 255 255 / .12), inset 0 0 26px -8px rgb(255 255 255 / .08), inset 3px 3px 0 -2px rgb(255 255 255 / .2), inset -3px -3px 0 -2px rgb(255 255 255 / .1), 0 0 0 .5px rgb(0 0 0 / .6), 0 2px 6px rgb(0 0 0 / .3), 0 20px 46px -14px rgb(0 0 0 / .7);
+  --pane-pop: inset 0 0 0 1px rgb(255 255 255 / .18), inset 2px 2px 0 -.5px rgb(255 255 255 / .7), inset -2px -2px 0 -.5px rgb(255 255 255 / .28), inset 7px 7px 14px -6px rgb(255 255 255 / .34), inset -7px -7px 14px -6px rgb(255 255 255 / .14), inset 0 0 32px -8px rgb(255 255 255 / .09), inset 3px 3px 0 -2px rgb(255 255 255 / .22), inset -3px -3px 0 -2px rgb(255 255 255 / .11), 0 0 0 .5px rgb(0 0 0 / .65), 0 3px 8px rgb(0 0 0 / .35), 0 28px 58px -14px rgb(0 0 0 / .78);
   --pane-tint: rgb(32 32 38 / .96);
   --pane-tint-float: rgb(38 38 45 / .97);
   --pane-tint-nested: rgb(34 34 40 / .96);
   --pane-tint-over: rgb(38 38 45 / .97);
   --pane-sheen: none;
-  --pane-t1: color-mix(in oklab, var(--pane-ink) 94%, transparent);
-  --pane-t2: color-mix(in oklab, var(--pane-ink) 76%, transparent);
-  --pane-t3: color-mix(in oklab, var(--pane-ink) 62%, transparent);
-  --pane-t4: color-mix(in oklab, var(--pane-ink) 48%, transparent);
+  --pane-t1: color-mix(in oklab, var(--pane-ink) 96%, transparent);
+  --pane-t2: color-mix(in oklab, var(--pane-ink) 80%, transparent);
+  --pane-t3: color-mix(in oklab, var(--pane-ink) 68%, transparent);
+  --pane-t4: color-mix(in oklab, var(--pane-ink) 54%, transparent);
 }
 html[data-style="glass"] :is(.aap, .aap-pop, .ach, .ach-card, .ach-menu, .acp-menu, .acp-surface, .ad-card, .ag-card, .ag-panel, .ai-card, .ai-lane, .aia, .aia-tip, .al-card, .al-pop, .amy, .aor, .apc-card, .apl, .arr, .arr-chip-pop, .arr-tip, .as-guide, .as-main, .as-news__card, .asp, .asp-panel, .atk-menu, .atk-panel, .atr-pop, .cb-pop, .cc-body, .cc-discard, .cc-menu-panel, .cgx, .cgx-tip, .chr, .chr-tip, .cm-card, .cs, .ct, .cw, .dex, .dex-menu, .dgd-card, .di, .dkm-bar, .dre, .dz-card, .ed, .ed-menu, .evs, .fm, .fnl, .fnl-tip, .iac-menu, .iac-panel, .ias-card, .ibs, .icd, .icd-pop, .idb-card, .idb-menu, .idb-tip, .iel-menu, .iel-panel, .ifb-card, .ifi-card, .ifi-menu, .ifi-pop, .ifi-tip, .ifm-pop, .ifo-panel, .ihe-frame, .ils-card, .imc-menu, .imc-panel, .imc-rail, .imc-tip, .imc-top, .imk-card, .ipr-ctl, .ipr-plist, .ipr-sheet, .ipr-twrap, .ipv, .ipy-card, .irc-card, .ird-menu, .ird-scard, .irs-card, .irz-card, .ish-menu, .isl-card, .ist-frame, .itp, .its-card, .itt-card, .itt-dp-sheet, .itt-menu, .itt-pop, .itt-tl-bar, .iwb-menu, .iwb-sheet, .jfl, .jfl-tip, .kb, .kb-pop, .mar, .mgm-sheet, .mgm-surface, .mm-card, .mp-pop, .mt__card, .mwf, .mwf-tip, .ns-card, .pc-card, .pf-card, .pm-card, .pr-shell, .pst-card, .pst-menu, .pt, .rbc, .rbc-tip, .rdg, .rdg-tip, .rdr, .rdr-tip, .rtr-tip, .rts, .rts-tip, .rvg, .rvg-tip, .sbu, .sbu-tip, .sk-card, .sks-panel, .sky, .sky-tip, .sr, .ss-sheet, .st-card, .stg, .stg-tip, .tcc, .ths, .ths-tip, .tl, .tp, .trm, .trm-tip, .tst-card, .tw, .tw-dialog, .twt-window, .ufc, .ufc-tip, .um, .wa) { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background-image: none !important }
 }

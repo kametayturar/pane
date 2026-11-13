@@ -137,7 +137,7 @@ const CSS = `
   --wa-ink: #000;
   --wa-surface: #fff;
   --wa-accent: #0060e2;
-  --wa-blue: #2f6bff;
+  --wa-blue: var(--wa-ink);
   --wa-t1: color-mix(in oklab, var(--wa-ink) 88%, transparent);
   --wa-t2: color-mix(in oklab, var(--wa-ink) 61%, transparent);
   --wa-t3: color-mix(in oklab, var(--wa-ink) 45%, transparent);
@@ -149,7 +149,6 @@ const CSS = `
   --wa-chip: rgb(255 255 255 / .7);
   --wa-chip-hover: #fff;
   --wa-glint: rgb(255 255 255 / .82);
-  --wa-blob: .13;
   --wa-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 1px -1px rgb(0 0 0 / .1), 0 1px 2px 0 rgb(0 0 0 / .05);
   --wa-ease: cubic-bezier(.22, 1, .36, 1);
   position: relative;
@@ -157,7 +156,7 @@ const CSS = `
   flex-direction: column;
   width: 100%;
   max-width: 380px;
-  height: 400px;
+  height: 340px;
   border-radius: 10px;
   background: var(--wa-surface);
   box-shadow: var(--wa-shadow);
@@ -172,7 +171,7 @@ const CSS = `
   --wa-ink: #fff;
   --wa-surface: #1c1c1e;
   --wa-accent: #4d8dff;
-  --wa-blue: #6b9bff;
+  --wa-blue: var(--wa-ink);
   --wa-t1: color-mix(in oklab, var(--wa-ink) 90%, transparent);
   --wa-t2: color-mix(in oklab, var(--wa-ink) 62%, transparent);
   --wa-t3: color-mix(in oklab, var(--wa-ink) 46%, transparent);
@@ -184,7 +183,6 @@ const CSS = `
   --wa-chip: rgb(255 255 255 / .06);
   --wa-chip-hover: rgb(255 255 255 / .1);
   --wa-glint: rgb(255 255 255 / .9);
-  --wa-blob: .18;
   --wa-shadow: 0 0 0 .5px rgb(255 255 255 / .1), 0 1px 2px 0 rgb(0 0 0 / .4);
 }
 .wa *, .wa *::before, .wa *::after { box-sizing: border-box }
@@ -197,7 +195,7 @@ const CSS = `
 .wa-id { flex: 1; min-width: 0 }
 .wa-name { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; line-height: 20px; font-weight: 500; color: var(--wa-ink) }
 .wa-name-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-.wa-mark { flex: none; width: 16px; height: 16px }
+.wa-mark { flex: none; width: 16px; height: 16px; color: var(--wa-t2) }
 .wa-tagline { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; line-height: 16px; color: var(--wa-t2) }
 .wa .wa-new {
   display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 6px; color: var(--wa-icon);
@@ -208,14 +206,8 @@ const CSS = `
 .wa .wa-new:hover { background: var(--wa-fill); color: var(--wa-ink) }
 .wa-new svg { width: 16px; height: 16px }
 
-/* Body: glow behind a bottom-anchored scroller */
+/* Body: a bottom-anchored scroller */
 .wa-body { position: relative; display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden }
-.wa-glow { position: absolute; inset: 0; pointer-events: none; transition: opacity .6s var(--wa-ease) }
-.wa[data-chatting] .wa-glow { opacity: .35 }
-.wa-blob { position: absolute; width: 220px; height: 136px; border-radius: 50%; filter: blur(36px); opacity: var(--wa-blob) }
-.wa-blob-a { left: -4%; bottom: 8%; background: rgb(236 72 153); animation: wa-drift-a 6s ease-in-out infinite }
-.wa-blob-b { left: 28%; bottom: -6%; background: rgb(139 92 246); animation: wa-drift-b 7s ease-in-out infinite }
-.wa-blob-c { right: -6%; bottom: 14%; background: rgb(47 107 255); animation: wa-drift-c 5.5s ease-in-out infinite }
 .wa-scroll { position: relative; flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin }
 .wa:not([data-chatting]) .wa-scroll { overflow-y: hidden }
 .wa-inner { display: flex; flex-direction: column; justify-content: flex-end; min-height: 100% }
@@ -291,9 +283,6 @@ const CSS = `
 @keyframes wa-bar { 0%, 100% { transform: scaleY(.3) } 50% { transform: scaleY(1) } }
 @keyframes wa-pulse { from { opacity: .55; transform: scale(1) } to { opacity: 0; transform: scale(1.7) } }
 @keyframes wa-sweep { from { background-position: 100% 0 } to { background-position: 0 0 } }
-@keyframes wa-drift-a { 0%, 100% { transform: translate(-25%, 15%) scale(.9) } 50% { transform: translate(55%, -35%) scale(1.25) } }
-@keyframes wa-drift-b { 0%, 100% { transform: translate(30%, -10%) scale(1.15) } 50% { transform: translate(-45%, 20%) scale(.85) } }
-@keyframes wa-drift-c { 0%, 100% { transform: translate(-35%, -25%) scale(.95) } 50% { transform: translate(40%, 30%) scale(1.2) } }
 
 @media (prefers-reduced-motion: reduce) {
   .wa *, .wa *::before, .wa *::after { animation: none !important; transition: none !important }
@@ -307,18 +296,10 @@ const CSS = `
 const svg = { viewBox: "0 0 16 16", fill: "none", "aria-hidden": true } as const
 
 function SparkMark() {
-  const id = React.useId()
   return (
     <svg {...svg} className="wa-mark">
-      <defs>
-        <linearGradient id={id} x1="2" y1="14" x2="14" y2="2" gradientUnits="userSpaceOnUse">
-          <stop stopColor="rgb(236 72 153)" />
-          <stop offset=".5" stopColor="rgb(139 92 246)" />
-          <stop offset="1" stopColor="rgb(47 107 255)" />
-        </linearGradient>
-      </defs>
-      <path fill={`url(#${id})`} d="M6.5 1.75Q6.9 6.6 11.75 7 6.9 7.4 6.5 12.25 6.1 7.4 1.25 7 6.1 6.6 6.5 1.75Z" />
-      <path fill={`url(#${id})`} d="M12 9.5q.2 2.3 2.5 2.5-2.3.2-2.5 2.5-.2-2.3-2.5-2.5 2.3-.2 2.5-2.5Z" />
+      <path fill="currentColor" d="M6.5 1.75Q6.9 6.6 11.75 7 6.9 7.4 6.5 12.25 6.1 7.4 1.25 7 6.1 6.6 6.5 1.75Z" />
+      <path fill="currentColor" d="M12 9.5q.2 2.3 2.5 2.5-2.3.2-2.5 2.5-.2-2.3-2.5-2.5 2.3-.2 2.5-2.5Z" />
     </svg>
   )
 }
@@ -593,12 +574,6 @@ export function WritingAssistant({
       </header>
 
       <div className="wa-body">
-        <div className="wa-glow" aria-hidden>
-          <span className="wa-blob wa-blob-a" />
-          <span className="wa-blob wa-blob-b" />
-          <span className="wa-blob wa-blob-c" />
-        </div>
-
         <div
           ref={scrollRef}
           className="wa-scroll"

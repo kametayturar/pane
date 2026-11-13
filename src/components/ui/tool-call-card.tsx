@@ -77,9 +77,9 @@ const CSS = `
   --tcc-fill: color-mix(in oklab, var(--tcc-ink) 4%, transparent);
   --tcc-line: color-mix(in oklab, var(--tcc-ink) 6%, transparent);
   --tcc-code: #fafafa;
-  --tcc-str: rgb(0 123 172 / .9);
-  --tcc-num: rgb(178 91 12);
-  --tcc-lit: rgb(138 63 196);
+  --tcc-str: color-mix(in oklab, var(--tcc-ink) 72%, transparent);
+  --tcc-num: var(--tcc-t1);
+  --tcc-lit: var(--tcc-t2);
   --tcc-glint: rgb(255 255 255 / .82);
   --tcc-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 1px -1px rgb(0 0 0 / .1), 0 1px 2px 0 rgb(0 0 0 / .05);
   --tcc-ease: cubic-bezier(.22, 1, .36, 1);
@@ -103,9 +103,9 @@ const CSS = `
   --tcc-fill: color-mix(in oklab, var(--tcc-ink) 6%, transparent);
   --tcc-line: color-mix(in oklab, var(--tcc-ink) 8%, transparent);
   --tcc-code: color-mix(in oklab, #1c1c1e, #fff 4%);
-  --tcc-str: rgb(94 194 232);
-  --tcc-num: rgb(240 160 90);
-  --tcc-lit: rgb(196 148 240);
+  --tcc-str: color-mix(in oklab, var(--tcc-ink) 72%, transparent);
+  --tcc-num: var(--tcc-t1);
+  --tcc-lit: var(--tcc-t2);
   --tcc-glint: rgb(255 255 255 / .9);
   --tcc-shadow: 0 0 0 .5px rgb(255 255 255 / .1), 0 1px 2px 0 rgb(0 0 0 / .4);
 }
@@ -137,14 +137,14 @@ const CSS = `
 .tcc[data-status="error"] .tcc-status { color: var(--tcc-danger); font-weight: 500 }
 .tcc-status svg { width: 14px; height: 14px; flex: none }
 .tcc-spinner circle { fill: none; stroke: var(--tcc-line); stroke-width: 1.6 }
-.tcc-spinner path { fill: none; stroke: color-mix(in oklab, var(--tcc-accent) 76.5%, transparent); stroke-width: 1.6; stroke-linecap: round }
+.tcc-spinner path { fill: none; stroke: var(--tcc-t2); stroke-width: 1.6; stroke-linecap: round }
 .tcc-spinner { animation: tcc-spin .8s linear infinite }
 .tcc-ok { animation: tcc-pop .46s var(--tcc-ease) backwards }
-.tcc-ok circle { fill: color-mix(in oklab, var(--tcc-accent) 76.5%, transparent) }
-.tcc-ok path { fill: none; stroke: #fff; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; animation: tcc-draw .36s var(--tcc-ease) .16s backwards }
+.tcc-ok circle { fill: none; stroke: var(--tcc-t3); stroke-width: 1.2 }
+.tcc-ok path { fill: none; stroke: var(--tcc-t2); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; animation: tcc-draw .36s var(--tcc-ease) .16s backwards }
 .tcc-fail { animation: tcc-pop .46s var(--tcc-ease) backwards }
-.tcc-fail circle { fill: var(--tcc-danger) }
-.tcc-fail path { fill: none; stroke: #fff; stroke-width: 1.5; stroke-linecap: round }
+.tcc-fail circle { fill: none; stroke: var(--tcc-danger); stroke-width: 1.2 }
+.tcc-fail path { fill: none; stroke: var(--tcc-danger); stroke-width: 1.5; stroke-linecap: round }
 .tcc-chevron { flex: none; width: 12px; height: 12px; fill: none; stroke: var(--tcc-t1); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; transition: transform .36s var(--tcc-ease), stroke .16s }
 .tcc[data-open="true"] .tcc-chevron, .tcc-group[data-open="true"] > .tcc-group-head .tcc-chevron { transform: rotate(180deg) }
 .tcc-head:hover .tcc-chevron, .tcc-group-head:hover .tcc-chevron { stroke: var(--tcc-ink) }
@@ -161,7 +161,7 @@ const CSS = `
 .tcc-sections { display: grid; gap: 14px; padding: 12px 14px 14px }
 .tcc-section { display: grid; gap: 6px; min-width: 0 }
 .tcc-section-head { display: flex; align-items: center; gap: 8px; min-height: 28px }
-.tcc-label { font-size: 10px; font-weight: 500; line-height: 16px; letter-spacing: .5px; text-transform: uppercase; color: var(--tcc-t3) }
+.tcc-label { font-size: 12px; font-weight: 500; line-height: 16px; color: var(--tcc-t3) }
 .tcc-copy {
   position: relative; display: grid; place-items: center; width: 28px; height: 28px; margin-left: auto; border-radius: 6px;
   background: var(--tcc-surface); box-shadow: var(--tcc-shadow); color: var(--tcc-icon); transition: background-color .16s, color .16s;

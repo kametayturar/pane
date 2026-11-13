@@ -75,8 +75,6 @@ const CSS = `
   --mm-soft: color-mix(in oklab, var(--mm-ink) 3%, transparent);
   --mm-line: color-mix(in oklab, var(--mm-ink) 6%, transparent);
   --mm-row-solid: color-mix(in oklab, var(--mm-surface), var(--mm-ink) 3%);
-  --mm-amber-fg: #9a6a00;
-  --mm-amber-bg: rgb(232 162 12 / .12);
   --mm-main-fg: #fcfcfc;
   --mm-main-bg: color-mix(in oklab, var(--mm-ink) 88%, transparent);
   --mm-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 1px -1px rgb(0 0 0 / .1), 0 1px 2px 0 rgb(0 0 0 / .05);
@@ -104,8 +102,6 @@ const CSS = `
   --mm-hover: color-mix(in oklab, var(--mm-ink) 6%, transparent);
   --mm-soft: color-mix(in oklab, var(--mm-ink) 5%, transparent);
   --mm-line: color-mix(in oklab, var(--mm-ink) 8%, transparent);
-  --mm-amber-fg: #fbbf24;
-  --mm-amber-bg: rgb(251 191 36 / .12);
   --mm-main-fg: #171717;
   --mm-main-bg: rgb(255 255 255 / .9);
   --mm-shadow: 0 0 0 .5px rgb(255 255 255 / .1), 0 1px 2px 0 rgb(0 0 0 / .4);
@@ -223,9 +219,10 @@ const CSS = `
 .mm-meta { display: flex; align-items: center; gap: 6px; margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--mm-t3) }
 .mm-meta:empty { display: none }
 .mm-dot { width: 2px; height: 2px; border-radius: 50%; background: var(--mm-t4); flex: none }
+.mm-tag svg { width: 12px; height: 12px }
 .mm-tag {
-  display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 5px; font-size: 11px; font-weight: 500;
-  line-height: 1; color: var(--mm-amber-fg); background: var(--mm-amber-bg); animation: mm-tag .28s var(--mm-ease) backwards;
+  display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-style: italic;
+  line-height: 16px; color: var(--mm-t3); animation: mm-tag .28s var(--mm-ease) backwards;
 }
 .mm-acts {
   position: absolute; top: 6px; right: 6px; display: flex; gap: 2px; padding-left: 16px; opacity: 0;
@@ -927,7 +924,12 @@ export function MemoryPanel({
                                   {m.source}
                                   {m.source && m.date && <span className="mm-dot" aria-hidden />}
                                   {m.date}
-                                  {m.paused && <span className="mm-tag">Paused</span>}
+                                  {m.paused && (
+                                    <span className="mm-tag">
+                                      <PauseIcon />
+                                      Paused
+                                    </span>
+                                  )}
                                 </div>
                               )}
                               <div className="mm-acts">

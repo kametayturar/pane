@@ -212,7 +212,7 @@ const CSS = `
 .chr-kpi:last-child { padding-right: 0 }
 .chr-label { display: block; font-size: 13px; line-height: 18px; color: var(--chr-t2) }
 .chr-kv { display: block; font-size: 22px; line-height: 30px; font-weight: 500; letter-spacing: -.012em; margin-top: 2px }
-.chr-delta { display: flex; align-items: center; gap: 3px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--chr-good) }
+.chr-delta { display: flex; align-items: center; gap: 3px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--chr-ink, currentColor) }
 .chr-delta[data-down] { color: var(--chr-bad) }
 .chr-ctx { display: block; font-size: 12px; line-height: 16px; color: var(--chr-t3); margin-top: 1px }
 

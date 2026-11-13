@@ -244,15 +244,15 @@ const CSS = `
 /* Router */
 .moe-router { position: absolute; left: ${ROUTER.x}px; top: ${ROUTER.y}px; width: ${ROUTER.w}px; height: ${ROUTER.h}px; border-radius: 14px; background: var(--moe-fill) }
 .moe-cap { position: absolute; left: 14px; top: 12px; font-size: 10.5px; line-height: 16px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; color: var(--moe-t3) }
-.moe-rtok { position: absolute; left: 14px; width: 92px; top: ${TOKEN_SLOT.y - ROUTER.y - 16}px; height: 32px; display: grid; place-items: center start; font-size: 20px; line-height: 32px; font-weight: 500; letter-spacing: -.02em; white-space: nowrap }
+.moe-rtok { position: absolute; left: 14px; width: 92px; top: ${TOKEN_SLOT.y - ROUTER.y - 16}px; height: 32px; display: grid; place-items: center start; font-size: 26px; line-height: 32px; font-weight: 500; letter-spacing: -.02em; white-space: nowrap }
 .moe-rtok span { display: inline-block; animation: moe-text calc(.45s / var(--moe-speed)) var(--moe-ease) backwards }
-.moe-rnote { position: absolute; left: 14px; width: 104px; bottom: 14px; font-size: 11.5px; line-height: 16px; color: var(--moe-t3) }
+.moe-rnote { display: none; position: absolute; left: 14px; width: 104px; bottom: 14px; font-size: 11.5px; line-height: 16px; color: var(--moe-t3) }
 .moe-rnote span { display: block; animation: moe-text calc(.45s / var(--moe-speed)) var(--moe-ease) backwards }
 .moe-bar { position: absolute; left: ${BAR_X}px; width: ${BAR_W}px; height: 6px; border-radius: 3px; background: color-mix(in oklab, var(--moe-ink) 6%, transparent); overflow: hidden }
 .moe-bar i { display: block; width: 100%; height: 100%; border-radius: 3px; background: var(--moe-rail); transform-origin: 0 50%; transform: scaleX(0); transition: background-color .3s }
 .moe-bar[data-pick="1"] i { background: var(--moe-first) }
 .moe-bar[data-pick="2"] i { background: var(--moe-second) }
-.moe-bar[data-pick="x"] i { background: var(--moe-warn) }
+.moe-bar[data-pick="x"] i { background: var(--moe-t2) }
 
 /* Experts */
 .moe-ex { position: absolute; left: ${EXP_X}px; width: ${EXP_W}px; display: flex; align-items: center; gap: 8px; padding: 0 10px 0 9px; border-radius: 8px; color: var(--moe-t3);
@@ -261,32 +261,32 @@ const CSS = `
 .moe-ex b { font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap }
 .moe-ex em { flex: 1; min-width: 0; font-style: normal; font-size: 11px; line-height: 16px; color: var(--moe-t4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .moe-ex[data-rank="1"], .moe-ex[data-rank="2"] { color: var(--moe-t1); background: var(--moe-surface) }
-.moe-ex[data-rank="1"] { box-shadow: 0 0 0 1.5px var(--moe-first), 0 6px 14px -8px color-mix(in oklab, var(--moe-first) 70%, transparent) }
-.moe-ex[data-rank="2"] { box-shadow: 0 0 0 1.5px var(--moe-second), 0 6px 14px -8px color-mix(in oklab, var(--moe-first) 40%, transparent) }
-.moe-ex[data-rank="x"] { color: var(--moe-t2); box-shadow: 0 0 0 1px var(--moe-warn); background-image: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in oklab, var(--moe-warn) 10%, transparent) 4px 5px) }
-.moe-ex[data-rank="x"] svg { color: var(--moe-warn) }
+.moe-ex[data-rank="1"] { box-shadow: 0 0 0 1.5px var(--moe-first) }
+.moe-ex[data-rank="2"] { box-shadow: 0 0 0 1.5px var(--moe-second) }
+.moe-ex[data-rank="x"] { color: var(--moe-t2); box-shadow: 0 0 0 1px var(--moe-t2); background-image: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in oklab, var(--moe-t2) 10%, transparent) 4px 5px) }
+.moe-ex[data-rank="x"] svg { color: var(--moe-t2) }
 .moe-ex[data-dim] { opacity: .5 }
 .moe-ex[data-rank="1"]::after, .moe-ex[data-rank="2"]::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
   background: linear-gradient(100deg, transparent 30%, color-mix(in oklab, var(--moe-first) 22%, transparent) 50%, transparent 70%) 0 0 / 260% 100%; animation: moe-shine calc(.9s / var(--moe-speed)) ease-out }
 .moe-w { flex: none; min-width: 30px; text-align: right; font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; animation: moe-text calc(.4s / var(--moe-speed)) var(--moe-ease) backwards }
 .moe-ex[data-rank="1"] .moe-w { color: var(--moe-first) }
-.moe-ex[data-rank="x"] .moe-w { color: var(--moe-warn); font-weight: 600 }
+.moe-ex[data-rank="x"] .moe-w { color: var(--moe-t2); font-weight: 600 }
 .moe-pips { flex: none; display: flex; gap: 3px }
 .moe-pips i { width: 5px; height: 5px; border-radius: 1.5px; background: var(--moe-rail); transition: background-color .3s }
 .moe-pips i[data-on] { background: var(--moe-t3) }
-.moe-pips i[data-full] { background: var(--moe-warn) }
+.moe-pips i[data-full] { background: var(--moe-t2) }
 
 /* Merge */
 .moe-node { position: absolute; left: ${NODE.x - 20}px; top: ${NODE.y - 20}px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: var(--moe-t3);
   background: var(--moe-surface); box-shadow: 0 0 0 1px var(--moe-rail), 0 1px 2px rgb(0 0 0 / .05); transition: color .3s, box-shadow .3s }
 .moe-node svg { width: 16px; height: 16px; stroke-width: 2 }
-.moe-node[data-on] { color: var(--moe-first); box-shadow: 0 0 0 1.5px var(--moe-first), 0 6px 14px -6px color-mix(in oklab, var(--moe-first) 60%, transparent) }
+.moe-node[data-on] { color: var(--moe-first); box-shadow: 0 0 0 1.5px var(--moe-first) }
 .moe-node[data-pulse]::after { content: ""; position: absolute; inset: 0; border-radius: 50%; animation: moe-ring calc(.8s / var(--moe-speed)) var(--moe-ease) }
 .moe-nlab { position: absolute; left: ${NODE.x - 30}px; width: 60px; top: ${NODE.y + 26}px; text-align: center; font-size: 10.5px; line-height: 14px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; color: var(--moe-t3) }
 .moe-pk { position: absolute; left: 0; top: 0; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; opacity: 0; will-change: transform;
-  background: var(--moe-first); box-shadow: 0 0 0 3px color-mix(in oklab, var(--moe-first) 22%, transparent) }
-.moe-pk[data-rank="2"] { background: var(--moe-second); box-shadow: 0 0 0 3px color-mix(in oklab, var(--moe-second) 30%, transparent) }
-.moe-pk[data-rank="x"] { background: var(--moe-warn); box-shadow: 0 0 0 3px color-mix(in oklab, var(--moe-warn) 25%, transparent) }
+  background: var(--moe-first) }
+.moe-pk[data-rank="2"] { background: var(--moe-second) }
+.moe-pk[data-rank="x"] { background: var(--moe-t2) }
 .moe-pk[data-kind="tok"] { background: var(--moe-t1); box-shadow: 0 0 0 3px var(--moe-fill) }
 
 /* Footer */
@@ -294,7 +294,7 @@ const CSS = `
 .moe-flab { flex: none; margin-right: 4px; font-size: 10.5px; line-height: 16px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; color: var(--moe-t3) }
 .moe-oc { position: relative; padding: 0 1px 4px; font-size: 12.5px; line-height: 18px; font-weight: 500; white-space: pre; color: var(--moe-t1); animation: moe-in calc(.5s / var(--moe-speed)) var(--moe-ease) backwards }
 .moe-oc::after { content: ""; position: absolute; left: 1px; right: 1px; bottom: 0; height: 3px; border-radius: 2px; background: var(--g) }
-.moe-oc[data-skip]::after { background: repeating-linear-gradient(90deg, var(--moe-warn) 0 3px, transparent 3px 6px) }
+.moe-oc[data-skip]::after { background: repeating-linear-gradient(90deg, var(--moe-t2) 0 3px, transparent 3px 6px) }
 .moe-load { position: absolute; right: 24px; top: 380px; height: 24px; display: flex; align-items: center; gap: 12px }
 .moe-lbars { display: flex; align-items: flex-end; gap: 3px; height: 20px }
 .moe-lbars i { display: block; width: 8px; min-height: 2px; border-radius: 2px; background: var(--moe-rail); transform-origin: 50% 100%; transition: height .5s var(--moe-ease), background-color .3s }

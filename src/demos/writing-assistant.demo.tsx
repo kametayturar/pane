@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { SegmentedControl } from "@/components/ui/segmented-control"
 import { WritingAssistant, type WritingAssistantSpeech } from "@/components/ui/writing-assistant"
 
 const SUGGESTIONS = ["Polish my cover letter", "Shorten this email", "Sound less formal", "Draft a thank-you"]
@@ -51,27 +52,17 @@ export default function Demo() {
         dictation="Turn these notes into a short project update."
       />
 
-      <div className="flex items-center gap-2 text-xs text-neutral-500">
-        <span>Voice</span>
-        <div className="inline-flex rounded-md border border-neutral-200 p-0.5 dark:border-neutral-800">
-          {(["auto", "simulate"] as const).map((mode) => (
-            <button
-              key={mode}
-              type="button"
-              aria-pressed={speech === mode}
-              onClick={() => setSpeech(mode)}
-              className={
-                "rounded px-2 py-0.5 font-medium transition-colors " +
-                (speech === mode
-                  ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900"
-                  : "hover:text-neutral-900 dark:hover:text-neutral-100")
-              }
-            >
-              {mode === "auto" ? "Microphone" : "Simulated"}
-            </button>
-          ))}
-        </div>
-      </div>
+      <SegmentedControl
+        size="sm"
+        variant="tray"
+        aria-label="Voice input"
+        value={speech}
+        onChange={(v) => setSpeech(v as WritingAssistantSpeech)}
+        options={[
+          { value: "auto", label: "Microphone" },
+          { value: "simulate", label: "Simulated" },
+        ]}
+      />
     </div>
   )
 }

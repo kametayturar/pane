@@ -823,9 +823,7 @@ const Chart = React.memo(function Chart({ engine, ticker, series, averages, load
     ctx.restore()
 
     /* current price: dotted line + tag */
-    const prevClose = engine.get(P.current.ticker).prev
-    const priceUp = live >= prevClose
-    const tagCol = priceUp ? pal.up : pal.dn
+    const tagCol = pal.tag
     const yLive = yOf(live)
     if (yLive > TOP && yLive < priceB) {
       ctx.save()
@@ -848,7 +846,7 @@ const Chart = React.memo(function Chart({ engine, ticker, series, averages, load
       if (Math.abs(y - tagY) < 17 || y < TOP + 4 || y > priceB) continue
       ctx.fillText(fmtPrice(v), plotR + 12, y)
     }
-    tag(ctx, plotR + 6, tagY, axisW - 10, fmtPrice(live), tagCol, "#fff", pal.font)
+    tag(ctx, plotR + 6, tagY, axisW - 10, fmtPrice(live), tagCol, pal.tagInk, pal.font)
 
     /* time labels */
     ctx.fillStyle = pal.text
@@ -1991,7 +1989,6 @@ export function MarketTerminal({
             aria-label={paused ? "Resume live prices" : "Pause live prices"}
             onClick={() => setPaused((p) => !p)}
           >
-            <span className="mt__dot" aria-hidden="true" />
             <span className="mt__live-t">{paused ? "Paused" : "Live"}</span>
             {paused ? <Play size={16} fill="currentColor" aria-hidden="true" /> : <Pause size={16} fill="currentColor" aria-hidden="true" />}
           </button>
@@ -2072,8 +2069,8 @@ const CSS = `
   --mt-line: color-mix(in oklab, var(--mt-ink) 8%, transparent);
   --mt-up: #007b12;
   --mt-dn: #cd1526;
-  --mt-ma1: #1f7dcf;
-  --mt-ma2: #e58f00;
+  --mt-ma1: rgb(0 0 0 / .7);
+  --mt-ma2: rgb(0 0 0 / .4);
   --mt-grid: rgba(0, 0, 0, .055);
   --mt-axis: rgba(0, 0, 0, .1);
   --mt-axis-text: #7d7d7d;
@@ -2110,8 +2107,8 @@ const CSS = `
   --mt-line: color-mix(in oklab, var(--mt-ink) 10%, transparent);
   --mt-up: #34c759;
   --mt-dn: #ff6369;
-  --mt-ma1: #5aa9ff;
-  --mt-ma2: #ffb340;
+  --mt-ma1: rgb(255 255 255 / .7);
+  --mt-ma2: rgb(255 255 255 / .4);
   --mt-grid: rgba(255, 255, 255, .06);
   --mt-axis: rgba(255, 255, 255, .11);
   --mt-axis-text: #8e8e93;
@@ -2142,14 +2139,11 @@ const CSS = `
 .mt__id-1 h2 { font-size: 18px; line-height: 20px; font-weight: 500; letter-spacing: -.03em; color: var(--mt-t1) }
 .mt__id-1 span { color: var(--mt-t2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .mt__id-2 { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 17px; color: var(--mt-t3); margin-top: 1px }
-.mt__badge { display: inline-flex; align-items: center; gap: 5px; height: 18px; padding: 0 7px; border-radius: 9px; font-size: 11px; font-weight: 500; color: var(--mt-up); background: color-mix(in oklab, var(--mt-up) 11%, transparent) }
-.mt__live { grid-column: 2; grid-row: 1; display: inline-flex; align-items: center; gap: 8px; height: 36px; min-width: 110px; padding: 0 10px 0 12px; border-radius: 999px; border: 1px solid var(--mt-line); background: var(--mt-surface); color: var(--mt-t2); font-weight: 500; transition: background-color .2s var(--mt-ease) }
+.mt__badge { display: inline-flex; align-items: center; gap: 5px; height: 18px; padding: 0; font-size: 11px; font-weight: 400; color: var(--mt-t3) }
+.mt__live { grid-column: 2; grid-row: 1; display: inline-flex; align-items: center; gap: 8px; height: 36px; min-width: 72px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--mt-line); background: var(--mt-surface); color: var(--mt-t2); font-weight: 500; transition: background-color .2s var(--mt-ease) }
 .mt__live:hover { background: var(--mt-fill) }
 .mt__live-t { flex: 1; text-align: left }
 .mt__dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--mt-t4); flex: none }
-.mt__live[data-on="true"] .mt__dot { background: var(--mt-up) }
-.mt__live[data-on="true"] .mt__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--mt-up); animation: mt-pulse 2s var(--mt-ease) infinite }
-@keyframes mt-pulse { from { transform: scale(1); opacity: .5 } to { transform: scale(3); opacity: 0 } }
 
 .mt__row2 { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-top: 2px }
 .mt__quote { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; min-width: 0 }
@@ -2159,7 +2153,7 @@ const CSS = `
 .mt__dg-w { visibility: hidden; display: block; line-height: 1.1em }
 .mt__dg-s { position: absolute; left: 0; top: 0; transform: translateY(calc(var(--d) * -1.1em)); transition: transform .62s var(--mt-ease) }
 .mt__dg-s i { display: block; height: 1.1em; line-height: 1.1em; font-style: normal }
-.mt__delta { display: inline-flex; align-items: center; gap: 4px; font-size: 16px; line-height: 22px; font-weight: 500; color: var(--mt-dc); font-variant-numeric: tabular-nums; letter-spacing: -.015em; white-space: nowrap }
+.mt__delta { display: inline-flex; align-items: center; gap: 4px; font-size: 16px; line-height: 22px; font-weight: 500; color: var(--mt-t1); font-variant-numeric: tabular-nums; letter-spacing: -.015em; white-space: nowrap }
 .mt__delta em { font-style: normal; font-weight: 400; color: var(--mt-t3); margin-left: 2px }
 .mt__stats { display: flex; gap: 24px; text-align: right }
 .mt__stats dt { font-size: 12px; line-height: 17px; color: var(--mt-t3) }
@@ -2195,7 +2189,7 @@ const CSS = `
 .mt__readout b { font-weight: 500; color: var(--mt-t1) }
 .mt__readout i { font-style: normal; color: var(--mt-t3) }
 .mt__ro-date { margin-right: 2px }
-.mt__readout .mt__ro-pct { color: var(--mt-dc) }
+.mt__readout .mt__ro-pct { color: var(--mt-t1) }
 .mt__ro-ma1 i { color: var(--mt-ma1) }
 .mt__ro-ma2 i { color: var(--mt-ma2) }
 .mt__readout[data-ma20="false"] .mt__ro-ma1, .mt__readout[data-ma50="false"] .mt__ro-ma2 { display: none }
@@ -2275,7 +2269,7 @@ const CSS = `
 .mt__ord-t b { font-weight: 500 }
 .mt__ord-t small { font-size: 12px; line-height: 17px; color: var(--mt-t3); font-variant-numeric: tabular-nums }
 .mt__pill { padding: 2px 8px; border-radius: 999px; font-size: 12px; line-height: 17px; font-weight: 500; color: var(--mt-t1); background: var(--mt-fill2); flex: none }
-.mt__pill[data-status="filled"] { color: var(--mt-up); background: color-mix(in oklab, var(--mt-up) 12%, transparent) }
+.mt__pill[data-status="filled"] { color: var(--mt-t1); background: var(--mt-fill) }
 .mt__pill[data-status="canceled"] { color: var(--mt-t3) }
 
 /* ---- responsive (container) ---- */

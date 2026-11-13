@@ -1,9 +1,9 @@
 import { ProgressTracker, type ProgressStep } from "@/components/ui/progress-tracker"
 
-const dot = (color: string, d: string) => (
-  <svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden>
-    <rect width="16" height="16" rx="4" fill={color} />
-    <path d={d} stroke="#fff" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+const dot = (_color: string, d: string) => (
+  <svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden className="text-neutral-500 dark:text-neutral-400">
+    <rect x=".5" y=".5" width="15" height="15" rx="4" stroke="currentColor" strokeOpacity=".35" />
+    <path d={d} stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 

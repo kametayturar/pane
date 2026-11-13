@@ -2,7 +2,7 @@ import * as React from "react"
 import { ChevronDown, Copy, Download, FolderInput, Heart, Link2, Trash2 } from "lucide-react"
 
 import { GlassMenu } from "@/components/ui/glass-menu"
-import { Scene } from "./_glass-scenes"
+import { Backdrop } from "@/components/motion/backdrop"
 
 export const notes = [
   "One element is both the trigger's glass and the panel's glass. Its width and height are two damped springs stepped in a requestAnimationFrame loop and written to `style`, so the morph costs no React renders; the rows are fixed-width content inside, clipped by the growing box, so text is revealed rather than scaled.",
@@ -20,7 +20,9 @@ export default function Demo() {
   return (
     <div className="flex w-full max-w-[640px] flex-col gap-3">
       <div className="relative h-[420px] overflow-hidden rounded-[30px] bg-neutral-200">
-        <Scene tone="tram" seed={4} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
+        <div className="absolute inset-0">
+          <Backdrop variant="orbs" accent="#4f7cf0" minHeight={0} style={{ height: "100%" }} />
+        </div>
         <div className="absolute left-4 top-4">
           <GlassMenu
             label="Photo actions"
@@ -74,10 +76,10 @@ export default function Demo() {
             Sort <ChevronDown />
           </GlassMenu>
         </div>
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/30 to-transparent p-5 text-[13px] text-white">
-          <span>{log}</span>
-          <span className="opacity-80">{favorite ? "Favorited" : "Not favorited"}{captions ? " · captions on" : ""}</span>
-        </div>
+      </div>
+      <div className="flex items-center justify-between gap-3 px-1 text-[13px] text-neutral-600 dark:text-neutral-300">
+        <span>{log}</span>
+        <span className="text-neutral-500 dark:text-neutral-400">{favorite ? "Favorited" : "Not favorited"}{captions ? " · captions on" : ""}</span>
       </div>
       <p className="px-1 text-[12px] text-neutral-500 dark:text-neutral-400">Open with click, Enter or ↓. Arrow keys, Home/End, → for the submenu, letters to jump, Esc to leave.</p>
     </div>

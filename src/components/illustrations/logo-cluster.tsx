@@ -36,13 +36,13 @@ export type LogoClusterProps = {
 
 const ic = { size: 24, strokeWidth: 1.9, "aria-hidden": true } as const
 const DEFAULT_ITEMS: LogoClusterItem[] = [
-  { name: "Calendar", icon: <Calendar {...ic} />, color: "#3b82f6" },
-  { name: "Chat", icon: <MessageSquare {...ic} />, color: "#22a45d" },
-  { name: "Billing", icon: <CreditCard {...ic} />, color: "#6d5ef5" },
-  { name: "Docs", icon: <FileText {...ic} />, color: "#2f8ae6" },
-  { name: "Analytics", icon: <BarChart3 {...ic} />, color: "#8b5cf6" },
-  { name: "Tickets", icon: <Ticket {...ic} />, color: "#e8a317" },
-  { name: "Mail", icon: <Mail {...ic} />, color: "#ef5a3c" },
+  { name: "Calendar", icon: <Calendar {...ic} /> },
+  { name: "Chat", icon: <MessageSquare {...ic} /> },
+  { name: "Billing", icon: <CreditCard {...ic} /> },
+  { name: "Docs", icon: <FileText {...ic} /> },
+  { name: "Analytics", icon: <BarChart3 {...ic} /> },
+  { name: "Tickets", icon: <Ticket {...ic} /> },
+  { name: "Mail", icon: <Mail {...ic} /> },
 ]
 
 const DEFAULT_MARK = (

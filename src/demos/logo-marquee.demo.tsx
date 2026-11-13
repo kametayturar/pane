@@ -1,54 +1,14 @@
-import * as React from "react"
-
 import { LogoMarquee } from "@/components/blocks/logo-marquee"
 
 export default function Demo() {
-  const [speed, setSpeed] = React.useState(40)
-  const [direction, setDirection] = React.useState<"left" | "right">("left")
-  const [paused, setPaused] = React.useState(false)
-
   return (
-    <div className="flex w-full max-w-[900px] flex-col gap-8 py-6">
+    <div className="flex w-full max-w-[900px] flex-col gap-6 py-6">
+      <p className="text-center text-[13px] font-medium text-neutral-500">Trusted by teams at</p>
       <div className="flex flex-col gap-5">
-        <p className="text-center text-[13px] font-medium text-neutral-500">Trusted by teams at</p>
-        <LogoMarquee speed={speed} direction={direction} paused={paused} />
-        <LogoMarquee speed={speed * 0.7} direction={direction === "left" ? "right" : "left"} paused={paused} />
+        <LogoMarquee speed={40} />
+        <LogoMarquee speed={28} direction="right" />
       </div>
-
-      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[13px] text-neutral-600 dark:text-neutral-300">
-        <label className="flex items-center gap-2">
-          Speed
-          <input
-            type="range"
-            min={0}
-            max={140}
-            step={5}
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
-            className="w-32"
-            aria-label="Speed in pixels per second"
-          />
-          <span className="w-14 tabular-nums">{speed} px/s</span>
-        </label>
-        <button
-          type="button"
-          onClick={() => setDirection((d) => (d === "left" ? "right" : "left"))}
-          className="rounded-lg px-3 py-1.5 shadow-[0_0_0_1px_rgb(0_0_0/.08)] dark:shadow-[0_0_0_1px_rgb(255_255_255/.12)]"
-        >
-          Direction: {direction}
-        </button>
-        <button
-          type="button"
-          aria-pressed={paused}
-          onClick={() => setPaused((p) => !p)}
-          className="rounded-lg px-3 py-1.5 shadow-[0_0_0_1px_rgb(0_0_0/.08)] dark:shadow-[0_0_0_1px_rgb(255_255_255/.12)]"
-        >
-          {paused ? "Resume" : "Pause"}
-        </button>
-      </div>
-      <p className="text-center text-[12px] text-neutral-400">
-        Hover to ease it to a stop, drag to scrub and fling.
-      </p>
+      <p className="text-center text-[12px] text-neutral-400">Hover to ease it to a stop, drag to scrub and fling.</p>
     </div>
   )
 }

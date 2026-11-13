@@ -53,13 +53,13 @@ export type TimeDialProps = {
 
 const CSS = `
 .tdl {
-  --tdl-ink: oklch(.15 0 0); --tdl-surface: #fff; --tdl-work: oklch(.49 .19 150); --tdl-ease: cubic-bezier(.22, 1, .36, 1);
+  --tdl-ink: oklch(.15 0 0); --tdl-surface: #fff; --tdl-work: var(--tdl-ink); --tdl-ease: cubic-bezier(.22, 1, .36, 1);
   --tdl-t2: color-mix(in oklab, var(--tdl-ink) 62%, transparent); --tdl-t3: color-mix(in oklab, var(--tdl-ink) 42%, transparent);
   --tdl-line: color-mix(in oklab, var(--tdl-ink) 8%, transparent); --tdl-line2: color-mix(in oklab, var(--tdl-ink) 18%, transparent);
   --tdl-fill: color-mix(in oklab, var(--tdl-ink) 4%, transparent);
   container-type: inline-size; width: 100%; max-width: 720px; margin-inline: auto; color: var(--tdl-ink); display: grid; gap: 16px;
   font-family: var(--tdl-font, Inter, InterVariable, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif); font-size: 14px; line-height: 1.4; letter-spacing: -.01em; -webkit-font-smoothing: antialiased }
-:is(.dark, [data-theme="dark"]) .tdl { --tdl-ink: oklch(.97 0 0); --tdl-surface: #171717; --tdl-work: oklch(.74 .17 150); --tdl-line: color-mix(in oklab, var(--tdl-ink) 11%, transparent); --tdl-line2: color-mix(in oklab, var(--tdl-ink) 24%, transparent); --tdl-fill: color-mix(in oklab, var(--tdl-ink) 7%, transparent) }
+:is(.dark, [data-theme="dark"]) .tdl { --tdl-ink: oklch(.97 0 0); --tdl-surface: #171717; --tdl-work: var(--tdl-ink); --tdl-line: color-mix(in oklab, var(--tdl-ink) 11%, transparent); --tdl-line2: color-mix(in oklab, var(--tdl-ink) 24%, transparent); --tdl-fill: color-mix(in oklab, var(--tdl-ink) 7%, transparent) }
 .tdl *, .tdl *::before, .tdl *::after { box-sizing: border-box }
 .tdl button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: inherit; -webkit-tap-highlight-color: transparent }
 .tdl :focus-visible { outline: 2px solid color-mix(in oklab, var(--tdl-ink) 55%, transparent); outline-offset: 2px }
@@ -70,13 +70,13 @@ const CSS = `
 .tdl-stage:focus-visible { outline: 2px solid color-mix(in oklab, var(--tdl-ink) 50%, transparent); outline-offset: 4px }
 .tdl-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible }
 .tdl-plate { fill: var(--tdl-surface) }
-.tdl-work { fill: color-mix(in oklab, var(--tdl-work) 9%, transparent); stroke: color-mix(in oklab, var(--tdl-work) 22%, transparent); stroke-width: 1 }
+.tdl-work { fill: color-mix(in oklab, var(--tdl-work) 6%, transparent); stroke: color-mix(in oklab, var(--tdl-work) 16%, transparent); stroke-width: 1 }
 .tdl-rim, .tdl-home-track { fill: none; stroke: var(--tdl-line); stroke-width: 1 }
 .tdl-track { fill: none; stroke: var(--tdl-line2); stroke-width: 1; stroke-dasharray: 1 3; stroke-linecap: round; opacity: .7 }
 .tdl-core { fill: var(--tdl-surface); stroke: var(--tdl-line); stroke-width: 1 }
 .tdl-major { stroke: var(--tdl-t2); stroke-width: 1.4; stroke-linecap: round }
 .tdl-hour { stroke: var(--tdl-line2); stroke-width: 1; stroke-linecap: round }
-.tdl-num { fill: var(--tdl-t3); font-size: 9.5px; font-weight: 500; letter-spacing: 0; font-variant-numeric: tabular-nums }
+.tdl-num { fill: var(--tdl-t3); font-size: 11px; font-weight: 500; letter-spacing: 0; font-variant-numeric: tabular-nums }
 .tdl-sweep { fill: none; stroke: color-mix(in oklab, var(--tdl-ink) 12%, transparent); stroke-width: 9; stroke-linecap: round; opacity: 0; transition: opacity .6s var(--tdl-ease) }
 .tdl-sweep[data-on] { opacity: 1; transition-duration: .15s }
 .tdl-hand { stroke: var(--tdl-ink); stroke-width: 2; stroke-linecap: round }
@@ -89,7 +89,7 @@ const CSS = `
 .tdl-dot[data-home] { opacity: 0 }
 .tdl-dot circle { fill: var(--tdl-surface); stroke: var(--tdl-t2); stroke-width: 1.2; transition: fill .35s var(--tdl-ease), stroke .35s var(--tdl-ease) }
 .tdl-dot[data-work] circle { fill: var(--tdl-work); stroke: var(--tdl-work) }
-.tdl-code { fill: var(--tdl-t2); font-size: 8px; font-weight: 500; letter-spacing: .02em }
+.tdl-code { fill: var(--tdl-t2); font-size: 10px; font-weight: 500; letter-spacing: .02em }
 
 .tdl-center { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none }
 .tdl-ci { display: grid; justify-items: center; width: 40%; text-align: center }

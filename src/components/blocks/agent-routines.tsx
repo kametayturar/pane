@@ -491,9 +491,9 @@ const CSS = `
   --arr-line: oklch(.935 0 0);
   --arr-fill: oklch(.978 0 0);
   --arr-tint: oklch(.9745 0 0);
-  --arr-ok: oklch(.49 .19 150);
+  --arr-ok: oklch(.46 0 0);
   --arr-bad: oklch(.54 .21 25);
-  --arr-tick-ok: oklch(.78 .1 150);
+  --arr-tick-ok: oklch(.62 0 0);
   --arr-tick-bad: oklch(.7 .17 25);
   --arr-tick-skip: oklch(.89 0 0);
   --arr-tick-empty: oklch(.955 0 0);
@@ -522,9 +522,9 @@ const CSS = `
   --arr-line: oklch(1 0 0 / .1);
   --arr-fill: oklch(1 0 0 / .05);
   --arr-tint: oklch(1 0 0 / .04);
-  --arr-ok: oklch(.78 .17 150);
+  --arr-ok: oklch(.76 0 0);
   --arr-bad: oklch(.72 .19 25);
-  --arr-tick-ok: oklch(.62 .12 150);
+  --arr-tick-ok: oklch(.72 0 0);
   --arr-tick-bad: oklch(.64 .18 25);
   --arr-tick-skip: oklch(1 0 0 / .2);
   --arr-tick-empty: oklch(1 0 0 / .08);
@@ -601,8 +601,8 @@ const CSS = `
 .arr-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 20px; min-width: 0 }
 .arr-meta-l { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--arr-t2) }
 .arr-marks { display: inline-flex; align-items: center; gap: 6px; flex: none; min-width: 34px }
-.arr-mark { display: inline-grid; place-items: center; flex: none; border-radius: 4px; color: oklch(.5 .17 var(--hue)); background: oklch(.95 .035 var(--hue)) }
-:is(.dark, [data-theme="dark"]) .arr-mark { color: oklch(.82 .12 var(--hue)); background: oklch(.34 .06 var(--hue)) }
+.arr-mark { display: inline-grid; place-items: center; flex: none; border-radius: 4px; color: var(--arr-t2); background: var(--arr-fill) }
+:is(.dark, [data-theme="dark"]) .arr-mark { color: var(--arr-t2); background: var(--arr-fill) }
 .arr-more { font-size: 11px; line-height: 14px; color: var(--arr-t3) }
 .arr-arrow { flex: none; color: var(--arr-t3) }
 .arr-dest { display: inline-flex; align-items: center; gap: 4px; min-width: 0; font-size: 12px; line-height: 16.8px }

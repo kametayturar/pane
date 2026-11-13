@@ -30,7 +30,7 @@ export default function Demo() {
 }
 
 export const notes = [
-  "The context bar is one flex row of segments whose `width` is each server's enabled tokens divided by `max(budget, total)`. A `transition: width` makes a toggle resize its segment, and once you pass the budget the same maths rescales the whole bar and paints the overflow amber.",
+  "The context bar is one flex row of segments whose `width` is each server's enabled tokens divided by `max(budget, total)`. A `transition: width` makes a toggle resize its segment, and once you pass the budget the same maths rescales the whole bar and darkens the overflow.",
   "The numbers count up by easing a value toward its target in a `requestAnimationFrame` loop (`cur += (target - cur) * (1 - exp(-dt / tau))`) and writing `textContent` directly through a ref, so React never re-renders per frame. A visually hidden twin holds the final value for screen readers.",
   "Rows open with the grid-rows trick: `grid-template-rows` transitions from `0fr` to `1fr` around an `overflow: clip` child, which animates to the content's natural height without measuring it. A collapsed panel gets the `inert` attribute so its switches leave the tab order.",
   "Add server is a modal sheet inside the card: the page behind gets `inert`, Tab is wrapped at the first and last focusable, Escape closes it, and the connect flow is guarded by a run ticket so an abandoned discovery cannot write into a newer one.",

@@ -68,7 +68,7 @@ const CSS = `
 .mp {
   --mp-ink: #000;
   --mp-surface: #fff;
-  --mp-accent: #0060e2;
+  --mp-accent: #000;
   --mp-t1: color-mix(in oklab, var(--mp-ink) 88%, transparent);
   --mp-t2: color-mix(in oklab, var(--mp-ink) 61%, transparent);
   --mp-t3: color-mix(in oklab, var(--mp-ink) 45%, transparent);
@@ -99,7 +99,7 @@ const CSS = `
 :is(.dark, [data-theme="dark"]) .mp {
   --mp-ink: #fff;
   --mp-surface: #1c1c1e;
-  --mp-accent: #4d8dff;
+  --mp-accent: #fff;
   --mp-t1: color-mix(in oklab, var(--mp-ink) 90%, transparent);
   --mp-t2: color-mix(in oklab, var(--mp-ink) 62%, transparent);
   --mp-t3: color-mix(in oklab, var(--mp-ink) 46%, transparent);
@@ -225,6 +225,7 @@ const CSS = `
   transition: transform .28s var(--mp-ease);
 }
 .mp-toggle[aria-checked="true"] .mp-switch { background: var(--mp-accent-soft) }
+:is(.dark, [data-theme="dark"]) .mp-toggle[aria-checked="true"] .mp-switch::after { background: #111 }
 .mp-toggle[aria-checked="true"] .mp-switch::after { transform: translateX(10px) }
 
 /* Effort unfolds under the thinking switch */

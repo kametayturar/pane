@@ -174,3 +174,7 @@ html[data-style="glass"].dark body > #root header.sticky { box-shadow: inset 0 -
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
   html[data-style="glass"] :is(.gallery-card, a.group.rounded-2xl.bg-white, section.rounded-3xl.bg-white, .gallery-side, body > #root header.sticky) { -webkit-backdrop-filter: none; backdrop-filter: none }
 }
+
+/* Keyboard focus: one visible ring everywhere instead of the faint browser default. */
+@layer base { :focus-visible { outline: 2px solid color-mix(in oklab, currentColor 60%, transparent); outline-offset: 2px } }
+@media (prefers-reduced-motion: reduce) { .gallery-card, .gallery-side button { transition-duration: 0.01ms } }

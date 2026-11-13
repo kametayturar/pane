@@ -430,7 +430,7 @@ button.dex-file:hover, .dex-file[aria-expanded="true"] { background: var(--dex-f
 .dex-file[data-static] { cursor: default }
 .dex-fileName { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 .dex-file > svg:last-child { width: 14px; height: 14px; color: var(--dex-t3) }
-.dex-fileIcon { width: 16px; height: 18px; color: #d4483b }
+.dex-fileIcon { width: 16px; height: 18px; color: var(--dex-t3) }
 .dex-fileIcon[data-kind="email"] { color: var(--dex-t2) }
 .dex-menu { position: absolute; z-index: 30; top: calc(100% + 6px); left: 0; min-width: 260px; padding: 6px; border-radius: 16px; background: var(--dex-surface); box-shadow: var(--dex-float); animation: dex-pop .26s var(--dex-ease) backwards; transform-origin: top left }
 .dex-item { display: grid; grid-template-columns: 16px minmax(0, 1fr) 16px; align-items: center; gap: 10px; width: 100%; padding: 7px 8px; border-radius: 10px; text-align: left }
@@ -461,7 +461,7 @@ button.dex-file:hover, .dex-file[aria-expanded="true"] { background: var(--dex-f
 .dex-page p, .dex-page dl, .dex-page dd, .dex-page table { margin: 0 }
 .dex-mast { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px }
 .dex-brand { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 18px; color: #3a3a3a }
-.dex-brand svg { width: 16px; height: 16px; color: oklch(.58 .15 250) }
+.dex-brand svg { width: 16px; height: 16px; color: #3a3a3a }
 .dex-docTitle { font-size: 20px; line-height: 24px; font-weight: 500; color: #1c1c1c }
 .dex-cols { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 24px; margin-bottom: 22px }
 .dex-cols small, .dex-meta small { display: block; margin-bottom: 3px; font-size: 8px; line-height: 10px; color: var(--dex-paper-mute) }
@@ -520,7 +520,8 @@ button.dex-file:hover, .dex-file[aria-expanded="true"] { background: var(--dex-f
 .dex-shimmer::after { content: attr(data-text); position: absolute; inset: 0; color: transparent; pointer-events: none; white-space: nowrap; background: linear-gradient(90deg, transparent 38%, var(--dex-glint) 50%, transparent 62%) 0 0 / 250% 100%; -webkit-background-clip: text; background-clip: text; animation: dex-sweep 1.6s linear infinite }
 .dex-groups { display: flex; flex-direction: column; gap: 4px }
 .dex-gh { display: flex; align-items: center; gap: 8px; margin: 0; padding: 10px 8px 4px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--dex-t2) }
-.dex-dot2 { width: 7px; height: 7px; border-radius: 50%; background: var(--g) }
+.dex-dot2 { width: 6px; height: 6px; border-radius: 50%; background: var(--dex-t3) }
+.dex-gh .dex-dot2 { display: none }
 .dex-row { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; align-items: start; gap: 0 8px; padding: 2px 4px 2px 8px; border-radius: 12px; transition: background-color .2s }
 .dex-row[data-link] { background: color-mix(in oklab, var(--g) 9%, transparent) }
 .dex-rl { padding-top: 8px; font-size: 12px; line-height: 17px; color: var(--dex-t2) }
@@ -534,6 +535,7 @@ button.dex-file:hover, .dex-file[aria-expanded="true"] { background: var(--dex-f
 .dex-in[data-flag] { background: var(--dex-warn-bg); border-color: var(--dex-warn-line) }
 .dex-in[aria-invalid="true"] { border-color: color-mix(in oklab, var(--dex-bad) 60%, transparent); background: color-mix(in oklab, var(--dex-bad) 7%, transparent) }
 .dex-skel { position: relative; width: 100%; height: 32px; border-radius: 9px; background: var(--dex-fill); overflow: hidden }
+.dex-skel:not([data-busy]) { background: none; border-radius: 0; box-shadow: inset 0 -1px 0 var(--dex-line) }
 .dex-skel[data-busy]::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 20%, color-mix(in oklab, var(--dex-ink) 6%, transparent) 50%, transparent 80%) 0 0 / 250% 100%; animation: dex-sweep 1.4s linear infinite }
 .dex-conf { display: inline-flex; align-items: center; justify-content: flex-end; gap: 4px; min-width: 56px; padding-top: 8px; font-size: 12px; line-height: 16px; color: var(--dex-t3); font-variant-numeric: tabular-nums; animation: dex-fadein .4s var(--dex-ease) backwards }
 .dex-conf svg { width: 13px; height: 13px }
@@ -604,7 +606,7 @@ button.dex-file:hover, .dex-file[aria-expanded="true"] { background: var(--dex-f
 .dex-warnChip svg { width: 14px; height: 14px; color: var(--dex-warn) }
 .dex-meta2 { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 0 auto; font-size: 12px; line-height: 17px; color: var(--dex-t3); font-variant-numeric: tabular-nums }
 .dex-meta2 .dex-model { color: var(--dex-t2) }
-.dex-mark { display: grid; place-items: center; width: 14px; height: 14px; border-radius: 4.5px; background: #d9774f; color: #fff; overflow: hidden }
+.dex-mark { display: grid; place-items: center; width: 14px; height: 14px; border-radius: 4.5px; background: var(--dex-t2); color: var(--dex-surface); overflow: hidden }
 .dex-mark svg { width: 9px; height: 9px }
 .dex-dsep { width: 3px; height: 3px; border-radius: 50%; background: var(--dex-t4) }
 

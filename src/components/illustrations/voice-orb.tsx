@@ -36,7 +36,6 @@ const CSS = `
 .vo {
   --vo-ink: #000;
   --vo-dot: #171717;
-  --vo-speak: #2f6bff;
   --vo-t2: color-mix(in oklab, var(--vo-ink) 44%, transparent);
   --vo-t3: color-mix(in oklab, var(--vo-ink) 45%, transparent);
   --vo-ease: cubic-bezier(.22, 1, .36, 1);
@@ -55,7 +54,6 @@ const CSS = `
 :is(.dark, [data-theme="dark"]) .vo {
   --vo-ink: #fff;
   --vo-dot: #ededed;
-  --vo-speak: #5b8cff;
   --vo-t2: color-mix(in oklab, var(--vo-ink) 46%, transparent);
   --vo-t3: color-mix(in oklab, var(--vo-ink) 46%, transparent);
 }

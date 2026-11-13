@@ -69,10 +69,10 @@ const CSS = `
   --rbc-ink: #000;
   --rbc-surface: #fff;
   --rbc-accent: #0060e2;
-  --rbc-g0: oklch(.83 .06 255); --rbc-d0: oklch(.6 .15 255);
-  --rbc-g1: oklch(.78 .09 305); --rbc-d1: oklch(.55 .17 305);
-  --rbc-g2: oklch(.89 .075 75); --rbc-d2: oklch(.7 .15 70);
-  --rbc-g3: oklch(.83 .08 185); --rbc-d3: oklch(.6 .11 185);
+  --rbc-g0: color-mix(in oklab, var(--rbc-ink) 16%, transparent); --rbc-d0: color-mix(in oklab, var(--rbc-ink) 34%, transparent);
+  --rbc-g1: color-mix(in oklab, var(--rbc-ink) 16%, transparent); --rbc-d1: color-mix(in oklab, var(--rbc-ink) 34%, transparent);
+  --rbc-g2: color-mix(in oklab, var(--rbc-ink) 16%, transparent); --rbc-d2: color-mix(in oklab, var(--rbc-ink) 34%, transparent);
+  --rbc-g3: color-mix(in oklab, var(--rbc-ink) 16%, transparent); --rbc-d3: color-mix(in oklab, var(--rbc-ink) 34%, transparent);
   --rbc-t1: color-mix(in oklab, var(--rbc-ink) 88%, transparent);
   --rbc-t2: color-mix(in oklab, var(--rbc-ink) 61%, transparent);
   --rbc-t3: color-mix(in oklab, var(--rbc-ink) 45%, transparent);
@@ -102,10 +102,10 @@ const CSS = `
   --rbc-surface: #1c1c1e;
   --rbc-accent: #4d8dff;
   --rbc-knob: oklch(.94 0 0);
-  --rbc-g0: oklch(.5 .1 255); --rbc-d0: oklch(.74 .13 255);
-  --rbc-g1: oklch(.48 .13 305); --rbc-d1: oklch(.72 .15 305);
-  --rbc-g2: oklch(.56 .11 70); --rbc-d2: oklch(.8 .14 72);
-  --rbc-g3: oklch(.5 .09 185); --rbc-d3: oklch(.76 .11 185);
+  --rbc-g0: color-mix(in oklab, var(--rbc-ink) 16%, transparent); --rbc-d0: color-mix(in oklab, var(--rbc-ink) 34%, transparent);
+  --rbc-g1: color-mix(in oklab, var(--rbc-ink) 16%, transparent); --rbc-d1: color-mix(in oklab, var(--rbc-ink) 34%, transparent);
+  --rbc-g2: color-mix(in oklab, var(--rbc-ink) 16%, transparent); --rbc-d2: color-mix(in oklab, var(--rbc-ink) 34%, transparent);
+  --rbc-g3: color-mix(in oklab, var(--rbc-ink) 16%, transparent); --rbc-d3: color-mix(in oklab, var(--rbc-ink) 34%, transparent);
   --rbc-t1: color-mix(in oklab, var(--rbc-ink) 90%, transparent);
   --rbc-t2: color-mix(in oklab, var(--rbc-ink) 62%, transparent);
   --rbc-t3: color-mix(in oklab, var(--rbc-ink) 46%, transparent);
@@ -136,6 +136,7 @@ const CSS = `
 .rbc-name { position: absolute; left: 0; top: 0; height: 36px; padding-right: 12px; display: flex; align-items: center; justify-content: flex-end; font-size: 14px; line-height: 20px; color: var(--rbc-t2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .2s }
 .rbc-bar { position: absolute; left: 0; top: 6px; height: 24px; width: 0; border-radius: 0 4px 4px 0; background: var(--c); box-shadow: inset -2px 0 0 var(--cd); transition: filter .2s }
 .rbc-val { position: absolute; left: 0; top: 0; height: 36px; display: flex; align-items: center; font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; color: var(--rbc-t1); white-space: nowrap }
+.rbc-row[data-lead] .rbc-bar { background: var(--rbc-accent); box-shadow: none }
 .rbc-row[data-hl] .rbc-name, .rbc-row[data-hl] .rbc-val { font-weight: 500; color: var(--rbc-t1) }
 .rbc-row[data-read] .rbc-bar { filter: brightness(.94) saturate(1.15); box-shadow: inset -2px 0 0 var(--cd), 0 0 0 1.5px color-mix(in oklab, var(--rbc-ink) 40%, transparent) }
 .rbc[data-compact] .rbc-name { z-index: 1; left: 8px; width: auto; padding: 0; justify-content: flex-start; color: var(--rbc-t1); font-size: 13px; text-overflow: clip; overflow: visible; pointer-events: none }
@@ -413,6 +414,7 @@ export function RaceBarChart({
       L.items.forEach((it, k) => {
         const el = rowEls.current.get(it.id)
         if (!el) return
+        el.toggleAttribute("data-lead", rank[k] === 0)
         let r = S.rows.get(it.id)
         const slot = rank[k]! < L.shownBars ? rank[k]! : L.shownBars + 0.7
         if (!r) {
@@ -480,7 +482,7 @@ export function RaceBarChart({
       }
       for (const [v, tk] of S.ticks) {
         const goal = want.has(v) ? 1 : 0
-        tk.a = L.reduced ? goal : tk.a + (goal - tk.a) * (1 - Math.exp(-dt / 0.12))
+        tk.a = L.reduced ? goal : tk.a + (goal - tk.a) * (1 - Math.exp(-dt / (goal === 0 ? 0.04 : 0.12)))
         if (Math.abs(goal - tk.a) > 0.01) busy = true
         const x = gutter + (v / S.dom) * plotW
         tk.el.style.transform = `translateX(${x.toFixed(2)}px)`
@@ -752,16 +754,6 @@ export function RaceBarChart({
           </div>
         </div>
 
-        {groups && groups.length > 0 && (
-          <ul className="rbc-legend" aria-label="Groups">
-            {groups.slice(0, 4).map((g, i) => (
-              <li key={g.id}>
-                <i style={{ "--c": `var(--rbc-g${i})` } as React.CSSProperties} />
-                {g.label}
-              </li>
-            ))}
-          </ul>
-        )}
 
         <div className="rbc-ctl">
           <button type="button" className="rbc-play" aria-label={playing ? "Pause" : "Play"} aria-pressed={playing} onClick={togglePlay}>

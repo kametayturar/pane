@@ -35,7 +35,7 @@ const PANELS: Record<string, string> = {
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <div className="mb-2 text-[12px] font-medium text-neutral-500 dark:text-neutral-400">{children}</div>
+  return <div className="mb-2 text-[12px] text-neutral-500 dark:text-neutral-400">{children}</div>
 }
 
 export default function Demo() {
@@ -43,39 +43,16 @@ export default function Demo() {
   const [mode, setMode] = React.useState("balanced")
   const [period, setPeriod] = React.useState("monthly")
   const [unread, setUnread] = React.useState(3)
+  const [more, setMore] = React.useState("hero")
 
   return (
-    <div className="flex w-full max-w-[560px] flex-col gap-7">
-      <div>
-        <Label>Workspace (tabs, count)</Label>
+    <div className="flex w-full max-w-[560px] flex-col items-center gap-8">
+      <div className="flex w-full flex-col items-center gap-4 py-6">
+        <h3 className="text-[28px] font-semibold leading-8 tracking-tight text-neutral-900 dark:text-neutral-50">
+          {mode === "fast" ? "Fast" : mode === "thorough" ? "Thorough" : "Balanced"}
+        </h3>
         <SegmentedControl
-          aria-label="Workspace section"
-          kind="tabs"
-          variant="underline"
-          value={tab}
-          onChange={setTab}
-          options={[
-            { value: "runs", label: "Runs", controls: "panel-runs" },
-            { value: "evals", label: "Evals", controls: "panel-evals" },
-            { value: "alerts", label: "Alerts", count: unread, controls: "panel-alerts" },
-          ]}
-        />
-        <p id={`panel-${tab}`} role="tabpanel" className="mt-3 text-[13px] text-neutral-600 dark:text-neutral-300">
-          {PANELS[tab]}
-        </p>
-        <button
-          type="button"
-          className="mt-2 text-[12px] text-neutral-500 underline-offset-2 hover:underline"
-          onClick={() => setUnread((n) => n + 1)}
-        >
-          Simulate another alert
-        </button>
-      </div>
-
-      <div>
-        <Label>Response mode (tray, icons)</Label>
-        <SegmentedControl
-          size="sm"
+          size="lg"
           variant="tray"
           aria-label="Response mode"
           value={mode}
@@ -84,55 +61,93 @@ export default function Demo() {
             { value: "fast", label: "Fast", icon: <ListIcon /> },
             { value: "balanced", label: "Balanced", icon: <BoardIcon /> },
             { value: "thorough", label: "Thorough", icon: <GridIcon /> },
-            { value: "off", label: "Paused", disabled: true },
           ]}
         />
+        <p className="text-[13px] text-neutral-500 dark:text-neutral-400">Click, drag the thumb or use the arrow keys.</p>
       </div>
 
-      <div>
-        <Label>Billing (underline, badge)</Label>
-        <SegmentedControl
-          variant="underline"
-          aria-label="Billing period"
-          value={period}
-          onChange={setPeriod}
-          options={[
-            { value: "monthly", label: "Monthly" },
-            { value: "yearly", label: "Yearly", badge: "Save 20%" },
-          ]}
-        />
-      </div>
+      <SegmentedControl
+        size="sm"
+        variant="buttons"
+        aria-label="Show"
+        value={more}
+        onChange={setMore}
+        options={[
+          { value: "hero", label: "One control" },
+          { value: "variants", label: "All variants" },
+        ]}
+      />
 
-      <div>
-        <Label>Chips, full width, large</Label>
-        <SegmentedControl
-          size="lg"
-          fullWidth
-          aria-label="Context source"
-          defaultValue="docs"
-          options={[
-            { value: "docs", label: "Docs" },
-            { value: "tickets", label: "Tickets" },
-            { value: "web", label: "Web" },
-          ]}
-        />
-      </div>
+      {more === "variants" && (
+        <div className="flex w-full flex-col gap-7">
+          <div>
+            <Label>Tabs with a count</Label>
+            <SegmentedControl
+              aria-label="Workspace section"
+              kind="tabs"
+              variant="underline"
+              value={tab}
+              onChange={setTab}
+              options={[
+                { value: "runs", label: "Runs", controls: "panel-runs" },
+                { value: "evals", label: "Evals", controls: "panel-evals" },
+                { value: "alerts", label: "Alerts", count: unread, controls: "panel-alerts" },
+              ]}
+            />
+            <p id={`panel-${tab}`} role="tabpanel" className="mt-3 text-[13px] text-neutral-600 dark:text-neutral-300">
+              {PANELS[tab]}
+            </p>
+            <button type="button" className="mt-2 text-[12px] text-neutral-500 underline-offset-2 hover:underline" onClick={() => setUnread((n) => n + 1)}>
+              Add an alert
+            </button>
+          </div>
 
-      <div className="max-w-[220px]">
-        <Label>Overflow scrolls with soft edges</Label>
-        <SegmentedControl
-          variant="tray"
-          aria-label="Model family"
-          defaultValue="haiku"
-          options={[
-            { value: "haiku", label: "Haiku" },
-            { value: "sonnet", label: "Sonnet" },
-            { value: "opus", label: "Opus" },
-            { value: "local", label: "Local model" },
-            { value: "custom", label: "Custom endpoint" },
-          ]}
-        />
-      </div>
+          <div>
+            <Label>Billing</Label>
+            <SegmentedControl
+              variant="underline"
+              aria-label="Billing period"
+              value={period}
+              onChange={setPeriod}
+              options={[
+                { value: "monthly", label: "Monthly" },
+                { value: "yearly", label: "Yearly", badge: "Save 20%" },
+              ]}
+            />
+          </div>
+
+          <div>
+            <Label>Chips, full width</Label>
+            <SegmentedControl
+              size="lg"
+              fullWidth
+              aria-label="Context source"
+              defaultValue="docs"
+              options={[
+                { value: "docs", label: "Docs" },
+                { value: "tickets", label: "Tickets" },
+                { value: "web", label: "Web" },
+              ]}
+            />
+          </div>
+
+          <div className="max-w-[220px]">
+            <Label>Overflow scrolls with soft edges</Label>
+            <SegmentedControl
+              variant="tray"
+              aria-label="Model family"
+              defaultValue="haiku"
+              options={[
+                { value: "haiku", label: "Haiku" },
+                { value: "sonnet", label: "Sonnet" },
+                { value: "opus", label: "Opus" },
+                { value: "local", label: "Local model" },
+                { value: "custom", label: "Custom endpoint" },
+              ]}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

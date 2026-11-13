@@ -197,7 +197,7 @@ const CSS = `
   --pc-accent: #0060e2;
   --pc-ok: #1b9a52;
   --pc-warn: #d98a0b;
-  --pc-c0: #e0a100; --pc-c1: #7b3fb8; --pc-c2: #0e9f8e; --pc-c3: #3a7bd5;
+  --pc-c0: color-mix(in oklab, var(--pc-ink) 78%, transparent); --pc-c1: color-mix(in oklab, var(--pc-ink) 56%, transparent); --pc-c2: color-mix(in oklab, var(--pc-ink) 38%, transparent); --pc-c3: color-mix(in oklab, var(--pc-ink) 22%, transparent);
   --pc-t1: color-mix(in oklab, var(--pc-ink) 88%, transparent);
   --pc-t2: color-mix(in oklab, var(--pc-ink) 61%, transparent);
   --pc-t3: color-mix(in oklab, var(--pc-ink) 45%, transparent);
@@ -214,7 +214,7 @@ const CSS = `
 }
 :is(.dark, [data-theme="dark"]) .pc {
   --pc-ink: #fff; --pc-surface: #1c1c1e; --pc-accent: #4d8dff; --pc-ok: #34d27b; --pc-warn: #f0b43a;
-  --pc-c0: #f0b43a; --pc-c1: #a77be0; --pc-c2: #2ec4b0; --pc-c3: #6aa4ff;
+  --pc-c0: color-mix(in oklab, var(--pc-ink) 78%, transparent); --pc-c1: color-mix(in oklab, var(--pc-ink) 56%, transparent); --pc-c2: color-mix(in oklab, var(--pc-ink) 38%, transparent); --pc-c3: color-mix(in oklab, var(--pc-ink) 22%, transparent);
   --pc-t1: color-mix(in oklab, var(--pc-ink) 90%, transparent);
   --pc-t2: color-mix(in oklab, var(--pc-ink) 62%, transparent);
   --pc-t3: color-mix(in oklab, var(--pc-ink) 46%, transparent);
@@ -235,7 +235,7 @@ const CSS = `
 .pc-title { margin: 0; font-size: 15px; line-height: 22px; font-weight: 600; letter-spacing: -.012em }
 .pc-model { display: flex; align-items: center; gap: 6px; margin: 2px 0 0; font-size: 12px; line-height: 18px; color: var(--pc-t2); white-space: nowrap }
 .pc-model svg, .pc-model img { width: 14px; height: 14px }
-.pc-model-mark { display: inline-block; width: 12px; height: 12px; border-radius: 4px; background: conic-gradient(from 200deg, var(--pc-c0), var(--pc-c1), var(--pc-c2), var(--pc-c3), var(--pc-c0)) }
+.pc-model-mark { display: inline-block; width: 12px; height: 12px; border-radius: 4px; background: var(--pc-c1) }
 .pc-ctrls { right: ${PAD}px; top: ${PAD}px; display: flex; gap: 6px }
 .pc-ib { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--pc-t2); box-shadow: inset 0 0 0 1px var(--pc-line); transition: background .15s, color .15s }
 .pc-ib:hover { background: var(--pc-fill); color: var(--pc-t1) }
@@ -300,11 +300,11 @@ const CSS = `
 .pc-status { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; line-height: 20px; font-weight: 500; white-space: nowrap; animation: pc-in calc(.35s / var(--pc-speed)) var(--pc-ease) backwards }
 .pc-status svg { width: 13px; height: 13px }
 .pc-status[data-k="write"] { color: var(--pc-t2) }
-.pc-status[data-k="hit"] { color: var(--pc-ok) }
-.pc-status[data-k="partial"] { color: var(--pc-warn) }
+.pc-status[data-k="hit"] { color: var(--pc-t1) }
+.pc-status[data-k="partial"] { color: var(--pc-t2) }
 @keyframes pc-in { from { opacity: 0; filter: blur(2px); transform: translateY(2px) } to { opacity: 1; filter: none; transform: none } }
 .pc-bar { position: absolute; left: 0; top: 26px; width: ${BAR_W}px; display: flex; gap: 2px; height: 10px }
-.pc-brk { position: absolute; top: -5px; width: 2px; margin-left: -1px; height: 20px; border-radius: 2px; background: var(--pc-warn); animation: pc-brk calc(.45s / var(--pc-speed)) var(--pc-ease) calc(var(--d, 0s) / var(--pc-speed)) backwards }
+.pc-brk { position: absolute; top: -5px; width: 2px; margin-left: -1px; height: 20px; border-radius: 2px; background: var(--pc-t1); animation: pc-brk calc(.45s / var(--pc-speed)) var(--pc-ease) calc(var(--d, 0s) / var(--pc-speed)) backwards }
 @keyframes pc-brk { from { opacity: 0; transform: scaleY(.2) } to { opacity: 1; transform: none } }
 .pc-m { position: absolute; top: 6px; font-size: 13px; line-height: 20px; color: var(--pc-t1); font-variant-numeric: tabular-nums; white-space: nowrap }
 .pc-m[data-dim] { color: var(--pc-t4) }

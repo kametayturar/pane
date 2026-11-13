@@ -4,7 +4,7 @@ import * as React from "react"
 
 /**
  * TabOverload – three overlapping browser windows full of placeholder content. The
- * highlight (traffic-light dots, gradient outline, colour glow) follows the hovered
+ * highlight (an ink outline and darker dots) follows the hovered
  * window, and steps through them on its own when nobody is hovering.
  *
  *   <TabOverload accent="#7c8cff" />
@@ -24,13 +24,15 @@ export type TabOverloadProps = {
   className?: string
 }
 
-type Win = { x: number; y: number; w: number }
+type Win = { x: number; y: number }
+const W = 210
+const H = 156
 
-// Windows are 380 × 300 and cascade from back to front; the right and bottom edges fall outside the viewBox on purpose.
+// Windows cascade from back to front and the group is centred in the viewBox.
 const WINDOWS: Win[] = [
-  { x: 30, y: 68, w: 125 },
-  { x: 125, y: 56, w: 220 },
-  { x: 220, y: 44, w: 360 },
+  { x: 24, y: 62 },
+  { x: 92, y: 46 },
+  { x: 160, y: 30 },
 ]
 
 /** Placeholder page content, a different layout in each window. */
@@ -74,17 +76,13 @@ const CSS = `
   --to-ink: #000;
   --to-accent: #8b9bff;
   --to-speed: 1;
-  --to-frame: #f4f5f7; --to-frame-line: #e4e7ec; --to-dot: #ccc; --to-page: #fff; --to-page-line: #e4e7ec;
-  --to-bar-a: #eff1f4; --to-bar-b: #dde1e5;
+  --to-frame: #f4f5f7; --to-frame-line: #cfd4db; --to-dot: #ccc; --to-page: #fff; --to-page-line: #d3d8de;
+  --to-bar-a: #e8ebef; --to-bar-b: #d4d9df;
   position: relative; width: 100%; max-width: 560px; aspect-ratio: 3 / 2; overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, #000 70%, transparent 100%), linear-gradient(#000 70%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, #000 70%, transparent 100%), linear-gradient(#000 70%, transparent 100%);
-  mask-composite: intersect;
 }
 :is(.dark, [data-theme="dark"]) .to {
   --to-ink: #fff;
-  --to-frame: #1b1b1d; --to-frame-line: rgb(255 255 255 / .1); --to-dot: #3a3a3f; --to-page: #232326; --to-page-line: rgb(255 255 255 / .08);
+  --to-frame: #1b1b1d; --to-frame-line: rgb(255 255 255 / .16); --to-dot: #3a3a3f; --to-page: #232326; --to-page-line: rgb(255 255 255 / .12);
   --to-bar-a: #2e2e32; --to-bar-b: #3a3a3f;
 }
 .to *, .to *::before, .to *::after { box-sizing: border-box; }
@@ -97,15 +95,14 @@ const CSS = `
 @keyframes to-shimmer { 0%, 100% { fill: var(--to-bar-a) } 50% { fill: var(--to-bar-b) } }
 
 /* Everything that belongs to the highlight fades in on the active window and out on the others. */
-.to-blobs, .to-front { opacity: 0; pointer-events: none; transition: opacity calc(.3s / var(--to-speed)); }
-.to-content { opacity: .2; pointer-events: none; transition: opacity calc(.3s / var(--to-speed)); }
-.to-blobs[data-on], .to-front[data-on], .to-content[data-on] { opacity: 1; }
+.to-blobs { display: none }
+.to-front { opacity: 0; pointer-events: none; transition: opacity calc(.3s / var(--to-speed)); }
+.to-content { opacity: .75; pointer-events: none; transition: opacity calc(.3s / var(--to-speed)); }
+.to-front[data-on], .to-content[data-on] { opacity: 1; }
 .to-tab { cursor: default; }
 
-.to-h0 { stop-color: #ffb89e; } .to-h1 { stop-color: #c8a8e5; } .to-h2 { stop-color: color-mix(in oklab, var(--to-accent) 80%, #a8b5ff); }
-.to-v0 { stop-color: #ff6b5c; } .to-v1 { stop-color: #ffb89e; }
-.to-s0 { stop-color: var(--to-accent); } .to-s1 { stop-color: #d5bbef; } .to-s2 { stop-color: #ffc5ab; } .to-s3 { stop-color: #ffb5bc; }
-.to-d0 { fill: #ff6b5c; } .to-d1 { fill: #ffb89e; } .to-d2 { fill: var(--to-accent); }
+.to-s0, .to-s1, .to-s2, .to-s3 { stop-color: color-mix(in oklab, var(--to-ink) 55%, transparent); }
+.to-d0, .to-d1, .to-d2 { fill: color-mix(in oklab, var(--to-ink) 45%, transparent); }
 
 .to[data-paused] *, .to[data-paused] *::before, .to[data-paused] *::after { animation-play-state: paused !important; }
 @media (prefers-reduced-motion: reduce) {
@@ -161,7 +158,7 @@ export function TabOverload({
       <style href="tab-overload" precedence="default">
         {CSS}
       </style>
-      <svg className="to-art" viewBox="0 0 360 240" aria-hidden="true" onPointerLeave={() => setHover(null)}>
+      <svg className="to-art" viewBox="0 0 400 240" aria-hidden="true" onPointerLeave={() => setHover(null)}>
         <defs>
           <linearGradient id={`${uid}-bh`} x1="0" y1="0" x2="1" y2="0">
             <stop className="to-h0" offset="0" stopOpacity=".3" />
@@ -190,11 +187,11 @@ export function TabOverload({
               <ellipse cx={win.x + 8} cy={win.y + 96} rx="14" ry="90" fill={`url(#${uid}-bv)`} filter={`url(#${uid}-blur)`} />
             </g>
             <g transform={`translate(${win.x} ${win.y})`} className="to-tab" onPointerOver={() => setHover(i)}>
-              <rect className="to-frame" width="380" height="300" rx="6" />
+              <rect className="to-frame" width={W} height={H} rx="6" />
               {[14, 24, 34].map((cx) => (
                 <circle key={cx} className="to-dot" cx={cx} cy="14" r="3" />
               ))}
-              <rect className="to-page" x="4" y="24" width="372" height="272" rx="5" />
+              <rect className="to-page" x="4" y="24" width={W - 8} height={H - 28} rx="5" />
             </g>
             <g transform={`translate(${win.x} ${win.y})`} className="to-content" data-on={active === i || undefined}>
               <Content index={i} />
@@ -208,10 +205,10 @@ export function TabOverload({
               <circle key={k} className={`to-d${k}`} cx={win.x + 14 + dx} cy={win.y + 14} r="3" />
             ))}
             <path
-              d={`M ${win.x} 240 L ${win.x} ${win.y + 6} A 6 6 0 0 1 ${win.x + 6} ${win.y} L ${win.w} ${win.y}`}
+              d={`M ${win.x} ${win.y + H - 6} L ${win.x} ${win.y + 6} A 6 6 0 0 1 ${win.x + 6} ${win.y} L ${i < WINDOWS.length - 1 ? WINDOWS[i + 1].x : win.x + W - 6} ${win.y}`}
               fill="none"
               stroke={`url(#${uid}-stroke)`}
-              strokeWidth=".8"
+              strokeWidth="1"
             />
           </g>
         ))}

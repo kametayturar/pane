@@ -45,7 +45,7 @@ function CompareSlider({ before, after, alt }: { before: string; after: string; 
   return (
     <div
       ref={ref}
-      className="relative aspect-[16/10] touch-none overflow-hidden rounded-xl bg-neutral-100 shadow-[0_0_0_1px_rgb(0_0_0/0.08)] select-none dark:bg-white/5 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1)]"
+      className="relative aspect-[16/10] max-h-[440px] w-full touch-none overflow-hidden rounded-xl bg-neutral-100 shadow-[0_0_0_1px_rgb(0_0_0/0.08)] select-none dark:bg-white/5 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1)]"
       onPointerDown={(e) => {
         drag.current = true
         ;(e.target as HTMLElement).setPointerCapture?.(e.pointerId)
@@ -59,7 +59,7 @@ function CompareSlider({ before, after, alt }: { before: string; after: string; 
         <img src={before} alt={`${alt} – without the skill`} className="absolute inset-0 size-full object-cover object-top" draggable={false} />
       </div>
       <span className="pointer-events-none absolute top-2 left-2 rounded-md bg-neutral-950/75 px-1.5 py-0.5 text-[10.5px] font-medium text-white backdrop-blur">No skill</span>
-      <span className="pointer-events-none absolute top-2 right-2 rounded-md bg-emerald-600/90 px-1.5 py-0.5 text-[10.5px] font-medium text-white backdrop-blur">With skill</span>
+      <span className="pointer-events-none absolute top-2 right-2 rounded-md bg-neutral-950/75 px-1.5 py-0.5 text-[10.5px] font-medium text-white backdrop-blur">With skill</span>
       <div className="pointer-events-none absolute inset-y-0 w-px bg-white shadow-[0_0_0_1px_rgb(0_0_0/0.15)]" style={{ left: `${pos}%` }}>
         <span className="absolute top-1/2 left-1/2 grid size-7 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-neutral-700 shadow-[0_1px_4px_rgb(0_0_0/0.25)]">
           <Columns2 className="size-3.5" />
@@ -93,7 +93,7 @@ function LiveFrame({ src, title, tone }: { src: string; title: string; tone: "be
   return (
     <figure className="min-w-0">
       <figcaption className="mb-1.5 flex items-center gap-2 text-[11.5px] font-medium">
-        <span className={cn("rounded px-1.5 py-0.5", tone === "after" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" : "bg-black/[0.05] text-neutral-500 dark:bg-white/10")}>
+        <span className={cn(tone === "after" ? "text-neutral-800 dark:text-neutral-100" : "text-neutral-500 dark:text-neutral-400")}>
           {tone === "after" ? "With skill" : "No skill"}
         </span>
         <a href={src} target="_blank" rel="noreferrer" className="ml-auto flex items-center gap-0.5 text-neutral-400 hover:text-neutral-900 dark:hover:text-white">
@@ -131,8 +131,8 @@ export function SkillInAction({ skillId, lab }: { skillId: string; lab: LabIndex
   return (
     <section className="mt-5" aria-label="See it in action">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-[11px] font-medium tracking-wide text-neutral-400 uppercase">See it in action</span>
-        <span className="text-[11.5px] text-neutral-400">Same prompt · one agent without the skill, one following it</span>
+        <span className="text-[12px] font-medium text-neutral-500 dark:text-neutral-400">See it in action</span>
+        <span className="text-[12px] text-neutral-500 dark:text-neutral-400">Same prompt · one agent without the skill, one following it</span>
       </div>
 
       <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
@@ -177,7 +177,7 @@ export function SkillInAction({ skillId, lab }: { skillId: string; lab: LabIndex
 
       {prompt && (
         <p className="mt-2.5 rounded-lg bg-black/[0.03] px-3 py-2 font-mono text-[11.5px] leading-[18px] text-neutral-600 dark:bg-white/[0.05] dark:text-neutral-300">
-          <span className="text-neutral-400">Prompt › </span>
+          <span className="text-neutral-500">Prompt › </span>
           {prompt.text}
         </p>
       )}
@@ -200,11 +200,11 @@ export function SkillInAction({ skillId, lab }: { skillId: string; lab: LabIndex
 
       {ex.changes.length > 0 && (
         <div className="mt-4">
-          <div className="mb-1.5 text-[11px] font-medium tracking-wide text-neutral-400 uppercase">What the skill changed here</div>
+          <div className="mb-1.5 text-[12px] font-medium text-neutral-500 dark:text-neutral-400">What the skill changed here</div>
           <ul className="space-y-1.5">
             {ex.changes.map((c) => (
               <li key={c} className="flex gap-2 text-[13px] leading-5 text-neutral-700 dark:text-neutral-200">
-                <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden />
+                <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-neutral-400 dark:bg-neutral-500" aria-hidden />
                 {c}
               </li>
             ))}
@@ -214,7 +214,7 @@ export function SkillInAction({ skillId, lab }: { skillId: string; lab: LabIndex
 
       {data.skillSays.length > 0 && (
         <div className="mt-4">
-          <div className="mb-1.5 text-[11px] font-medium tracking-wide text-neutral-400 uppercase">What the skill tells the agent</div>
+          <div className="mb-1.5 text-[12px] font-medium text-neutral-500 dark:text-neutral-400">What the skill tells the agent</div>
           <ul className="space-y-1.5">
             {data.skillSays.map((c) => (
               <li key={c} className="flex gap-2 text-[13px] leading-5 text-neutral-600 dark:text-neutral-300">
@@ -251,42 +251,40 @@ export function LabCardThumb({ examples, prompts }: { examples: LabExample[]; pr
   }, [visible, examples.length])
   const ex = examples[i]
   return (
-    <div ref={ref} className="group/lab relative aspect-[16/10] overflow-hidden rounded-xl bg-neutral-100 shadow-[0_0_0_1px_rgb(0_0_0/0.06)] dark:bg-white/5">
-      {examples.map((e, n) => (
-        <img
-          key={e.afterThumb}
-          src={e.afterThumb}
-          alt=""
-          loading="lazy"
-          className={cn(
-            "absolute inset-0 size-full object-cover object-top transition-[opacity,filter,transform] duration-700 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none",
-            n === i ? "scale-100 opacity-100 blur-0" : "scale-[1.02] opacity-0 blur-[6px]",
-          )}
-        />
-      ))}
-      {ex.beforeThumb && (
-        <img
-          src={ex.beforeThumb}
-          alt=""
-          loading="lazy"
-          className="absolute inset-0 size-full object-cover object-top transition-[clip-path] duration-500 ease-[cubic-bezier(.22,1,.36,1)] [clip-path:inset(0_100%_0_0)] group-hover/card:[clip-path:inset(0_0_0_0)] group-has-[:focus-visible]/card:[clip-path:inset(0_0_0_0)] motion-reduce:transition-none"
-        />
-      )}
-      <span className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded bg-emerald-600/90 px-1.5 py-0.5 text-[10px] font-medium text-white transition-opacity group-hover/card:opacity-0">
-        With skill · {prompts[ex.prompt]?.label ?? ex.prompt}
-      </span>
-      {ex.beforeThumb && (
-        <span className="absolute bottom-1.5 left-1.5 rounded bg-neutral-950/75 px-1.5 py-0.5 text-[10px] font-medium text-white opacity-0 transition-opacity group-hover/card:opacity-100">
-          No skill · same prompt
-        </span>
-      )}
-      {examples.length > 1 && (
-        <span className="absolute right-2 bottom-2 flex gap-1" aria-hidden>
-          {examples.map((e, n) => (
-            <span key={e.prompt} className={cn("h-1 rounded-full bg-white/90 shadow-[0_0_0_0.5px_rgb(0_0_0/0.2)] transition-all duration-500", n === i ? "w-3" : "w-1 opacity-60")} />
-          ))}
-        </span>
-      )}
+    <div ref={ref} className="min-w-0">
+      <div className="group/lab relative aspect-[16/10] overflow-hidden rounded-lg bg-neutral-100 shadow-[0_0_0_1px_rgb(0_0_0/0.06)] dark:bg-white/5 dark:shadow-none dark:ring-1 dark:ring-white/10">
+        {examples.map((e, n) => (
+          <img
+            key={e.afterThumb}
+            src={e.afterThumb}
+            alt=""
+            loading="lazy"
+            className={cn(
+              "absolute inset-0 size-full object-cover object-top transition-[opacity,filter,transform] duration-700 ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none dark:brightness-[.92]",
+              n === i ? "scale-100 opacity-100 blur-0" : "scale-[1.02] opacity-0 blur-[6px]",
+            )}
+          />
+        ))}
+        {ex.beforeThumb && (
+          <img
+            src={ex.beforeThumb}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 size-full object-cover object-top transition-[clip-path] duration-500 ease-[cubic-bezier(.22,1,.36,1)] [clip-path:inset(0_100%_0_0)] group-hover/card:[clip-path:inset(0_0_0_0)] group-has-[:focus-visible]/card:[clip-path:inset(0_0_0_0)] motion-reduce:transition-none dark:brightness-[.92]"
+          />
+        )}
+        {examples.length > 1 && (
+          <span className="absolute right-2 bottom-2 flex gap-1" aria-hidden>
+            {examples.map((e, n) => (
+              <span key={e.prompt} className={cn("h-1 rounded-full bg-white/90 shadow-[0_0_0_0.5px_rgb(0_0_0/0.2)] transition-all duration-500", n === i ? "w-3" : "w-1 opacity-60")} />
+            ))}
+          </span>
+        )}
+      </div>
+      <p className="mt-1.5 truncate text-[11.5px] text-neutral-500 dark:text-neutral-400">
+        <span className={cn(ex.beforeThumb && "group-hover/card:hidden group-has-[:focus-visible]/card:hidden")}>With skill · {prompts[ex.prompt]?.label ?? ex.prompt}</span>
+        {ex.beforeThumb && <span className="hidden group-hover/card:inline group-has-[:focus-visible]/card:inline">No skill · same prompt</span>}
+      </p>
     </div>
   )
 }

@@ -87,7 +87,7 @@ const CSS = `
   --ist-paper: #fafafa;
   --ist-sheet: #ffffff;
   --ist-ink: #0a0a0a;
-  --ist-signal: #0060e2;
+  --ist-signal: #0a0a0a;
   --ist-accent: var(--ist-signal);
   --ist-surface: var(--ist-sheet);
   --ist-signal-soft: color-mix(in oklab, var(--ist-signal) 12%, transparent);
@@ -120,7 +120,7 @@ const CSS = `
   --ist-paper: #0c0c0d;
   --ist-sheet: #1c1c1e;
   --ist-ink: #f5f5f5;
-  --ist-signal: #4d8dff;
+  --ist-signal: #f5f5f5;
   --ist-ok: #4cc27f;
   --ist-warn: #e0a64a;
   --ist-bad: #ff7a5c;
@@ -238,12 +238,12 @@ const CSS = `
 /* footer readout row */
 .ist-foot { display: flex; flex-wrap: wrap; overflow: hidden; border-top: 1px solid var(--ist-t4) }
 .ist-foot > div {
-  flex: 1 1 128px; min-width: 0; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: baseline; gap: 8px; padding: 8px 14px;
+  flex: 1 1 160px; min-width: 0; overflow: hidden; display: flex; align-items: baseline; gap: 8px; padding: 8px 14px;
   box-shadow: 1px 0 0 var(--ist-rule), 0 1px 0 var(--ist-rule);
   font: 400 12px/16px var(--ist-mono); font-variant-numeric: tabular-nums; color: var(--ist-t1); white-space: nowrap;
 }
 .ist-foot span { font: 500 10.5px/16px var(--ist-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ist-t3) }
-.ist-foot em { font-style: normal; color: var(--ist-t3) }
+.ist-foot em { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-style: normal; color: var(--ist-t3) }
 .ist-cap { margin: 10px 0 0; font: 500 10.5px/16px var(--ist-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ist-t3) }
 .ist-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
 

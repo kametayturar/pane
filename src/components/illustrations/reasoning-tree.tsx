@@ -315,7 +315,7 @@ const CSS = `
 .rtr-sub[data-s="done"] i { background: var(--rtr-green) }
 .rtr-sub span { display: inline-block; animation: rtr-text calc(.4s / var(--rtr-speed)) var(--rtr-ease) backwards }
 .rtr-rule { position: absolute; left: 0; right: 0; top: 80px; height: 1px; background: var(--rtr-line) }
-.rtr-ch { position: absolute; top: 90px; height: 16px; display: flex; justify-content: space-between; font-size: 10.5px; line-height: 16px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; color: var(--rtr-t3) }
+.rtr-ch { position: absolute; top: 90px; height: 16px; display: flex; justify-content: space-between; font-size: 10.5px; line-height: 16px; letter-spacing: .02em; font-weight: 500; color: var(--rtr-t3) }
 .rtr-ch span:last-child { letter-spacing: 0; text-transform: none; font-variant-numeric: tabular-nums; color: var(--rtr-t4); animation: rtr-text calc(.4s / var(--rtr-speed)) var(--rtr-ease) backwards }
 
 /* Edges */

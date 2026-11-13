@@ -35,36 +35,47 @@ GLASS = {
     "light": dict(
         ink="#0a0e1a", accent="#0060e2", solid="#fff", glint=W(".95"), page="#e8ebf8",
         # secondary text floors (AA on the light glass): the pieces' own -t1..-t4 ink mixes are remapped to these in Glass
-        t=(94, 78, 66, 52),
+        t=(96, 84, 72, 58),
         # hairline rim for chips and buttons: lit from the top-left
         shadow=f"inset 0 0 0 .5px {W('.7')}, 0 0 0 .5px rgb(30 40 90 / .11), 0 1px 3px rgb(30 40 90 / .08)",
         # L1 cards: a full rim, crisp 1.5px speculars top-left and bottom-right, soft glows behind them, edge luminosity, depth
         card=(f"inset 0 0 0 1px {W('.4')}, inset 1.5px 1.5px 0 -.5px {W('1')}, inset -1.5px -1.5px 0 -.5px {W('.55')}, "
-              f"inset 5px 5px 12px -5px {W('.85')}, inset -5px -5px 12px -5px {W('.4')}, inset 0 0 26px -6px {W('.5')}, "
+              f"inset 5px 5px 12px -5px {W('.85')}, inset -5px -5px 12px -5px {W('.4')}, inset 0 0 26px -6px {W('.22')}, "
+              f"inset 3px 3px 0 -2px {W('.35')}, inset -3px -3px 0 -2px {W('.18')}, "
               f"0 0 0 .5px rgb(30 40 90 / .14), 0 2px 6px rgb(30 40 90 / .1), 0 18px 44px -14px rgb(30 40 100 / .36)"),
         # L2 floating surfaces: thicker, deeper
         pop=(f"inset 0 0 0 1px {W('.46')}, inset 2px 2px 0 -.5px {W('1')}, inset -2px -2px 0 -.5px {W('.62')}, "
-             f"inset 7px 7px 14px -6px {W('.9')}, inset -7px -7px 14px -6px {W('.45')}, inset 0 0 32px -6px {W('.55')}, "
+             f"inset 7px 7px 14px -6px {W('.9')}, inset -7px -7px 14px -6px {W('.45')}, inset 0 0 32px -6px {W('.26')}, "
+             f"inset 3px 3px 0 -2px {W('.38')}, inset -3px -3px 0 -2px {W('.2')}, "
              f"0 0 0 .5px rgb(30 40 90 / .16), 0 3px 8px rgb(30 40 90 / .1), 0 26px 56px -14px rgb(30 40 100 / .42)"),
         tier0=dict(tint=W(".95"), float=W(".97"), nested=W(".95"), over=W(".97"), sheen="none"),
-        tier1=dict(tint=W(".46"), float=W(".42"), nested=W(".76"), over=W(".94"),
+        tier1=dict(tint=W(".40"), float=W(".38"), nested=W(".76"), over=W(".94"),
                    sheen=f"linear-gradient(135deg, {W('.55')} 0%, {W('.1')} 30%, {W('0')} 56%, {W('.28')} 100%)"),
-        blur="blur(22px) saturate(2)", blur_float="blur(26px) saturate(2.1)",
+        blur="blur(16px) saturate(1.8)", blur_float="blur(18px) saturate(1.8)",
+        # Tier 2 (refraction): Kubai's thin tint; the filter supplies the 2-3px core blur, so the tint carries the contrast
+        tier2=dict(tint=W(".24"), float=W(".22"),
+                   sheen=f"linear-gradient(135deg, {W('.4')} 0%, {W('.06')} 30%, {W('0')} 56%, {W('.18')} 100%)"),
+        tail="saturate(1.8) brightness(1.06)",
     ),
     "dark": dict(
         ink="#fff", accent="#4d8dff", solid="#222227", glint=W(".9"), page="#07070f",
-        t=(94, 76, 62, 48),
+        t=(96, 80, 68, 54),
         shadow=f"inset 0 0 0 .5px {W('.16')}, 0 0 0 .5px rgb(0 0 0 / .5), 0 1px 3px rgb(0 0 0 / .4)",
         card=(f"inset 0 0 0 1px {W('.14')}, inset 1.5px 1.5px 0 -.5px {W('.62')}, inset -1.5px -1.5px 0 -.5px {W('.24')}, "
-              f"inset 5px 5px 12px -5px {W('.3')}, inset -5px -5px 12px -5px {W('.12')}, inset 0 0 26px -8px {W('.16')}, "
+              f"inset 5px 5px 12px -5px {W('.3')}, inset -5px -5px 12px -5px {W('.12')}, inset 0 0 26px -8px {W('.08')}, "
+              f"inset 3px 3px 0 -2px {W('.2')}, inset -3px -3px 0 -2px {W('.1')}, "
               f"0 0 0 .5px rgb(0 0 0 / .6), 0 2px 6px rgb(0 0 0 / .3), 0 20px 46px -14px rgb(0 0 0 / .7)"),
         pop=(f"inset 0 0 0 1px {W('.18')}, inset 2px 2px 0 -.5px {W('.7')}, inset -2px -2px 0 -.5px {W('.28')}, "
-             f"inset 7px 7px 14px -6px {W('.34')}, inset -7px -7px 14px -6px {W('.14')}, inset 0 0 32px -8px {W('.18')}, "
+             f"inset 7px 7px 14px -6px {W('.34')}, inset -7px -7px 14px -6px {W('.14')}, inset 0 0 32px -8px {W('.09')}, "
+             f"inset 3px 3px 0 -2px {W('.22')}, inset -3px -3px 0 -2px {W('.11')}, "
              f"0 0 0 .5px rgb(0 0 0 / .65), 0 3px 8px rgb(0 0 0 / .35), 0 28px 58px -14px rgb(0 0 0 / .78)"),
         tier0=dict(tint="rgb(32 32 38 / .96)", float="rgb(38 38 45 / .97)", nested="rgb(34 34 40 / .96)", over="rgb(38 38 45 / .97)", sheen="none"),
-        tier1=dict(tint="rgb(20 20 30 / .54)", float="rgb(22 22 32 / .5)", nested="rgb(22 22 30 / .84)", over="rgb(28 28 36 / .95)",
+        tier1=dict(tint="rgb(20 20 28 / .48)", float="rgb(22 22 30 / .46)", nested="rgb(22 22 30 / .84)", over="rgb(28 28 36 / .95)",
                    sheen=f"linear-gradient(135deg, {W('.16')} 0%, {W('.03')} 32%, {W('0')} 58%, {W('.07')} 100%)"),
-        blur="blur(22px) saturate(1.8)", blur_float="blur(26px) saturate(1.9)",
+        blur="blur(16px) saturate(1.7)", blur_float="blur(18px) saturate(1.7)",
+        tier2=dict(tint="rgb(20 20 24 / .32)", float="rgb(22 22 26 / .3)",
+                   sheen=f"linear-gradient(135deg, {W('.12')} 0%, {W('.02')} 32%, {W('0')} 58%, {W('.05')} 100%)"),
+        tail="saturate(1.6) brightness(.8)",
     ),
 }
 
@@ -288,6 +299,14 @@ out.append(block(f"{G} .as", {
 out.append("/* Text and icons painted with the paper colour sit on ink: in Glass the paper is see-through, so use the solid surface colour. */")
 for sel, prop in sorted(set(PAPER_TEXT)):
     out.append(f'{G} {sel} {{ {prop}: var(--pane-solid) }}')
+# Permission request: the destructive red and the Allow key hint fall under AA on the light glass rim (red text on a lit
+# translucent tint, white 75% on red). A deeper red in light and a firmer key hint keep it readable without a heavier tint.
+out.append(f"""
+/* permission-request on Glass: AA for the destructive tag and the key hint */
+{G}:not(.dark) .pr {{ --pr-danger: #b42318 }}
+{G} .pr-allow .pr-kbd {{ color: rgb(255 255 255 / .95) }}
+{G}.dark .pr:not([data-risk="destructive"]) .pr-allow .pr-kbd {{ color: rgb(0 0 0 / .9); background: rgb(0 0 0 / .08) }}
+""")
 out.append(f"""
 /* Glass surfaces: a translucent tint, a specular rim and a shadow. No ::before, no isolation, no blend modes. */
 {G} {is_(FROST)} {{ background-color: var(--pane-tint); background-image: var(--pane-sheen); box-shadow: var(--pane-card) }}
@@ -304,13 +323,18 @@ for mode in ("light", "dark"):
     sel = G + (".dark" if mode == "dark" else "")
     frost_rules.append(f"{sel} {is_(FROST)} {{ -webkit-backdrop-filter: {t['blur']}; backdrop-filter: {t['blur']} }}\n")
     frost_rules.append(f"{sel} {is_(FLOAT_ALL)} {{ -webkit-backdrop-filter: {t['blur_float']}; backdrop-filter: {t['blur_float']} }}\n")
+# Tier 2 tokens: with refraction on, the tint thins to Kubai's 6-22% range (plus a contrast margin); Tier 1 keeps its heavier floor.
+for mode in ("light", "dark"):
+    t2 = GLASS[mode]["tier2"]
+    sel = G + (".dark" if mode == "dark" else "") + "[data-refract]"
+    frost_rules.append(block(sel, {"--pane-tint": t2["tint"], "--pane-tint-float": t2["float"], "--pane-sheen": t2["sheen"]}))
 out.append("@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {\n" + "".join(frost_rules) + "}\n")
 
 # Tier 2: refraction on floating surfaces, only when glass-defs.tsx has set <html data-refract> (Chromium, no reduced transparency).
 # The filter itself blurs the flat centre and keeps the rim sharp so it can bend what is behind (see glass-defs.tsx).
 for mode in ("light", "dark"):
     t = GLASS[mode]
-    tail = "saturate(1.8) brightness(1.05)" if mode == "light" else "saturate(1.7) brightness(1.12)"
+    tail = t["tail"]
     sel = G + ("[data-refract]" if mode == "light" else ".dark[data-refract]")
     for size, sels in {**FLOATS, "card": sorted(set(FLOATS["card"]) | set(FROST))}.items():  # cards refract too, with the big map
         if not sels:

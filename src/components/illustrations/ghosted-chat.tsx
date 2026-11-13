@@ -19,7 +19,7 @@ export type GhostedChatProps = {
   accent?: string
   /** Accessible description of the scene. */
   label?: string
-  /** Unanswered messages, oldest first. The last one gets the red shimmer and the glow. */
+  /** Unanswered messages, oldest first. The last one is set slightly heavier. */
   messages?: string[]
   /** Line above the bubbles. */
   status?: string
@@ -36,7 +36,7 @@ const H = 240
 const CSS = `
 .gh {
   --gh-ink: #202020;
-  --gh-accent: #155eef;
+  --gh-accent: #1a1a1a;
   --gh-speed: 1;
   --gh-scale: 1;
   --gh-bubble: #fff;
@@ -45,7 +45,7 @@ const CSS = `
   --gh-text: #4a4c52;
   --gh-status: #9a9da3;
   --gh-read: #a8abb1;
-  --gh-alert: #ff4d47;
+  --gh-alert: var(--gh-ink);
   --gh-glow: .6;
   --gh-ease: cubic-bezier(.22, 1, .36, 1);
   position: relative; width: 100%; max-width: 560px; aspect-ratio: 3 / 2; overflow: hidden;
@@ -56,7 +56,7 @@ const CSS = `
   --gh-ink: #ededed;
   --gh-bubble: #232326; --gh-bubble-border: rgb(255 255 255 / .08);
   --gh-bubble-shadow: 0 2px 6px rgb(0 0 0 / .35), 0 1px 2px rgb(0 0 0 / .4);
-  --gh-text: #c4c4c4; --gh-status: #8f8f8f; --gh-read: #8f8f8f; --gh-glow: .45;
+  --gh-text: #c4c4c4; --gh-status: #8f8f8f; --gh-read: #8f8f8f; --gh-glow: .45; --gh-accent: #ededed; --gh-reply-ink: #111;
 }
 .gh *, .gh *::before, .gh *::after { box-sizing: border-box; margin: 0; }
 .gh-stage { position: absolute; left: 0; top: 0; z-index: 1; width: ${W}px; height: ${H}px; padding: 22px 22px 0;
@@ -75,7 +75,7 @@ const CSS = `
 .gh-read { font-size: 10.5px; line-height: 1.4; color: var(--gh-read); margin-top: 2px; align-self: flex-end;
   transition: color calc(.3s / var(--gh-speed)); animation: gh-fade calc(.5s / var(--gh-speed)) ease-out backwards; animation-delay: calc(var(--gh-delay, 0ms) / var(--gh-speed)); }
 
-/* The last bubble: a red shimmer sweeps through its text and a soft rainbow glow sits underneath. */
+/* The last bubble: plain ink text, no accent colour. */
 .gh-alert { display: inline-block;
   background-image: linear-gradient(90deg, var(--gh-ink) 0%, var(--gh-ink) 38%, var(--gh-alert) 50%, var(--gh-ink) 62%, var(--gh-ink) 100%);
   background-size: 300% 100%; background-position: 100% 0; background-repeat: no-repeat; background-clip: text; -webkit-background-clip: text;
@@ -84,11 +84,11 @@ const CSS = `
 .gh-last::before { content: ""; position: absolute; inset: -1px; z-index: -1; background: var(--gh-bubble);
   border: 1px solid var(--gh-bubble-border); border-radius: inherit; box-shadow: var(--gh-bubble-shadow); }
 .gh-last::after { content: ""; position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); width: 100%; height: 22px;
-  background: linear-gradient(90deg, #ffa0ab 0%, #ffb89e 33%, #c8a8e5 66%, #a8b5ff 100%);
-  opacity: var(--gh-glow); filter: blur(12px); border-radius: 50%; pointer-events: none; z-index: -2; }
+  background: var(--gh-ink);
+  opacity: 0; filter: blur(12px); border-radius: 50%; pointer-events: none; z-index: -2; }
 
 .gh-reply { position: absolute; left: 64px; bottom: 68px; display: flex; align-items: center; padding: 6px 12px;
-  background: var(--gh-accent); border: 1px solid var(--gh-accent); border-radius: 14px 14px 14px 4px; color: #fff;
+  background: var(--gh-accent); border: 1px solid var(--gh-accent); border-radius: 14px 14px 14px 4px; color: var(--gh-reply-ink, #fff);
   font-size: 15px; line-height: 1.1;
   box-shadow: 0 4px 12px color-mix(in oklab, var(--gh-accent) 22%, transparent), 0 1px 2px color-mix(in oklab, var(--gh-accent) 18%, transparent);
   opacity: 0; transform: translateY(14px) scale(.92); transform-origin: left bottom; pointer-events: none;

@@ -57,10 +57,10 @@ const CSS = `
   --gk-t2: color-mix(in oklab, var(--gk-ink) 61%, transparent);
   --gk-t3: color-mix(in oklab, var(--gk-ink) 45%, transparent);
   --gk-t4: color-mix(in oklab, var(--gk-ink) 27%, transparent);
-  --gk-glass: color-mix(in oklab, var(--gk-surface) 58%, transparent);
-  --gk-rim: rgb(255 255 255 / .7);
+  --gk-glass: var(--gk-surface);
+  --gk-rim: transparent;
   --gk-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 1px -1px rgb(0 0 0 / .1), 0 1px 2px 0 rgb(0 0 0 / .05);
-  --gk-key-shadow: 0 0 0 .5px rgb(0 0 0 / .08), 0 2px 3px -1px rgb(0 0 0 / .14), 0 7px 10px -7px rgb(0 0 0 / .22);
+  --gk-key-shadow: 0 0 0 .5px rgb(0 0 0 / .1), 0 1px 1px rgb(0 0 0 / .06);
   --gk-ease: cubic-bezier(.22, 1, .36, 1);
   position: relative; width: 100%; max-width: ${STAGE_W}px; aspect-ratio: ${STAGE_W} / ${STAGE_H}; overflow: hidden;
   color: var(--gk-t1); font-family: var(--gk-font, Inter, InterVariable, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
@@ -72,17 +72,17 @@ const CSS = `
   --gk-t2: color-mix(in oklab, var(--gk-ink) 62%, transparent);
   --gk-t3: color-mix(in oklab, var(--gk-ink) 46%, transparent);
   --gk-t4: color-mix(in oklab, var(--gk-ink) 28%, transparent);
-  --gk-glass: color-mix(in oklab, var(--gk-surface) 55%, transparent);
-  --gk-rim: rgb(255 255 255 / .16);
+  --gk-glass: color-mix(in oklab, var(--gk-ink) 6%, var(--gk-surface));
+  --gk-rim: transparent;
   --gk-shadow: 0 0 0 .5px rgb(255 255 255 / .1), 0 1px 2px 0 rgb(0 0 0 / .4);
-  --gk-key-shadow: 0 0 0 .5px rgb(255 255 255 / .1), 0 2px 3px -1px rgb(0 0 0 / .5), 0 7px 10px -7px rgb(0 0 0 / .7);
+  --gk-key-shadow: 0 0 0 .5px rgb(255 255 255 / .12);
 }
 .gk *, .gk *::before, .gk *::after { box-sizing: border-box }
 .gk-stage { position: absolute; left: 0; top: 0; width: ${STAGE_W}px; height: ${STAGE_H}px; transform-origin: 0 0; transform: scale(var(--gk-scale)) }
 
 /* Floor: a tilted gradient plane; each key press launches a band that travels up it */
 .gk-floor {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 270px; perspective: 520px; perspective-origin: 50% 0; overflow: hidden; pointer-events: none;
+  display: none; position: absolute; left: 0; right: 0; bottom: 0; height: 270px; perspective: 520px; perspective-origin: 50% 0; overflow: hidden; pointer-events: none;
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 38%); mask-image: linear-gradient(to bottom, transparent, #000 38%);
 }
 .gk-plane {
@@ -98,7 +98,7 @@ const CSS = `
   animation: gk-breathe calc(5s / var(--gk-speed, 1)) ease-in-out infinite alternate;
 }
 .gk-wave {
-  position: absolute; bottom: 14px; width: 260px; height: 80px; margin-left: 0; border-radius: 50%;
+  display: none; position: absolute; bottom: 14px; width: 260px; height: 80px; margin-left: 0; border-radius: 50%;
   background: radial-gradient(closest-side, color-mix(in oklab, var(--gk-accent) 72%, white), color-mix(in oklab, var(--gk-accent) 55%, transparent) 45%, transparent);
   filter: blur(5px); opacity: 0;
   animation: gk-wave calc(1.5s / var(--gk-speed, 1)) cubic-bezier(.2, .7, .3, 1) backwards;
@@ -108,17 +108,17 @@ const CSS = `
 /* Chat input */
 .gk-input {
   position: absolute; left: 110px; top: 92px; width: 460px; height: 58px; display: flex; align-items: center; gap: 12px; padding: 0 10px 0 16px;
-  border-radius: 16px; background: var(--gk-glass); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5);
-  box-shadow: inset 0 1px 0 var(--gk-rim), var(--gk-shadow), 0 16px 32px -16px rgb(0 0 0 / .22);
+  border-radius: 16px; background: var(--gk-glass); 
+  box-shadow: inset 0 1px 0 var(--gk-rim), var(--gk-shadow);
 }
-.gk-spark { flex: none; width: 18px; height: 18px; color: var(--gk-accent) }
+.gk-spark { flex: none; width: 18px; height: 18px; color: var(--gk-t3) }
 .gk-text { flex: 1; min-width: 0; font-size: 14px; line-height: 20px; color: var(--gk-t1); white-space: nowrap; overflow: hidden; display: flex; justify-content: flex-end }
 .gk-text > span { flex: none; max-width: none }
 .gk-ph { color: var(--gk-t4) }
 .gk-caret { display: inline-block; width: 1.5px; height: 17px; margin: 0 0 -3px 1px; border-radius: 1px; background: var(--gk-accent); animation: gk-blink calc(1.1s / var(--gk-speed, 1)) steps(1) infinite }
 .gk-send {
   flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; color: #fff;
-  background: color-mix(in oklab, var(--gk-accent) 90%, #000 0%); box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), 0 4px 10px -4px var(--gk-accent);
+  background: var(--gk-accent);
   opacity: .35; transition: opacity .3s var(--gk-ease), transform .3s var(--gk-ease);
 }
 .gk-send svg { width: 16px; height: 16px }
@@ -126,28 +126,27 @@ const CSS = `
 .gk[data-sending] .gk-send { animation: gk-send calc(.42s / var(--gk-speed, 1)) var(--gk-ease) }
 .gk-sent {
   position: absolute; right: 110px; top: 40px; max-width: 360px; padding: 6px 12px; border-radius: 14px 14px 4px 14px; font-size: 12px; line-height: 16px; color: #fff;
-  background: color-mix(in oklab, var(--gk-accent) 92%, transparent); box-shadow: 0 6px 16px -8px var(--gk-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background: color-mix(in oklab, var(--gk-accent) 92%, transparent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   opacity: 0; animation: gk-sent calc(2s / var(--gk-speed, 1)) var(--gk-ease) backwards;
 }
 
 /* Keyboard */
 .gk-kb {
   position: absolute; left: 80px; top: 196px; width: 520px; padding: 11px; display: flex; flex-direction: column; align-items: center; gap: 6px; border-radius: 20px;
-  background: color-mix(in oklab, var(--gk-surface) 30%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  box-shadow: inset 0 1px 0 var(--gk-rim), var(--gk-shadow), 0 24px 40px -22px rgb(0 0 0 / .35);
+  background: transparent;
+  box-shadow: inset 0 1px 0 var(--gk-rim), var(--gk-shadow);
   transform: perspective(1100px) rotateX(16deg); transform-origin: 50% 100%;
 }
 .gk-row { display: flex; gap: 6px }
 .gk-key {
   position: relative; display: grid; place-items: center; width: 44px; height: 38px; border-radius: 9px; background: var(--gk-glass);
   box-shadow: inset 0 1px 0 var(--gk-rim), var(--gk-key-shadow); font-size: 12px; font-weight: 500; line-height: 16px; color: var(--gk-t3); text-transform: uppercase;
-  -webkit-backdrop-filter: blur(8px) saturate(1.4); backdrop-filter: blur(8px) saturate(1.4);
 }
 .gk-key[data-k=" "] { width: 252px }
 .gk-flash {
-  position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; border-radius: inherit; pointer-events: none; color: #fff; text-transform: uppercase;
-  background: linear-gradient(180deg, color-mix(in oklab, var(--gk-accent) 78%, white), var(--gk-accent));
-  box-shadow: 0 0 18px 2px color-mix(in oklab, var(--gk-accent) 70%, transparent), inset 0 1px 0 rgb(255 255 255 / .5);
+  position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; border-radius: inherit; pointer-events: none; color: var(--gk-t1); text-transform: uppercase;
+  background: color-mix(in oklab, var(--gk-ink) 14%, var(--gk-surface));
+  box-shadow: 0 0 0 .5px color-mix(in oklab, var(--gk-ink) 22%, transparent);
   opacity: 0; animation: gk-flash calc(.8s / var(--gk-speed, 1)) ease-out backwards;
 }
 
