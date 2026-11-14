@@ -1,6 +1,6 @@
 # Pane
 
-**172 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
+**175 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
 answers with sources, agents you can approve and steer, tactile controls, real glass, and animated scenes for your
 landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 
@@ -220,6 +220,9 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 
 | Piece | What it does | Tags |
 | --- | --- | --- |
+| [**Pastel Harbor**](https://paneui.vercel.app/#/pastel-harbor) · [source](src/components/illustrations/pastel-harbor.tsx) | A harbour at first light drawn in oil pastel and crayon strokes: cranes, a ferry's lamps and long reflections on the water. | `background` `landing` `paper` |
+| [**Pencil Greenhouse**](https://paneui.vercel.app/#/pencil-greenhouse) · [source](src/components/illustrations/pencil-greenhouse.tsx) | A glass greenhouse after rain in coloured pencil and chalk: hatched leaves, wet panes and light falling through the roof. | `background` `landing` `paper` |
+| [**Chalk Observatory**](https://paneui.vercel.app/#/chalk-observatory) · [source](src/components/illustrations/chalk-observatory.tsx) | A mountain observatory under a crowded night sky, drawn in chalk and pastel on dark paper. | `background` `landing` `paper` |
 | [**Dash Ribbon**](https://paneui.vercel.app/#/dash-ribbon) · [source](src/components/illustrations/dash-ribbon.tsx) | Rows of rounded dashes following a rolling wave, with a run of light traced down one row. | `background` `landing` `flow` |
 | [**Light Form**](https://paneui.vercel.app/#/light-form) · [source](src/components/illustrations/light-form.tsx) | A moth, orchid or fern drawn from hundreds of glowing strands with a chromatic fringe, breathing slowly. | `glow` `background` `landing` |
 | [**Gouache Lake**](https://paneui.vercel.app/#/gouache-lake) · [source](src/components/illustrations/gouache-lake.tsx) | A painted hillside and its reflection drawn from brush dabs, with a small boat leaving a wake. | `background` `landing` `paper` |

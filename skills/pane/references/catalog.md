@@ -210,6 +210,9 @@
 
 ## Illustrations
 
+- **Pastel Harbor** (`pastel-harbor`, illustration) – A harbour at first light drawn in oil pastel and crayon strokes: cranes, a ferry's lamps and long reflections on the water. Tags: background, landing, paper. File: `components/illustrations/pastel-harbor.tsx`. Install: `node add.mjs pastel-harbor`
+- **Pencil Greenhouse** (`pencil-greenhouse`, illustration) – A glass greenhouse after rain in coloured pencil and chalk: hatched leaves, wet panes and light falling through the roof. Tags: background, landing, paper. File: `components/illustrations/pencil-greenhouse.tsx`. Install: `node add.mjs pencil-greenhouse`
+- **Chalk Observatory** (`chalk-observatory`, illustration) – A mountain observatory under a crowded night sky, drawn in chalk and pastel on dark paper. Tags: background, landing, paper. File: `components/illustrations/chalk-observatory.tsx`. Install: `node add.mjs chalk-observatory`
 - **Dash Ribbon** (`dash-ribbon`, illustration) – Rows of rounded dashes following a rolling wave, with a run of light traced down one row. Tags: background, landing, flow. File: `components/illustrations/dash-ribbon.tsx`. Install: `node add.mjs dash-ribbon`
 - **Light Form** (`light-form`, illustration) – A moth, orchid or fern drawn from hundreds of glowing strands with a chromatic fringe, breathing slowly. Tags: glow, background, landing. File: `components/illustrations/light-form.tsx`. Install: `node add.mjs light-form`
 - **Gouache Lake** (`gouache-lake`, illustration) – A painted hillside and its reflection drawn from brush dabs, with a small boat leaving a wake. Tags: background, landing, paper. File: `components/illustrations/gouache-lake.tsx`. Install: `node add.mjs gouache-lake`

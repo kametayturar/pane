@@ -770,6 +770,28 @@
     "source": "skill-issue.in + vercel-labs/agent-skills"
   },
   {
+    "id": "ui-sdk",
+    "name": "ui-sdk",
+    "description": "Vercel Labs' skill for UI SDK (ui-sdk), a library of unstyled UI behaviors for React, Vue, Svelte, Solid and web components. UI SDK is in beta (0.1.0-beta), so expect its API to change.",
+    "does": "Makes the agent read the installed ui-sdk docs, compose its components or build a missing one (a stepper, a rating, an emoji picker) from @ui-sdk/core behaviors, make it usable by agents through createAgent and WebMCP, and test keyboard, focus, ARIA, server rendering and right to left.",
+    "category": "Frontend craft",
+    "visual": "a11y",
+    "before": "A div with role=\"listbox\" and hand-rolled arrow keys",
+    "after": "Built from tested behaviors, labelled, keyboard-tested, agent-ready",
+    "bestFor": [
+      "Custom components",
+      "Keyboard and ARIA",
+      "Agent-ready UI"
+    ],
+    "examplePrompt": "Use ui-sdk to build a five-star rating in React. Arrow keys should move between stars and choose a rating, and test the keyboard behavior.",
+    "repo": "https://github.com/vercel-labs/ui",
+    "path": "packages/core/skills/ui-sdk",
+    "license": "Apache-2.0",
+    "stars": 3906,
+    "install": "npx skills add vercel-labs/ui --skill ui-sdk",
+    "source": "vercel-labs/ui"
+  },
+  {
     "id": "responsive-design",
     "name": "responsive-design",
     "description": "Modern responsive layouts with container queries, fluid typography, CSS Grid and mobile-first breakpoint strategy.",

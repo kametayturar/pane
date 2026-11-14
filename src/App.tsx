@@ -145,6 +145,9 @@ import {
   Sailboat,
   Smartphone,
   WavesHorizontal,
+  Anchor,
+  Sprout,
+  Telescope,
 } from "lucide-react"
 
 import { Backdrop, BACKDROP_VARIANTS, type BackdropVariant, type StudioProps } from "@/components/motion/backdrop"
@@ -170,6 +173,10 @@ import { PromptBuilder } from "@/prompt-builder"
 import { SKILLS, SkillsPage } from "@/skills-page"
 const StudioApp = React.lazy(() => import("@/studio/studio-page"))
 const McpPage = React.lazy(() => import("@/mcp-page"))
+// Landing drafts under review: src/landings/<id>.tsx, shown at #/draft/<id>. Not linked from anywhere.
+const DRAFT_PAGES: Record<string, React.LazyExoticComponent<React.ComponentType<React.ComponentProps<typeof Landing>>>> = Object.fromEntries(
+  Object.entries(import.meta.glob<{ default: React.ComponentType<React.ComponentProps<typeof Landing>> }>("./landings/*.tsx")).map(([file, load]) => [file.slice("./landings/".length, -".tsx".length), React.lazy(load)]),
+)
 /** Pieces with a Studio spec (src/studio/pieces/<slug>.studio.ts) get an "Open in Studio" link. */
 const STUDIO_SLUGS = new Set(Object.keys(import.meta.glob("./studio/pieces/*.studio.ts*")).map((k) => k.replace(/^.*\//, "").replace(/\.studio\.tsx?$/, "")))
 const isStudioSlug = (s: string) => s === "studio" || s.startsWith("studio/") || s.startsWith("studio?")
@@ -390,6 +397,9 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
   {
     label: "Illustrations",
     entries: [
+      ill({ slug: "pastel-harbor", name: "Pastel Harbor", exportName: "PastelHarbor", icon: Anchor, isNew: true, description: "A harbour at first light drawn in oil pastel and crayon strokes: cranes, a ferry's lamps and long reflections on the water." }),
+      ill({ slug: "pencil-greenhouse", name: "Pencil Greenhouse", exportName: "PencilGreenhouse", icon: Sprout, isNew: true, description: "A glass greenhouse after rain in coloured pencil and chalk: hatched leaves, wet panes and light falling through the roof." }),
+      ill({ slug: "chalk-observatory", name: "Chalk Observatory", exportName: "ChalkObservatory", icon: Telescope, isNew: true, description: "A mountain observatory under a crowded night sky, drawn in chalk and pastel on dark paper." }),
       ill({ slug: "dash-ribbon", name: "Dash Ribbon", exportName: "DashRibbon", icon: WavesHorizontal, isNew: true, description: "Rows of rounded dashes following a rolling wave, with a run of light traced down one row." }),
       ill({ slug: "light-form", name: "Light Form", exportName: "LightForm", icon: Flower2, isNew: true, description: "A moth, orchid or fern drawn from hundreds of glowing strands with a chromatic fringe, breathing slowly." }),
       ill({ slug: "gouache-lake", name: "Gouache Lake", exportName: "GouacheLake", icon: Sailboat, isNew: true, description: "A painted hillside and its reflection drawn from brush dabs, with a small boat leaving a wake." }),
@@ -1622,6 +1632,17 @@ export default function App() {
       </div>
     )
   }
+
+  const Draft = slug.startsWith("draft/") ? DRAFT_PAGES[slug.slice("draft/".length)] : undefined
+  if (Draft)
+    return (
+      <>
+        {palette}
+        <React.Suspense fallback={null}>
+          <Draft groups={GROUPS} dark={dark} toggleDark={toggleDark} style={style} setStyle={(id) => setStyle(id as StyleId)} styles={STYLE_OPTIONS} />
+        </React.Suspense>
+      </>
+    )
 
   if (slug === "") return <>{palette}<Landing groups={GROUPS} dark={dark} toggleDark={toggleDark} style={style} setStyle={(id) => setStyle(id as StyleId)} styles={STYLE_OPTIONS} /></>
 

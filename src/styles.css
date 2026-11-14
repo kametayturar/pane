@@ -405,6 +405,12 @@ html[data-style="mono"] .atl {
   --atl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .co {
+  --co-ink: #000;
+  --co-accent: #111;
+  --co-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+}
+
 html[data-style="mono"] .ccb {
   --ccb-ink: #000;
   --ccb-surface: #fff;
@@ -614,6 +620,12 @@ html[data-style="mono"] .ob {
   --ob-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .ph {
+  --ph-ink: #000;
+  --ph-accent: #111;
+  --ph-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+}
+
 html[data-style="mono"] .pyf {
   --pyf-ink: #000;
   --pyf-surface: #fff;
@@ -628,6 +640,12 @@ html[data-style="mono"] .pki {
   --pki-accent: #111;
   --pki-ease: cubic-bezier(.2, .9, .1, 1);
   --pki-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .pgh {
+  --pgh-ink: #000;
+  --pgh-accent: #111;
+  --pgh-shadow: 0 0 0 1px rgb(0 0 0 / .14);
 }
 
 html[data-style="mono"] .ps {
@@ -2385,6 +2403,12 @@ html[data-style="mono"].dark .atl {
   --atl-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .co {
+  --co-ink: #fff;
+  --co-accent: #f2f2f2;
+  --co-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+}
+
 html[data-style="mono"].dark .ccb {
   --ccb-ink: #fff;
   --ccb-surface: #0a0a0a;
@@ -2594,6 +2618,12 @@ html[data-style="mono"].dark .ob {
   --ob-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"].dark .ph {
+  --ph-ink: #fff;
+  --ph-accent: #f2f2f2;
+  --ph-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+}
+
 html[data-style="mono"].dark .pyf {
   --pyf-ink: #fff;
   --pyf-surface: #0a0a0a;
@@ -2608,6 +2638,12 @@ html[data-style="mono"].dark .pki {
   --pki-accent: #f2f2f2;
   --pki-ease: cubic-bezier(.2, .9, .1, 1);
   --pki-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .pgh {
+  --pgh-ink: #fff;
+  --pgh-accent: #f2f2f2;
+  --pgh-shadow: 0 0 0 1px rgb(255 255 255 / .16);
 }
 
 html[data-style="mono"].dark .ps {
@@ -4421,6 +4457,12 @@ html[data-style="glass"] .atl {
   --atl-font: var(--pane-font);
 }
 
+html[data-style="glass"] .co {
+  --co-ink: var(--pane-ink);
+  --co-accent: var(--pane-accent);
+  --co-shadow: var(--pane-shadow);
+}
+
 html[data-style="glass"] .ccb {
   --ccb-ink: var(--pane-ink);
   --ccb-surface: var(--pane-solid);
@@ -4630,6 +4672,12 @@ html[data-style="glass"] .ob {
   --ob-font: var(--pane-font);
 }
 
+html[data-style="glass"] .ph {
+  --ph-ink: var(--pane-ink);
+  --ph-accent: var(--pane-accent);
+  --ph-shadow: var(--pane-shadow);
+}
+
 html[data-style="glass"] .pyf {
   --pyf-ink: var(--pane-ink);
   --pyf-surface: var(--pane-solid);
@@ -4644,6 +4692,12 @@ html[data-style="glass"] .pki {
   --pki-accent: var(--pane-accent);
   --pki-ease: var(--pane-ease);
   --pki-font: var(--pane-font);
+}
+
+html[data-style="glass"] .pgh {
+  --pgh-ink: var(--pane-ink);
+  --pgh-accent: var(--pane-accent);
+  --pgh-shadow: var(--pane-shadow);
 }
 
 html[data-style="glass"] .ps {

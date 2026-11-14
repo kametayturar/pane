@@ -59,7 +59,7 @@ const CSS = `
   --swr-accent: #0060e2;
   --swr-t1: color-mix(in oklab, var(--swr-ink) 88%, transparent);
   --swr-t2: color-mix(in oklab, var(--swr-ink) 61%, transparent);
-  --swr-t3: color-mix(in oklab, var(--swr-ink) 45%, transparent);
+  --swr-t3: color-mix(in oklab, var(--swr-ink) 55%, transparent);
   --swr-fill: color-mix(in oklab, var(--swr-ink) 6%, transparent);
   --swr-fill2: color-mix(in oklab, var(--swr-ink) 10%, transparent);
   --swr-line: color-mix(in oklab, var(--swr-ink) 6%, transparent);
@@ -633,8 +633,6 @@ const Row = React.memo(function Row(p: RowProps) {
 
   return (
     <li ref={li} className="swr-li" data-enter={p.enter && !reduce ? "" : undefined} onKeyDown={onKeyDown}>
-      {layer(1, left)}
-      {layer(-1, right)}
       <div
         ref={face}
         data-face
@@ -655,6 +653,9 @@ const Row = React.memo(function Row(p: RowProps) {
         </span>
         {item.time ? <span className="swr-time">{item.time}</span> : null}
       </div>
+      {/* After the face in the DOM so Tab from an opened row lands on its revealed actions; the face's z-index keeps it painted above. */}
+      {layer(1, left)}
+      {layer(-1, right)}
     </li>
   )
 })

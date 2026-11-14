@@ -65,7 +65,7 @@ const CSS = `
   --tlt-accent: #0060e2;
   --tlt-t1: color-mix(in oklab, var(--tlt-ink) 88%, transparent);
   --tlt-t2: color-mix(in oklab, var(--tlt-ink) 61%, transparent);
-  --tlt-t3: color-mix(in oklab, var(--tlt-ink) 45%, transparent);
+  --tlt-t3: color-mix(in oklab, var(--tlt-ink) 55%, transparent);
   --tlt-t4: color-mix(in oklab, var(--tlt-ink) 27%, transparent);
   --tlt-fill: color-mix(in oklab, var(--tlt-ink) 6%, transparent);
   --tlt-line: color-mix(in oklab, var(--tlt-ink) 6%, transparent);
@@ -323,6 +323,10 @@ function place(a: DOMRect, w: number, h: number, side: TooltipSide) {
 
 const keysOf = (shortcut?: string | string[]) => (Array.isArray(shortcut) ? shortcut : shortcut ? shortcut.trim().split(/\s+/) : [])
 
+/** The chips as an aria-keyshortcuts value: "⌘ ⇧ S" → "Meta+Shift+S". */
+const KEY_NAMES: Record<string, string> = { "⌘": "Meta", "⌥": "Alt", "⇧": "Shift", "⌃": "Control", Esc: "Escape", "↵": "Enter", "⏎": "Enter", "⌫": "Backspace", "←": "ArrowLeft", "→": "ArrowRight", "↑": "ArrowUp", "↓": "ArrowDown" }
+const ariaKeys = (keys: string[]) => keys.map((k) => KEY_NAMES[k] ?? k).join("+")
+
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
 /* -------------------------------------------------------------------------- */
@@ -429,8 +433,16 @@ function TipTrigger({ children, content, shortcut, side = "top", delay, skipDela
   }
 
   const keys = keysOf(shortcut)
-  const child = children
-  const described = open && child ? React.cloneElement(child as React.ReactElement<Record<string, unknown>>, { "aria-describedby": [(child as React.ReactElement<Record<string, unknown>>).props["aria-describedby"], tipId].filter(Boolean).join(" ") }) : child
+  const child = children as React.ReactElement<Record<string, unknown>> | undefined
+  const cp = child?.props ?? {}
+  // When the control's aria-label already says the tip text, the description should add only what is new (the shortcut),
+  // so the repeated text is hidden from the accessibility tree while it stays on screen.
+  const label = cp["aria-label"]
+  const repeats = typeof label === "string" && typeof content === "string" && label.trim().toLowerCase() === content.trim().toLowerCase()
+  const extra: Record<string, unknown> = {}
+  if (keys.length > 0 && !off && cp["aria-keyshortcuts"] === undefined) extra["aria-keyshortcuts"] = ariaKeys(keys)
+  if (open) extra["aria-describedby"] = [cp["aria-describedby"], tipId].filter(Boolean).join(" ")
+  const described = child && Object.keys(extra).length > 0 ? React.cloneElement(child, extra) : child
 
   return (
     <>
@@ -454,7 +466,9 @@ function TipTrigger({ children, content, shortcut, side = "top", delay, skipDela
         ? createPortal(
             <div ref={tipRef} id={tipId} role="tooltip" className="tlt-tip" data-state={open ? "open" : "closed"} data-instant={(open && instant) || undefined}>
               <div ref={bodyRef} className="tlt-body">
-                <span className="tlt-text">{content}</span>
+                <span className="tlt-text" aria-hidden={repeats || undefined}>
+                  {content}
+                </span>
                 {keys.length > 0 && (
                   <span className="tlt-keys" aria-label={`Shortcut ${keys.join(" ")}`}>
                     {keys.map((k, i) => (

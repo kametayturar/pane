@@ -204,6 +204,8 @@ html[data-style="mono"] .mdl-btn { border-radius: 3px }
 const WIDTH: Record<ModalSize, number> = { sm: 360, md: 440, lg: 560 }
 const FOCUSABLE = 'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 const NO_DRAG = "button, a, input, textarea, select, [data-nodrag]"
+/** Keys that only move focus: they pass through the reduced-motion still frame without making it modal. */
+const PASS_KEYS = /^(Tab|Shift|Control|Alt|Meta|CapsLock)$/
 
 /** Drag past the edge of its range feels like pulling on elastic: the further, the stiffer. */
 const rubber = (x: number, dim: number) => (x * dim * 0.55) / (dim + x * 0.55)
@@ -263,6 +265,11 @@ export function Modal({
   const [press, setPress] = React.useState<"trigger" | "confirm" | null>(null)
   const [drag, setDrag] = React.useState(false)
   const [stopped, setStopped] = React.useState(!demoOn || reduce)
+  // reduced motion shows the demo as an open still frame; it is not a real modal until someone touches it
+  const [still, setStill] = React.useState(demoOn && reduce)
+  /** A person (not the demo) is driving the dialog, so while it is open it is modal for the whole document. */
+  const person = stopped && !still
+  const modal = open && person
 
   const rootRef = useRoot()
   const stageRef = React.useRef<HTMLDivElement>(null)
@@ -270,7 +277,7 @@ export function Modal({
   const dlgRef = React.useRef<HTMLDivElement>(null)
   const cardRef = React.useRef<HTMLDivElement>(null)
   const ownTrigger = React.useRef<HTMLButtonElement>(null)
-  const confirmRef = React.useRef<HTMLButtonElement>(null)
+  const cancelRef = React.useRef<HTMLButtonElement>(null)
   const returnTo = React.useRef<HTMLElement | null>(null)
   const kbd = React.useRef(false)
   const demo = React.useRef({ on: demoOn && !reduce })
@@ -345,10 +352,11 @@ export function Modal({
       else page.removeAttribute("inert")
     }
     if (open) {
-      if (demo.current.on) return
+      if (demo.current.on || still) return
       returnTo.current = (document.activeElement as HTMLElement) ?? null
+      // the least destructive action takes focus, so a second Enter on the trigger cannot confirm
       const t = window.setTimeout(() => {
-        const first = confirmRef.current ?? dlgRef.current?.querySelector<HTMLElement>(FOCUSABLE)
+        const first = cancelRef.current ?? dlgRef.current?.querySelector<HTMLElement>(FOCUSABLE)
         ;(first ?? cardRef.current)?.focus({ preventScroll: true })
       }, 30)
       return () => window.clearTimeout(t)
@@ -360,19 +368,101 @@ export function Modal({
       if (lost && back && back.isConnected) back.focus({ preventScroll: true })
     }
     returnTo.current = null
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, triggerRef])
 
   // the demo gave way to a person while the dialog is open: bring focus inside so Tab and Escape work
   React.useEffect(() => {
-    if (!open || !stopped || !demoOn) return
+    if (!open || !person || !demoOn) return
     const a = document.activeElement
     if (!dlgRef.current?.contains(a)) cardRef.current?.focus({ preventScroll: true })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stopped])
+  }, [person])
 
-  // Escape also works when focus sits on the page body
+  /* ---- aria-modal for real: the rest of the document goes inert and stops scrolling ---- */
+  // Declared after the focus effect so the opener is recorded before its branch goes inert.
+  // The demo loop never does this, so a gallery page stays usable while the card plays.
+  React.useLayoutEffect(() => {
+    const root = rootRef.current
+    if (!modal || !root) return
+    const undo: (() => void)[] = []
+    // every sibling of every ancestor up to <body>: the dialog's branch stays live, everything else is inert
+    for (let el: HTMLElement = root; el.parentElement && el !== document.body; el = el.parentElement) {
+      for (const sib of Array.from(el.parentElement.children)) {
+        if (sib === el || !(sib instanceof HTMLElement) || sib.hasAttribute("inert")) continue
+        if (/^(SCRIPT|STYLE|LINK|META|TEMPLATE|NOSCRIPT)$/.test(sib.tagName) || sib.hasAttribute("aria-live")) continue
+        sib.setAttribute("inert", "")
+        undo.push(() => sib.removeAttribute("inert"))
+      }
+    }
+    // scroll lock, with the scrollbar's width given back as padding so nothing shifts
+    const html = document.documentElement
+    const prev = { overflow: html.style.overflow, pad: html.style.paddingRight }
+    const bar = window.innerWidth - html.clientWidth
+    if (bar > 0) html.style.paddingRight = `${parseFloat(getComputedStyle(html).paddingRight) + bar}px`
+    html.style.overflow = "hidden"
+    return () => {
+      for (const f of undo) f()
+      html.style.overflow = prev.overflow
+      html.style.paddingRight = prev.pad
+    }
+  }, [modal, rootRef])
+
+  // the rest of the page is inert now, so a press out there is a press outside the dialog
   React.useEffect(() => {
-    if (!open || !dismissible) return
+    if (!modal) return
+    const f = (e: PointerEvent) => {
+      if (rootRef.current?.contains(e.target as Node)) return
+      if (e.button !== 0 || !closeOnOutside || !dismissible) {
+        // the browser would move focus to <body> on the inert page; keep it inside the dialog
+        guardPress(e)
+        return
+      }
+      closeFromPress(e)
+    }
+    document.addEventListener("pointerdown", f, true)
+    return () => document.removeEventListener("pointerdown", f, true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modal, closeOnOutside, dismissible])
+
+  /**
+   * Swallow what follows a press that closed (or tried to leave) the dialog: the mousedown's focus change
+   * and, for touch and pen, the click that would land on whatever the closed dialog uncovered.
+   * A mouse sends its mousedown in the same task as pointerdown; a tap sends its mouse events after pointerup.
+   */
+  const guardPress = (e: { pointerType: string }, after?: () => void) => {
+    const mouse = e.pointerType === "mouse"
+    const pd = (m: MouseEvent) => m.preventDefault()
+    const eat = (c: MouseEvent) => {
+      if (dlgRef.current?.contains(c.target as Node)) return
+      c.preventDefault()
+      c.stopPropagation()
+    }
+    document.addEventListener("mousedown", pd, { capture: true, once: true })
+    if (!mouse) document.addEventListener("click", eat, { capture: true, once: true })
+    window.setTimeout(() => {
+      document.removeEventListener("mousedown", pd, true)
+      document.removeEventListener("click", eat, true)
+      after?.()
+    }, mouse ? 0 : 700)
+  }
+
+  /** Close from a pointer press outside the card and put focus back on the trigger once the press is over. */
+  const closeFromPress = (e: { pointerType: string }) => {
+    const back = returnTo.current ?? triggerRef?.current ?? ownTrigger.current
+    dismiss()
+    guardPress(e, () => {
+      const root = rootRef.current
+      if (!back?.isConnected || !root || stageRef.current?.dataset.open === "true" || back.closest("[inert]")) return
+      const a = document.activeElement
+      const lost = !a || a === document.body || a.contains(root) || !!dlgRef.current?.contains(a)
+      if (lost) back.focus({ preventScroll: true })
+    })
+  }
+
+  // Escape also works when focus sits on the page body (only for a real modal, never the demo)
+  React.useEffect(() => {
+    if (!modal || !dismissible) return
     const f = (e: KeyboardEvent) => {
       if (e.key !== "Escape" || e.defaultPrevented) return
       const a = document.activeElement
@@ -381,7 +471,7 @@ export function Modal({
     document.addEventListener("keydown", f)
     return () => document.removeEventListener("keydown", f)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, dismissible])
+  }, [modal, dismissible])
 
   const dismiss = React.useCallback(
     (viaDrag = false) => {
@@ -407,7 +497,8 @@ export function Modal({
       dismiss()
       return
     }
-    if (e.key !== "Tab") return
+    // only a real modal holds Tab; the reduced-motion still frame lets a keyboard pass through
+    if (e.key !== "Tab" || !modal) return
     const list = Array.from(dlgRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])
     if (!list.length) return
     const first = list[0]
@@ -576,11 +667,14 @@ export function Modal({
     }
   }, [running])
 
-  const stopOnTouch = () => {
+  /** Focus only stops the loop. A key (not Tab) or a press is what turns the still frame into a real modal. */
+  const stopOnTouch = (activate: boolean) => {
     if (demo.current.on) stop()
+    if (still && activate) setStill(false)
   }
 
-  const live = open ? `${title} dialog opened` : ""
+  // only what a person does is announced; the demo loop and the still frame stay quiet
+  const live = open && person ? `${title} dialog opened` : ""
   const w = WIDTH[size]
 
   return (
@@ -588,11 +682,11 @@ export function Modal({
       ref={rootRef}
       className={cn("mdl", className)}
       data-actions={actions}
-      onKeyDownCapture={stopOnTouch}
-      onPointerDownCapture={stopOnTouch}
+      onKeyDownCapture={(e) => stopOnTouch(!PASS_KEYS.test(e.key))}
+      onPointerDownCapture={() => stopOnTouch(true)}
       onFocusCapture={(e) => {
         if ((e.target as HTMLElement).matches(":focus-visible")) kbd.current = true
-        stopOnTouch()
+        stopOnTouch(false)
       }}
       onKeyDown={onKeyDown}
     >
@@ -614,7 +708,7 @@ export function Modal({
           {stage ?? (
             <>
               <div className="mdl-bar" data-done={done}>
-                <div className="mdl-h" aria-live="polite">
+                <div className="mdl-h" aria-live={person ? "polite" : undefined}>
                   <span className="mdl-h-idle">
                     <span className="mdl-h-t" style={{ display: "block" }}>Inbox</span>
                     <span className="mdl-h-s mdl-count">1,284 threads</span>
@@ -654,8 +748,8 @@ export function Modal({
         <div
           className="mdl-scrim"
           aria-hidden
-          onPointerDown={() => {
-            if (open && closeOnOutside && dismissible) dismiss()
+          onPointerDown={(e) => {
+            if (open && closeOnOutside && dismissible) closeFromPress(e)
           }}
         />
         <div className="mdl-layer">
@@ -672,10 +766,11 @@ export function Modal({
               ref={cardRef}
               className="mdl-card"
               role="dialog"
-              aria-modal="true"
+              // modal only while the rest of the document really is inert; the demo loop is decoration
+              aria-modal={modal || undefined}
               aria-labelledby={titleId}
               aria-describedby={description ? descId : undefined}
-              aria-hidden={!open}
+              aria-hidden={!open || !stopped}
               tabIndex={-1}
               inert={!open}
             >
@@ -713,10 +808,10 @@ export function Modal({
                 )}
               </div>
               <div className="mdl-foot" style={{ "--i": 3 } as React.CSSProperties}>
-                <button type="button" className="mdl-btn mdl-quiet" onClick={() => dismiss()}>
+                <button ref={cancelRef} type="button" className="mdl-btn mdl-quiet" onClick={() => dismiss()}>
                   {cancelLabel}
                 </button>
-                <button ref={confirmRef} type="button" className="mdl-btn mdl-primary" data-pressed={press === "confirm" || undefined} onClick={confirm}>
+                <button type="button" className="mdl-btn mdl-primary" data-pressed={press === "confirm" || undefined} onClick={confirm}>
                   {confirmLabel}
                 </button>
               </div>

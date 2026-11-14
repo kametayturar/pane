@@ -65,7 +65,7 @@ const CSS = `
   --drw-accent: #0060e2;
   --drw-t1: color-mix(in oklab, var(--drw-ink) 88%, transparent);
   --drw-t2: color-mix(in oklab, var(--drw-ink) 61%, transparent);
-  --drw-t3: color-mix(in oklab, var(--drw-ink) 45%, transparent);
+  --drw-t3: color-mix(in oklab, var(--drw-ink) 55%, transparent);
   --drw-t4: color-mix(in oklab, var(--drw-ink) 27%, transparent);
   --drw-fill: color-mix(in oklab, var(--drw-ink) 6%, transparent);
   --drw-line: color-mix(in oklab, var(--drw-ink) 6%, transparent);
@@ -216,6 +216,7 @@ type Eng = {
 
 const clamp = (n: number, a: number, b: number) => Math.min(b, Math.max(a, n))
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+const FOCUSABLE = 'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 const MONO_STEPS = [
   ["Read ledger export", "sheets.read", "1.2s"],
   ["Match invoices to POs", "match", "48.3s"],
@@ -225,7 +226,7 @@ const MONO_STEPS = [
   ["Send report", "mail.send", "0.8s"],
 ]
 
-function DefaultBackground({ label, onOpen, trigRef }: { label: string; onOpen: () => void; trigRef: React.Ref<HTMLButtonElement> }) {
+function DefaultBackground({ label, onOpen, trigRef, open, controls }: { label: string; onOpen: () => void; trigRef: React.Ref<HTMLButtonElement>; open: boolean; controls: string }) {
   return (
     <>
       <h3 className="drw-page-title">Runs</h3>
@@ -235,7 +236,9 @@ function DefaultBackground({ label, onOpen, trigRef }: { label: string; onOpen: 
         <div className="drw-run"><div><b>Vendor email triage</b><small>Quill</small></div><span>1m 03s</span></div>
         <div className="drw-run"><div><b>Weekly digest</b><small>Sage</small></div><span>38s</span></div>
       </div>
-      <button ref={trigRef} type="button" className="drw-open" onClick={onOpen}>{label}</button>
+      <button ref={trigRef} type="button" className="drw-open" aria-haspopup="dialog" aria-expanded={open} aria-controls={controls} onClick={onOpen}>
+        {label}
+      </button>
     </>
   )
 }
@@ -319,6 +322,8 @@ export function Drawer(props: DrawerProps) {
   const grabRef = React.useRef<HTMLButtonElement>(null)
   const fingerRef = React.useRef<HTMLDivElement>(null)
   const trigRef = React.useRef<HTMLButtonElement>(null)
+  const sheetId = React.useId()
+  const descId = React.useId()
   const size = React.useRef(0)
   const pend = React.useRef<{ id: number; x: number; y: number; started: boolean } | null>(null)
   const moved = React.useRef(false)
@@ -649,22 +654,39 @@ export function Drawer(props: DrawerProps) {
     const n = list[clamp((i < 0 ? 0 : i) + dir, 0, list.length - 1)]
     if (n) moveTo(n.f)
   }
+  // slider keys (WAI-ARIA APG): Up/Right and PageUp raise it, Down/Left and PageDown lower it, Home = lowest, End = highest
   const onGrabKey = (e: React.KeyboardEvent) => {
-    const up = side === "bottom" ? "ArrowUp" : side === "right" ? "ArrowLeft" : "ArrowRight"
-    const down = side === "bottom" ? "ArrowDown" : side === "right" ? "ArrowRight" : "ArrowLeft"
+    const up = side === "bottom" ? ["ArrowUp", "ArrowRight", "PageUp"] : side === "right" ? ["ArrowLeft", "ArrowUp", "PageUp"] : ["ArrowRight", "ArrowUp", "PageUp"]
+    const down = side === "bottom" ? ["ArrowDown", "ArrowLeft", "PageDown"] : side === "right" ? ["ArrowRight", "ArrowDown", "PageDown"] : ["ArrowLeft", "ArrowDown", "PageDown"]
     const go = (fn: () => void) => {
       e.preventDefault()
       fn()
     }
-    if (e.key === up) go(() => step(-1))
-    else if (e.key === down) go(() => step(1))
-    else if (e.key === "Home") go(() => moveTo(topSnap))
-    else if (e.key === "End") go(() => moveTo(lowSnap))
+    if (up.includes(e.key)) go(() => step(-1))
+    else if (down.includes(e.key)) go(() => step(1))
+    else if (e.key === "Home") go(() => moveTo(lowSnap))
+    else if (e.key === "End") go(() => moveTo(topSnap))
   }
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape" && open && dismissible) {
       e.stopPropagation()
       moveTo(null)
+      return
+    }
+    // modal: Tab and Shift+Tab wrap inside the sheet
+    if (e.key !== "Tab" || !modal || !open) return
+    const sheet = sheetRef.current
+    const list = Array.from(sheet?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []).filter((el) => el.getClientRects().length > 0)
+    if (!sheet || !list.length) return
+    const first = list[0]
+    const last = list[list.length - 1]
+    const a = document.activeElement
+    if (e.shiftKey && (a === first || a === sheet || !sheet.contains(a))) {
+      e.preventDefault()
+      last.focus()
+    } else if (!e.shiftKey && (a === last || !sheet.contains(a))) {
+      e.preventDefault()
+      first.focus()
     }
   }
   const onGrabClick = () => {
@@ -793,15 +815,17 @@ export function Drawer(props: DrawerProps) {
       <style href="drawer" precedence="default">{CSS}</style>
       <div ref={stageRef} className="drw-stage">
         <div ref={pageRef} className="drw-page">
-          {background ?? <DefaultBackground label={triggerLabel} onOpen={reopen} trigRef={trigRef} />}
+          {background ?? <DefaultBackground label={triggerLabel} onOpen={reopen} trigRef={trigRef} open={open} controls={sheetId} />}
         </div>
         <div ref={scrimRef} className="drw-scrim" aria-hidden="true" onClick={() => open && dismissible && modal && moveTo(null)} />
         <div
           ref={sheetRef}
+          id={sheetId}
           className="drw-sheet"
           role="dialog"
           aria-modal={modal}
           aria-label={title}
+          aria-describedby={description ? descId : undefined}
           tabIndex={-1}
           data-top={snap >= topSnap ? "" : undefined}
           style={sheetStyle}
@@ -812,7 +836,13 @@ export function Drawer(props: DrawerProps) {
               ref={grabRef}
               type="button"
               className="drw-grab"
-              aria-label={`Resize drawer, ${pct}% high. ${side === "bottom" ? "Arrow up and down" : "Arrow left and right"} change the height.`}
+              role="slider"
+              aria-orientation={side === "bottom" ? "vertical" : "horizontal"}
+              aria-label={`Drawer height, ${pct}%`}
+              aria-valuemin={Math.round(lowSnap * 100)}
+              aria-valuemax={Math.round(topSnap * 100)}
+              aria-valuenow={pct}
+              aria-valuetext={`${pct}% high`}
               onKeyDown={onGrabKey}
               onClick={onGrabClick}
             />
@@ -820,7 +850,7 @@ export function Drawer(props: DrawerProps) {
           <div className="drw-head">
             <div>
               <h3 className="drw-title">{title}</h3>
-              {description && <p className="drw-desc">{description}</p>}
+              {description && <p id={descId} className="drw-desc">{description}</p>}
             </div>
             {dismissible && (
               <button type="button" className="drw-x" aria-label="Close" onClick={() => moveTo(null)}>

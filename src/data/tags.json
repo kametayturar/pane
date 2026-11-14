@@ -4064,6 +4064,52 @@
         "wallpaper",
         "original"
       ]
+    },
+    "pastel-harbor": {
+      "tags": [
+        "background",
+        "landing",
+        "paper"
+      ],
+      "keywords": [
+        "hand-drawn",
+        "oil pastel",
+        "crayon",
+        "dawn",
+        "harbour",
+        "90s anime colours",
+        "original"
+      ]
+    },
+    "pencil-greenhouse": {
+      "tags": [
+        "background",
+        "landing",
+        "paper"
+      ],
+      "keywords": [
+        "hand-drawn",
+        "coloured pencil",
+        "hatching",
+        "plants",
+        "interior",
+        "original"
+      ]
+    },
+    "chalk-observatory": {
+      "tags": [
+        "background",
+        "landing",
+        "paper"
+      ],
+      "keywords": [
+        "hand-drawn",
+        "chalk",
+        "dark paper",
+        "night sky",
+        "stars",
+        "original"
+      ]
     }
   }
 }

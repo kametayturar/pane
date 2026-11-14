@@ -55,7 +55,7 @@ const CSS = `
   --hcn-danger: #cf2a1f;
   --hcn-t1: color-mix(in oklab, var(--hcn-ink) 88%, transparent);
   --hcn-t2: color-mix(in oklab, var(--hcn-ink) 61%, transparent);
-  --hcn-t3: color-mix(in oklab, var(--hcn-ink) 45%, transparent);
+  --hcn-t3: color-mix(in oklab, var(--hcn-ink) 55%, transparent);
   --hcn-fill: color-mix(in oklab, var(--hcn-ink) 6%, transparent);
   --hcn-fill-hi: color-mix(in oklab, var(--hcn-ink) 9%, transparent);
   --hcn-line: color-mix(in oklab, var(--hcn-ink) 6%, transparent);
@@ -74,7 +74,7 @@ const CSS = `
   --hcn-danger: #ff6f64;
   --hcn-t1: color-mix(in oklab, var(--hcn-ink) 90%, transparent);
   --hcn-t2: color-mix(in oklab, var(--hcn-ink) 62%, transparent);
-  --hcn-t3: color-mix(in oklab, var(--hcn-ink) 46%, transparent);
+  --hcn-t3: color-mix(in oklab, var(--hcn-ink) 50%, transparent);
   --hcn-fill: color-mix(in oklab, var(--hcn-ink) 8%, transparent);
   --hcn-fill-hi: color-mix(in oklab, var(--hcn-ink) 12%, transparent);
   --hcn-line: color-mix(in oklab, var(--hcn-ink) 9%, transparent);
@@ -237,7 +237,8 @@ export function HoldToConfirm(props: HoldToConfirmProps) {
     setDown(false)
     doneAt.current = performance.now()
     setPhase("done")
-    setLive("Confirmed. " + doneLabel + ".")
+    // Only real input is announced: the built-in demo must never report a destructive action nobody took.
+    if (e.src === "user") setLive("Confirmed. " + doneLabel + ".")
     cb.current.onConfirm?.()
   }, [doneLabel, paint, stopLoop])
 
@@ -277,7 +278,7 @@ export function HoldToConfirm(props: HoldToConfirmProps) {
       e.last = performance.now()
       setDown(true)
       setPhase("hold")
-      setLive("Holding. Keep holding to confirm.")
+      if (src === "user") setLive("Holding. Keep holding to confirm.")
       stopLoop()
       tick()
     },
@@ -309,7 +310,7 @@ export function HoldToConfirm(props: HoldToConfirmProps) {
         return
       }
       setPhase("cancel")
-      setLive("Cancelled. Nothing was changed.")
+      if (e.src === "user") setLive("Cancelled. Nothing was changed.")
       if (reached > 0.05) cb.current.onCancel?.(reached)
       window.clearTimeout(cancelTimer.current)
       cancelTimer.current = window.setTimeout(() => setPhase((p) => (p === "cancel" ? "idle" : p)), 1800)
@@ -510,11 +511,15 @@ export function HoldToConfirm(props: HoldToConfirmProps) {
     if (performance.now() - doneAt.current < 500) return
     stopAuto()
     onReset?.()
+    setLive("Restored.")
     reset()
   }
 
   const seconds = (duration / 1000).toFixed(1).replace(/\.0$/, "")
   const isDone = phase === "done"
+  // Reduced motion paints the untouched demo as one still mid-hold frame. It is a picture, not a hold in progress,
+  // so assistive tech keeps reading the resting label and hint until someone interacts.
+  const still = bare && auto && reduce && phase === "hold"
 
   return (
     <div
@@ -575,9 +580,14 @@ export function HoldToConfirm(props: HoldToConfirmProps) {
           onClick={onClick}
         >
           <span className="hcn-face hcn-face-bg">
-            <span className="hcn-l hcn-l-idle">{label}</span>
-            <span className="hcn-l hcn-l-hold">{holdLabel}</span>
-            <span className="hcn-l hcn-l-done">
+            {/* Only the label on show names the button; the others are faded out with opacity only. */}
+            <span className="hcn-l hcn-l-idle" aria-hidden={(phase === "hold" && !still) || isDone || undefined}>
+              {label}
+            </span>
+            <span className="hcn-l hcn-l-hold" aria-hidden={phase !== "hold" || still || undefined}>
+              {holdLabel}
+            </span>
+            <span className="hcn-l hcn-l-done" aria-hidden={!isDone || undefined}>
               <Check />
               {doneLabel}
             </span>
@@ -593,10 +603,10 @@ export function HoldToConfirm(props: HoldToConfirmProps) {
         </button>
 
         <div className="hcn-foot">
-          <p className="hcn-hint hcn-h-idle" aria-hidden={phase !== "idle"}>
+          <p className="hcn-hint hcn-h-idle" aria-hidden={phase !== "idle" && !still}>
             {hint ?? `Hold for ${seconds} ${seconds === "1" ? "second" : "seconds"}. Letting go cancels.`}
           </p>
-          <p className="hcn-hint hcn-h-hold" aria-hidden={phase !== "hold"}>
+          <p className="hcn-hint hcn-h-hold" aria-hidden={phase !== "hold" || still}>
             Release to cancel.
           </p>
           <p className="hcn-hint hcn-h-cancel" aria-hidden={phase !== "cancel"}>

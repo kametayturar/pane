@@ -13,9 +13,35 @@ const GOALS = [
   { id: "agents", label: "Add agent screens", text: "Add screens for AI agents: runs with plans and approvals, an inbox of background tasks, traces and costs." },
   { id: "dashboard", label: "Make data beautiful", text: "Make the dashboards and data views beautiful: charts, KPIs and tables that animate in and are easy to read." },
   { id: "motion", label: "Add motion & art", text: "Add tasteful motion and illustrations: text reveals, number tickers, backgrounds, and one or two animated scenes where they explain the product." },
+  { id: "draw", label: "Draw by hand", text: "Draw one picture in code that looks made by hand with pastel, crayon and pencil, and carries the feeling of my story." },
 ] as const
 
 type GoalId = (typeof GOALS)[number]["id"]
+
+const STORY_PLACEHOLDER =
+  "[Paste a memory here, 100–200 words: where you were, what you heard, what you hoped for or feared, how it ended. It sets the mood only – none of it will be drawn.]"
+
+/** The emotion brief: fixed tools and format, open subject, a story whose feeling the picture carries. */
+function buildDrawPrompt(story: string, askFirst: boolean) {
+  return [
+    `Draw one picture by hand – in code – for this project, the way Pane draws its canvas art (${SITE}).`,
+    ``,
+    `1. Read ${SITE}/skills/pane/hand-drawn.md first and follow it: the tools, the layering order, the palette, the engineering rules and the "does it look digital?" checklist.`,
+    `2. Choose 3–5 dry tools (oil pastel, wax crayon, coloured pencil, chalk, charcoal, conté – or your own). Name them before you write any code, say how each behaves on paper, and use only those.`,
+    `3. Draw one 16:9 piece (1920×1080) in JavaScript only, as a Pane-style canvas piece: one self-contained React file with a pure draw(ctx, w, h, t, values), seeded randomness, heavy layers baked once and at most a tiny, slow live layer. No images, no SVG, no libraries. Put it where this project keeps its components and show it on a page.`,
+    `4. Colour: a small 1990s cel-anime family (peach, coral, teal, indigo, cream) used with weights. Make something original.`,
+    `5. The feeling: read my story below and make a picture that gives a viewer the same feeling. Do not illustrate it – nothing from the story may appear (no place, object, animal or event it mentions) and no people at all. Choose a different scene whose light, weather, distance and colour carry that feeling.`,
+    ``,
+    `My story:`,
+    story.trim() || STORY_PLACEHOLDER,
+    ``,
+    askFirst
+      ? `6. Before drawing, tell me the tools, the scene and the palette you chose and why the scene carries the feeling, then wait for my OK.`
+      : `6. Write down the tools, the scene and the palette you chose, then draw.`,
+    `7. It must look drawn by a person with those tools: visible directional strokes, pressure, layered colour, paper showing through – never flat fills or anything that looks like an SVG. Use every pixel. The same seed draws the same picture.`,
+    `8. Render it and look: the PNG at full size and zoomed into three areas. Fix what looks digital and repeat until you would believe a person drew it. Then show me the final image and say how the scene carries the feeling.`,
+  ].join("\n")
+}
 
 function buildPrompt(goal: string, extra: string, askFirst: boolean, keepBrand: boolean) {
   return [
@@ -41,7 +67,7 @@ export function PromptBuilder() {
   const [askFirst, setAskFirst] = React.useState(true)
   const [keepBrand, setKeepBrand] = React.useState(true)
   const [copied, setCopied] = React.useState(false)
-  const prompt = buildPrompt(GOALS.find((g) => g.id === goal)!.text, extra, askFirst, keepBrand)
+  const prompt = goal === "draw" ? buildDrawPrompt(extra, askFirst) : buildPrompt(GOALS.find((g) => g.id === goal)!.text, extra, askFirst, keepBrand)
 
   React.useEffect(() => {
     if (!copied) return
@@ -92,12 +118,16 @@ export function PromptBuilder() {
           </div>
 
           <label className="mt-4 block">
-            <span className="text-[13px] font-medium text-neutral-500 dark:text-neutral-400">Anything specific? (optional)</span>
+            <span className="text-[13px] font-medium text-neutral-500 dark:text-neutral-400">{goal === "draw" ? "Your story" : "Anything specific? (optional)"}</span>
             <textarea
               value={extra}
               onChange={(e) => setExtra(e.target.value)}
-              rows={2}
-              placeholder="e.g. It's a booking app for clinics. Keep the green brand colour. Focus on the pricing page."
+              rows={goal === "draw" ? 5 : 2}
+              placeholder={
+                goal === "draw"
+                  ? "Paste a memory, 100–200 words: where you were, what you heard, how it felt. It sets the mood; none of it is drawn."
+                  : "e.g. It's a booking app for clinics. Keep the green brand colour. Focus on the pricing page."
+              }
               className="mt-2 block w-full resize-none rounded-xl bg-black/[0.03] px-3 py-2 text-[13px] leading-5 text-neutral-900 shadow-[inset_0_0_0_1px_rgb(0_0_0/0.08)] outline-none placeholder:text-neutral-400 focus:shadow-[inset_0_0_0_1px_rgb(0_0_0/0.25)] dark:bg-white/[0.04] dark:text-white dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.1)]"
             />
           </label>
@@ -105,7 +135,7 @@ export function PromptBuilder() {
           <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[12.5px] text-neutral-600 dark:text-neutral-300">
             {[
               { on: askFirst, set: setAskFirst, label: "Show me a plan first" },
-              { on: keepBrand, set: setKeepBrand, label: "Keep my brand colours" },
+              ...(goal === "draw" ? [] : [{ on: keepBrand, set: setKeepBrand, label: "Keep my brand colours" }]),
             ].map((t) => (
               <label key={t.label} className="flex cursor-pointer items-center gap-2">
                 <input type="checkbox" checked={t.on} onChange={(e) => t.set(e.target.checked)} className="size-3.5 accent-neutral-900 dark:accent-white" />

@@ -64,7 +64,7 @@ const CSS = `
   --pvr-accent: #0060e2;
   --pvr-t1: color-mix(in oklab, var(--pvr-ink) 88%, transparent);
   --pvr-t2: color-mix(in oklab, var(--pvr-ink) 61%, transparent);
-  --pvr-t3: color-mix(in oklab, var(--pvr-ink) 45%, transparent);
+  --pvr-t3: color-mix(in oklab, var(--pvr-ink) 55%, transparent);
   --pvr-t4: color-mix(in oklab, var(--pvr-ink) 27%, transparent);
   --pvr-fill: color-mix(in oklab, var(--pvr-ink) 6%, transparent);
   --pvr-line: color-mix(in oklab, var(--pvr-ink) 6%, transparent);
@@ -399,6 +399,7 @@ export function Popover(props: PopoverProps) {
   const [auto, setAuto] = React.useState(true)
   const [pressed, setPressed] = React.useState<string | null>(null)
   const [active, setActive] = React.useState(false)
+  const [tabId, setTabId] = React.useState<string | null>(null)
 
   const uid = React.useId()
   const rootRef = React.useRef<HTMLDivElement>(null)
@@ -659,11 +660,16 @@ export function Popover(props: PopoverProps) {
       kbd.current = true
       if (mine(ev)) stopAuto()
     }
+    const onFocus = (ev: Event) => {
+      if (mine(ev)) stopAuto()
+    }
     window.addEventListener("pointerdown", onPointer, true)
     window.addEventListener("keydown", onKey, true)
+    window.addEventListener("focusin", onFocus, true)
     return () => {
       window.removeEventListener("pointerdown", onPointer, true)
       window.removeEventListener("keydown", onKey, true)
+      window.removeEventListener("focusin", onFocus, true)
     }
   }, [stopAuto])
 
@@ -739,6 +745,14 @@ export function Popover(props: PopoverProps) {
     else if (ev.key === "ArrowDown" || ev.key === "ArrowUp") {
       ev.preventDefault()
       open(id, true)
+    } else if (ev.key === "Tab" && !ev.shiftKey && value === id) {
+      // The panel is portalled to the end of <body>; Tab from its expanded trigger goes into it.
+      const first = panelRef.current?.querySelector<HTMLElement>(`.pvr-layer[data-cur] ${FOCUSABLE}`)
+      if (first) {
+        ev.preventDefault()
+        kbd.current = true
+        first.focus({ preventScroll: true })
+      }
     }
   }
   const hoverOpen = (id: string) => {
@@ -769,15 +783,38 @@ export function Popover(props: PopoverProps) {
     const list = Array.from(panelRef.current?.querySelectorAll<HTMLElement>(`.pvr-layer[data-cur] ${FOCUSABLE}`) ?? [])
     if (!list.length) return
     const at = document.activeElement
-    if ((!ev.shiftKey && at === list[list.length - 1]) || (ev.shiftKey && at === list[0])) {
+    if (ev.shiftKey && at === list[0]) {
       ev.preventDefault()
       close(true)
+    } else if (!ev.shiftKey && at === list[list.length - 1]) {
+      // Non-modal: Tab out of the end closes it and continues after the toolbar, where the panel sits logically.
+      ev.preventDefault()
+      const next = nextAfterBar()
+      if (!next) return close(true)
+      next.focus()
+      close(false)
     }
+  }
+  const nextAfterBar = () => {
+    const bar = rootRef.current?.querySelector(".pvr-bar")
+    if (!bar) return null
+    return (
+      Array.from(document.querySelectorAll<HTMLElement>(FOCUSABLE)).find(
+        (el) =>
+          el.tabIndex >= 0 &&
+          !!(bar.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) &&
+          !bar.contains(el) &&
+          !panelRef.current?.contains(el) &&
+          !el.closest("[inert], [hidden]") &&
+          el.getClientRects().length > 0,
+      ) ?? null
+    )
   }
 
   const cur = items.find((i) => i.id === shown) ?? items[0]
   const out = leaving ? items.find((i) => i.id === leaving.id) : undefined
   const panelId = `${uid}-panel`
+  const tabStop = items.some((i) => i.id === tabId) ? tabId : items[0]?.id
   const live = value ? `${items.find((i) => i.id === value)?.label ?? ""} panel open` : ""
 
   return (
@@ -803,11 +840,13 @@ export function Popover(props: PopoverProps) {
                 className="pvr-tr"
                 aria-haspopup="dialog"
                 aria-expanded={value === it.id}
-                aria-controls={value === it.id ? panelId : undefined}
+                aria-controls={value === it.id && mounted && mountedDom ? panelId : undefined}
+                tabIndex={it.id === tabStop ? 0 : -1}
                 data-pressed={pressed === it.id || undefined}
                 onClick={() => onTriggerClick(it.id)}
                 onKeyDown={(ev) => onBarKey(ev, it.id)}
                 onFocus={(ev) => {
+                  setTabId(it.id)
                   if (ev.currentTarget.matches(":focus-visible")) kbd.current = true
                 }}
                 onPointerEnter={(ev) => ev.pointerType === "mouse" && hoverOpen(it.id)}
@@ -841,6 +880,7 @@ export function Popover(props: PopoverProps) {
               aria-label={typeof cur?.label === "string" ? cur.label : "Panel"}
               data-arrow={arrow || undefined}
               data-side={side}
+              inert={value === null}
               onKeyDown={onPanelKey}
               onPointerEnter={hoverKeep}
               onPointerLeave={(ev) => ev.pointerType === "mouse" && hoverLeave()}

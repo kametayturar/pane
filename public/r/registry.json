@@ -2899,6 +2899,51 @@
           "target": "components/motion/grain-gradient.tsx"
         }
       ]
+    },
+    {
+      "name": "pastel-harbor",
+      "type": "registry:ui",
+      "title": "Pastel Harbor",
+      "description": "A harbour at first light drawn in oil pastel and crayon strokes: cranes, a ferry's lamps and long reflections on the water.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/pastel-harbor.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/pastel-harbor.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pencil-greenhouse",
+      "type": "registry:ui",
+      "title": "Pencil Greenhouse",
+      "description": "A glass greenhouse after rain in coloured pencil and chalk: hatched leaves, wet panes and light falling through the roof.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/pencil-greenhouse.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/pencil-greenhouse.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chalk-observatory",
+      "type": "registry:ui",
+      "title": "Chalk Observatory",
+      "description": "A mountain observatory under a crowded night sky, drawn in chalk and pastel on dark paper.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/illustrations/chalk-observatory.tsx",
+          "type": "registry:ui",
+          "target": "components/illustrations/chalk-observatory.tsx"
+        }
+      ]
     }
   ]
 }

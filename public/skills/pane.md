@@ -33,5 +33,7 @@ Two jobs use this skill. Pick the one in front of you.
 ## B. Build a new piece in Pane's style
 
 Read [references/look.md](references/look.md) (tokens, type, motion, art) and [references/build.md](references/build.md)
-(method and the done-checklist) first. For glass, read [references/glass.md](references/glass.md). The piece is done when
-every checklist line in build.md holds and the screenshots look finished in Classic, Mono and Glass.
+(method and the done-checklist) first. For glass, read [references/glass.md](references/glass.md). For hand-drawn canvas art
+(pastel, crayon, pencil, chalk) and the emotion-brief prompt, read [references/hand-drawn.md](references/hand-drawn.md). The piece is done when
+every checklist line in build.md holds and the screenshots look finished in Classic, Mono and Glass (hand-drawn canvas art
+instead looks finished at full size and zoomed in).
