@@ -54,7 +54,7 @@ export type AgentBridge = {
 type Entry = { el: () => unknown; node: () => AgentNode }
 type Host = { v: unknown; nodes: Map<object, Entry>; listeners: Set<(key: object) => void> }
 type ElementLike = { closest?: (selector: string) => { getAttribute?: (name: string) => string | null } | null }
-type Seen = { ref: string; kind: string; label: string; sig: string }
+type Seen = { ref: string; kind: string; label: string; sig: string; hidden: boolean }
 type Piece = { key: object; entry: Entry; node: AgentNode; ref: string }
 
 /* ---------------------------------------------------------------- helpers */
@@ -179,7 +179,7 @@ export function createAgentBridge(options: AgentBridgeOptions = {}): AgentBridge
   const taken = (ref: string) => [...host.nodes.keys()].some((k) => seen.get(k)?.ref === ref)
 
   /** The bridge's record of a piece; the first sight assigns its ref, which then never changes. */
-  function see(key: object, node: AgentNode): Seen {
+  function see(key: object, entry: Entry, node: AgentNode): Seen {
     let record = seen.get(key)
     if (!record) {
       const kind = String(node.kind || "piece")
@@ -189,7 +189,7 @@ export function createAgentBridge(options: AgentBridgeOptions = {}): AgentBridge
         counters.set(kind, n)
         ref = `${kind}-${n}`
       }
-      record = { ref, kind, label: String(node.label ?? ""), sig: sig(node.value) }
+      record = { ref, kind, label: String(node.label ?? ""), sig: sig(node.value), hidden: around(entry, "data-agent-hidden") !== null }
       seen.set(key, record)
     }
     return record
@@ -202,7 +202,7 @@ export function createAgentBridge(options: AgentBridgeOptions = {}): AgentBridge
     for (const [key, entry] of host.nodes) {
       const node = read(entry)
       if (!node) continue
-      const { ref } = see(key, node)
+      const { ref } = see(key, entry, node)
       if (around(entry, "data-agent-hidden") === null) out.push({ key, entry, node, ref })
     }
     return out
@@ -216,18 +216,31 @@ export function createAgentBridge(options: AgentBridgeOptions = {}): AgentBridge
       if (inflight?.key === key) inflight.gone() // stop waiting on a `run` that may never settle now
       if (!record) return
       seen.delete(key)
-      emit({ type: "remove", ref: record.ref, kind: record.kind, label: record.label })
+      if (!record.hidden) emit({ type: "remove", ref: record.ref, kind: record.kind, label: record.label })
       return
     }
     const node = read(entry)
     if (!node) return
     if (!record) {
-      const added = see(key, node)
-      emit({ type: "add", ref: added.ref, kind: added.kind, label: added.label })
+      const added = see(key, entry, node)
+      if (!added.hidden) emit({ type: "add", ref: added.ref, kind: added.kind, label: added.label })
       return
     }
     record.label = String(node.label ?? "")
     const next = sig(node.value)
+    // A piece inside [data-agent-hidden] is as absent from events as it is from the snapshot: its label
+    // and value never reach a subscriber. Going hidden reads as a remove, coming back as an add.
+    const hidden = around(entry, "data-agent-hidden") !== null
+    if (hidden !== record.hidden) {
+      record.hidden = hidden
+      record.sig = next
+      emit({ type: hidden ? "remove" : "add", ref: record.ref, kind: record.kind, label: hidden ? "" : record.label })
+      return
+    }
+    if (hidden) {
+      record.sig = next
+      return
+    }
     if (next === record.sig) return
     record.sig = next
     const request = inflight?.key === key ? inflight.request : undefined
@@ -240,7 +253,7 @@ export function createAgentBridge(options: AgentBridgeOptions = {}): AgentBridge
     // Pieces already on the page are recorded silently, so their next ping compares against a known value.
     for (const [key, entry] of host.nodes) {
       const node = read(entry)
-      if (node) see(key, node)
+      if (node) see(key, entry, node)
     }
     host.listeners.add(onPing)
   }

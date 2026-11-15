@@ -562,6 +562,43 @@ function plan({ id, label = "Deploy plan", element = null, run } = {}) {
   check("a hidden piece cannot be acted on by ref or label (not_found)", byRef.error?.code === "not_found" && byLabel.error?.code === "not_found" && ran.length === 0, [byRef.error?.code, byLabel.error?.code])
 }
 
+/* ------------------------------------------- 11b. hidden pieces and events */
+{
+  fresh()
+  const agent = bridge()
+  const events = []
+  agent.subscribe((e) => events.push(e))
+  const attrs = { "data-agent-hidden": "" }
+  const card = (value) => ({ kind: "x", label: "Card number", value, actions: {} })
+  const secret = mount(card("4111"), el(attrs))
+  secret.set(card("4242"))
+  check("a hidden piece emits no add or change: its label and value reach no subscriber", events.length === 0 && !/Card number|4111|4242/.test(JSON.stringify(events)), events)
+  delete attrs["data-agent-hidden"]
+  secret.set(card("shown"))
+  check("when it stops being hidden, its next report is an add, with nothing from the hidden time", events.length === 1 && events[0].type === "add" && events[0].label === "Card number" && !/4111|4242/.test(JSON.stringify(events)), events)
+  secret.set(card("shown 2"))
+  check("after that its changes are reported as usual", events.length === 2 && events[1].type === "change" && events[1].value === "shown 2", events.slice(1))
+  attrs["data-agent-hidden"] = ""
+  secret.set(card("private again"))
+  const last = events.at(-1)
+  check("when it becomes hidden, its next report is a remove with no label and no value", events.length === 3 && last.type === "remove" && last.label === "" && !/private again/.test(JSON.stringify(last)), last)
+  secret.set(card("still private"))
+  secret.unmount()
+  check("a hidden piece that changes and then unmounts emits nothing more", events.length === 3, events.length)
+
+  // hidden and already on the page when the bridge is created
+  fresh()
+  const attrs2 = { "data-agent-hidden": "" }
+  const codes = (value) => ({ kind: "y", label: "Recovery codes", value, actions: {} })
+  const early = mount(codes("a"), el(attrs2))
+  const agent2 = bridge()
+  const ev2 = []
+  agent2.subscribe((e) => ev2.push(e))
+  early.set(codes("b"))
+  early.unmount()
+  check("a piece that was hidden before the bridge existed stays silent, unmount included", ev2.length === 0, ev2)
+}
+
 /* ----------------------------------------------------- 12. snapshot only reads */
 {
   fresh()

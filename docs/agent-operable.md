@@ -47,7 +47,7 @@ agent.current()                                        // the request being run,
 
 A request is `{ ref, kind, label, action, args, destructive, reason? }`. It is destructive when the action says so, or when the piece sits inside an element with `data-agent-confirm="what it does"`. Pieces mark what commits something on a person's behalf: `confirm` on Modal, Hold to Confirm and Action Drum, `commit` on Swipe Row, `grant` on Scope Words, `go` on Plan Words. Opening, closing, selecting and revealing are not.
 
-`allow(request, { signal })` returns `true`, `false` or a promise of either, so it can show the app's own approval UI. It is called for every request, and only `true` allows: any other answer, a throw or a rejection is a refusal. **Without one, the default gate allows everything except destructive requests**, which fail with `denied` and the reason. A piece inside `data-agent-hidden` is left out of the snapshot and cannot be acted on.
+`allow(request, { signal })` returns `true`, `false` or a promise of either, so it can show the app's own approval UI. It is called for every request, and only `true` allows: any other answer, a throw or a rejection is a refusal. **Without one, the default gate allows everything except destructive requests**, which fail with `denied` and the reason. A piece inside `data-agent-hidden` is left out of the snapshot, cannot be acted on, and its label and value appear in no event (becoming hidden reads as a `remove`, coming back as an `add`).
 
 ## How it stays dependency-free
 
