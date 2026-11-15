@@ -586,6 +586,18 @@ function plan({ id, label = "Deploy plan", element = null, run } = {}) {
   secret.unmount()
   check("a hidden piece that changes and then unmounts emits nothing more", events.length === 3, events.length)
 
+  // a piece that hides itself during its own action: the result and the act event carry no value
+  fresh()
+  const agent3 = bridge()
+  const ev3 = []
+  agent3.subscribe((e) => ev3.push(e))
+  const attrs3 = {}
+  const vault = mount({ kind: "v", label: "Vault", value: "open", actions: { lock: { run: () => void (attrs3["data-agent-hidden"] = "") } } }, el(attrs3))
+  const locked = await agent3.act("v-1", "lock")
+  vault.set({ kind: "v", label: "Vault", value: "pin 9911", actions: {} })
+  const actEvent = ev3.find((e) => e.type === "act")
+  check("a piece hidden by its own action: ok with value null, and nothing of its later value in any event", locked.ok === true && locked.value === null && actEvent?.result.value === null && !/9911/.test(JSON.stringify(ev3)), { result: locked, events: ev3.map((e) => e.type) })
+
   // hidden and already on the page when the bridge is created
   fresh()
   const attrs2 = { "data-agent-hidden": "" }

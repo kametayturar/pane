@@ -351,7 +351,8 @@ export function createAgentBridge(options: AgentBridgeOptions = {}): AgentBridge
       const { threw, error } = ended
       await new Promise((resolve) => setTimeout(resolve, settle))
       const after = host.nodes.get(piece.key)
-      const value = after ? clone(read(after)?.value) : null
+      // a piece that became hidden during its own action reports no value, here or in the `act` event
+      const value = after && around(after, "data-agent-hidden") === null ? clone(read(after)?.value) : null
       inflight = null
       if (threw) return fail("failed", `"${request.action}" on ${piece.ref} threw: ${messageOf(error)}`)
       return { ok: true, ref: piece.ref, action: request.action, value }
