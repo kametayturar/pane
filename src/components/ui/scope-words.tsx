@@ -48,6 +48,8 @@ export type ScopeWordsProps = {
   revokedAnnounce?: string
   /** Play the built-in loop (glide over the words, grant one, take it back) until the first interaction with the card. Default: on when no `options`, `value`, `defaultValue` or callbacks are passed. */
   autoPlay?: boolean
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "scope-words-<n>" in mount order. */
+  agentId?: string
   className?: string
 }
 
@@ -219,6 +221,56 @@ const same = (a: Measure, b: Measure) =>
   a.list === b.list && a.full === b.full && a.tops.length === b.tops.length && a.tops.every((t, i) => t === b.tops[i] && a.ask[i] === b.ask[i] && a.done[i] === b.done[i])
 
 /* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
+
+/* -------------------------------------------------------------------------- */
 /*                                 ScopeWords                                 */
 /* -------------------------------------------------------------------------- */
 
@@ -233,6 +285,7 @@ export function ScopeWords(props: ScopeWordsProps) {
     onRevoke,
     takeBackLabel = "Take back",
     revokedAnnounce = "Access taken back.",
+    agentId,
     className,
   } = props
   const demo = value === undefined && defaultValue === undefined && optionsProp === undefined && !onGrant && !onRevoke
@@ -446,6 +499,57 @@ export function ScopeWords(props: ScopeWordsProps) {
     e.preventDefault()
     rowRefs.current[to]?.focus()
   }
+
+  /* Agent: the same presses a person makes, through the same handlers (see docs/agent-operable.md) */
+  // A press moves focus to keep a keyboard user's place; an agent's call leaves focus wherever the person has it.
+  const agentKeepFocus = () => {
+    if (!rootRef.current?.contains(document.activeElement)) focusNext.current = null
+  }
+  const agentDot = (s: string) => (/[.!?…]$/.test(s) ? s : `${s}.`)
+  // Resolves once React has rendered what an action changed, so the value read back is the new one.
+  const agentWaits = React.useRef<(() => void)[]>([])
+  const agentRendered = () =>
+    new Promise<void>((resolve) => {
+      agentWaits.current.push(resolve)
+      window.setTimeout(resolve, 200)
+    })
+  useAgentNode(rootRef, {
+    id: agentId,
+    kind: "scope-words",
+    label,
+    value: { granted: granted ? options[sel].id : null, options: options.map((o) => ({ id: o.id, word: o.word })) },
+    actions: {
+      grant: {
+        description: "Choose this word: grants the access it names, as pressing the word does.",
+        args: [{ name: "id", type: "string", enum: options.map((o) => o.id) }],
+        disabled: granted,
+        // An agent widening its own access always needs a person's approval.
+        destructive: (a) => {
+          const o = options.find((x) => x.id === a.id)
+          return o ? `${grantedHeading}: ${o.word}. ${agentDot(o.consequence)}` : true
+        },
+        run: (a) => {
+          const i = options.findIndex((o) => o.id === a.id)
+          if (i < 0) return
+          grant(i)
+          agentKeepFocus()
+          return agentRendered()
+        },
+      },
+      revoke: {
+        description: `Take the grant back, as pressing ${takeBackLabel} does.`,
+        disabled: !granted,
+        run: () => {
+          revoke()
+          agentKeepFocus()
+          return agentRendered()
+        },
+      },
+    },
+  })
+  React.useLayoutEffect(() => {
+    agentWaits.current.splice(0).forEach((f) => f())
+  })
 
   // Box height: natural while choosing (measured), word + gap + button once granted.
   const rise = granted ? (m.done[sel] ?? 0) + 8 + 28 : m.list

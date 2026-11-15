@@ -46,6 +46,8 @@ export type SwipeRowProps = {
   /** Called when the list is restored. */
   onRestore?: () => void
   className?: string
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "swipe-row-<n>" in mount order. */
+  agentId?: string
 }
 
 /* -------------------------------------------------------------------------- */
@@ -213,6 +215,12 @@ type Ctl = {
   /** Finger travel (raw px) that makes the row show `shown` px of its own travel in the direction `side`. */
   reach(side: Side): { raw: number; reveal: number; threshold: number }
   el(): HTMLElement | null
+  /** For an agent: where the row is, whether it has left, and whether it is still moving. */
+  at(): { x: number; gone: boolean; moving: boolean }
+  /** For an agent: shows one side's actions, as the arrow keys do. */
+  open(side: Side): void
+  /** For an agent: commits an action, as its button does. */
+  act(side: Side, action: SwipeAction): void
 }
 
 
@@ -496,6 +504,18 @@ const Row = React.memo(function Row(p: RowProps) {
         return { raw, reveal: r, threshold: t }
       },
       el: () => li.current,
+      at: () => ({ x: S.current.x, gone: S.current.gone, moving: S.current.raf !== 0 || S.current.drag }),
+      open: (side) => {
+        const s = S.current
+        if (s.gone || s.drag) return
+        s.W = li.current?.offsetWidth ?? s.W
+        P.current.onOpen(P.current.item.id)
+        settle(side * (side > 0 ? P.current.left : P.current.right).length * ACT_W, 0)
+      },
+      act: (side, action) => {
+        S.current.W = li.current?.offsetWidth ?? S.current.W
+        commit(side, action)
+      },
     }
     p.register(item.id, ctl)
     return () => {
@@ -661,6 +681,56 @@ const Row = React.memo(function Row(p: RowProps) {
 })
 
 /* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
+
+/* -------------------------------------------------------------------------- */
 /*                                  SwipeRow                                  */
 /* -------------------------------------------------------------------------- */
 
@@ -682,6 +752,20 @@ const ease = {
   in: (t: number) => t * t,
 }
 
+/** Resolves on the check after `done()` first holds (checked every 16ms, never before 32ms), or after `max` ms. */
+const agentWait = (done: () => boolean, max: number) =>
+  new Promise<void>((res) => {
+    const t0 = performance.now()
+    let seen = false
+    const check = () => {
+      const dt = performance.now() - t0
+      if (dt >= max || seen) return res()
+      if (dt >= 32 && done()) seen = true
+      window.setTimeout(check, 16)
+    }
+    window.setTimeout(check, 16)
+  })
+
 export function SwipeRow(props: SwipeRowProps) {
   const {
     items,
@@ -695,6 +779,7 @@ export function SwipeRow(props: SwipeRowProps) {
     onCommit,
     onRestore,
     className,
+    agentId,
   } = props
   const bare = items === undefined
   const source = items ?? DEMO_ITEMS
@@ -888,6 +973,116 @@ export function SwipeRow(props: SwipeRowProps) {
   const stillOpen = bare && reduce ? 1 : -1
   const keysOnly = leftActions.length + rightActions.length > 0
   const hintText = `Drag a row sideways to reveal actions; a long drag or a quick flick commits the first. Keyboard: left and right arrows open actions, Escape closes, Delete removes.`
+
+  /* ---- an agent: the same paths as the arrow keys, Escape, the action buttons and Restore ---- */
+  type AgentSide = "left" | "right"
+  const [shown, setShown] = React.useState<{ id: string; side: AgentSide } | null>(null)
+  // Rows move without React state; a row's data-side flag is the one thing that says it is open, so watch that.
+  React.useEffect(() => {
+    const el = card.current
+    if (!el) return
+    const read = () => {
+      let next: { id: string; side: AgentSide } | null = null
+      for (const [id, c] of ctls.current) {
+        const li = c.el()
+        if (li?.hasAttribute("data-side") && !li.hasAttribute("data-gone")) next = { id, side: c.at().x > 0 ? "left" : "right" }
+      }
+      setShown((p) => (p?.id === next?.id && p?.side === next?.side ? p : next))
+    }
+    const mo = new MutationObserver(read)
+    mo.observe(el, { subtree: true, childList: true, attributes: true, attributeFilter: ["data-side", "data-gone"] })
+    return () => mo.disconnect()
+  }, [])
+  const [agentTick, setAgentTick] = React.useState(0)
+  const agentQueue = React.useRef<(() => void)[]>([])
+  // Runs after the commit that ended the demo, so its cleanup has already let go of any row it held.
+  React.useEffect(() => {
+    if (!auto) agentQueue.current.splice(0).forEach((f) => f())
+  }, [auto, agentTick])
+  /** Ends the demo as a first touch does, then runs `f`; resolves when what `f` returns does. */
+  const agentDo = (f: () => Promise<void>) =>
+    new Promise<void>((res, rej) => {
+      agentQueue.current.push(() => void Promise.resolve().then(f).then(res, rej))
+      stopDemo()
+      setAgentTick((n) => n + 1)
+    })
+  const agentSide = (s: unknown): Side => (s === "left" ? 1 : -1)
+  const agentRow = (id: unknown) => {
+    const c = ctls.current.get(String(id))
+    if (!c || c.at().gone) throw new Error(`No row "${String(id)}"`)
+    return c
+  }
+  const agentAction = (id: unknown) => leftActions.find((a) => a.id === id) ?? rightActions.find((a) => a.id === id)
+  const allStill = () => [...ctls.current.values()].every((c) => !c.at().moving)
+  const rowIds = rows.map((r) => r.id)
+  const sidesWithActions = (["left", "right"] as const).filter((s) => (s === "left" ? leftActions : rightActions).length > 0)
+  const actionIds = [...new Set([...leftActions, ...rightActions].map((a) => a.id))]
+  useAgentNode(root, {
+    id: agentId,
+    kind: "swipe-row",
+    label: title,
+    value: {
+      items: rows.map((r) => ({ id: r.id, title: r.title })),
+      revealed: shown,
+      removed: source.filter((s) => !rowIds.includes(s.id)).map((s) => s.id),
+    },
+    actions: {
+      reveal: {
+        run: (a) => {
+          const side = agentSide(a.side)
+          if (!(side > 0 ? leftActions : rightActions).length) throw new Error(`No actions on the ${String(a.side)} side`)
+          return agentDo(async () => {
+            agentRow(a.id).open(side)
+            await agentWait(allStill, 1600)
+          })
+        },
+        args: [
+          { name: "id", type: "string", enum: rowIds, description: "The row." },
+          { name: "side", type: "string", enum: sidesWithActions, description: "left shows leftActions (a drag to the right), right shows rightActions." },
+        ],
+        disabled: rows.length === 0 || sidesWithActions.length === 0,
+        description: "Shows a row's actions, as a partial swipe or the arrow keys do.",
+      },
+      close: {
+        run: () =>
+          agentDo(async () => {
+            for (const c of ctls.current.values()) c.close()
+            await agentWait(allStill, 1600)
+          }),
+        disabled: shown === null,
+        description: "Closes the open row, as Escape or a tap elsewhere does.",
+      },
+      commit: {
+        run: (a) => {
+          const action = agentAction(a.action)
+          if (!action) throw new Error(`No action "${String(a.action)}"`)
+          const side: Side = leftActions.includes(action) ? 1 : -1
+          return agentDo(async () => {
+            const c = agentRow(a.id)
+            c.act(side, action)
+            await agentWait(() => (collapseOnCommit ? !ctls.current.has(String(a.id)) : !c.at().moving), 2000)
+          })
+        },
+        args: [
+          { name: "id", type: "string", enum: rowIds, description: "The row." },
+          { name: "action", type: "string", enum: actionIds, description: "An action id from leftActions or rightActions." },
+        ],
+        disabled: rows.length === 0 || actionIds.length === 0,
+        destructive: (a) => `${agentAction(a.action)?.label ?? String(a.action)} “${rows.find((r) => r.id === a.id)?.title ?? String(a.id)}”`,
+        description: "Commits an action on a row, as a full swipe or the action's button does.",
+      },
+      restore: {
+        run: () =>
+          agentDo(async () => {
+            restore(true)
+            onRestore?.()
+            await agentWait(() => reduce, 640)
+          }),
+        disabled: rows.length >= total,
+        description: "Brings back the rows that were removed, as the Restore button does.",
+      },
+    },
+  })
 
   return (
     <div ref={root} className={cn("swr", className)} onPointerDownCapture={stopDemo} onKeyDownCapture={stopDemo} onFocusCapture={stopDemo}>

@@ -51,6 +51,8 @@ export type ModalProps = {
   onCancel?: () => void
   /** Play the built-in demo. Default: on when the modal is not controlled. It stops for good at the first touch, key or focus. */
   autoplay?: boolean
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "modal-<n>" in mount order. */
+  agentId?: string
   className?: string
 }
 
@@ -225,6 +227,56 @@ function useRoot() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
+
+/* -------------------------------------------------------------------------- */
 /*                                   Modal                                    */
 /* -------------------------------------------------------------------------- */
 
@@ -249,6 +301,7 @@ export function Modal({
   onConfirm,
   onCancel,
   autoplay,
+  agentId,
   className,
 }: ModalProps) {
   const controlled = openProp !== undefined
@@ -672,6 +725,44 @@ export function Modal({
     if (demo.current.on) stop()
     if (still && activate) setStill(false)
   }
+
+  /* ---- agent: the same handlers as the buttons, after a first touch ---- */
+  // An agent's action is a first touch: it ends the loop and the still frame, so the dialog it opens is a real modal.
+  // While the loop is running the action waits for the loop's cleanup, so a pending step cannot undo it.
+  const afterStop = React.useRef<(() => void)[]>([])
+  React.useEffect(() => {
+    if (!running) afterStop.current.splice(0).forEach((f) => f())
+  }, [running])
+  const agentDo = (f: () => void): Promise<void> | void => {
+    const wait = running
+    stopOnTouch(true)
+    if (!wait) return f()
+    return new Promise<void>((resolve) => {
+      afterStop.current.push(() => {
+        f()
+        resolve()
+      })
+    })
+  }
+  useAgentNode(rootRef, {
+    id: agentId,
+    kind: "modal",
+    label: title,
+    value: { open },
+    actions: {
+      open: {
+        run: () =>
+          agentDo(() => {
+            setDone(false)
+            setOpen(true)
+          }),
+        description: "Opens the dialog. Focus moves to its least destructive button and the rest of the page goes inert until it closes.",
+        disabled: open && person,
+      },
+      dismiss: { run: () => agentDo(() => dismiss()), description: `Closes the dialog without acting (${cancelLabel}).`, disabled: !open },
+      confirm: { run: () => agentDo(confirm), description: `Presses ${confirmLabel}.`, destructive: `${confirmLabel}: ${description || title}`, disabled: !open },
+    },
+  })
 
   // only what a person does is announced; the demo loop and the still frame stay quiet
   const live = open && person ? `${title} dialog opened` : ""

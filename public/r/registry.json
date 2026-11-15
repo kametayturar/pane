@@ -2944,6 +2944,21 @@
           "target": "components/illustrations/chalk-observatory.tsx"
         }
       ]
+    },
+    {
+      "name": "agent-bridge",
+      "type": "registry:lib",
+      "title": "Agent Bridge",
+      "description": "Lets an AI read Pane's agent-operable pieces and run their actions through the pieces' own handlers, one request at a time, behind an approval gate, with optional WebMCP tools.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/lib/agent-bridge.ts",
+          "type": "registry:lib",
+          "target": "lib/agent-bridge.ts"
+        }
+      ]
     }
   ]
 }

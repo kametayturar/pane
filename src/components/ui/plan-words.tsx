@@ -50,6 +50,8 @@ export type PlanWordsProps = {
   autoPlay?: boolean
   /** Uncontrolled only: milliseconds after Go before the card resets to its plan, so it can be used again. Default 6000 for the built-in card, otherwise never (0). */
   resetAfter?: number
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "plan-words-<n>" in mount order. */
+  agentId?: string
   className?: string
 }
 
@@ -307,6 +309,56 @@ function Roll({ text, still }: { text: string; still: boolean }) {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
+
+/* -------------------------------------------------------------------------- */
 /*                                  PlanWords                                 */
 /* -------------------------------------------------------------------------- */
 
@@ -323,6 +375,7 @@ export function PlanWords(props: PlanWordsProps) {
     onGo,
     goLabel = "Go",
     hint = "Tap Run to ask first or skip a step.",
+    agentId,
     className,
   } = props
   const caption = props.caption ?? `${agent}'s plan for the Q3 board pack`
@@ -566,6 +619,73 @@ export function PlanWords(props: PlanWordsProps) {
   }, [started, auto, resetMs, startedProp])
 
   const status = (s: PlanWordsStep) => (started ? (s.id === workingId ? "Working" : AFTER[modeOf(s)]) : WORD[modeOf(s)])
+
+  /* Agent: the same presses a person makes, through the same handlers (see docs/agent-operable.md) */
+  // One press on a step's word, from the latest render, so a second press cycles on from the first one's result.
+  const agentPress = React.useRef<(i: number, want: PlanWordsMode) => boolean>(() => false)
+  // Resolves once React has rendered what an action changed, so the next press and the value read back see it.
+  const agentWaits = React.useRef<(() => void)[]>([])
+  const agentRendered = () =>
+    new Promise<void>((resolve) => {
+      agentWaits.current.push(resolve)
+      window.setTimeout(resolve, 200)
+    })
+  const agentCount = (m: PlanWordsMode) => steps.filter((s) => modeOf(s) === m).length
+  const agentRuns = agentCount("run")
+  const agentSkips = agentCount("skip")
+  const agentPlan = [
+    agentRuns && `${agentRuns} ${agentRuns === 1 ? "step runs" : "steps run"}`,
+    asks.length && `${asks.length} ${asks.length === 1 ? "asks" : "ask"} first`,
+    agentSkips && `${agentSkips} skipped`,
+  ]
+    .filter(Boolean)
+    .join(", ")
+  useAgentNode(rootRef, {
+    id: agentId,
+    kind: "plan-words",
+    label: caption,
+    value: { modes: Object.fromEntries(steps.map((s) => [s.id, modeOf(s)])), started, steps: steps.map((s) => ({ id: s.id, title: s.title })) },
+    actions: {
+      setMode: {
+        description: "Set what the agent does with a step: run it, ask first, or skip it. Presses the step's word until it reads that mode.",
+        args: [
+          { name: "step", type: "string", enum: steps.map((s) => s.id) },
+          { name: "mode", type: "string", enum: ["run", "ask", "skip"] },
+        ],
+        disabled: started,
+        run: async (a) => {
+          const i = steps.findIndex((s) => s.id === a.step)
+          const want = (["run", "ask", "skip"] as const).find((m) => m === a.mode)
+          if (i < 0 || !want) return
+          handOver()
+          let presses = 0
+          for (let m = modeOf(steps[i]); m !== want; m = NEXT[m]) presses++
+          for (let k = 0; k < presses; k++) {
+            if (!agentPress.current(i, want)) break
+            await agentRendered()
+          }
+        },
+      },
+      go: {
+        description: `Press ${goLabel}: starts the plan with the modes as they are.`,
+        disabled: started || !act.length,
+        destructive: `Starts ${caption}: ${agentPlan}. About ${mins} min.`,
+        run: () => {
+          handOver()
+          go(true)
+          return agentRendered()
+        },
+      },
+    },
+  })
+  React.useLayoutEffect(() => {
+    agentPress.current = (i, want) => {
+      if (started || modeOf(steps[i]) === want) return false
+      cycle(i, true)
+      return true
+    }
+    agentWaits.current.splice(0).forEach((f) => f())
+  })
 
   return (
     <div

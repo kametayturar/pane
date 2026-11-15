@@ -37,6 +37,8 @@ export type HoldToConfirmProps = {
   /** Called when the person takes it back with the quiet button. */
   onReset?: () => void
   className?: string
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "hold-to-confirm-<n>" in mount order. */
+  agentId?: string
 }
 
 type Phase = "idle" | "hold" | "cancel" | "done"
@@ -153,11 +155,75 @@ html[data-style="glass"].dark[data-refract] .hcn-card { -webkit-backdrop-filter:
 `
 
 /* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
+
+/* -------------------------------------------------------------------------- */
 /*                                   Engine                                   */
 /* -------------------------------------------------------------------------- */
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
 const easeOut = (k: number) => 1 - (1 - k) ** 4
+
+/** Resolves on the check after `done()` first holds (checked every 16ms, never before 32ms), or after `max` ms. */
+const agentWait = (done: () => boolean, max: number) =>
+  new Promise<void>((res) => {
+    const t0 = performance.now()
+    let seen = false
+    const check = () => {
+      const dt = performance.now() - t0
+      if (dt >= max || seen) return res()
+      if (dt >= 32 && done()) seen = true
+      window.setTimeout(check, 16)
+    }
+    window.setTimeout(check, 16)
+  })
 
 type Engine = { dur: number; p: number; mode: Mode; last: number; t0: number; from: number; span: number; raf: number; dog: number; src: Source }
 
@@ -178,6 +244,7 @@ export function HoldToConfirm(props: HoldToConfirmProps) {
     onCancel,
     onReset,
     className,
+    agentId,
   } = props
   const bare = props.onConfirm === undefined && props.onCancel === undefined && props.onReset === undefined
 
@@ -520,6 +587,58 @@ export function HoldToConfirm(props: HoldToConfirmProps) {
   // Reduced motion paints the untouched demo as one still mid-hold frame. It is a picture, not a hold in progress,
   // so assistive tech keeps reading the resting label and hint until someone interacts.
   const still = bare && auto && reduce && phase === "hold"
+
+  /* ---- an agent: the same hold and the same quiet button a person uses ---- */
+  const [agentTick, setAgentTick] = React.useState(0)
+  const agentQueue = React.useRef<(() => void)[]>([])
+  // Runs after the commit that ended the demo, so no timer of the demo can let go of the agent's hold.
+  React.useEffect(() => {
+    if (!auto) agentQueue.current.splice(0).forEach((f) => f())
+  }, [auto, agentTick])
+  /** Ends the demo as a first touch does, then runs `f`; resolves when what `f` returns does. */
+  const agentDo = (f: () => Promise<void>) =>
+    new Promise<void>((res, rej) => {
+      agentQueue.current.push(() => void Promise.resolve().then(f).then(res, rej))
+      stopAuto()
+      setAgentTick((n) => n + 1)
+    })
+  // The still mid-hold frame of reduced motion is a picture, not a hold: it reads as idle.
+  const agentPhase: Phase = still ? "idle" : phase
+  useAgentNode(rootRef, {
+    id: agentId,
+    kind: "hold-to-confirm",
+    label: title,
+    // Progress is only reported at rest (0, or 1 when done), so the value does not change every frame; mid-hold it is null.
+    value: { phase: agentPhase, progress: agentPhase === "done" ? 1 : agentPhase === "hold" ? null : 0 },
+    actions: {
+      confirm: {
+        run: () =>
+          agentDo(async () => {
+            if (disabled) throw new Error("The button is disabled")
+            const e = eng.current
+            // The full hold, on the piece's own clock: a person who presses or lets go meanwhile is handled as always.
+            press("user")
+            await agentWait(() => e.mode !== "hold", duration + 2000)
+            if (e.mode !== "done") throw new Error("The hold was let go before it finished, so nothing was confirmed")
+          }),
+        disabled: disabled || isDone || (phase === "hold" && !still),
+        destructive: detail ? `${title} ${detail}` : title,
+        description: `Holds the button for the full ${seconds} ${seconds === "1" ? "second" : "seconds"} and confirms. Resolves when it is done.`,
+      },
+      reset: {
+        run: () =>
+          agentDo(async () => {
+            // The quiet button ignores presses in the first 500ms after done (a held key must not press it), so wait that out.
+            await agentWait(() => false, Math.max(0, 520 - (performance.now() - doneAt.current)))
+            if (eng.current.mode !== "done") throw new Error("Nothing to take back")
+            takeBack()
+            await agentWait(() => eng.current.mode === "idle", 900)
+          }),
+        disabled: !isDone || !resetLabel,
+        description: "Takes it back, as the quiet button does.",
+      },
+    },
+  })
 
   return (
     <div

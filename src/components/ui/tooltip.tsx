@@ -51,6 +51,8 @@ export type TooltipProps = {
   subtitle?: string
   /** Toolbar mode: called when a button is pressed. */
   onSelect?: (item: TooltipItem) => void
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "tooltip-<n>" in mount order. */
+  agentId?: string
   className?: string
 }
 
@@ -273,6 +275,8 @@ function createStore(): Store {
 
 type Ctx = { store: Store; delay: number; skipDelay: number }
 const defaultCtx: Ctx = { store: createStore(), delay: 400, skipDelay: 300 }
+/** Stores of built-in toolbars. Their tips are part of the toolbar's one agent node, so they do not describe themselves. */
+const toolbarStores = new WeakSet<Store>()
 const TipContext = React.createContext<Ctx>(defaultCtx)
 
 export type TooltipProviderProps = {
@@ -333,7 +337,7 @@ const prefersReduced = () => typeof window !== "undefined" && window.matchMedia(
 /*                                  The trigger                               */
 /* -------------------------------------------------------------------------- */
 
-function TipTrigger({ children, content, shortcut, side = "top", delay, skipDelay, disabled, id, onOpenChange }: TooltipProps) {
+function TipTrigger({ children, content, shortcut, side = "top", delay, skipDelay, disabled, id, onOpenChange, agentId }: TooltipProps) {
   const ctx = React.useContext(TipContext)
   const { store } = ctx
   const gen = React.useId()
@@ -483,8 +487,39 @@ function TipTrigger({ children, content, shortcut, side = "top", delay, skipDela
             document.body,
           )
         : null}
+      {!toolbarStores.has(store) && (
+        <TipAgentNode anchorRef={anchorRef} agentId={agentId} store={store} tipId={tipId} wait={wait} skip={skip} open={open} content={content} off={off} />
+      )}
     </>
   )
+}
+
+/** Wrapper mode, for an agent: one node per wrapped control. Renders nothing. */
+function TipAgentNode(p: {
+  anchorRef: React.RefObject<HTMLSpanElement | null>
+  agentId?: string
+  store: Store
+  tipId: string
+  wait: number
+  skip: number
+  open: boolean
+  content: React.ReactNode
+  off: boolean
+}) {
+  const { store, tipId } = p
+  const text = typeof p.content === "string" ? p.content : null
+  useAgentNode(p.anchorRef, {
+    id: p.agentId,
+    kind: "tooltip",
+    label: text ?? tipId,
+    value: { open: p.open, text },
+    actions: {
+      // like keyboard focus: an agent is not hovering, so there is no intent to wait for
+      show: { run: () => store.enter(tipId, p.wait, p.skip, true), description: "Shows the tip now, without the hover delay.", disabled: p.off || p.open },
+      hide: { run: () => store.leave(tipId), description: "Hides the tip.", disabled: !p.open },
+    },
+  })
+  return null
 }
 
 /* -------------------------------------------------------------------------- */
@@ -518,6 +553,7 @@ const SIM_STOPS = [0, 1, 2, 3, 4]
 function Stage(props: TooltipProps) {
   const { items = DEFAULT_ITEMS, title = "Draft reply to Harbor & Finch", subtitle = "Atlas used 3 sources", delay = 400, skipDelay = 300, side = "top", onSelect, className } = props
   const store = React.useMemo(createStore, [])
+  toolbarStores.add(store)
   const ctx = React.useMemo(() => ({ store, delay, skipDelay }), [store, delay, skipDelay])
   const uid = React.useId().replace(/:/g, "")
   const ids = items.map((it) => `tlt-${uid}-${it.id}`)
@@ -642,6 +678,68 @@ function Stage(props: TooltipProps) {
     btnRefs.current[to]?.focus()
   }
 
+  /* ---- agent: one node for the whole toolbar, through the same store as a pointer ---- */
+  const openTip = React.useSyncExternalStore(store.subscribe, () => store.openId, () => null)
+  // An agent's action ends the demo like a first touch. The loop's cleanup clears the store,
+  // so while the demo is on the action waits until that cleanup has run.
+  const afterStop = React.useRef<(() => void)[]>([])
+  React.useEffect(() => {
+    if (!auto) afterStop.current.splice(0).forEach((f) => f())
+  }, [auto])
+  const agentDo = (f: () => void): Promise<void> | void => {
+    if (!auto) return f()
+    setAuto(false)
+    return new Promise<void>((resolve) => {
+      afterStop.current.push(() => {
+        f()
+        resolve()
+      })
+    })
+  }
+  const itemIds = items.map((it) => it.id)
+  const tipOf = (a: Record<string, unknown>) => ids[itemIds.indexOf(String(a.id))] as string | undefined
+  const idArg = (what: string) => [{ name: "id", type: "string" as const, enum: itemIds, description: what }]
+  useAgentNode(rootRef, {
+    id: props.agentId,
+    kind: "tooltip",
+    label: title,
+    value: { open: openTip === null ? null : (itemIds[ids.indexOf(openTip)] ?? null), items: items.map((it) => ({ id: it.id, label: it.label })) },
+    actions: {
+      show: {
+        // like keyboard focus: an agent is not hovering, so the tip opens at once
+        run: (a) =>
+          agentDo(() => {
+            const t = tipOf(a)
+            if (t) store.enter(t, delay, skipDelay, true)
+          }),
+        args: idArg("The button whose tip shows."),
+        description: "Shows the tip of one button now, without the hover delay.",
+        disabled: itemIds.length === 0,
+      },
+      hide: {
+        run: () =>
+          agentDo(() => {
+            if (store.openId !== null) store.leave(store.openId)
+          }),
+        description: "Hides the open tip.",
+        disabled: openTip === null,
+      },
+      press: {
+        // what a press does: the tip gives way and the button's action runs
+        run: (a) =>
+          agentDo(() => {
+            const i = itemIds.indexOf(String(a.id))
+            if (i < 0) return
+            store.leave(ids[i])
+            onSelect?.(items[i])
+          }),
+        args: idArg("The button to press."),
+        description: "Presses one button of the toolbar.",
+        disabled: !onSelect || itemIds.length === 0,
+      },
+    },
+  })
+
   const first = measured && waited > 0
   return (
     <TipContext.Provider value={ctx}>
@@ -693,6 +791,56 @@ function Stage(props: TooltipProps) {
     </TipContext.Provider>
   )
 }
+
+/* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
 
 /* -------------------------------------------------------------------------- */
 /*                                   Tooltip                                  */

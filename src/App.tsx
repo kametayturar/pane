@@ -173,6 +173,7 @@ import { PromptBuilder } from "@/prompt-builder"
 import { SKILLS, SkillsPage } from "@/skills-page"
 const StudioApp = React.lazy(() => import("@/studio/studio-page"))
 const McpPage = React.lazy(() => import("@/mcp-page"))
+const AgentPage = React.lazy(() => import("@/agent-page"))
 // Landing drafts under review: src/landings/<id>.tsx, shown at #/draft/<id>. Not linked from anywhere.
 const DRAFT_PAGES: Record<string, React.LazyExoticComponent<React.ComponentType<React.ComponentProps<typeof Landing>>>> = Object.fromEntries(
   Object.entries(import.meta.glob<{ default: React.ComponentType<React.ComponentProps<typeof Landing>> }>("./landings/*.tsx")).map(([file, load]) => [file.slice("./landings/".length, -".tsx".length), React.lazy(load)]),
@@ -520,6 +521,7 @@ const DOCS: SearchDoc[] = [
   })),
   { id: "page:studio", href: "#/studio", title: "Studio", kind: "page", group: "Pages", description: "Tune any piece and export PNG, SVG, video or GIF.", tags: [], keywords: ["export", "png", "svg", "gif", "webm", "video", "gradient", "editor", "make"], icon: Clapperboard },
   { id: "page:mcp", href: "#/mcp", title: "MCP", kind: "page", group: "Pages", description: "Connect Pane to your coding agent over MCP.", tags: [], keywords: ["model context protocol", "agent", "claude", "cursor", "server", "install"], icon: Plug },
+  { id: "page:agent-operable", href: "#/agent-operable", title: "Agent-operable", kind: "page", group: "Pages", description: "Let an agent read Pane pieces and operate them through their own handlers, behind your approval.", tags: [], keywords: ["agent", "snapshot", "act", "bridge", "approval", "webmcp", "operate", "tools"], icon: Bot },
 ]
 const TAG_COUNTS: Record<string, number> = {}
 for (const d of DOCS) for (const t of d.tags) TAG_COUNTS[t] = (TAG_COUNTS[t] ?? 0) + 1
@@ -810,6 +812,10 @@ function Sidebar({ slug, dark, toggleDark, style, setStyle, onPick, onSearch }: 
             <a href="#/mcp" onClick={onPick} aria-current={slug === "mcp" ? "page" : undefined} className={cn(navItem, slug === "mcp" && navActive)}>
               <Plug className="size-4 text-neutral-400" />
               MCP
+            </a>
+            <a href="#/agent-operable" onClick={onPick} aria-current={slug === "agent-operable" ? "page" : undefined} className={cn(navItem, slug === "agent-operable" && navActive)}>
+              <Bot className="size-4 text-neutral-400" />
+              Agent-operable
             </a>
           </div>
         )}
@@ -1681,7 +1687,7 @@ export default function App() {
 
       <main id="main" tabIndex={-1} className="min-w-0 outline-none flex-1 px-4 py-8 sm:px-8 md:px-12 md:py-12">
         {palette}
-        <div className={cn("mx-auto", isStudioSlug(slug) ? "max-w-none" : "max-w-5xl")}>{isStudioSlug(slug) ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><StudioApp /></React.Suspense> : slug === "mcp" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><McpPage /></React.Suspense> : slug === "skills" || slug.startsWith("skills/") ? <SkillsPage initialId={slug.startsWith("skills/") ? decodeURIComponent(slug.slice(7)) : undefined} /> : slug.startsWith("tag/") ? <TagPage tag={decodeURIComponent(slug.slice(4))} /> : entry?.demo ? entry.kind === "ui" || entry.kind === "blocks" ? <ComponentPage key={entry.slug} entry={entry} /> : <StudioPage key={entry.slug} entry={entry} /> : slug && slug !== "browse" && !slug.startsWith("browse/") ? <NotFound slug={slug} /> : <Home group={slug.startsWith("browse/") ? decodeURIComponent(slug.slice(7)) : undefined} />}</div>
+        <div className={cn("mx-auto", isStudioSlug(slug) ? "max-w-none" : "max-w-5xl")}>{isStudioSlug(slug) ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><StudioApp /></React.Suspense> : slug === "mcp" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><McpPage /></React.Suspense> : slug === "agent-operable" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><AgentPage /></React.Suspense> : slug === "skills" || slug.startsWith("skills/") ? <SkillsPage initialId={slug.startsWith("skills/") ? decodeURIComponent(slug.slice(7)) : undefined} /> : slug.startsWith("tag/") ? <TagPage tag={decodeURIComponent(slug.slice(4))} /> : entry?.demo ? entry.kind === "ui" || entry.kind === "blocks" ? <ComponentPage key={entry.slug} entry={entry} /> : <StudioPage key={entry.slug} entry={entry} /> : slug && slug !== "browse" && !slug.startsWith("browse/") ? <NotFound slug={slug} /> : <Home group={slug.startsWith("browse/") ? decodeURIComponent(slug.slice(7)) : undefined} />}</div>
       </main>
     </div>
   )

@@ -52,6 +52,8 @@ export type DrawerProps = {
   /** Label of the button that opens it again. Default "Run details". */
   triggerLabel?: string
   className?: string
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "drawer-<n>" in mount order. */
+  agentId?: string
 }
 
 /* -------------------------------------------------------------------------- */
@@ -261,6 +263,70 @@ function DefaultBody() {
   )
 }
 
+/** Resolves on the check after `done()` first holds (checked every 16ms, never before 32ms), or after `max` ms. */
+const agentWait = (done: () => boolean, max: number) =>
+  new Promise<void>((res) => {
+    const t0 = performance.now()
+    let seen = false
+    const check = () => {
+      const dt = performance.now() - t0
+      if (dt >= max || seen) return res()
+      if (dt >= 32 && done()) seen = true
+      window.setTimeout(check, 16)
+    }
+    window.setTimeout(check, 16)
+  })
+
+/* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
+
 /* -------------------------------------------------------------------------- */
 /*                                  Component                                 */
 /* -------------------------------------------------------------------------- */
@@ -284,6 +350,7 @@ export function Drawer(props: DrawerProps) {
     children,
     background,
     className,
+    agentId,
   } = props
   const bare = props.open === undefined && onOpenChange === undefined
   const snaps = React.useMemo(
@@ -799,6 +866,44 @@ export function Drawer(props: DrawerProps) {
   const stop = () => setAuto(false)
   const pct = Math.round(snap * 100)
   const sheetStyle: React.CSSProperties & Record<string, string | number> = { "--drw-top": topSnap }
+
+  /* ---- an agent: the same moves as the trigger, the slider keys and Esc ---- */
+  const [agentTick, setAgentTick] = React.useState(0)
+  const agentQueue = React.useRef<(() => void)[]>([])
+  // Runs after the commit that ended the demo, so its cleanup has already let go of the sheet.
+  React.useEffect(() => {
+    if (!auto) agentQueue.current.splice(0).forEach((f) => f())
+  }, [auto, agentTick])
+  /** Ends the demo as a first touch does, moves like a press would, and resolves once the spring has settled. */
+  const agentMove = (f: number | null) =>
+    new Promise<void>((res) => {
+      agentQueue.current.push(() => {
+        moveTo(f)
+        void agentWait(() => E.mode !== 2, cfg.current.reduce ? 280 : 2400).then(res)
+      })
+      stop()
+      setAgentTick((n) => n + 1)
+    })
+  useAgentNode(rootRef, {
+    id: agentId,
+    kind: "drawer",
+    label: title,
+    value: { open, snap: open ? snap : null, snapPoints: snaps },
+    actions: {
+      open: { run: () => agentMove(startSnap), disabled: open, description: "Opens it at its first height, as the trigger button does." },
+      close: { run: () => agentMove(null), disabled: !open || !dismissible, description: "Closes it, as Esc and the close button do." },
+      snapTo: {
+        run: (a) => {
+          const f = Number(a.snap)
+          if (!snaps.includes(f)) throw new Error(`snap must be one of ${snaps.join(", ")}`)
+          return agentMove(f)
+        },
+        args: [{ name: "snap", type: "number", enum: snaps, description: "A height from snapPoints, as a fraction of the stage. Opens it when closed." }],
+        disabled: open && snaps.length < 2,
+        description: "Moves it to a height, as the slider keys do.",
+      },
+    },
+  })
 
   return (
     <div

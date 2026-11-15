@@ -50,6 +50,8 @@ export type PopoverProps = {
   matchTriggerWidth?: boolean
   /** Accessible name of the trigger group. Default "Filters". */
   label?: string
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "popover-<n>" in mount order. */
+  agentId?: string
   className?: string
 }
 
@@ -333,6 +335,56 @@ function SharePanel() {
     </div>
   )
 }
+
+/* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
 
 /* -------------------------------------------------------------------------- */
 /*                                  Popover                                   */
@@ -810,6 +862,50 @@ export function Popover(props: PopoverProps) {
       ) ?? null
     )
   }
+
+  /* ---- agent: the same handlers as the triggers, after a first touch ---- */
+  // An agent's action ends the built-in loop like a first touch. While the loop runs, the action waits for its cleanup,
+  // so a pending step cannot move the panel after the agent did.
+  const afterStop = React.useRef<(() => void)[]>([])
+  React.useEffect(() => {
+    if (!auto) afterStop.current.splice(0).forEach((f) => f())
+  }, [auto])
+  const agentDo = (f: () => void): Promise<void> | void => {
+    if (!auto) return f()
+    stopAuto()
+    return new Promise<void>((resolve) => {
+      afterStop.current.push(() => {
+        f()
+        resolve()
+      })
+    })
+  }
+  const agentIds = items.map((i) => i.id)
+  useAgentNode(rootRef, {
+    id: props.agentId,
+    kind: "popover",
+    label,
+    value: { open: value, items: items.map((i) => ({ id: i.id, label: typeof i.label === "string" ? i.label : i.id })) },
+    actions: {
+      open: {
+        // like a pointer press: the panel opens (or glides over from the open one) and focus stays where it is
+        run: (a) =>
+          agentDo(() => {
+            const id = String(a.id)
+            if (agentIds.includes(id) && prevValue.current !== id) open(id, false)
+          }),
+        args: [{ name: "id", type: "string", enum: agentIds, description: "The trigger whose panel opens." }],
+        description: "Opens the panel of one trigger, or moves the open panel to it.",
+        disabled: agentIds.length === 0,
+      },
+      close: {
+        // focus inside the panel goes back to its trigger, as with Escape; otherwise it stays put
+        run: () => agentDo(() => close(!!panelRef.current?.contains(document.activeElement))),
+        description: "Closes the open panel.",
+        disabled: value === null,
+      },
+    },
+  })
 
   const cur = items.find((i) => i.id === shown) ?? items[0]
   const out = leaving ? items.find((i) => i.id === leaving.id) : undefined

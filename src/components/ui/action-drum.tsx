@@ -48,6 +48,8 @@ export type ActionDrumProps = {
   onConfirm?: (option: ActionDrumOption) => void
   /** Play the built-in loop (roll to the accent verb, press it, reset). On by default when nothing is controlled; stops on the first interaction. */
   demo?: boolean
+  /** Stable name an agent uses for this piece (see docs/agent-operable.md). Default: "action-drum-<n>" in mount order. */
+  agentId?: string
   className?: string
 }
 
@@ -275,6 +277,56 @@ type Actions = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                          Agent bridge (inline stub)                        */
+/* -------------------------------------------------------------------------- */
+
+// Describes this piece to an agent: what it is, its state and the actions an agent may call.
+// No import: the entry sits in a registry on globalThis that nothing reads until the app adds
+// src/lib/agent-bridge.ts, so the piece works the same copied on its own. See docs/agent-operable.md.
+type AgentArg = { name: string; type: "string" | "number" | "boolean"; enum?: readonly (string | number)[]; optional?: boolean; description?: string }
+type AgentAction = {
+  /** Goes through the piece's own handlers. May return a promise that resolves once the action has finished. */
+  run: (args: Record<string, unknown>) => unknown
+  args?: AgentArg[]
+  description?: string
+  /** Needs a person's approval. A string says what it does, for the person who is asked. */
+  destructive?: boolean | string | ((args: Record<string, unknown>) => boolean | string)
+  disabled?: boolean
+}
+type AgentNode = { id?: string; kind: string; label: string; value?: unknown; actions: Record<string, AgentAction> }
+type AgentHost = { v: 1; nodes: Map<object, { el: () => Element | null; node: () => AgentNode }>; listeners: Set<(key: object) => void> }
+
+function agentHost(): AgentHost {
+  const g = globalThis as unknown as Record<symbol, AgentHost | undefined>
+  return (g[Symbol.for("pane.agent")] ??= { v: 1, nodes: new Map(), listeners: new Set() })
+}
+
+function useAgentNode(el: React.RefObject<Element | null>, node: AgentNode) {
+  const latest = React.useRef(node)
+  const key = React.useRef<object | null>(null)
+  React.useLayoutEffect(() => {
+    latest.current = node
+  })
+  React.useEffect(() => {
+    const host = agentHost()
+    const k = (key.current = {})
+    host.nodes.set(k, { el: () => el.current, node: () => latest.current })
+    host.listeners.forEach((f) => f(k))
+    return () => {
+      host.nodes.delete(k)
+      host.listeners.forEach((f) => f(k))
+    }
+  }, [el])
+  // a change of state is reported, so the bridge can tag it as the agent's or the page's
+  const sig = JSON.stringify(node.value)
+  React.useEffect(() => {
+    if (key.current) agentHost().listeners.forEach((f) => f(key.current!))
+  }, [sig])
+}
+
+/* ------------------------------ end of stub ------------------------------- */
+
+/* -------------------------------------------------------------------------- */
 /*                                 ActionDrum                                 */
 /* -------------------------------------------------------------------------- */
 
@@ -291,6 +343,7 @@ export function ActionDrum(props: ActionDrumProps) {
     confirmed,
     onConfirm,
     demo,
+    agentId,
     className,
   } = props
 
@@ -635,6 +688,75 @@ export function ActionDrum(props: ActionDrumProps) {
     e.preventDefault()
     moveTo(next)
   }
+
+  /* Agent: the same moves a person makes, through the same handlers (see docs/agent-operable.md) */
+  // While the built-in loop plays, its confirmed state is only the demo: the first touch (stop) takes it back.
+  const demoLive = sim && !stopped
+  // The verb a press would confirm right now. A press first ends the built-in loop, which sends the drum home (see `stop`).
+  const agentPick = () => {
+    const home = sim && !stoppedRef.current && (doneRef.current >= 0 || selRef.current !== restIdx || Math.abs(pos.current - restIdx) > 0.01)
+    return home ? restIdx : clamp(Math.round(target.current), 0, n - 1)
+  }
+  // Resolves once the spring has come to rest under the highlight (or after 3s, e.g. in a hidden tab with no frames).
+  const agentSettled = () =>
+    new Promise<void>((resolve) => {
+      const cap = window.setTimeout(resolve, 3000)
+      const check = () => {
+        if (raf.current || drag.current) requestAnimationFrame(check)
+        else
+          requestAnimationFrame(() => {
+            window.clearTimeout(cap)
+            resolve()
+          })
+      }
+      requestAnimationFrame(check)
+    })
+  // Resolves once React has rendered what an action changed, so the value read back is the new one.
+  const agentWaits = React.useRef<(() => void)[]>([])
+  const agentRendered = () =>
+    new Promise<void>((resolve) => {
+      agentWaits.current.push(resolve)
+      window.setTimeout(resolve, 200)
+    })
+  useAgentNode(rootRef, {
+    id: agentId,
+    kind: "action-drum",
+    label: title,
+    value: { value: options[sel].id, confirmed: isDone ? options[doneIdx].id : null, options: options.map((o) => ({ id: o.id, label: o.label })) },
+    actions: {
+      select: {
+        description: "Roll the drum to this verb, as the arrow keys do. Resolves once it has settled under the highlight.",
+        args: [{ name: "id", type: "string", enum: options.map((o) => o.id) }],
+        disabled: isDone && !demoLive,
+        run: async (a) => {
+          const i = options.findIndex((o) => o.id === a.id)
+          if (i < 0) return
+          act.current?.stop()
+          act.current?.moveTo(i)
+          await agentSettled()
+        },
+      },
+      confirm: {
+        description: "Press the highlight: confirms the verb under it.",
+        disabled: isDone && !demoLive,
+        // Every verb needs a person: this card is where a person answers the agent, so an agent's confirm is the
+        // agent approving itself, and a neutral-looking verb ("Discard") can still be irreversible. The sentence
+        // names the verb, so the bridge refuses if the drum is rolled to another one while the approval is pending.
+        destructive: () => {
+          const o = options[agentPick()]
+          return `${title}: ${o.label}. ${o.consequence}${o.consequenceDetail ? " " + o.consequenceDetail : ""}`
+        },
+        run: () => {
+          act.current?.stop()
+          act.current?.commit(clamp(Math.round(target.current), 0, n - 1))
+          return agentRendered()
+        },
+      },
+    },
+  })
+  React.useLayoutEffect(() => {
+    agentWaits.current.splice(0).forEach((f) => f())
+  })
 
   const activeId = isDone ? `${id}-d${shown}` : `${id}-c${shown}`
   const opt = options[shown]
