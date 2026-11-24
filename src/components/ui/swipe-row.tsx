@@ -624,11 +624,13 @@ const Row = React.memo(function Row(p: RowProps) {
     }
   }
 
+  // DOM order is screen order, so Tab walks the actions as they appear. The first action of a side sits at the row's
+  // outer edge (k = 0), which on the right side is the last one on screen, so that side is written right to left.
   const layer = (side: Side, acts: SwipeAction[]) =>
     acts.length ? (
       <div ref={side > 0 ? layerL : layerR} className="swr-layer" data-side={side > 0 ? "l" : "r"} style={{ "--swr-reach": `${acts.length * ACT_W}px` } as React.CSSProperties}>
         <div className="swr-in">
-          {acts.map((a, k) => (
+          {(side > 0 ? acts : [...acts].reverse()).map((a) => [a, acts.indexOf(a)] as const).map(([a, k]) => (
             <button
               key={a.id}
               type="button"
@@ -653,6 +655,8 @@ const Row = React.memo(function Row(p: RowProps) {
 
   return (
     <li ref={li} className="swr-li" data-enter={p.enter && !reduce ? "" : undefined} onKeyDown={onKeyDown}>
+      {/* Before the face, as on screen: from a row opened to the right, Shift+Tab reaches these. The face's z-index keeps it painted above. */}
+      {layer(1, left)}
       <div
         ref={face}
         data-face
@@ -673,8 +677,7 @@ const Row = React.memo(function Row(p: RowProps) {
         </span>
         {item.time ? <span className="swr-time">{item.time}</span> : null}
       </div>
-      {/* After the face in the DOM so Tab from an opened row lands on its revealed actions; the face's z-index keeps it painted above. */}
-      {layer(1, left)}
+      {/* After the face, as on screen: from a row opened to the left, Tab reaches these. */}
       {layer(-1, right)}
     </li>
   )
@@ -972,7 +975,7 @@ export function SwipeRow(props: SwipeRowProps) {
   const total = source.length
   const stillOpen = bare && reduce ? 1 : -1
   const keysOnly = leftActions.length + rightActions.length > 0
-  const hintText = `Drag a row sideways to reveal actions; a long drag or a quick flick commits the first. Keyboard: left and right arrows open actions, Escape closes, Delete removes.`
+  const hintText = `Drag a row sideways to reveal actions; a long drag or a quick flick commits the first. Keyboard: left and right arrows open actions, then Tab reaches actions on the right and Shift+Tab those on the left; Escape closes, Delete removes.`
 
   /* ---- an agent: the same paths as the arrow keys, Escape, the action buttons and Restore ---- */
   type AgentSide = "left" | "right"

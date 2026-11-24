@@ -336,6 +336,7 @@ export function Modal({
   const demo = React.useRef({ on: demoOn && !reduce })
   const titleId = React.useId()
   const descId = React.useId()
+  const dialogId = React.useId()
 
   const my = React.useRef(0)
   const flung = React.useRef(false)
@@ -545,7 +546,8 @@ export function Modal({
   /* ---- keyboard: Escape closes, Tab stays inside ---- */
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (!open) return
-    if (e.key === "Escape" && dismissible) {
+    // a layer inside the dialog (a tooltip, a popover) that took this Escape marks it handled; only one layer closes per press
+    if (e.key === "Escape" && dismissible && !e.defaultPrevented) {
       e.stopPropagation()
       dismiss()
       return
@@ -815,6 +817,8 @@ export function Modal({
                   className="mdl-btn mdl-primary"
                   data-pressed={press === "trigger" || undefined}
                   aria-haspopup="dialog"
+                  aria-expanded={open}
+                  aria-controls={dialogId}
                   onClick={() => {
                     setDone(false)
                     setOpen(true)
@@ -855,6 +859,7 @@ export function Modal({
           >
             <div
               ref={cardRef}
+              id={dialogId}
               className="mdl-card"
               role="dialog"
               // modal only while the rest of the document really is inert; the demo loop is decoration

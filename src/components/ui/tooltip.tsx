@@ -29,7 +29,10 @@ export type TooltipProps = {
   children?: React.ReactElement
   /** Wrapper mode: the tip text. */
   content?: React.ReactNode
-  /** Wrapper mode: keys shown as chips next to the text. A string splits on spaces ("⌘ ⇧ K"). */
+  /**
+   * Wrapper mode: keys shown as chips next to the text. A string splits on spaces ("⌘ ⇧ K"). Display only: the piece binds
+   * no keys, so it sets no aria-keyshortcuts; add that to your control where you implement the shortcut.
+   */
   shortcut?: string | string[]
   /** Which side of the control the tip prefers. It flips when there is no room. Default "top". */
   side?: TooltipSide
@@ -132,6 +135,7 @@ html[data-style="glass"] .tlt-card { background-color: var(--pane-tint); backgro
   display: flex; align-items: center; gap: 8px; width: max-content; max-width: min(280px, calc(100vw - 16px)); padding: 5px 8px; border-radius: var(--tlt-tipr);
   background: var(--tlt-tipbg); color: var(--tlt-tipfg); box-shadow: var(--tlt-tipshadow); font-weight: 500; transform-origin: var(--tlt-ox, 50%) var(--tlt-oy, 100%);
 }
+.tlt-tip[data-state="open"] { pointer-events: auto }
 .tlt-tip[data-state="open"] .tlt-body { animation: tlt-in .16s var(--tlt-ease) backwards }
 .tlt-tip[data-state="open"][data-instant] .tlt-body { animation: none }
 .tlt-tip[data-state="closed"] .tlt-body { animation: tlt-out .1s var(--tlt-ease) forwards }
@@ -327,9 +331,8 @@ function place(a: DOMRect, w: number, h: number, side: TooltipSide) {
 
 const keysOf = (shortcut?: string | string[]) => (Array.isArray(shortcut) ? shortcut : shortcut ? shortcut.trim().split(/\s+/) : [])
 
-/** The chips as an aria-keyshortcuts value: "⌘ ⇧ S" → "Meta+Shift+S". */
-const KEY_NAMES: Record<string, string> = { "⌘": "Meta", "⌥": "Alt", "⇧": "Shift", "⌃": "Control", Esc: "Escape", "↵": "Enter", "⏎": "Enter", "⌫": "Backspace", "←": "ArrowLeft", "→": "ArrowRight", "↑": "ArrowUp", "↓": "ArrowDown" }
-const ariaKeys = (keys: string[]) => keys.map((k) => KEY_NAMES[k] ?? k).join("+")
+/** How long an open tip waits after the pointer leaves its control, so the pointer can cross the gap onto the tip. */
+const GRACE = 120
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
@@ -404,21 +407,44 @@ function TipTrigger({ children, content, shortcut, side = "top", delay, skipDela
     }
   }, [mounted, open, side, content, shortcut])
 
-  // Escape closes the tip without moving focus.
+  // Escape closes the tip without moving focus. The tip is the topmost layer, so it takes the key first (capture phase)
+  // and marks it handled: a dialog or popover around the control sees a claimed Escape and stays open.
   React.useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") store.leave(tipId)
+      if (e.key !== "Escape" || e.defaultPrevented) return
+      e.preventDefault()
+      store.leave(tipId)
     }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
+    window.addEventListener("keydown", onKey, true)
+    return () => window.removeEventListener("keydown", onKey, true)
   }, [open, store, tipId])
 
-  React.useEffect(() => () => store.leave(tipId), [store, tipId])
+  // Hoverable: leaving the control starts a short grace period that the pointer arriving on the tip cancels.
+  const grace = React.useRef(0)
+  const holdOpen = () => window.clearTimeout(grace.current)
+  const leaveSoon = () => {
+    window.clearTimeout(grace.current)
+    if (store.openId !== tipId) return store.leave(tipId) // still waiting for intent: cancel at once
+    grace.current = window.setTimeout(() => store.leave(tipId), GRACE)
+  }
+  const leaveNow = () => {
+    window.clearTimeout(grace.current)
+    store.leave(tipId)
+  }
+
+  React.useEffect(
+    () => () => {
+      window.clearTimeout(grace.current)
+      store.leave(tipId)
+    },
+    [store, tipId],
+  )
 
   const off = disabled || content === undefined || content === null || content === false
   const onEnter = (e: React.PointerEvent) => {
     if (off || e.pointerType === "touch") return
+    holdOpen()
     last.current = { x: e.clientX, y: e.clientY, t: e.timeStamp }
     store.enter(tipId, wait, skip)
   }
@@ -443,10 +469,8 @@ function TipTrigger({ children, content, shortcut, side = "top", delay, skipDela
   // so the repeated text is hidden from the accessibility tree while it stays on screen.
   const label = cp["aria-label"]
   const repeats = typeof label === "string" && typeof content === "string" && label.trim().toLowerCase() === content.trim().toLowerCase()
-  const extra: Record<string, unknown> = {}
-  if (keys.length > 0 && !off && cp["aria-keyshortcuts"] === undefined) extra["aria-keyshortcuts"] = ariaKeys(keys)
-  if (open) extra["aria-describedby"] = [cp["aria-describedby"], tipId].filter(Boolean).join(" ")
-  const described = child && Object.keys(extra).length > 0 ? React.cloneElement(child, extra) : child
+  // The chips only show a shortcut; the piece implements none, so it sets no aria-keyshortcuts. Put that on your control where you bind the keys.
+  const described = child && open ? React.cloneElement(child, { "aria-describedby": [cp["aria-describedby"], tipId].filter(Boolean).join(" ") }) : child
 
   return (
     <>
@@ -456,10 +480,12 @@ function TipTrigger({ children, content, shortcut, side = "top", delay, skipDela
         data-hot={open || undefined}
         onPointerEnter={onEnter}
         onPointerMove={onMove}
-        onPointerLeave={() => store.leave(tipId)}
-        onPointerDown={() => store.leave(tipId)}
+        onPointerLeave={(e) => (e.pointerType === "touch" ? leaveNow() : leaveSoon())}
+        onPointerDown={leaveNow}
+        // activating the control closes its tip, as a press does (Enter and Space, like Radix)
+        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && leaveNow()}
         onFocus={onFocus}
-        onBlur={() => store.leave(tipId)}
+        onBlur={leaveNow}
       >
         <style href="tooltip" precedence="default">
           {CSS}
@@ -468,7 +494,16 @@ function TipTrigger({ children, content, shortcut, side = "top", delay, skipDela
       </span>
       {mounted && !off
         ? createPortal(
-            <div ref={tipRef} id={tipId} role="tooltip" className="tlt-tip" data-state={open ? "open" : "closed"} data-instant={(open && instant) || undefined}>
+            <div
+              ref={tipRef}
+              id={tipId}
+              role="tooltip"
+              className="tlt-tip"
+              data-state={open ? "open" : "closed"}
+              data-instant={(open && instant) || undefined}
+              onPointerEnter={(e) => e.pointerType !== "touch" && holdOpen()}
+              onPointerLeave={(e) => e.pointerType !== "touch" && leaveSoon()}
+            >
               <div ref={bodyRef} className="tlt-body">
                 <span className="tlt-text" aria-hidden={repeats || undefined}>
                   {content}

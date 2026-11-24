@@ -647,10 +647,16 @@ export function Popover(props: PopoverProps) {
   }, [])
 
   /* ---- opening, closing, focus ---- */
+  // Two dismiss paths can fire for one gesture (Tab out of the panel moves focus outside, then closes); report it once.
+  const valueRef = React.useRef(value)
+  valueRef.current = value
   const close = React.useCallback(
     (returnFocus: boolean) => {
       const id = shownRef.current
-      setValue(null)
+      if (valueRef.current !== null) {
+        valueRef.current = null
+        setValue(null)
+      }
       if (returnFocus) trigRefs.current[id]?.focus({ preventScroll: true })
     },
     [setValue],
@@ -673,27 +679,34 @@ export function Popover(props: PopoverProps) {
     return () => window.clearTimeout(id)
   }, [value, mounted])
 
-  // Light dismiss and Escape.
+  // Light dismiss: a press or focus outside the triggers and the panel, and Escape.
   React.useEffect(() => {
     if (value === null) return
+    const outside = (t: Node) => !panelRef.current?.contains(t) && !rootRef.current?.querySelector(".pvr-bar")?.contains(t)
     const onDown = (ev: PointerEvent) => {
-      const t = ev.target as Node
-      if (panelRef.current?.contains(t) || rootRef.current?.querySelector(".pvr-bar")?.contains(t)) return
-      close(false)
+      if (outside(ev.target as Node)) close(false)
     }
+    // Non-modal, so focus may leave; when it does (Shift+Tab off the trigger, a script), the panel goes with it.
+    // The built-in loop is decoration, so focus elsewhere on the page does not close what it shows.
+    const onFocus = (ev: FocusEvent) => {
+      if (!(bare && auto) && outside(ev.target as Node)) close(false)
+    }
+    // Capture phase, and marked handled: a dialog around the popover sees a claimed Escape and stays open.
     const onKey = (ev: KeyboardEvent) => {
-      if (ev.key === "Escape") {
+      if (ev.key === "Escape" && !ev.defaultPrevented) {
         ev.preventDefault()
         close(true)
       }
     }
     document.addEventListener("pointerdown", onDown, true)
-    document.addEventListener("keydown", onKey)
+    document.addEventListener("focusin", onFocus)
+    document.addEventListener("keydown", onKey, true)
     return () => {
       document.removeEventListener("pointerdown", onDown, true)
-      document.removeEventListener("keydown", onKey)
+      document.removeEventListener("focusin", onFocus)
+      document.removeEventListener("keydown", onKey, true)
     }
-  }, [value, close])
+  }, [value, close, bare, auto])
 
   const stopAuto = React.useCallback(() => {
     setAuto(false)
@@ -955,7 +968,7 @@ export function Popover(props: PopoverProps) {
             ))}
           </div>
         </div>
-        <div className="pvr-rows" aria-hidden={value !== null || undefined}>
+        <div className="pvr-rows">
           {ORDERS.map(([who, ref, amt]) => (
             <div key={ref} className="pvr-row">
               <b>{who}</b>

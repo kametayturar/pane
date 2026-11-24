@@ -868,6 +868,73 @@ function HowBuilt({ find, dark, toggleDark, style, setStyle, styles }: { find: (
   )
 }
 
+/* Works with shadcn/ui ------------------------------------------------------ */
+
+type Swap = { lib: string; links: { href: string; label: string }[]; note: string }
+
+function WorksWith({ find, groups }: { find: (s: string) => LandingEntry | undefined; groups: LandingGroup[] }) {
+  const charts = groups.find((g) => g.label === "Charts")?.entries.length ?? 0
+  const piece = (slug: string) => {
+    const e = find(slug)
+    return e ? [{ href: `#/${e.slug}`, label: e.name }] : []
+  }
+  const rows: Swap[] = (
+    [
+      { lib: "cmdk", links: piece("command-menu"), note: "A ⌘K palette with groups, search, shortcuts and nested pages." },
+      { lib: "Sonner", links: piece("toaster"), note: "Stacked toasts that expand on hover, swipe away and track promises." },
+      { lib: "Vaul", links: piece("drawer"), note: "A mobile sheet that follows the finger and snaps between heights." },
+      { lib: "Recharts", links: charts ? [{ href: "#/browse/Charts", label: "Charts" }] : [], note: `${charts} charts drawn in React and SVG, with no chart library.` },
+      { lib: "Radix primitives", links: [...piece("modal"), ...piece("popover"), ...piece("tooltip")], note: "Dialogs, popovers and tooltips with keyboard and focus handling." },
+    ] satisfies Swap[]
+  ).filter((r) => r.links.length)
+  if (!rows.length) return null
+  const link = "rounded-sm text-[15px] font-medium tracking-[-0.01em] text-neutral-900 underline decoration-black/15 underline-offset-[5px] transition-colors hover:decoration-black/50 dark:text-white dark:decoration-white/20 dark:hover:decoration-white/60"
+  return (
+    <section aria-labelledby="works-with" className={cn(wrap, "mt-28 sm:mt-44")}>
+      <div className="grid gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-16">
+        <Reveal>
+          <div className="text-[12px] font-medium tracking-[0.08em] text-neutral-400 uppercase">Works with shadcn/ui</div>
+          <h2 id="works-with" className="mt-3 text-[32px] leading-[1.06] font-medium tracking-[-0.035em] text-balance sm:text-[44px]">
+            Sits beside the components you already have.
+          </h2>
+          <p className="mt-4 max-w-md text-[16px] leading-7 text-neutral-500 dark:text-neutral-400">
+            Pane installs through the shadcn registry with <span className="font-mono text-[14px] whitespace-nowrap text-neutral-700 dark:text-neutral-300">npx shadcn@latest add</span>. Each piece lands in the same folder as your shadcn/ui components, uses the same Tailwind and adds no extra dependency.
+          </p>
+        </Reveal>
+        <Reveal delay={100}>
+          <div className="grid grid-cols-[7rem_minmax(0,1fr)] gap-x-4 pb-3 text-[13px] text-neutral-400 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-x-6">
+            <span>If you would reach for</span>
+            <span>Pane has</span>
+          </div>
+          <ul className="border-b border-black/[0.07] dark:border-white/[0.08]">
+            {rows.map((r) => (
+              <li key={r.lib} className="grid grid-cols-[7rem_minmax(0,1fr)] gap-x-4 border-t border-black/[0.07] py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-x-6 dark:border-white/[0.08]">
+                <span className="pt-px font-mono text-[13.5px] leading-6 text-neutral-500 dark:text-neutral-400">{r.lib}</span>
+                <div className="min-w-0">
+                  <div className="flex flex-wrap gap-x-1 leading-6">
+                    {r.links.map((l, i) => (
+                      <span key={l.href} className="text-neutral-400">
+                        <a href={l.href} className={link}>
+                          {l.label}
+                        </a>
+                        {i < r.links.length - 1 && ","}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="mt-1 text-[13.5px] leading-5 text-neutral-500 dark:text-neutral-400">{r.note}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 max-w-lg text-[13.5px] leading-6 text-neutral-500 dark:text-neutral-400">
+            Those libraries are good at what they do. The difference is ownership: a Pane piece is one file in your project, with no package to add or keep up to date.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
 /* Skills ------------------------------------------------------------------- */
 
 function SkillsTeaser() {
@@ -1014,6 +1081,7 @@ export function Landing({ groups, dark, toggleDark, style, setStyle, styles }: L
       <Ticker entries={ticker} />
       <Gallery groups={groups} />
       <HowBuilt find={find} dark={dark} toggleDark={toggleDark} style={style} setStyle={setStyle} styles={styles} />
+      <WorksWith find={find} groups={groups} />
       <SkillsTeaser />
       <Closing slugs={slugs.length ? slugs : ["ai-answer"]} />
       <Footer />

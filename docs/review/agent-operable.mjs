@@ -656,16 +656,17 @@ async function keyboardPageChange(page) {
 /* ------------------------------------------------------------- the stub */
 function stubChecks() {
   const A = "stub"
-  const nine = ["modal", "popover", "tooltip", "drawer", "swipe-row", "hold-to-confirm", "action-drum", "scope-words", "plan-words"]
+  // the nine pieces on the demo page, then the operable pieces that are not on it
+  const operable = ["modal", "popover", "tooltip", "drawer", "swipe-row", "hold-to-confirm", "action-drum", "scope-words", "plan-words", "range-bar", "run-health", "diff-review", "terminal-transcript", "change-tree"]
   const cut = (text) => {
     const lines = text.split("\n")
     const a = lines.findIndex((l) => l.includes("Agent bridge (inline stub)"))
     const b = lines.findIndex((l, i) => i > a && l.includes("end of stub"))
     return a < 0 || b < 0 ? null : lines.slice(a, b + 1).join("\n")
   }
-  const stubs = nine.map((n) => cut(fs.readFileSync(path.join(ROOT, `src/components/ui/${n}.tsx`), "utf8")))
+  const stubs = operable.map((n) => cut(fs.readFileSync(path.join(ROOT, `src/components/ui/${n}.tsx`), "utf8")))
   const same = stubs.every((s) => s !== null && s === stubs[0])
-  check(A, "the stub text is byte-identical in all nine pieces", same, `${Buffer.byteLength(stubs[0] ?? "")} bytes, ${(stubs[0] ?? "").split("\n").length} lines`)
+  check(A, `the stub text is byte-identical in all ${operable.length} operable pieces`, same, `${Buffer.byteLength(stubs[0] ?? "")} bytes, ${(stubs[0] ?? "").split("\n").length} lines`)
   // nothing else in src carries a stub (or a drifted copy of it)
   const others = []
   const walk = (d) => {
@@ -676,10 +677,10 @@ function stubChecks() {
     }
   }
   walk(path.join(ROOT, "src"))
-  const extra = others.filter((f) => !nine.some((n) => f === `src/components/ui/${n}.tsx`))
-  check(A, "no other file in src carries the stub", extra.length === 0, extra.length ? extra : `${others.length} files, all nine pieces`)
-  const fns = nine.map((n) => (fs.readFileSync(path.join(ROOT, `src/components/ui/${n}.tsx`), "utf8").match(/useAgentNode\(/g) ?? []).length)
-  info(A, "useAgentNode( occurrences per piece (definition + calls)", Object.fromEntries(nine.map((n, i) => [n, fns[i]])))
+  const extra = others.filter((f) => !operable.some((n) => f === `src/components/ui/${n}.tsx`))
+  check(A, "no other file in src carries the stub", extra.length === 0, extra.length ? extra : `${others.length} files, all ${operable.length} operable pieces`)
+  const fns = operable.map((n) => (fs.readFileSync(path.join(ROOT, `src/components/ui/${n}.tsx`), "utf8").match(/useAgentNode\(/g) ?? []).length)
+  info(A, "useAgentNode( occurrences per piece (definition + calls)", Object.fromEntries(operable.map((n, i) => [n, fns[i]])))
 }
 
 /* --------------------------------------------------------------- standalone */

@@ -23,6 +23,7 @@ import {
   Copy,
   Dock,
   Eye,
+  FolderTree,
   Gauge,
   Grid2x2,
   Grid3x3,
@@ -121,6 +122,7 @@ import {
   Wallet,
   Clock,
   Dices,
+  SquareTerminal,
   ListMusic,
   PanelLeft,
   Tag,
@@ -148,6 +150,11 @@ import {
   Anchor,
   Sprout,
   Telescope,
+  ChartLine,
+  CalendarRange,
+  CalendarCheck,
+  ChartBarStacked,
+  GitCompare,
 } from "lucide-react"
 
 import { Backdrop, BACKDROP_VARIANTS, type BackdropVariant, type StudioProps } from "@/components/motion/backdrop"
@@ -256,6 +263,24 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
       bl({ slug: "control-bento", name: "Control Bento", exportName: "ControlBento", icon: LayoutGrid, isNew: true, description: "A bento of small live controls for a landing page, with one tile at a time demonstrated by a cursor." }),
       bl({ slug: "overlay-atlas", name: "Overlay Atlas", exportName: "OverlayAtlas", icon: Layers2, isNew: true, description: "Modal, popover, tooltip, toast, sheet and drawer side by side in one product window, each played on hover." }),
       bl({ slug: "light-cards", name: "Light Cards", exportName: "LightCards", icon: GalleryVerticalEnd, isNew: true, description: "Numbered dark feature cards, each with light-painted art cropped by its edge that brightens on hover." }),
+    ],
+  },
+  {
+    label: "Dashboard",
+    entries: [
+      ui({ slug: "plain-charts", name: "Plain Charts", exportName: "LineChart", icon: ChartLine, isNew: true, description: "Everyday line, area, bar, combo and donut charts with one readout: a sentence above the plot that names the day, the value and the change." }),
+      ui({ slug: "metric-card", name: "Metric Card", exportName: "MetricCard", icon: Gauge, isNew: true, description: "A KPI card that says how the number moved in words; the underlined reason opens the ranked drivers in place, and the digits roll once when it changes." }),
+      ui({ slug: "range-bar", name: "Range Bar", exportName: "RangeBar", icon: CalendarRange, isNew: true, description: "The bar above a dashboard as one editable sentence: range, comparison and filters are underlined phrases that open lists and a two-month calendar." }),
+      ui({ slug: "run-health", name: "Run Health", exportName: "RunHealth", icon: CalendarCheck, isNew: true, description: "How a recurring run has been doing: a quiet square per run or day, only failures in colour, and a sentence that reads the period under your cursor." }),
+      ui({ slug: "breakdown-list", name: "Breakdown List", exportName: "BreakdownList", icon: ChartBarStacked, isNew: true, description: "How a total splits into parts: one share bar and a ranked list that light up together, with a limit marker where only the overrun turns red." }),
+    ],
+  },
+  {
+    label: "Coding agents",
+    entries: [
+      ui({ slug: "diff-review", name: "Diff Review", exportName: "DiffReview", icon: GitCompare, isNew: true, description: "Review an agent's code changes hunk by hunk: A accepts, R rejects, J/K move, U undoes, while a big count goes down to a one-sentence verdict and Apply." }),
+      ui({ slug: "terminal-transcript", name: "Terminal Transcript", exportName: "TerminalTranscript", icon: SquareTerminal, isNew: true, description: "An agent's shell session as real command blocks: lines stream in and follow, stderr set apart, long output folds into a counted sentence, only failures in red." }),
+      ui({ slug: "change-tree", name: "Change Tree", exportName: "ChangeTree", icon: FolderTree, isNew: true, description: "The files an agent touched, as a tree of only changed paths: +42 −7 in type, a word for new, deleted or renamed, and an ink bar for size." }),
     ],
   },
   {

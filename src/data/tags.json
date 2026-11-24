@@ -4110,6 +4110,159 @@
         "stars",
         "original"
       ]
+    },
+    "plain-charts": {
+      "tags": [
+        "chart",
+        "dashboard",
+        "kpi",
+        "hover",
+        "keyboard",
+        "toggle"
+      ],
+      "keywords": [
+        "line chart",
+        "area chart",
+        "bar chart",
+        "combo chart",
+        "donut chart",
+        "readout",
+        "tooltip alternative",
+        "original"
+      ]
+    },
+    "metric-card": {
+      "tags": [
+        "kpi",
+        "dashboard",
+        "card",
+        "chart",
+        "cost",
+        "toggle"
+      ],
+      "keywords": [
+        "kpi card",
+        "stat card",
+        "metric",
+        "delta",
+        "drivers",
+        "sparkline",
+        "rolling digits",
+        "original"
+      ]
+    },
+    "range-bar": {
+      "tags": [
+        "picker",
+        "input",
+        "dashboard",
+        "keyboard",
+        "menu",
+        "morph"
+      ],
+      "keywords": [
+        "date range picker",
+        "date range",
+        "compare to previous period",
+        "filters",
+        "calendar",
+        "dashboard header",
+        "original"
+      ]
+    },
+    "run-health": {
+      "tags": [
+        "agent",
+        "observability",
+        "timeline",
+        "dashboard",
+        "keyboard",
+        "evals"
+      ],
+      "keywords": [
+        "run history",
+        "cron",
+        "scheduled job",
+        "uptime",
+        "heatmap",
+        "failures",
+        "status grid",
+        "original"
+      ]
+    },
+    "breakdown-list": {
+      "tags": [
+        "chart",
+        "ranking",
+        "cost",
+        "context",
+        "dashboard",
+        "hover"
+      ],
+      "keywords": [
+        "breakdown",
+        "share bar",
+        "stacked bar",
+        "budget limit",
+        "overrun",
+        "top contributors",
+        "original"
+      ]
+    },
+    "diff-review": {
+      "tags": [
+        "approval",
+        "agent",
+        "keyboard",
+        "toggle",
+        "card",
+        "progress"
+      ],
+      "keywords": [
+        "code review",
+        "diff",
+        "hunks",
+        "accept reject",
+        "coding agent",
+        "apply changes",
+        "original"
+      ]
+    },
+    "terminal-transcript": {
+      "tags": [
+        "agent",
+        "streaming",
+        "tool-call",
+        "observability",
+        "keyboard",
+        "toggle"
+      ],
+      "keywords": [
+        "terminal",
+        "shell",
+        "command output",
+        "logs",
+        "stderr",
+        "coding agent",
+        "original"
+      ]
+    },
+    "change-tree": {
+      "tags": [
+        "hierarchy",
+        "agent",
+        "keyboard",
+        "tool-call",
+        "observability"
+      ],
+      "keywords": [
+        "file tree",
+        "changed files",
+        "diff stats",
+        "coding agent",
+        "pull request files",
+        "original"
+      ]
     }
   }
 }

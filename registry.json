@@ -2766,6 +2766,150 @@
       ]
     },
     {
+      "name": "plain-charts",
+      "type": "registry:ui",
+      "title": "Plain Charts",
+      "description": "Everyday line, area, bar, combo and donut charts with one readout: a sentence above the plot that names the day, the value and the change.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/plain-charts.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/plain-charts.tsx"
+        }
+      ]
+    },
+    {
+      "name": "metric-card",
+      "type": "registry:ui",
+      "title": "Metric Card",
+      "description": "A KPI card that says how the number moved in words; the underlined reason opens the ranked drivers in place, and the digits roll once when it changes.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/metric-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/metric-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "range-bar",
+      "type": "registry:ui",
+      "title": "Range Bar",
+      "description": "The bar above a dashboard as one editable sentence: range, comparison and filters are underlined phrases that open lists and a two-month calendar.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/range-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/range-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "run-health",
+      "type": "registry:ui",
+      "title": "Run Health",
+      "description": "How a recurring run has been doing: a quiet square per run or day, only failures in colour, and a sentence that reads the period under your cursor.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/run-health.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/run-health.tsx"
+        }
+      ]
+    },
+    {
+      "name": "breakdown-list",
+      "type": "registry:ui",
+      "title": "Breakdown List",
+      "description": "How a total splits into parts: one share bar and a ranked list that light up together, with a limit marker where only the overrun turns red.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/breakdown-list.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/breakdown-list.tsx"
+        }
+      ]
+    },
+    {
+      "name": "diff-review",
+      "type": "registry:ui",
+      "title": "Diff Review",
+      "description": "Review an agent's code changes hunk by hunk: A accepts, R rejects, J/K move, U undoes, while a big count goes down to a one-sentence verdict and Apply.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/diff-review.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/diff-review.tsx"
+        }
+      ]
+    },
+    {
+      "name": "terminal-transcript",
+      "type": "registry:ui",
+      "title": "Terminal Transcript",
+      "description": "An agent's shell session as real command blocks: lines stream in and follow, stderr set apart, long output folds into a counted sentence, only failures in red.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/terminal-transcript.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/terminal-transcript.tsx"
+        }
+      ]
+    },
+    {
+      "name": "change-tree",
+      "type": "registry:ui",
+      "title": "Change Tree",
+      "description": "The files an agent touched, as a tree of only changed paths: +42 −7 in type, a word for new, deleted or renamed, and an ink bar for size.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/change-tree.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/change-tree.tsx"
+        }
+      ]
+    },
+    {
       "name": "dash-ribbon",
       "type": "registry:ui",
       "title": "Dash Ribbon",

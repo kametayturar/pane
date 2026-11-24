@@ -53,9 +53,11 @@
   (`ai-answer`, `ai-chat`, `agent-orchestrator`). Social proof = `logo-marquee`, `testimonial-wall`. Pricing numbers = `number-ticker`. Buttons = `button`.
 - **AI chat app:** `ai-chat` (full block) or compose `chat-composer` / `ai-composer` + `ai-answer` + `thinking-state` + `tool-call-card` + `message-actions`;
   side assistant = `ai-side-panel`; model choice = `model-picker`; usage = `usage-meter`; reasoning that resolves into the answer = `thought-stack`; reasoning effort = `effort-sentence`.
-- **Agent product:** `agent-orchestrator`, `agent-tasks`, `agent-approvals`, `agent-routines`, `agent-plan`, `approval-card`, `action-drum` (confirm an irreversible action), `odometer` (background progress that stops on what needs you), `fill-in` (a clarifying question mid-task), `undo-countdown` (undo window after an agent acts), `plan-words` (edit a plan before it runs), `same-page` (handoff between agents), `tool-headline` (tool in use right now), `scope-words` (grant access), `merge-range` (parallel sub-agents merge), `steer-swap` (redirect a run), `pulled-focus` (catch up after a break).
+- **Agent product:** `agent-orchestrator`, `agent-tasks`, `agent-approvals`, `agent-routines`, `agent-plan`, `approval-card`, `action-drum` (confirm an irreversible action), `odometer` (background progress that stops on what needs you), `fill-in` (a clarifying question mid-task), `undo-countdown` (undo window after an agent acts), `plan-words` (edit a plan before it runs), `same-page` (handoff between agents), `tool-headline` (tool in use right now), `scope-words` (grant access), `merge-range` (parallel sub-agents merge), `steer-swap` (redirect a run), `pulled-focus` (catch up after a break), `run-health` (how a recurring run has been doing).
+- **Coding agent:** `diff-review` (accept or reject an agent's hunks, then apply), `terminal-transcript` (its shell session as command blocks), `change-tree` (the files it touched).
 - **Analytics / data:** KPI numbers with `number-ticker`, charts `sunburst`, `sankey-flow`, `streamgraph`, `treemap`, `race-bar-chart`, `realtime-stream`,
   tables `data-grid`; blocks `cohort-retention`, `mrr-waterfall`, `usage-forecast`, `journey-flow`.
+- **Dashboard:** `range-bar` (the range, comparison and filters above it), `metric-card` (KPIs that say why they moved; its `MetricGrid` lays several out), `plain-charts` (line, area, bar, combo, donut), `breakdown-list` (how a total splits, with a limit).
 - **App chrome & polish:** `command-menu`, `dock`, `morph-nav`, `toaster`, `notification-stack`, `segmented-control`, `glass-*`, empty states (`empty-calendar`, `ghosted-chat`).
 
 ## Originals
@@ -90,6 +92,20 @@
 - **Control Bento** (`control-bento`, block) – A bento of small live controls for a landing page, with one tile at a time demonstrated by a cursor. Tags: marketing, landing, toggle. File: `components/blocks/control-bento.tsx`. Install: `node add.mjs control-bento`
 - **Overlay Atlas** (`overlay-atlas`, block) – Modal, popover, tooltip, toast, sheet and drawer side by side in one product window, each played on hover. Tags: dialog, menu, marketing. File: `components/blocks/overlay-atlas.tsx`. Install: `node add.mjs overlay-atlas`
 - **Light Cards** (`light-cards`, block) – Numbered dark feature cards, each with light-painted art cropped by its edge that brightens on hover. Tags: card, landing, glow. File: `components/blocks/light-cards.tsx`. Install: `node add.mjs light-cards`
+
+## Dashboard
+
+- **Plain Charts** (`plain-charts`, component) – Everyday line, area, bar, combo and donut charts with one readout: a sentence above the plot that names the day, the value and the change. Tags: chart, dashboard, kpi, hover, keyboard, toggle. File: `components/ui/plain-charts.tsx`. Install: `node add.mjs plain-charts`
+- **Metric Card** (`metric-card`, component) – A KPI card that says how the number moved in words; the underlined reason opens the ranked drivers in place, and the digits roll once when it changes. Tags: kpi, dashboard, card, chart, cost, toggle. File: `components/ui/metric-card.tsx`. Install: `node add.mjs metric-card`
+- **Range Bar** (`range-bar`, component) – The bar above a dashboard as one editable sentence: range, comparison and filters are underlined phrases that open lists and a two-month calendar. Tags: picker, input, dashboard, keyboard, menu, morph. File: `components/ui/range-bar.tsx`. Install: `node add.mjs range-bar`
+- **Run Health** (`run-health`, component) – How a recurring run has been doing: a quiet square per run or day, only failures in colour, and a sentence that reads the period under your cursor. Tags: agent, observability, timeline, dashboard, keyboard, evals. File: `components/ui/run-health.tsx`. Install: `node add.mjs run-health`
+- **Breakdown List** (`breakdown-list`, component) – How a total splits into parts: one share bar and a ranked list that light up together, with a limit marker where only the overrun turns red. Tags: chart, ranking, cost, context, dashboard, hover. File: `components/ui/breakdown-list.tsx`. Install: `node add.mjs breakdown-list`
+
+## Coding agents
+
+- **Diff Review** (`diff-review`, component) – Review an agent's code changes hunk by hunk: A accepts, R rejects, J/K move, U undoes, while a big count goes down to a one-sentence verdict and Apply. Tags: approval, agent, keyboard, toggle, card, progress. File: `components/ui/diff-review.tsx`. Install: `node add.mjs diff-review`
+- **Terminal Transcript** (`terminal-transcript`, component) – An agent's shell session as real command blocks: lines stream in and follow, stderr set apart, long output folds into a counted sentence, only failures in red. Tags: agent, streaming, tool-call, observability, keyboard, toggle. File: `components/ui/terminal-transcript.tsx`. Install: `node add.mjs terminal-transcript`
+- **Change Tree** (`change-tree`, component) – The files an agent touched, as a tree of only changed paths: +42 −7 in type, a word for new, deleted or renamed, and an ink bar for size. Tags: hierarchy, agent, keyboard, tool-call, observability. File: `components/ui/change-tree.tsx`. Install: `node add.mjs change-tree`
 
 ## Chat
 

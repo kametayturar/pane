@@ -45,7 +45,7 @@ agent.current()                                        // the request being run,
 
 ## How actions are gated
 
-A request is `{ ref, kind, label, action, args, destructive, reason? }`. It is destructive when the action says so, or when the piece sits inside an element with `data-agent-confirm="what it does"`. Pieces mark what commits something on a person's behalf: `confirm` on Modal, Hold to Confirm and Action Drum, `commit` on Swipe Row, `grant` on Scope Words, `go` on Plan Words. Opening, closing, selecting and revealing are not.
+A request is `{ ref, kind, label, action, args, destructive, reason? }`. It is destructive when the action says so, or when the piece sits inside an element with `data-agent-confirm="what it does"`. Pieces mark what commits something on a person's behalf: `confirm` on Modal, Hold to Confirm and Action Drum, `commit` on Swipe Row, `grant` on Scope Words, `go` on Plan Words, `apply` on Diff Review, `rerun` on Terminal Transcript. Opening, closing, selecting and revealing are not.
 
 `allow(request, { signal })` returns `true`, `false` or a promise of either, so it can show the app's own approval UI. It is called for every request, and only `true` allows: any other answer, a throw or a rejection is a refusal. **Without one, the default gate allows everything except destructive requests**, which fail with `denied` and the reason. A piece inside `data-agent-hidden` is left out of the snapshot, cannot be acted on, and its label and value appear in no event (becoming hidden reads as a `remove`, coming back as an `add`).
 
@@ -68,6 +68,11 @@ A request is `{ ref, kind, label, action, args, destructive, reason? }`. It is d
 | Action Drum | `{ value, confirmed, options }` | `select(id)`, **`confirm`** (every verb: the card is where a person answers the agent). No `reset`: a person has no way back inside the piece either |
 | Scope Words | `{ granted: id \| null, options }` | **`grant(id)`**, `revoke` |
 | Plan Words | `{ modes, started, steps }` | `setMode(step, mode)`, **`go`** |
+| Range Bar | `{ range, compare, filters, from, to, compareFrom, compareTo, sentence }` | `setPreset(id)`, `setDates(from, to)`, `setCompare(compare)`, `setFilter(facet, ids?)` (only with facets) |
+| Run Health | `{ passed, total, rows, selected, lastProblem }` | `select(row, run)`, `clear` |
+| Diff Review | `{ decisions, left, applied, focus }` | `decide(hunk, decision)`, `undo`, **`apply`** |
+| Terminal Transcript | `[{ id, command, status, exitCode, lines, open }]`, one per command block | `copy(block)`, **`rerun(block)`**, `fold(block, open)` |
+| Change Tree | `{ selected, sort, closedFolders, files }` | `select(path)`, `expandAll`, `collapseAll`, `sort(by)` |
 
 To make another piece operable: paste the stub, add an `agentId?: string` prop, call `useAgentNode` with the root ref.
 
@@ -77,4 +82,4 @@ WebMCP (`document.modelContext.registerTool`, W3C Web Machine Learning CG draft 
 
 ## Not covered yet
 
-Only nine pieces opt in. There is no `query` for long lists, no secret values, and labels are not de-duplicated for the app. An approval UI is the app's to build; the demo at `#/agent-operable` shows one.
+Fourteen pieces opt in; the demo page shows the first nine. There is no `query` for long lists, no secret values, and labels are not de-duplicated for the app. An approval UI is the app's to build; the demo at `#/agent-operable` shows one.

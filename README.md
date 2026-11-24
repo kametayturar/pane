@@ -1,6 +1,6 @@
 # Pane
 
-**175 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
+**183 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
 answers with sources, agents you can approve and steer, tactile controls, real glass, and animated scenes for your
 landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 
@@ -82,6 +82,24 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 | [**Control Bento**](https://paneui.vercel.app/#/control-bento) · [source](src/components/blocks/control-bento.tsx) | A bento of small live controls for a landing page, with one tile at a time demonstrated by a cursor. | `marketing` `landing` `toggle` |
 | [**Overlay Atlas**](https://paneui.vercel.app/#/overlay-atlas) · [source](src/components/blocks/overlay-atlas.tsx) | Modal, popover, tooltip, toast, sheet and drawer side by side in one product window, each played on hover. | `dialog` `menu` `marketing` |
 | [**Light Cards**](https://paneui.vercel.app/#/light-cards) · [source](src/components/blocks/light-cards.tsx) | Numbered dark feature cards, each with light-painted art cropped by its edge that brightens on hover. | `card` `landing` `glow` |
+
+### Dashboard
+
+| Piece | What it does | Tags |
+| --- | --- | --- |
+| [**Plain Charts**](https://paneui.vercel.app/#/plain-charts) · [source](src/components/ui/plain-charts.tsx) | Everyday line, area, bar, combo and donut charts with one readout: a sentence above the plot that names the day, the value and the change. | `chart` `dashboard` `kpi` `hover` |
+| [**Metric Card**](https://paneui.vercel.app/#/metric-card) · [source](src/components/ui/metric-card.tsx) | A KPI card that says how the number moved in words; the underlined reason opens the ranked drivers in place, and the digits roll once when it changes. | `kpi` `dashboard` `card` `chart` |
+| [**Range Bar**](https://paneui.vercel.app/#/range-bar) · [source](src/components/ui/range-bar.tsx) | The bar above a dashboard as one editable sentence: range, comparison and filters are underlined phrases that open lists and a two-month calendar. | `picker` `input` `dashboard` `keyboard` |
+| [**Run Health**](https://paneui.vercel.app/#/run-health) · [source](src/components/ui/run-health.tsx) | How a recurring run has been doing: a quiet square per run or day, only failures in colour, and a sentence that reads the period under your cursor. | `agent` `observability` `timeline` `dashboard` |
+| [**Breakdown List**](https://paneui.vercel.app/#/breakdown-list) · [source](src/components/ui/breakdown-list.tsx) | How a total splits into parts: one share bar and a ranked list that light up together, with a limit marker where only the overrun turns red. | `chart` `ranking` `cost` `context` |
+
+### Coding agents
+
+| Piece | What it does | Tags |
+| --- | --- | --- |
+| [**Diff Review**](https://paneui.vercel.app/#/diff-review) · [source](src/components/ui/diff-review.tsx) | Review an agent's code changes hunk by hunk: A accepts, R rejects, J/K move, U undoes, while a big count goes down to a one-sentence verdict and Apply. | `approval` `agent` `keyboard` `toggle` |
+| [**Terminal Transcript**](https://paneui.vercel.app/#/terminal-transcript) · [source](src/components/ui/terminal-transcript.tsx) | An agent's shell session as real command blocks: lines stream in and follow, stderr set apart, long output folds into a counted sentence, only failures in red. | `agent` `streaming` `tool-call` `observability` |
+| [**Change Tree**](https://paneui.vercel.app/#/change-tree) · [source](src/components/ui/change-tree.tsx) | The files an agent touched, as a tree of only changed paths: +42 −7 in type, a word for new, deleted or renamed, and an ink bar for size. | `hierarchy` `agent` `keyboard` `tool-call` |
 
 ### Chat
 

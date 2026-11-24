@@ -145,6 +145,7 @@ html[data-style="glass"].dark .drw-sheet { -webkit-backdrop-filter: blur(36px) s
   touch-action: none; user-select: none; -webkit-user-select: none; will-change: transform; visibility: hidden; overscroll-behavior: contain;
 }
 .drw[data-vis] .drw-sheet { visibility: visible }
+.drw-in { display: contents }
 .drw-sheet[data-soft] { transition: transform .22s var(--drw-ease) }
 .drw[data-side="bottom"] .drw-sheet { left: 0; right: 0; bottom: 0; height: calc(var(--drw-top) * 100%); border-radius: var(--drw-sr) var(--drw-sr) 0 0 }
 .drw[data-side="right"] .drw-sheet { top: 0; bottom: 0; right: 0; width: calc(var(--drw-top) * 100%); border-radius: var(--drw-sr) 0 0 var(--drw-sr) }
@@ -735,7 +736,8 @@ export function Drawer(props: DrawerProps) {
     else if (e.key === "End") go(() => moveTo(topSnap))
   }
   const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape" && open && dismissible) {
+    // a layer inside the sheet (a tooltip, a popover) that took this Escape marks it handled; only one layer closes per press
+    if (e.key === "Escape" && open && dismissible && !e.defaultPrevented) {
       e.stopPropagation()
       moveTo(null)
       return
@@ -864,6 +866,7 @@ export function Drawer(props: DrawerProps) {
   }, [bare, active, reduce, auto, side, snaps, dismissible])
 
   const stop = () => setAuto(false)
+  const closing = !open && dismissible
   const pct = Math.round(snap * 100)
   const sheetStyle: React.CSSProperties & Record<string, string | number> = { "--drw-top": topSnap }
 
@@ -932,41 +935,46 @@ export function Drawer(props: DrawerProps) {
           aria-label={title}
           aria-describedby={description ? descId : undefined}
           tabIndex={-1}
+          // closed but still sliding out: painted, yet no longer the dialog, so it is not read and nothing in it takes focus
+          aria-hidden={closing || undefined}
           data-top={snap >= topSnap ? "" : undefined}
           style={sheetStyle}
           onPointerDown={onPointerDown}
         >
-          {showHandle && (
-            <button
-              ref={grabRef}
-              type="button"
-              className="drw-grab"
-              role="slider"
-              aria-orientation={side === "bottom" ? "vertical" : "horizontal"}
-              aria-label={`Drawer height, ${pct}%`}
-              aria-valuemin={Math.round(lowSnap * 100)}
-              aria-valuemax={Math.round(topSnap * 100)}
-              aria-valuenow={pct}
-              aria-valuetext={`${pct}% high`}
-              onKeyDown={onGrabKey}
-              onClick={onGrabClick}
-            />
-          )}
-          <div className="drw-head">
-            <div>
-              <h3 className="drw-title">{title}</h3>
-              {description && <p id={descId} className="drw-desc">{description}</p>}
-            </div>
-            {dismissible && (
-              <button type="button" className="drw-x" aria-label="Close" onClick={() => moveTo(null)}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
-                  <path d="M4 4l8 8M12 4l-8 8" />
-                </svg>
-              </button>
+          {/* inert on the content only: a press on the sheet itself can still catch it mid-flight */}
+          <div className="drw-in" inert={closing}>
+            {showHandle && (
+              <button
+                ref={grabRef}
+                type="button"
+                className="drw-grab"
+                role="slider"
+                aria-orientation={side === "bottom" ? "vertical" : "horizontal"}
+                aria-label={`Drawer height, ${pct}%`}
+                aria-valuemin={Math.round(lowSnap * 100)}
+                aria-valuemax={Math.round(topSnap * 100)}
+                aria-valuenow={pct}
+                aria-valuetext={`${pct}% high`}
+                onKeyDown={onGrabKey}
+                onClick={onGrabClick}
+              />
             )}
-          </div>
-          <div className="drw-body" tabIndex={snap >= topSnap ? 0 : -1} aria-label="Drawer content">
-            {children ?? <DefaultBody />}
+            <div className="drw-head">
+              <div>
+                <h3 className="drw-title">{title}</h3>
+                {description && <p id={descId} className="drw-desc">{description}</p>}
+              </div>
+              {dismissible && (
+                <button type="button" className="drw-x" aria-label="Close" onClick={() => moveTo(null)}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
+                    <path d="M4 4l8 8M12 4l-8 8" />
+                  </svg>
+                </button>
+              )}
+            </div>
+            <div className="drw-body" tabIndex={snap >= topSnap ? 0 : -1} aria-label="Drawer content">
+              {children ?? <DefaultBody />}
+            </div>
           </div>
         </div>
         <div ref={fingerRef} className="drw-finger" aria-hidden="true" />
