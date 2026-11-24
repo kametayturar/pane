@@ -515,6 +515,16 @@ const CATEGORIES: Category[] = [
     ],
   },
   {
+    group: "Coding agents",
+    label: "Coding agents",
+    blurb: "Diffs, shell sessions and changed files from a coding agent, laid out for review before anything merges.",
+    picks: [
+      { slug: "diff-review", width: 760, align: "top" },
+      { slug: "terminal-transcript", width: 560, align: "top" },
+      { slug: "change-tree", width: 560, align: "top" },
+    ],
+  },
+  {
     group: "AI blocks",
     label: "AI blocks",
     blurb: "Whole working surfaces: orchestrators, composers, arenas, eval suites.",
@@ -525,6 +535,18 @@ const CATEGORIES: Category[] = [
       { slug: "eval-suite", width: 720, align: "top" },
       { slug: "knowledge-base", width: 780, align: "top" },
       { slug: "prompt-studio", width: 780, align: "top" },
+    ],
+  },
+  {
+    group: "Dashboard",
+    label: "Dashboard",
+    blurb: "Charts, KPIs and filters that say what changed in a sentence instead of making you squint at axes.",
+    picks: [
+      { slug: "plain-charts", width: 760, align: "top" },
+      { slug: "run-health", width: 460, align: "top" },
+      { slug: "breakdown-list", width: 460, align: "top" },
+      { slug: "metric-card", width: 720, align: "top" },
+      { slug: "range-bar", width: 760, align: "top" },
     ],
   },
   {
