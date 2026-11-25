@@ -1,6 +1,6 @@
 # Pane
 
-**183 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
+**194 pieces of UI for AI products, made with taste.** Components, full screens, illustrations and motion – streamed
 answers with sources, agents you can approve and steer, tactile controls, real glass, and animated scenes for your
 landing page. One file each, calm motion, dark mode built in. Open source (MIT).
 
@@ -100,6 +100,22 @@ and descriptions, tolerates typos, and every piece page links its tags and relat
 | [**Diff Review**](https://paneui.vercel.app/#/diff-review) · [source](src/components/ui/diff-review.tsx) | Review an agent's code changes hunk by hunk: A accepts, R rejects, J/K move, U undoes, while a big count goes down to a one-sentence verdict and Apply. | `approval` `agent` `keyboard` `toggle` |
 | [**Terminal Transcript**](https://paneui.vercel.app/#/terminal-transcript) · [source](src/components/ui/terminal-transcript.tsx) | An agent's shell session as real command blocks: lines stream in and follow, stderr set apart, long output folds into a counted sentence, only failures in red. | `agent` `streaming` `tool-call` `observability` |
 | [**Change Tree**](https://paneui.vercel.app/#/change-tree) · [source](src/components/ui/change-tree.tsx) | The files an agent touched, as a tree of only changed paths: +42 −7 in type, a word for new, deleted or renamed, and an ink bar for size. | `hierarchy` `agent` `keyboard` `tool-call` |
+
+### Landing
+
+| Piece | What it does | Tags |
+| --- | --- | --- |
+| [**Landing Nav**](https://paneui.vercel.app/#/landing-nav) · [source](src/components/blocks/landing-nav.tsx) | The slim top bar: brand, a few centred links and one button. It gains a hairline once the page scrolls and folds into a menu when narrow. | `landing` `marketing` `menu` `navigation` |
+| [**Landing Hero**](https://paneui.vercel.app/#/landing-hero) · [source](src/components/blocks/landing-hero.tsx) | A split hero: two-tone headline, one sentence, two buttons and ticked proof, beside a dotted panel whose product mock plays once. | `hero` `landing` `marketing` `media` |
+| [**Landing Proof**](https://paneui.vercel.app/#/landing-proof) · [source](src/components/blocks/landing-proof.tsx) | Social proof without logos: big figures that count up once with a source line, and one or two quotes with initials. | `kpi` `landing` `marketing` `social-proof` |
+| [**Landing Steps**](https://paneui.vercel.app/#/landing-steps) · [source](src/components/blocks/landing-steps.tsx) | How it works as a real sequence: three cards whose small mocks play in order while a thin line fills under them. | `landing` `marketing` `onboarding` `progress` |
+| [**Landing Feature Rows**](https://paneui.vercel.app/#/landing-feature-rows) · [source](src/components/blocks/landing-feature-rows.tsx) | Alternating feature rows: headline, paragraph and ticks on one side, a chat, report or list mock that plays on the other. | `chat` `landing` `marketing` `media` |
+| [**Landing Feature Grid**](https://paneui.vercel.app/#/landing-feature-grid) · [source](src/components/blocks/landing-feature-grid.tsx) | Everything else it does, as a grid ruled by hairlines only: icon, title and two lines per cell, with one wide row to close. | `card` `landing` `marketing` |
+| [**Landing Audience**](https://paneui.vercel.app/#/landing-audience) · [source](src/components/blocks/landing-audience.tsx) | Who it is for: two or three audience cards in one hairline frame, each with a promise, ticked points and a link. | `card` `landing` `marketing` |
+| [**Landing Pricing**](https://paneui.vercel.app/#/landing-pricing) · [source](src/components/blocks/landing-pricing.tsx) | Plan cards with a Monthly / Yearly switch that rolls each price once, or a teaser with one plan beside the copy. | `card` `landing` `marketing` `pricing` |
+| [**Landing FAQ**](https://paneui.vercel.app/#/landing-faq) · [source](src/components/blocks/landing-faq.tsx) | Heading on the left, questions on the right as an accordion that opens with one eased height change and arrow-key focus. | `keyboard` `landing` `marketing` |
+| [**Landing CTA**](https://paneui.vercel.app/#/landing-cta) · [source](src/components/blocks/landing-cta.tsx) | The closing band: a dotted panel with a two-tone headline and two buttons, beside a setup checklist that ticks itself off. | `landing` `marketing` `onboarding` |
+| [**Landing Footer**](https://paneui.vercel.app/#/landing-footer) · [source](src/components/blocks/landing-footer.tsx) | The quiet foot of the page: brand line, social icons as plain glyphs, titled link columns and a copyright line. | `landing` `marketing` `navigation` |
 
 ### Chat
 

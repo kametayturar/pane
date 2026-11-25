@@ -54,6 +54,7 @@ import {
   Play,
   RotateCw,
   Route,
+  Rows3,
   ScanLine,
   Search,
   Share2,
@@ -81,6 +82,11 @@ import {
   Scale,
   Wand2,
   Clapperboard,
+  LayoutTemplate,
+  PanelTop,
+  ListOrdered,
+  CreditCard,
+  CircleHelp,
   Plug,
   ListTodo,
   SquareMousePointer,
@@ -180,6 +186,7 @@ import { PromptBuilder } from "@/prompt-builder"
 import { SKILLS, SkillsPage } from "@/skills-page"
 const StudioApp = React.lazy(() => import("@/studio/studio-page"))
 const McpPage = React.lazy(() => import("@/mcp-page"))
+const LandingBuilderPage = React.lazy(() => import("@/landing-builder/landing-builder-page"))
 const AgentPage = React.lazy(() => import("@/agent-page"))
 // Landing drafts under review: src/landings/<id>.tsx, shown at #/draft/<id>. Not linked from anywhere.
 const DRAFT_PAGES: Record<string, React.LazyExoticComponent<React.ComponentType<React.ComponentProps<typeof Landing>>>> = Object.fromEntries(
@@ -212,6 +219,8 @@ type Entry = {
   /** Backgrounds that suit this piece (studio pieces). Default: all. */
   backdrops?: readonly BackdropVariant[]
   isNew?: boolean
+  /** Lay the gallery tile's live preview out at this width (page-wide pieces such as landing sections). Default 760, 860 for a wide tile. */
+  previewWidth?: number
   load?: () => Promise<DemoModule>
   demo?: React.LazyExoticComponent<React.ComponentType<StudioProps>>
 }
@@ -281,6 +290,22 @@ const RAW_GROUPS: { label: string; entries: Entry[] }[] = [
       ui({ slug: "diff-review", name: "Diff Review", exportName: "DiffReview", icon: GitCompare, isNew: true, description: "Review an agent's code changes hunk by hunk: A accepts, R rejects, J/K move, U undoes, while a big count goes down to a one-sentence verdict and Apply." }),
       ui({ slug: "terminal-transcript", name: "Terminal Transcript", exportName: "TerminalTranscript", icon: SquareTerminal, isNew: true, description: "An agent's shell session as real command blocks: lines stream in and follow, stderr set apart, long output folds into a counted sentence, only failures in red." }),
       ui({ slug: "change-tree", name: "Change Tree", exportName: "ChangeTree", icon: FolderTree, isNew: true, description: "The files an agent touched, as a tree of only changed paths: +42 −7 in type, a word for new, deleted or renamed, and an ink bar for size." }),
+    ],
+  },
+  {
+    label: "Landing",
+    entries: [
+      bl({ slug: "landing-nav", name: "Landing Nav", exportName: "LandingNav", icon: PanelTop, isNew: true, previewWidth: 1200, description: "The slim top bar: brand, a few centred links and one button. It gains a hairline once the page scrolls and folds into a menu when narrow." }),
+      bl({ slug: "landing-hero", name: "Landing Hero", exportName: "LandingHero", icon: LayoutTemplate, isNew: true, previewWidth: 1200, description: "A split hero: two-tone headline, one sentence, two buttons and ticked proof, beside a dotted panel whose product mock plays once." }),
+      bl({ slug: "landing-proof", name: "Landing Proof", exportName: "LandingProof", icon: Quote, isNew: true, previewWidth: 1200, description: "Social proof without logos: big figures that count up once with a source line, and one or two quotes with initials." }),
+      bl({ slug: "landing-steps", name: "Landing Steps", exportName: "LandingSteps", icon: ListOrdered, isNew: true, previewWidth: 1200, description: "How it works as a real sequence: three cards whose small mocks play in order while a thin line fills under them." }),
+      bl({ slug: "landing-feature-rows", name: "Landing Feature Rows", exportName: "LandingFeatureRows", icon: Rows3, isNew: true, previewWidth: 1200, description: "Alternating feature rows: headline, paragraph and ticks on one side, a chat, report or list mock that plays on the other." }),
+      bl({ slug: "landing-feature-grid", name: "Landing Feature Grid", exportName: "LandingFeatureGrid", icon: LayoutGrid, isNew: true, previewWidth: 1200, description: "Everything else it does, as a grid ruled by hairlines only: icon, title and two lines per cell, with one wide row to close." }),
+      bl({ slug: "landing-audience", name: "Landing Audience", exportName: "LandingAudience", icon: Users, isNew: true, previewWidth: 1200, description: "Who it is for: two or three audience cards in one hairline frame, each with a promise, ticked points and a link." }),
+      bl({ slug: "landing-pricing", name: "Landing Pricing", exportName: "LandingPricing", icon: CreditCard, isNew: true, previewWidth: 1200, description: "Plan cards with a Monthly / Yearly switch that rolls each price once, or a teaser with one plan beside the copy." }),
+      bl({ slug: "landing-faq", name: "Landing FAQ", exportName: "LandingFaq", icon: CircleHelp, isNew: true, previewWidth: 1200, description: "Heading on the left, questions on the right as an accordion that opens with one eased height change and arrow-key focus." }),
+      bl({ slug: "landing-cta", name: "Landing CTA", exportName: "LandingCta", icon: MousePointerClick, isNew: true, previewWidth: 1200, description: "The closing band: a dotted panel with a two-tone headline and two buttons, beside a setup checklist that ticks itself off." }),
+      bl({ slug: "landing-footer", name: "Landing Footer", exportName: "LandingFooter", icon: PanelBottom, isNew: true, previewWidth: 1200, description: "The quiet foot of the page: brand line, social icons as plain glyphs, titled link columns and a copyright line." }),
     ],
   },
   {
@@ -545,6 +570,7 @@ const DOCS: SearchDoc[] = [
     keywords: [k.category, ...(k.bestFor ? String(k.bestFor).split(/[ ,]+/).slice(0, 8) : [])],
   })),
   { id: "page:studio", href: "#/studio", title: "Studio", kind: "page", group: "Pages", description: "Tune any piece and export PNG, SVG, video or GIF.", tags: [], keywords: ["export", "png", "svg", "gif", "webm", "video", "gradient", "editor", "make"], icon: Clapperboard },
+  { id: "page:landing-builder", href: "#/landing-builder", title: "Landing Builder", kind: "page", group: "Pages", description: "Assemble a landing page from Pane's sections, edit the words, export it.", tags: [], keywords: ["landing", "page", "builder", "hero", "pricing", "faq", "template", "preset", "export"], icon: LayoutTemplate },
   { id: "page:mcp", href: "#/mcp", title: "MCP", kind: "page", group: "Pages", description: "Connect Pane to your coding agent over MCP.", tags: [], keywords: ["model context protocol", "agent", "claude", "cursor", "server", "install"], icon: Plug },
   { id: "page:agent-operable", href: "#/agent-operable", title: "Agent-operable", kind: "page", group: "Pages", description: "Let an agent read Pane pieces and operate them through their own handlers, behind your approval.", tags: [], keywords: ["agent", "snapshot", "act", "bridge", "approval", "webmcp", "operate", "tools"], icon: Bot },
 ]
@@ -824,6 +850,10 @@ function Sidebar({ slug, dark, toggleDark, style, setStyle, onPick, onSearch }: 
           <a href="#/studio" onClick={onPick} aria-current={isStudioSlug(slug) ? "page" : undefined} className={cn(navItem, isStudioSlug(slug) && navActive)}>
             <Clapperboard className="size-4 text-neutral-400" />
             Studio
+          </a>
+          <a href="#/landing-builder" onClick={onPick} aria-current={slug === "landing-builder" ? "page" : undefined} className={cn(navItem, slug === "landing-builder" && navActive)}>
+            <LayoutTemplate className="size-4 text-neutral-400" />
+            Landing Builder
           </a>
         </div>
         {SKILLS.length > 0 && (
@@ -1115,12 +1145,13 @@ function EntryCard({ entry: e, wide }: { entry: Entry; wide?: boolean }) {
   const studio = e.kind === "illustrations" || e.kind === "motion"
   const [hovered, setHovered] = React.useState(false)
   return (
-    <a
-      href={`#/${e.slug}`}
+    // A div, not a link: a live preview can hold links of its own, and links cannot nest. The name's link
+    // stretches over the whole card instead.
+    <div
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       className={cn(
-        "gallery-card group flex flex-col rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.04)] transition-shadow duration-150 ease-[cubic-bezier(.22,1,.36,1)] [@media(hover:hover)]:hover:shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_8px_20px_-14px_rgb(0_0_0/0.25)] dark:bg-white/[0.04] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)]",
+        "gallery-card group relative flex flex-col rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_1px_2px_rgb(0_0_0/0.04)] transition-shadow duration-150 ease-[cubic-bezier(.22,1,.36,1)] [@media(hover:hover)]:hover:shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_8px_20px_-14px_rgb(0_0_0/0.25)] dark:bg-white/[0.04] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.08)]",
         wide && "sm:col-span-2 xl:row-span-2",
       )}
     >
@@ -1128,7 +1159,15 @@ function EntryCard({ entry: e, wide }: { entry: Entry; wide?: boolean }) {
         <span className="grid size-8 place-items-center rounded-lg bg-neutral-100 text-neutral-700 dark:bg-white/[0.06] dark:text-neutral-200">
           <e.icon className="size-4" />
         </span>
-        <span className={cn("font-medium", wide ? "text-[15px]" : "text-[14px]")}>{e.name}</span>
+        <a
+          href={`#/${e.slug}`}
+          className={cn(
+            "font-medium outline-none after:absolute after:inset-0 after:rounded-2xl after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-neutral-900/40 dark:focus-visible:after:ring-white/50",
+            wide ? "text-[15px]" : "text-[14px]",
+          )}
+        >
+          {e.name}
+        </a>
         <ArrowUpRight className="ml-auto size-4 text-neutral-300 dark:text-neutral-600" />
       </div>
       <p className="mt-2.5 text-[13px] leading-5 text-neutral-500 dark:text-neutral-400">{e.description}</p>
@@ -1138,14 +1177,14 @@ function EntryCard({ entry: e, wide }: { entry: Entry; wide?: boolean }) {
       {e.demo && (
         <LivePreview
           Demo={e.demo}
-          width={wide ? 860 : 760}
+          width={e.previewWidth ?? (wide ? 860 : 760)}
           align={studio ? "center" : "top"}
           replay={studio ? undefined : 12000}
           hovered={hovered}
           className={cn("mt-3 rounded-xl shadow-[0_0_0_1px_rgb(0_0_0/0.05)] dark:shadow-[0_0_0_1px_rgb(255_255_255/0.06)]", wide ? "h-40 min-h-40 flex-1 xl:min-h-[340px]" : "h-40")}
         />
       )}
-    </a>
+    </div>
   )
 }
 
@@ -1404,7 +1443,7 @@ function ComponentPage({ entry }: { entry: Entry }) {
 
       <div className="mt-3">
         {tab === "preview" ? (
-          <div className="demo-stage relative flex min-h-[320px] justify-center overflow-hidden rounded-2xl px-4 py-10 sm:min-h-[380px] sm:px-10">
+          <div className={cn("demo-stage relative flex min-h-[320px] justify-center overflow-hidden rounded-2xl sm:min-h-[380px]", entry.previewWidth ? "px-0 py-12" : "px-4 py-10 sm:px-10")}>
             <IconButton label="Replay demo" onClick={() => setRun((r) => r + 1)} className="absolute top-3 right-3 bg-white/70 backdrop-blur dark:bg-white/5">
               <RotateCw className="size-4" />
             </IconButton>
@@ -1712,7 +1751,7 @@ export default function App() {
 
       <main id="main" tabIndex={-1} className="min-w-0 outline-none flex-1 px-4 py-8 sm:px-8 md:px-12 md:py-12">
         {palette}
-        <div className={cn("mx-auto", isStudioSlug(slug) ? "max-w-none" : "max-w-5xl")}>{isStudioSlug(slug) ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><StudioApp /></React.Suspense> : slug === "mcp" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><McpPage /></React.Suspense> : slug === "agent-operable" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><AgentPage /></React.Suspense> : slug === "skills" || slug.startsWith("skills/") ? <SkillsPage initialId={slug.startsWith("skills/") ? decodeURIComponent(slug.slice(7)) : undefined} /> : slug.startsWith("tag/") ? <TagPage tag={decodeURIComponent(slug.slice(4))} /> : entry?.demo ? entry.kind === "ui" || entry.kind === "blocks" ? <ComponentPage key={entry.slug} entry={entry} /> : <StudioPage key={entry.slug} entry={entry} /> : slug && slug !== "browse" && !slug.startsWith("browse/") ? <NotFound slug={slug} /> : <Home group={slug.startsWith("browse/") ? decodeURIComponent(slug.slice(7)) : undefined} />}</div>
+        <div className={cn("mx-auto", isStudioSlug(slug) ? "max-w-none" : entry?.previewWidth ? "max-w-[1296px]" : "max-w-5xl")}>{isStudioSlug(slug) ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><StudioApp /></React.Suspense> : slug === "landing-builder" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><LandingBuilderPage /></React.Suspense> : slug === "mcp" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><McpPage /></React.Suspense> : slug === "agent-operable" ? <React.Suspense fallback={<div className="text-sm text-neutral-400">Loading…</div>}><AgentPage /></React.Suspense> : slug === "skills" || slug.startsWith("skills/") ? <SkillsPage initialId={slug.startsWith("skills/") ? decodeURIComponent(slug.slice(7)) : undefined} /> : slug.startsWith("tag/") ? <TagPage tag={decodeURIComponent(slug.slice(4))} /> : entry?.demo ? entry.kind === "ui" || entry.kind === "blocks" ? <ComponentPage key={entry.slug} entry={entry} /> : <StudioPage key={entry.slug} entry={entry} /> : slug && slug !== "browse" && !slug.startsWith("browse/") ? <NotFound slug={slug} /> : <Home group={slug.startsWith("browse/") ? decodeURIComponent(slug.slice(7)) : undefined} />}</div>
       </main>
     </div>
   )

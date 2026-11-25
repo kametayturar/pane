@@ -47,7 +47,7 @@ const TOOLS: { name: string; does: string; args: string }[] = [
   { name: "get_piece", does: "One piece in full: description, tags, install commands and the .tsx source.", args: "slug, source" },
   { name: "list_pieces", does: "Every piece, grouped the way the site groups them.", args: "group, kind" },
   { name: "list_tags", does: "The tag vocabulary with what each tag means and how many pieces carry it.", args: "none" },
-  { name: "get_guide", does: "Pane's house style: tokens, type, motion, the Glass recipe, how a piece is built, hand-drawn canvas art.", args: "topic" },
+  { name: "get_guide", does: "Pane's house style: tokens, type, motion, the Glass recipe, how a piece is built, hand-drawn canvas art, landing pages.", args: "topic" },
   { name: "search_skills", does: "Search the curated agent skills for UI work, with install commands.", args: "query, category, limit" },
 ]
 

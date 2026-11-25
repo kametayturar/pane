@@ -23,6 +23,7 @@ const GUIDES: Record<string, string> = {
   glass: "/skills/pane/glass.md",
   instrument: "/skills/pane/instrument.md",
   "hand-drawn": "/skills/pane/hand-drawn.md",
+  landing: "/skills/pane/landing.md",
   catalog: "/skills/pane/catalog.md",
 }
 
@@ -77,7 +78,7 @@ const TOOLS = [
   {
     name: "get_guide",
     title: "Read the house style",
-    description: "Pane's own guidance: 'skill' (overview), 'look' (tokens, type, motion), 'build' (how a piece is made), 'glass' (the Liquid Glass recipe), 'instrument' (the Instrument kit look), 'hand-drawn' (canvas art that looks drawn with pastel, crayon and pencil, plus the emotion-brief prompt) or 'catalog' (the full catalog with recipes per page type).",
+    description: "Pane's own guidance: 'skill' (overview), 'look' (tokens, type, motion), 'build' (how a piece is made), 'glass' (the Liquid Glass recipe), 'instrument' (the Instrument kit look), 'hand-drawn' (canvas art that looks drawn with pastel, crayon and pencil, plus the emotion-brief prompt), 'landing' (composing a product landing page from the landing sections, and the Landing Builder) or 'catalog' (the full catalog with recipes per page type).",
     inputSchema: {
       type: "object",
       properties: { topic: { type: "string", enum: Object.keys(GUIDES) } },

@@ -19,7 +19,8 @@ Two jobs use this skill. Pick the one in front of you.
    `loading`). For a whole app, start from the closest screen (`ops-dashboard`, `task-tracker`, `accounting`, `finance`,
    `mission-control`, `research-desk`, `agent-workbench`, `eval-lab`) and keep its rail and top bar. Open
    `https://paneui.vercel.app/#/<slug>` to check a piece looks right. Done when every section you change has a piece or a
-   reason to stay as it is.
+   reason to stay as it is. For a product landing page, compose it from the `landing-*` sections with
+   [references/landing.md](references/landing.md) (section orders, copy rules, motion, slop list).
 3. **Install** in the project root: `curl -sO https://paneui.vercel.app/add.mjs && node add.mjs <slug> <slug>…` (writes files to
    `src/components/…`, adds `lib/utils.ts` when needed, prints any npm packages; shadcn users can run
    `npx shadcn@latest add https://paneui.vercel.app/r/<slug>.json`). The `@/` import alias must point at `src/`.

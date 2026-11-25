@@ -286,6 +286,92 @@ html[data-style="mono"] .kb {
   --kb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+html[data-style="mono"] .lau {
+  --lau-ink: #000;
+  --lau-surface: #fff;
+  --lau-accent: #111;
+  --lau-ease: cubic-bezier(.2, .9, .1, 1);
+  --lau-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lcta {
+  --lcta-ink: #000;
+  --lcta-surface: #fff;
+  --lcta-accent: #111;
+  --lcta-ease: cubic-bezier(.2, .9, .1, 1);
+  --lcta-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lfq {
+  --lfq-ink: #000;
+  --lfq-accent: #111;
+  --lfq-ease: cubic-bezier(.2, .9, .1, 1);
+  --lfq-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lfg {
+  --lfg-ink: #000;
+  --lfg-accent: #111;
+  --lfg-ease: cubic-bezier(.2, .9, .1, 1);
+  --lfg-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lfr {
+  --lfr-ink: #000;
+  --lfr-surface: #fff;
+  --lfr-accent: #111;
+  --lfr-ease: cubic-bezier(.2, .9, .1, 1);
+  --lfr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lft {
+  --lft-ink: #000;
+  --lft-accent: #111;
+  --lft-ease: cubic-bezier(.2, .9, .1, 1);
+  --lft-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lhr {
+  --lhr-ink: #000;
+  --lhr-surface: #fff;
+  --lhr-accent: #111;
+  --lhr-shadow: 0 0 0 1px rgb(0 0 0 / .14);
+  --lhr-ease: cubic-bezier(.2, .9, .1, 1);
+  --lhr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lnv {
+  --lnv-ink: #000;
+  --lnv-accent: #111;
+  --lnv-ease: cubic-bezier(.2, .9, .1, 1);
+  --lnv-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lpr {
+  --lpr-ink: #000;
+  --lpr-surface: #fff;
+  --lpr-accent: #111;
+  --lpr-ease: cubic-bezier(.2, .9, .1, 1);
+  --lpr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lprf {
+  --lprf-ink: #000;
+  --lprf-surface: #fff;
+  --lprf-accent: #111;
+  --lprf-ease: cubic-bezier(.2, .9, .1, 1);
+  --lprf-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"] .lst {
+  --lst-ink: #000;
+  --lst-surface: #fff;
+  --lst-accent: #111;
+  --lst-glint: rgb(255 255 255 / .95);
+  --lst-ease: cubic-bezier(.2, .9, .1, 1);
+  --lst-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 html[data-style="mono"] .lcd {
   --lcd-ink: #000;
   --lcd-accent: #111;
@@ -1914,6 +2000,12 @@ html[data-style="mono"] .ish {
   --ish-signal: #111;
 }
 
+html[data-style="mono"] .lfr {
+  --lfr-paper: #fff;
+  --lfr-sheet: #fff;
+  --lfr-signal: #111;
+}
+
 html[data-style="mono"] .iac {
   --iac-paper: #fff;
   --iac-sheet: #fff;
@@ -2355,6 +2447,92 @@ html[data-style="mono"].dark .kb {
   --kb-glint: rgb(255 255 255 / .9);
   --kb-ease: cubic-bezier(.2, .9, .1, 1);
   --kb-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lau {
+  --lau-ink: #fff;
+  --lau-surface: #0a0a0a;
+  --lau-accent: #f2f2f2;
+  --lau-ease: cubic-bezier(.2, .9, .1, 1);
+  --lau-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lcta {
+  --lcta-ink: #fff;
+  --lcta-surface: #0a0a0a;
+  --lcta-accent: #f2f2f2;
+  --lcta-ease: cubic-bezier(.2, .9, .1, 1);
+  --lcta-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lfq {
+  --lfq-ink: #fff;
+  --lfq-accent: #f2f2f2;
+  --lfq-ease: cubic-bezier(.2, .9, .1, 1);
+  --lfq-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lfg {
+  --lfg-ink: #fff;
+  --lfg-accent: #f2f2f2;
+  --lfg-ease: cubic-bezier(.2, .9, .1, 1);
+  --lfg-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lfr {
+  --lfr-ink: #fff;
+  --lfr-surface: #0a0a0a;
+  --lfr-accent: #f2f2f2;
+  --lfr-ease: cubic-bezier(.2, .9, .1, 1);
+  --lfr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lft {
+  --lft-ink: #fff;
+  --lft-accent: #f2f2f2;
+  --lft-ease: cubic-bezier(.2, .9, .1, 1);
+  --lft-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lhr {
+  --lhr-ink: #fff;
+  --lhr-surface: #0a0a0a;
+  --lhr-accent: #f2f2f2;
+  --lhr-shadow: 0 0 0 1px rgb(255 255 255 / .16);
+  --lhr-ease: cubic-bezier(.2, .9, .1, 1);
+  --lhr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lnv {
+  --lnv-ink: #fff;
+  --lnv-accent: #f2f2f2;
+  --lnv-ease: cubic-bezier(.2, .9, .1, 1);
+  --lnv-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lpr {
+  --lpr-ink: #fff;
+  --lpr-surface: #0a0a0a;
+  --lpr-accent: #f2f2f2;
+  --lpr-ease: cubic-bezier(.2, .9, .1, 1);
+  --lpr-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lprf {
+  --lprf-ink: #fff;
+  --lprf-surface: #0a0a0a;
+  --lprf-accent: #f2f2f2;
+  --lprf-ease: cubic-bezier(.2, .9, .1, 1);
+  --lprf-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html[data-style="mono"].dark .lst {
+  --lst-ink: #fff;
+  --lst-surface: #0a0a0a;
+  --lst-accent: #f2f2f2;
+  --lst-glint: rgb(255 255 255 / .9);
+  --lst-ease: cubic-bezier(.2, .9, .1, 1);
+  --lst-font: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html[data-style="mono"].dark .lcd {
@@ -3985,6 +4163,12 @@ html[data-style="mono"].dark .ish {
   --ish-signal: #f2f2f2;
 }
 
+html[data-style="mono"].dark .lfr {
+  --lfr-paper: #000;
+  --lfr-sheet: #0a0a0a;
+  --lfr-signal: #f2f2f2;
+}
+
 html[data-style="mono"].dark .iac {
   --iac-paper: #000;
   --iac-sheet: #0a0a0a;
@@ -4482,6 +4666,92 @@ html[data-style="glass"] .kb {
   --kb-glint: var(--pane-glint);
   --kb-ease: var(--pane-ease);
   --kb-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lau {
+  --lau-ink: var(--pane-ink);
+  --lau-surface: var(--pane-solid);
+  --lau-accent: var(--pane-accent);
+  --lau-ease: var(--pane-ease);
+  --lau-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lcta {
+  --lcta-ink: var(--pane-ink);
+  --lcta-surface: var(--pane-solid);
+  --lcta-accent: var(--pane-accent);
+  --lcta-ease: var(--pane-ease);
+  --lcta-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lfq {
+  --lfq-ink: var(--pane-ink);
+  --lfq-accent: var(--pane-accent);
+  --lfq-ease: var(--pane-ease);
+  --lfq-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lfg {
+  --lfg-ink: var(--pane-ink);
+  --lfg-accent: var(--pane-accent);
+  --lfg-ease: var(--pane-ease);
+  --lfg-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lfr {
+  --lfr-ink: var(--pane-ink);
+  --lfr-surface: var(--pane-solid);
+  --lfr-accent: var(--pane-accent);
+  --lfr-ease: var(--pane-ease);
+  --lfr-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lft {
+  --lft-ink: var(--pane-ink);
+  --lft-accent: var(--pane-accent);
+  --lft-ease: var(--pane-ease);
+  --lft-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lhr {
+  --lhr-ink: var(--pane-ink);
+  --lhr-surface: var(--pane-solid);
+  --lhr-accent: var(--pane-accent);
+  --lhr-shadow: var(--pane-shadow);
+  --lhr-ease: var(--pane-ease);
+  --lhr-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lnv {
+  --lnv-ink: var(--pane-ink);
+  --lnv-accent: var(--pane-accent);
+  --lnv-ease: var(--pane-ease);
+  --lnv-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lpr {
+  --lpr-ink: var(--pane-ink);
+  --lpr-surface: var(--pane-solid);
+  --lpr-accent: var(--pane-accent);
+  --lpr-ease: var(--pane-ease);
+  --lpr-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lprf {
+  --lprf-ink: var(--pane-ink);
+  --lprf-surface: var(--pane-solid);
+  --lprf-accent: var(--pane-accent);
+  --lprf-ease: var(--pane-ease);
+  --lprf-font: var(--pane-font);
+}
+
+html[data-style="glass"] .lst {
+  --lst-ink: var(--pane-ink);
+  --lst-surface: var(--pane-solid);
+  --lst-accent: var(--pane-accent);
+  --lst-glint: var(--pane-glint);
+  --lst-ease: var(--pane-ease);
+  --lst-font: var(--pane-font);
 }
 
 html[data-style="glass"] .lcd {
@@ -6708,15 +6978,78 @@ html[data-style="glass"] .kb {
   --kb-t4: var(--pane-t4);
 }
 
+html[data-style="glass"] .lau {
+  --lau-t1: var(--pane-t1);
+  --lau-t2: var(--pane-t2);
+  --lau-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .lfg {
+  --lfg-t1: var(--pane-t1);
+  --lfg-t2: var(--pane-t2);
+  --lfg-t3: var(--pane-t3);
+}
+
 html[data-style="glass"] .lfm {
   --lfm-t1: var(--pane-t1);
   --lfm-t2: var(--pane-t2);
   --lfm-t3: var(--pane-t3);
 }
 
+html[data-style="glass"] .lfq {
+  --lfq-t1: var(--pane-t1);
+  --lfq-t2: var(--pane-t2);
+  --lfq-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .lfr {
+  --lfr-t1: var(--pane-t1);
+  --lfr-t2: var(--pane-t2);
+  --lfr-t3: var(--pane-t3);
+  --lfr-t4: var(--pane-t4);
+}
+
+html[data-style="glass"] .lft {
+  --lft-t1: var(--pane-t1);
+  --lft-t2: var(--pane-t2);
+  --lft-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .lhr {
+  --lhr-t1: var(--pane-t1);
+  --lhr-t2: var(--pane-t2);
+  --lhr-t3: var(--pane-t3);
+  --lhr-t4: var(--pane-t4);
+}
+
 html[data-style="glass"] .lm {
   --lm-t1: var(--pane-t1);
   --lm-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .lnv {
+  --lnv-t1: var(--pane-t1);
+  --lnv-t2: var(--pane-t2);
+  --lnv-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .lpr {
+  --lpr-t1: var(--pane-t1);
+  --lpr-t2: var(--pane-t2);
+  --lpr-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .lprf {
+  --lprf-t1: var(--pane-t1);
+  --lprf-t2: var(--pane-t2);
+  --lprf-t3: var(--pane-t3);
+}
+
+html[data-style="glass"] .lst {
+  --lst-t1: var(--pane-t1);
+  --lst-t2: var(--pane-t2);
+  --lst-t3: var(--pane-t3);
+  --lst-t4: var(--pane-t4);
 }
 
 html[data-style="glass"] .ltb {
@@ -7230,6 +7563,12 @@ html[data-style="glass"] .ish {
   --ish-paper: transparent;
   --ish-sheet: var(--pane-solid);
   --ish-signal: var(--pane-accent);
+}
+
+html[data-style="glass"] .lfr {
+  --lfr-paper: transparent;
+  --lfr-sheet: var(--pane-solid);
+  --lfr-signal: var(--pane-accent);
 }
 
 html[data-style="glass"] .iac {

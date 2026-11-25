@@ -3103,6 +3103,213 @@
           "target": "lib/agent-bridge.ts"
         }
       ]
+    },
+    {
+      "name": "landing-nav",
+      "type": "registry:block",
+      "title": "Landing Nav",
+      "description": "The slim top bar: brand, a few centred links and one button. It gains a hairline once the page scrolls and folds into a menu when narrow.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-nav.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-nav.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-hero",
+      "type": "registry:block",
+      "title": "Landing Hero",
+      "description": "A split hero: two-tone headline, one sentence, two buttons and ticked proof, beside a dotted panel whose product mock plays once.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-hero.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-hero.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-proof",
+      "type": "registry:block",
+      "title": "Landing Proof",
+      "description": "Social proof without logos: big figures that count up once with a source line, and one or two quotes with initials.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-proof.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-proof.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-steps",
+      "type": "registry:block",
+      "title": "Landing Steps",
+      "description": "How it works as a real sequence: three cards whose small mocks play in order while a thin line fills under them.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-steps.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-steps.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-feature-rows",
+      "type": "registry:block",
+      "title": "Landing Feature Rows",
+      "description": "Alternating feature rows: headline, paragraph and ticks on one side, a chat, report or list mock that plays on the other.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-feature-rows.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-feature-rows.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-feature-grid",
+      "type": "registry:block",
+      "title": "Landing Feature Grid",
+      "description": "Everything else it does, as a grid ruled by hairlines only: icon, title and two lines per cell, with one wide row to close.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-feature-grid.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-feature-grid.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-audience",
+      "type": "registry:block",
+      "title": "Landing Audience",
+      "description": "Who it is for: two or three audience cards in one hairline frame, each with a promise, ticked points and a link.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-audience.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-audience.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-pricing",
+      "type": "registry:block",
+      "title": "Landing Pricing",
+      "description": "Plan cards with a Monthly / Yearly switch that rolls each price once, or a teaser with one plan beside the copy.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-pricing.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-pricing.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-faq",
+      "type": "registry:block",
+      "title": "Landing FAQ",
+      "description": "Heading on the left, questions on the right as an accordion that opens with one eased height change and arrow-key focus.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-faq.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-faq.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-cta",
+      "type": "registry:block",
+      "title": "Landing CTA",
+      "description": "The closing band: a dotted panel with a two-tone headline and two buttons, beside a setup checklist that ticks itself off.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-cta.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-cta.tsx"
+        }
+      ]
+    },
+    {
+      "name": "landing-footer",
+      "type": "registry:block",
+      "title": "Landing Footer",
+      "description": "The quiet foot of the page: brand line, social icons as plain glyphs, titled link columns and a copyright line.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/landing-footer.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/landing-footer.tsx"
+        }
+      ]
     }
   ]
 }

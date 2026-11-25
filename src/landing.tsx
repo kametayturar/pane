@@ -236,6 +236,7 @@ const NAV = [
   ["Illustrations", "#/browse/Illustrations"],
   ["Motion", "#/browse/Motion"],
   ["Studio", "#/studio"],
+  ["Builder", "#/landing-builder"],
   ["Skills", "#/skills"],
   ["MCP", "#/mcp"],
 ] as const
@@ -522,6 +523,18 @@ const CATEGORIES: Category[] = [
       { slug: "diff-review", width: 760, align: "top" },
       { slug: "terminal-transcript", width: 560, align: "top" },
       { slug: "change-tree", width: 560, align: "top" },
+    ],
+  },
+  {
+    group: "Landing",
+    label: "Landing",
+    blurb: "The sections a product landing page is made of, each arriving once as you scroll. Assemble them in the Landing Builder.",
+    picks: [
+      { slug: "landing-hero", width: 1200, align: "top" },
+      { slug: "landing-proof", width: 1100, align: "top" },
+      { slug: "landing-faq", width: 1100, align: "top" },
+      { slug: "landing-pricing", width: 1200, align: "top" },
+      { slug: "landing-cta", width: 1200, align: "top" },
     ],
   },
   {
@@ -883,6 +896,23 @@ function HowBuilt({ find, dark, toggleDark, style, setStyle, styles }: { find: (
               ))}
             </ul>
             <CardLink href="#/mcp">Set up MCP</CardLink>
+          </div>
+        </Card>
+
+        {/* Landing Builder */}
+        <Card className="flex flex-col gap-6 lg:col-span-12 lg:flex-row lg:items-center lg:justify-between" delay={80}>
+          <div>
+            <CardTitle title="Assemble a landing page">Start from a preset, order the landing sections, edit every word and export one page file.</CardTitle>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <ul className="flex flex-wrap gap-1.5">
+              {["Page file", "Install command", "Agent prompt"].map((t) => (
+                <li key={t} className="rounded-full bg-neutral-100 px-3 py-1 text-[12px] text-neutral-600 dark:bg-white/[0.06] dark:text-neutral-300">
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <CardLink href="#/landing-builder">Open the Landing Builder</CardLink>
           </div>
         </Card>
       </div>

@@ -4263,6 +4263,169 @@
         "pull request files",
         "original"
       ]
+    },
+    "landing-nav": {
+      "tags": [
+        "landing",
+        "marketing",
+        "menu",
+        "navigation",
+        "scroll"
+      ],
+      "keywords": [
+        "top bar",
+        "header",
+        "navbar",
+        "sticky header",
+        "mobile menu",
+        "sign in"
+      ]
+    },
+    "landing-hero": {
+      "tags": [
+        "hero",
+        "landing",
+        "marketing",
+        "media"
+      ],
+      "keywords": [
+        "above the fold",
+        "headline",
+        "product mock",
+        "split hero",
+        "call to action"
+      ]
+    },
+    "landing-proof": {
+      "tags": [
+        "kpi",
+        "landing",
+        "marketing",
+        "social-proof"
+      ],
+      "keywords": [
+        "testimonials",
+        "quotes",
+        "stats",
+        "count up",
+        "customer numbers"
+      ]
+    },
+    "landing-steps": {
+      "tags": [
+        "landing",
+        "marketing",
+        "onboarding",
+        "progress"
+      ],
+      "keywords": [
+        "how it works",
+        "steps",
+        "sequence",
+        "product mock",
+        "walkthrough"
+      ]
+    },
+    "landing-feature-rows": {
+      "tags": [
+        "chat",
+        "landing",
+        "marketing",
+        "media"
+      ],
+      "keywords": [
+        "features",
+        "alternating rows",
+        "zigzag",
+        "product mock",
+        "feature section"
+      ]
+    },
+    "landing-feature-grid": {
+      "tags": [
+        "card",
+        "landing",
+        "marketing"
+      ],
+      "keywords": [
+        "features",
+        "feature grid",
+        "icons",
+        "bento",
+        "capabilities"
+      ]
+    },
+    "landing-audience": {
+      "tags": [
+        "card",
+        "landing",
+        "marketing"
+      ],
+      "keywords": [
+        "who it is for",
+        "use cases",
+        "personas",
+        "audience cards",
+        "segments"
+      ]
+    },
+    "landing-pricing": {
+      "tags": [
+        "card",
+        "landing",
+        "marketing",
+        "pricing",
+        "toggle"
+      ],
+      "keywords": [
+        "plans",
+        "monthly yearly",
+        "billing switch",
+        "tiers",
+        "pricing teaser"
+      ]
+    },
+    "landing-faq": {
+      "tags": [
+        "keyboard",
+        "landing",
+        "marketing"
+      ],
+      "keywords": [
+        "faq",
+        "accordion",
+        "questions",
+        "disclosure",
+        "help"
+      ]
+    },
+    "landing-cta": {
+      "tags": [
+        "landing",
+        "marketing",
+        "onboarding"
+      ],
+      "keywords": [
+        "call to action",
+        "closing band",
+        "sign up",
+        "checklist",
+        "get started"
+      ]
+    },
+    "landing-footer": {
+      "tags": [
+        "landing",
+        "marketing",
+        "navigation"
+      ],
+      "keywords": [
+        "footer",
+        "site map",
+        "social links",
+        "copyright",
+        "link columns"
+      ]
     }
   }
 }
